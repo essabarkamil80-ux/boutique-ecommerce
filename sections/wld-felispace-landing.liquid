@@ -1,0 +1,685 @@
+{%- assign wld_product = section.settings.product -%}
+{%- assign wld_v1 = wld_product.variants[0] -%}
+{%- assign wld_v2 = wld_product.variants[1] -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<section
+  id="wld-felispace-{{ section.id }}"
+  class="wld-felispace"
+  data-section-id="{{ section.id }}"
+  style="--wld-primary: {{ section.settings.color_primary }}; --wld-accent: {{ section.settings.color_accent }}; --wld-accent2: {{ section.settings.color_accent2 }}; --wld-heading: {{ section.settings.color_heading }}; --wld-olive: {{ section.settings.color_olive }}; --wld-cream: {{ section.settings.color_cream }}; --wld-dark: {{ section.settings.color_dark }}; --wld-add: {{ section.settings.color_add }};">
+
+  {%- if wld_product == blank -%}
+    <div class="wld-felispace-no-product vel-no-product-notice">
+      ⚠️ Aucun produit sélectionné. Ouvre l'éditeur de thème → réglages de cette section → choisis « la grotte Felispace » pour activer le panier.
+    </div>
+  {%- endif -%}
+
+  {% comment %} ========================= HERO ========================= {% endcomment %}
+  <div class="wld-felispace-hero">
+    <div class="wld-felispace-hero__media">
+      {%- if section.settings.hero_image != blank -%}
+        <img src="{{ section.settings.hero_image | image_url: width: 900 }}" alt="{{ section.settings.product_title | escape }}" loading="eager" width="900" height="900">
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'wld-felispace-placeholder' }}
+      {%- endif -%}
+    </div>
+
+    <div class="wld-felispace-hero__info">
+      <div class="wld-felispace-rating">
+        <span class="wld-felispace-stars">★★★★★</span>
+        <strong>{{ section.settings.rating_score }}</strong>
+        <span>{{ section.settings.rating_label }}</span>
+        <span class="wld-felispace-rating__count">{{ section.settings.rating_count }}</span>
+      </div>
+
+      <h1 class="wld-felispace-hero__title">{{ section.settings.product_title }}</h1>
+
+      <ul class="wld-felispace-bullets">
+        <li>{{ section.settings.bullet_1 }}</li>
+        <li>{{ section.settings.bullet_2 }}</li>
+        <li>{{ section.settings.bullet_3 }}</li>
+      </ul>
+
+      {%- if wld_product != blank -%}
+      <form method="post" action="/cart/add" class="wld-felispace-buyform wld-felispace-card" data-buyform>
+        <input type="hidden" name="id" value="{{ wld_v1.id }}" data-variant-input>
+
+        <div class="wld-felispace-field">
+          <div class="wld-felispace-field__head">
+            <label class="wld-felispace-field__label">{{ section.settings.style_label }}</label>
+            <span class="wld-felispace-sizechart">{{ section.settings.size_chart_label }}</span>
+          </div>
+          <div class="wld-felispace-options" data-group="style">
+            <button type="button" class="wld-felispace-pill is-active" data-opt>{{ section.settings.style_1 }}</button>
+            <button type="button" class="wld-felispace-pill" data-opt>{{ section.settings.style_2 }}</button>
+          </div>
+        </div>
+
+        <div class="wld-felispace-field">
+          <label class="wld-felispace-field__label">{{ section.settings.size_label }}</label>
+          <div class="wld-felispace-options" data-group="size">
+            <button type="button" class="wld-felispace-pill is-active" data-opt>{{ section.settings.size_1 }}</button>
+            <button type="button" class="wld-felispace-pill" data-opt>{{ section.settings.size_2 }}</button>
+          </div>
+        </div>
+
+        <div class="wld-felispace-field">
+          <label class="wld-felispace-field__label">{{ section.settings.bundle_label }}</label>
+          <div class="wld-felispace-bundles" data-bundle-group>
+            <button type="button" class="wld-felispace-bundle is-active" data-bundle data-variant-id="{{ wld_v1.id }}">
+              <span class="wld-felispace-bundle__radio"></span>
+              <span class="wld-felispace-bundle__txt">
+                <span class="wld-felispace-bundle__title">{{ section.settings.bundle_1_title }}</span>
+                <span class="wld-felispace-bundle__price">{{ section.settings.bundle_1_price }}</span>
+              </span>
+            </button>
+            <button type="button" class="wld-felispace-bundle" data-bundle data-variant-id="{% if wld_v2 %}{{ wld_v2.id }}{% else %}{{ wld_v1.id }}{% endif %}">
+              <span class="wld-felispace-bundle__radio"></span>
+              <span class="wld-felispace-bundle__txt">
+                <span class="wld-felispace-bundle__title">{{ section.settings.bundle_2_title }}</span>
+                <span class="wld-felispace-bundle__price">{{ section.settings.bundle_2_price }}</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="wld-felispace-field">
+          <label class="wld-felispace-field__label">{{ section.settings.color_label }}</label>
+          <div class="wld-felispace-colors" data-group="color">
+            {%- for i in (1..5) -%}
+              {%- assign cname = 'color_name_' | append: i -%}
+              {%- assign cimg = 'color_img_' | append: i -%}
+              {%- assign cn = section.settings[cname] -%}
+              {%- if cn != blank -%}
+                <button type="button" class="wld-felispace-color{% if forloop.first %} is-active{% endif %}" data-opt>
+                  <span class="wld-felispace-color__swatch">
+                    {%- if section.settings[cimg] != blank -%}
+                      <img src="{{ section.settings[cimg] | image_url: width: 80 }}" alt="{{ cn | escape }}" width="40" height="40" loading="lazy">
+                    {%- endif -%}
+                  </span>
+                  <span class="wld-felispace-color__name">{{ cn }}</span>
+                  <span class="wld-felispace-color__add">{{ section.settings.color_add_label }}</span>
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <button type="submit" class="wld-felispace-cta">{{ section.settings.cta_text }}</button>
+
+        <div class="wld-felispace-badges">
+          <span>{{ section.settings.badge_1 }}</span>
+          <span>{{ section.settings.badge_2 }}</span>
+          <span>{{ section.settings.badge_3 }}</span>
+        </div>
+        <p class="wld-felispace-guarantee-line">🛡️ {{ section.settings.hero_guarantee }}</p>
+      </form>
+      {%- else -%}
+        <button type="button" class="wld-felispace-cta is-disabled" disabled>{{ section.settings.cta_text }}</button>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {% comment %} ============ SOCIAL PROOF + VIDÉOS ============ {% endcomment %}
+  <div class="wld-felispace-band wld-felispace-band--cream">
+    <h2 class="wld-felispace-h2">{{ section.settings.social_title }}</h2>
+    <p class="wld-felispace-sub">{{ section.settings.social_sub }}</p>
+
+    {%- assign vid_count = 0 -%}
+    {%- for block in section.blocks -%}{%- if block.type == 'video' -%}{%- assign vid_count = vid_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+    {%- if vid_count > 0 -%}
+      <div class="wld-felispace-videos">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'video' -%}
+            <div class="wld-felispace-vid" {{ block.shopify_attributes }}>
+              {%- if block.settings.video != blank -%}
+                {{ block.settings.video | video_tag: image_size: '500x', loop: true, controls: true, muted: true, playsinline: true }}
+              {%- elsif block.settings.poster != blank -%}
+                <img src="{{ block.settings.poster | image_url: width: 500 }}" alt="" loading="lazy" width="500" height="700">
+              {%- else -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'wld-felispace-placeholder' }}
+              {%- endif -%}
+              {%- if block.settings.caption != blank -%}<span class="wld-felispace-vid__cap">{{ block.settings.caption }}</span>{%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="wld-felispace-trust-strip">
+      <div class="wld-felispace-trust"><span>🚚</span>{{ section.settings.trust_1 }}</div>
+      <div class="wld-felispace-trust"><span>✅</span>{{ section.settings.trust_2 }}</div>
+      <div class="wld-felispace-trust"><span>🔒</span>{{ section.settings.trust_3 }}</div>
+      <div class="wld-felispace-trust"><span>🐾</span>{{ section.settings.trust_4 }}</div>
+    </div>
+  </div>
+
+  {% comment %} ================= WHY CHOOSE ================= {% endcomment %}
+  <div class="wld-felispace-band wld-felispace-band--accent">
+    <h2 class="wld-felispace-h2">{{ section.settings.why_title }}</h2>
+    <div class="wld-felispace-why">
+      <div class="wld-felispace-why__col">
+        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">🛡️</span><div><h3>{{ section.settings.why_1_title }}</h3><p>{{ section.settings.why_1_text }}</p></div></div>
+        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">🌿</span><div><h3>{{ section.settings.why_2_title }}</h3><p>{{ section.settings.why_2_text }}</p></div></div>
+      </div>
+      <div class="wld-felispace-why__media">
+        {%- if section.settings.why_image != blank -%}
+          <img src="{{ section.settings.why_image | image_url: width: 700 }}" alt="" loading="lazy" width="700" height="700">
+        {%- else -%}
+          {{ 'product-2' | placeholder_svg_tag: 'wld-felispace-placeholder' }}
+        {%- endif -%}
+      </div>
+      <div class="wld-felispace-why__col">
+        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">💪</span><div><h3>{{ section.settings.why_3_title }}</h3><p>{{ section.settings.why_3_text }}</p></div></div>
+        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">🧼</span><div><h3>{{ section.settings.why_4_title }}</h3><p>{{ section.settings.why_4_text }}</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} ================= REVIEWS (blocks) ================= {% endcomment %}
+  <div class="wld-felispace-band wld-felispace-band--dark">
+    <h2 class="wld-felispace-h2 wld-felispace-h2--light">{{ section.settings.reviews_title }}</h2>
+    <div class="wld-felispace-reviews">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'review' -%}
+          <article class="wld-felispace-review" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <img class="wld-felispace-review__img" src="{{ block.settings.image | image_url: width: 360 }}" alt="" loading="lazy" width="360" height="270">
+            {%- endif -%}
+            <div class="wld-felispace-review__stars">{% for s in (1..block.settings.rating) %}★{% endfor %}</div>
+            <h4 class="wld-felispace-review__title">{{ block.settings.title }}</h4>
+            <p class="wld-felispace-review__text">{{ block.settings.text }}</p>
+            <span class="wld-felispace-review__author">{{ block.settings.author }}</span>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if wld_product != blank -%}
+      <a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta wld-felispace-cta--inline">{{ section.settings.shop_now_text }}</a>
+    {%- endif -%}
+  </div>
+
+  {% comment %} ================= BENEFITS ================= {% endcomment %}
+  <div class="wld-felispace-band wld-felispace-band--dark">
+    <h2 class="wld-felispace-h2 wld-felispace-h2--light">{{ section.settings.benefits_title }}</h2>
+    <div class="wld-felispace-benefits">
+      <div class="wld-felispace-benefit"><span class="wld-felispace-benefit__icon">😴</span><h3>{{ section.settings.benefit_1_title }}</h3><p>{{ section.settings.benefit_1_text }}</p></div>
+      <div class="wld-felispace-benefit"><span class="wld-felispace-benefit__icon">🐾</span><h3>{{ section.settings.benefit_2_title }}</h3><p>{{ section.settings.benefit_2_text }}</p></div>
+      <div class="wld-felispace-benefit"><span class="wld-felispace-benefit__icon">🧶</span><h3>{{ section.settings.benefit_3_title }}</h3><p>{{ section.settings.benefit_3_text }}</p></div>
+    </div>
+    {%- if wld_product != blank -%}
+      <a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta wld-felispace-cta--inline">{{ section.settings.shop_now_text }}</a>
+    {%- endif -%}
+  </div>
+
+  {% comment %} ================= US VS. ================= {% endcomment %}
+  <div class="wld-felispace-band wld-felispace-band--cream">
+    <h2 class="wld-felispace-h2">{{ section.settings.compare_title }}</h2>
+    <div class="wld-felispace-compare">
+      <div class="wld-felispace-compare__tabs" data-compare-tabs>
+        <button type="button" class="wld-felispace-tab is-active" data-tab>{{ section.settings.compare_tab_1 }}</button>
+        <button type="button" class="wld-felispace-tab" data-tab>{{ section.settings.compare_tab_2 }}</button>
+        <button type="button" class="wld-felispace-tab" data-tab>{{ section.settings.compare_tab_3 }}</button>
+      </div>
+      <table class="wld-felispace-table">
+        <thead>
+          <tr><th></th><th class="wld-felispace-table__ours">{{ section.settings.compare_ours }}</th><th class="wld-felispace-table__them" data-them-label>{{ section.settings.compare_tab_1 }}</th></tr>
+        </thead>
+        <tbody>
+          {%- assign rows = section.settings.compare_rows | newline_to_br | split: '<br />' -%}
+          {%- for row in rows -%}
+            {%- assign r = row | strip -%}
+            {%- if r != blank -%}
+              <tr><td>{{ r }}</td><td class="wld-felispace-yes">✓</td><td class="wld-felispace-no">✕</td></tr>
+            {%- endif -%}
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% comment %} ================= BUY BOX 2 ================= {% endcomment %}
+  {%- if wld_product != blank -%}
+  <div id="wld-felispace-buybox-{{ section.id }}" class="wld-felispace-band wld-felispace-band--accent">
+    <h2 class="wld-felispace-h2">{{ section.settings.buybox_title }}</h2>
+    <form method="post" action="/cart/add" class="wld-felispace-buybox wld-felispace-card" data-buyform>
+      <input type="hidden" name="id" value="{{ wld_v1.id }}" data-variant-input>
+      <div class="wld-felispace-bundles wld-felispace-bundles--wide" data-bundle-group>
+        <button type="button" class="wld-felispace-bundle is-active" data-bundle data-variant-id="{{ wld_v1.id }}">
+          <span class="wld-felispace-bundle__radio"></span>
+          <span class="wld-felispace-bundle__txt">
+            <span class="wld-felispace-bundle__title">{{ section.settings.bundle_1_title }}</span>
+            <span class="wld-felispace-bundle__price">{{ section.settings.bundle_1_price }}</span>
+          </span>
+        </button>
+        <button type="button" class="wld-felispace-bundle" data-bundle data-variant-id="{% if wld_v2 %}{{ wld_v2.id }}{% else %}{{ wld_v1.id }}{% endif %}">
+          <span class="wld-felispace-bundle__radio"></span>
+          <span class="wld-felispace-bundle__txt">
+            <span class="wld-felispace-bundle__title">{{ section.settings.bundle_2_title }}</span>
+            <span class="wld-felispace-bundle__price">{{ section.settings.bundle_2_price }}</span>
+          </span>
+        </button>
+      </div>
+      <button type="submit" class="wld-felispace-cta">{{ section.settings.cta_text }}</button>
+    </form>
+  </div>
+  {%- endif -%}
+
+  {% comment %} ================= FAQ ================= {% endcomment %}
+  <div class="wld-felispace-band wld-felispace-band--cream">
+    <h2 class="wld-felispace-h2">{{ section.settings.faq_title }}</h2>
+    <div class="wld-felispace-faq" data-faq>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq' -%}
+          <div class="wld-felispace-faq__item" {{ block.shopify_attributes }}>
+            <button type="button" class="wld-felispace-faq__q" data-faq-q>{{ block.settings.question }}<span class="wld-felispace-faq__icon">+</span></button>
+            <div class="wld-felispace-faq__a"><p>{{ block.settings.answer }}</p></div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {% comment %} ================= GUARANTEE BANNER ================= {% endcomment %}
+  <div class="wld-felispace-promise">
+    {%- if section.settings.promise_image != blank -%}
+      <img class="wld-felispace-promise__bg" src="{{ section.settings.promise_image | image_url: width: 1400 }}" alt="" loading="lazy" width="1400" height="500">
+    {%- endif -%}
+    <div class="wld-felispace-promise__inner">
+      <h2 class="wld-felispace-promise__title">{{ section.settings.promise_title }}</h2>
+      <ul class="wld-felispace-promise__list">
+        <li>{{ section.settings.promise_1 }}</li>
+        <li>{{ section.settings.promise_2 }}</li>
+        <li>{{ section.settings.promise_3 }}</li>
+      </ul>
+      {%- if wld_product != blank -%}
+        <a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta">{{ section.settings.shop_now_text }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #wld-felispace-{{ section.id }}.wld-felispace { font-family: 'Inter', sans-serif; color: #232323; line-height: 1.55; }
+  #wld-felispace-{{ section.id }} * { box-sizing: border-box; }
+  #wld-felispace-{{ section.id }} h1, #wld-felispace-{{ section.id }} h2, #wld-felispace-{{ section.id }} h3, #wld-felispace-{{ section.id }} h4 { font-family: 'DM Serif Display', serif; font-weight: 400; margin: 0 0 .4em; }
+  #wld-felispace-{{ section.id }} img { max-width: 100%; height: auto; display: block; }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-no-product { background: #fff4d6; border: 1px solid #e7c65a; color: #6b5200; padding: 14px 18px; border-radius: 10px; margin: 0 auto 24px; max-width: 1100px; font-size: 14px; text-align: center; }
+
+  /* HERO */
+  #wld-felispace-{{ section.id }} .wld-felispace-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 1140px; margin: 0 auto; padding: 48px 20px; align-items: start; }
+  #wld-felispace-{{ section.id }} .wld-felispace-hero__media img { border-radius: 18px; position: sticky; top: 20px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-rating { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #444; margin-bottom: 10px; flex-wrap: wrap; }
+  #wld-felispace-{{ section.id }} .wld-felispace-stars { color: var(--wld-primary); letter-spacing: 1px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-rating__count { color: #777; }
+  #wld-felispace-{{ section.id }} .wld-felispace-hero__title { font-size: clamp(28px, 4vw, 42px); color: var(--wld-olive); }
+  #wld-felispace-{{ section.id }} .wld-felispace-bullets { list-style: none; padding: 0; margin: 0 0 22px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-bullets li { position: relative; padding-left: 26px; margin-bottom: 8px; font-size: 15px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-bullets li::before { content: "✓"; position: absolute; left: 0; color: var(--wld-primary); font-weight: 700; }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-card { border: 1px solid #e4e3dd; border-radius: 16px; padding: 22px; background: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.05); }
+  #wld-felispace-{{ section.id }} .wld-felispace-field { margin-bottom: 18px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-field__head { display: flex; justify-content: space-between; align-items: center; }
+  #wld-felispace-{{ section.id }} .wld-felispace-field__label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-sizechart { font-size: 12px; color: var(--wld-primary); text-decoration: underline; cursor: pointer; }
+  #wld-felispace-{{ section.id }} .wld-felispace-options { display: flex; gap: 10px; flex-wrap: wrap; }
+  #wld-felispace-{{ section.id }} .wld-felispace-pill { flex: 1; min-width: 120px; padding: 12px 14px; border: 1.5px solid #d9d9d9; background: #fff; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-pill.is-active { border-color: var(--wld-primary); background: var(--wld-accent2); }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-bundles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-bundle { display: flex; align-items: center; gap: 10px; padding: 14px; border: 1.5px solid #d9d9d9; border-radius: 12px; background: #fff; cursor: pointer; text-align: left; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-bundle.is-active { border-color: var(--wld-primary); background: var(--wld-accent2); box-shadow: 0 0 0 1.5px var(--wld-primary) inset; }
+  #wld-felispace-{{ section.id }} .wld-felispace-bundle__radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #c2c2c2; flex-shrink: 0; position: relative; }
+  #wld-felispace-{{ section.id }} .wld-felispace-bundle.is-active .wld-felispace-bundle__radio { border-color: var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-bundle.is-active .wld-felispace-bundle__radio::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-bundle__txt { display: flex; flex-direction: column; gap: 2px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-bundle__title { font-weight: 700; font-size: 14px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-bundle__price { font-size: 12px; color: var(--wld-primary); font-weight: 600; }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-colors { display: flex; flex-direction: column; gap: 8px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-color { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border: 1.5px solid #e2e2e2; border-radius: 10px; background: #fff; cursor: pointer; font-size: 14px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-color.is-active { border-color: var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-color__swatch { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: #eee; flex-shrink: 0; }
+  #wld-felispace-{{ section.id }} .wld-felispace-color__name { font-weight: 600; flex: 1; }
+  #wld-felispace-{{ section.id }} .wld-felispace-color__add { font-size: 12px; font-weight: 700; color: #fff; background: var(--wld-add); padding: 5px 12px; border-radius: 999px; }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-cta { display: block; width: 100%; padding: 16px 24px; background: var(--wld-primary); color: #fff; border: 0; border-radius: 999px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 16px; cursor: pointer; text-align: center; text-decoration: none; transition: .15s; margin-top: 6px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cta:hover { filter: brightness(1.1); }
+  #wld-felispace-{{ section.id }} .wld-felispace-cta.is-disabled { opacity: .5; cursor: not-allowed; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cta--inline { max-width: 260px; margin: 28px auto 0; }
+  #wld-felispace-{{ section.id }} .wld-felispace-badges { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 12px; color: #555; }
+  #wld-felispace-{{ section.id }} .wld-felispace-guarantee-line { text-align: center; font-size: 13px; color: #555; margin: 10px 0 0; }
+
+  /* BANDS */
+  #wld-felispace-{{ section.id }} .wld-felispace-band { padding: 56px 20px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-band--cream { background: var(--wld-cream); }
+  #wld-felispace-{{ section.id }} .wld-felispace-band--accent { background: var(--wld-accent); }
+  #wld-felispace-{{ section.id }} .wld-felispace-band--dark { background: var(--wld-dark); }
+  #wld-felispace-{{ section.id }} .wld-felispace-h2 { font-size: clamp(26px, 3.4vw, 38px); text-align: center; color: var(--wld-heading); }
+  #wld-felispace-{{ section.id }} .wld-felispace-h2--light { color: #fff; }
+  #wld-felispace-{{ section.id }} .wld-felispace-sub { text-align: center; color: #555; margin: 0 0 28px; }
+
+  /* VIDEOS */
+  #wld-felispace-{{ section.id }} .wld-felispace-videos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 900px; margin: 0 auto 36px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid { position: relative; border-radius: 14px; overflow: hidden; background: #000; aspect-ratio: 9/13; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid video, #wld-felispace-{{ section.id }} .wld-felispace-vid img { width: 100%; height: 100%; object-fit: cover; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid__cap { position: absolute; left: 10px; bottom: 10px; color: #fff; font-size: 12px; font-weight: 600; text-shadow: 0 1px 4px rgba(0,0,0,.6); }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-trust-strip { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px; max-width: 1000px; margin: 0 auto; }
+  #wld-felispace-{{ section.id }} .wld-felispace-trust { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  #wld-felispace-{{ section.id }} .wld-felispace-trust span { font-size: 20px; }
+
+  /* WHY */
+  #wld-felispace-{{ section.id }} .wld-felispace-why { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 28px; max-width: 1140px; margin: 0 auto; align-items: center; }
+  #wld-felispace-{{ section.id }} .wld-felispace-why__media img { border-radius: 16px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-why__item { display: flex; gap: 12px; margin-bottom: 26px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-why__ico { font-size: 26px; flex-shrink: 0; }
+  #wld-felispace-{{ section.id }} .wld-felispace-why__item h3 { font-size: 19px; color: var(--wld-heading); margin-bottom: 4px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-why__item p { margin: 0; font-size: 13px; color: #3a4a3a; }
+
+  /* REVIEWS */
+  #wld-felispace-{{ section.id }} .wld-felispace-reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; }
+  #wld-felispace-{{ section.id }} .wld-felispace-review { background: #fff; border-radius: 14px; padding: 18px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-review__img { border-radius: 10px; margin-bottom: 12px; aspect-ratio: 4/3; object-fit: cover; width: 100%; }
+  #wld-felispace-{{ section.id }} .wld-felispace-review__stars { color: var(--wld-primary); margin-bottom: 6px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-review__title { font-size: 17px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-review__text { font-size: 13px; color: #555; }
+  #wld-felispace-{{ section.id }} .wld-felispace-review__author { font-size: 12px; font-weight: 700; color: var(--wld-primary); }
+
+  /* BENEFITS */
+  #wld-felispace-{{ section.id }} .wld-felispace-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; }
+  #wld-felispace-{{ section.id }} .wld-felispace-benefit { background: var(--wld-accent); border-radius: 16px; padding: 28px 22px; text-align: center; }
+  #wld-felispace-{{ section.id }} .wld-felispace-benefit__icon { font-size: 34px; display: block; margin-bottom: 10px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-benefit h3 { font-size: 19px; color: var(--wld-heading); }
+  #wld-felispace-{{ section.id }} .wld-felispace-benefit p { font-size: 13px; color: #3a3a3a; margin: 0; }
+
+  /* COMPARE */
+  #wld-felispace-{{ section.id }} .wld-felispace-compare { max-width: 760px; margin: 0 auto; }
+  #wld-felispace-{{ section.id }} .wld-felispace-compare__tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tab { padding: 8px 18px; border-radius: 999px; border: 1.5px solid #cfcfcf; background: #fff; cursor: pointer; font-weight: 600; font-size: 13px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tab.is-active { background: var(--wld-primary); color: #fff; border-color: var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; }
+  #wld-felispace-{{ section.id }} .wld-felispace-table th, #wld-felispace-{{ section.id }} .wld-felispace-table td { padding: 14px 16px; text-align: center; border-bottom: 1px solid #eee; font-size: 14px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-table td:first-child { text-align: left; font-weight: 600; }
+  #wld-felispace-{{ section.id }} .wld-felispace-table__ours { background: var(--wld-primary); color: #fff; }
+  #wld-felispace-{{ section.id }} .wld-felispace-yes { color: var(--wld-primary); font-weight: 800; }
+  #wld-felispace-{{ section.id }} .wld-felispace-no { color: #c33; font-weight: 800; }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-buybox { max-width: 560px; margin: 0 auto; }
+  #wld-felispace-{{ section.id }} .wld-felispace-bundles--wide { margin-bottom: 16px; }
+
+  /* FAQ */
+  #wld-felispace-{{ section.id }} .wld-felispace-faq { max-width: 760px; margin: 0 auto; }
+  #wld-felispace-{{ section.id }} .wld-felispace-faq__item { border-bottom: 1px solid #ddd; }
+  #wld-felispace-{{ section.id }} .wld-felispace-faq__q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 4px; background: none; border: 0; cursor: pointer; font-weight: 600; font-size: 15px; text-align: left; font-family: 'Inter', sans-serif; }
+  #wld-felispace-{{ section.id }} .wld-felispace-faq__icon { font-size: 22px; color: var(--wld-primary); flex-shrink: 0; transition: transform .2s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-faq__item.is-open .wld-felispace-faq__icon { transform: rotate(45deg); }
+  #wld-felispace-{{ section.id }} .wld-felispace-faq__a { max-height: 0; overflow: hidden; transition: max-height .25s ease; }
+  #wld-felispace-{{ section.id }} .wld-felispace-faq__a p { margin: 0 0 18px; font-size: 14px; color: #555; }
+
+  /* PROMISE */
+  #wld-felispace-{{ section.id }} .wld-felispace-promise { position: relative; min-height: 360px; display: flex; align-items: center; overflow: hidden; }
+  #wld-felispace-{{ section.id }} .wld-felispace-promise__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  #wld-felispace-{{ section.id }} .wld-felispace-promise__inner { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; padding: 48px 24px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-promise__title { font-size: clamp(28px, 4vw, 46px); color: var(--wld-heading); max-width: 480px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-promise__list { list-style: none; padding: 0; margin: 0 0 24px; max-width: 360px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-promise__list li { padding-left: 24px; position: relative; margin-bottom: 8px; font-weight: 600; }
+  #wld-felispace-{{ section.id }} .wld-felispace-promise__list li::before { content: "✓"; position: absolute; left: 0; color: var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-promise .wld-felispace-cta { max-width: 240px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    #wld-felispace-{{ section.id }} .wld-felispace-hero { grid-template-columns: 1fr; gap: 28px; }
+    #wld-felispace-{{ section.id }} .wld-felispace-hero__media img { position: static; }
+    #wld-felispace-{{ section.id }} .wld-felispace-why { grid-template-columns: 1fr; }
+    #wld-felispace-{{ section.id }} .wld-felispace-why__media { order: -1; }
+    #wld-felispace-{{ section.id }} .wld-felispace-reviews { grid-template-columns: repeat(2, 1fr); }
+    #wld-felispace-{{ section.id }} .wld-felispace-benefits { grid-template-columns: 1fr; }
+    #wld-felispace-{{ section.id }} .wld-felispace-videos { max-width: 560px; }
+  }
+  @media (max-width: 540px) {
+    #wld-felispace-{{ section.id }} .wld-felispace-band { padding: 40px 16px; }
+    #wld-felispace-{{ section.id }} .wld-felispace-bundles { grid-template-columns: 1fr; }
+    #wld-felispace-{{ section.id }} .wld-felispace-reviews { grid-template-columns: 1fr; }
+    #wld-felispace-{{ section.id }} .wld-felispace-videos { grid-template-columns: 1fr 1fr; }
+    #wld-felispace-{{ section.id }} .wld-felispace-trust-strip { gap: 16px; }
+    #wld-felispace-{{ section.id }} .wld-felispace-trust { width: 45%; font-size: 12px; }
+  }
+</style>
+
+<script>
+  (function () {
+    function initFelispace(root) {
+      if (!root) return;
+
+      root.querySelectorAll('[data-group]').forEach(function (group) {
+        group.querySelectorAll('[data-opt]').forEach(function (opt) {
+          opt.addEventListener('click', function () {
+            group.querySelectorAll('[data-opt]').forEach(function (o) { o.classList.remove('is-active'); });
+            opt.classList.add('is-active');
+          });
+        });
+      });
+
+      root.querySelectorAll('[data-bundle-group]').forEach(function (group) {
+        var form = group.closest('[data-buyform]');
+        var input = form ? form.querySelector('[data-variant-input]') : null;
+        group.querySelectorAll('[data-bundle]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            group.querySelectorAll('[data-bundle]').forEach(function (b) { b.classList.remove('is-active'); });
+            btn.classList.add('is-active');
+            if (input && btn.dataset.variantId) { input.value = btn.dataset.variantId; }
+          });
+        });
+      });
+
+      root.querySelectorAll('[data-faq-q]').forEach(function (q) {
+        q.addEventListener('click', function () {
+          var item = q.parentElement;
+          var ans = item.querySelector('.wld-felispace-faq__a');
+          var open = item.classList.toggle('is-open');
+          ans.style.maxHeight = open ? ans.scrollHeight + 'px' : null;
+        });
+      });
+
+      root.querySelectorAll('[data-compare-tabs]').forEach(function (tabs) {
+        var label = root.querySelector('[data-them-label]');
+        tabs.querySelectorAll('[data-tab]').forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            tabs.querySelectorAll('[data-tab]').forEach(function (t) { t.classList.remove('is-active'); });
+            tab.classList.add('is-active');
+            if (label) { label.textContent = tab.textContent; }
+          });
+        });
+      });
+    }
+
+    var SECTION_ID = {{ section.id | json }};
+    function boot() { initFelispace(document.getElementById('wld-felispace-' + SECTION_ID)); }
+
+    if (document.readyState !== 'loading') { boot(); }
+    else { document.addEventListener('DOMContentLoaded', boot); }
+
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.detail && e.detail.sectionId === SECTION_ID) {
+        initFelispace(document.getElementById('wld-felispace-' + SECTION_ID));
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "WLD — Felispace Landing",
+  "tag": "section",
+  "class": "wld-felispace-section",
+  "enabled_on": { "templates": ["page", "index", "product"] },
+  "settings": [
+    { "type": "product", "id": "product", "label": "🛒 Produit (la grotte Felispace)" },
+
+    { "type": "header", "content": "🎨 Palette (calée sur Cattasaurus)" },
+    { "type": "color", "id": "color_primary", "label": "Vert principal (boutons)", "default": "#1d3c2d" },
+    { "type": "color", "id": "color_accent", "label": "Sage (sections vertes)", "default": "#d7ebc4" },
+    { "type": "color", "id": "color_accent2", "label": "Sélection (vert clair)", "default": "#e8f3da" },
+    { "type": "color", "id": "color_heading", "label": "Titres de section", "default": "#243a2c" },
+    { "type": "color", "id": "color_olive", "label": "Titre produit (olive)", "default": "#6f5f2b" },
+    { "type": "color", "id": "color_cream", "label": "Crème (bandes claires)", "default": "#f3efe4" },
+    { "type": "color", "id": "color_dark", "label": "Sections sombres", "default": "#141414" },
+    { "type": "color", "id": "color_add", "label": "Bouton « Add + »", "default": "#2e7d4f" },
+
+    { "type": "header", "content": "🦸 Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Image produit" },
+    { "type": "text", "id": "product_title", "label": "Titre produit", "default": "Felispace™ La Grotte" },
+    { "type": "text", "id": "rating_score", "label": "Note", "default": "5.0" },
+    { "type": "text", "id": "rating_label", "label": "Mention", "default": "Excellent" },
+    { "type": "text", "id": "rating_count", "label": "Nombre d'avis", "default": "4 287 avis" },
+    { "type": "text", "id": "bullet_1", "label": "Bullet 1", "default": "Fini les paniers tristes et sans charme" },
+    { "type": "text", "id": "bullet_2", "label": "Bullet 2", "default": "Fini le stress et l'anxiété de votre chat" },
+    { "type": "text", "id": "bullet_3", "label": "Bullet 3", "default": "Fini les cartons qui traînent dans le salon" },
+
+    { "type": "header", "content": "🎛️ Sélecteurs" },
+    { "type": "text", "id": "style_label", "label": "Label Style", "default": "Style de grotte" },
+    { "type": "text", "id": "size_chart_label", "label": "Lien guide des tailles", "default": "📏 Guide des tailles" },
+    { "type": "text", "id": "style_1", "label": "Style 1", "default": "Peekaboo" },
+    { "type": "text", "id": "style_2", "label": "Style 2", "default": "Cocon Calmant" },
+    { "type": "text", "id": "size_label", "label": "Label Taille", "default": "Taille" },
+    { "type": "text", "id": "size_1", "label": "Taille 1", "default": "Large 60 cm" },
+    { "type": "text", "id": "size_2", "label": "Taille 2", "default": "Jumbo 70 cm" },
+    { "type": "text", "id": "bundle_label", "label": "Label Bundle", "default": "Choisis ton offre" },
+    { "type": "text", "id": "bundle_1_title", "label": "Bundle 1 titre", "default": "Achète 2 = 1 offert" },
+    { "type": "text", "id": "bundle_1_price", "label": "Bundle 1 prix", "default": "89€ — le plus populaire" },
+    { "type": "text", "id": "bundle_2_title", "label": "Bundle 2 titre", "default": "Achète 1 = 1 offert" },
+    { "type": "text", "id": "bundle_2_price", "label": "Bundle 2 prix", "default": "59€" },
+    { "type": "text", "id": "color_label", "label": "Label Couleur", "default": "Choisis ta couleur" },
+    { "type": "text", "id": "color_add_label", "label": "Texte bouton couleur", "default": "Add +" },
+    { "type": "text", "id": "color_name_1", "label": "Couleur 1 nom", "default": "Gris Brume" },
+    { "type": "image_picker", "id": "color_img_1", "label": "Couleur 1 visuel" },
+    { "type": "text", "id": "color_name_2", "label": "Couleur 2 nom", "default": "Bleu Ciel" },
+    { "type": "image_picker", "id": "color_img_2", "label": "Couleur 2 visuel" },
+    { "type": "text", "id": "color_name_3", "label": "Couleur 3 nom", "default": "Gris Anthracite" },
+    { "type": "image_picker", "id": "color_img_3", "label": "Couleur 3 visuel" },
+    { "type": "text", "id": "color_name_4", "label": "Couleur 4 nom", "default": "Beige Sable" },
+    { "type": "image_picker", "id": "color_img_4", "label": "Couleur 4 visuel" },
+    { "type": "text", "id": "color_name_5", "label": "Couleur 5 nom", "default": "Noir Void" },
+    { "type": "image_picker", "id": "color_img_5", "label": "Couleur 5 visuel" },
+    { "type": "text", "id": "cta_text", "label": "Texte bouton", "default": "Ajouter au panier" },
+    { "type": "text", "id": "badge_1", "label": "Badge 1", "default": "🔒 Paiement sécurisé" },
+    { "type": "text", "id": "badge_2", "label": "Badge 2", "default": "🚚 Livraison offerte" },
+    { "type": "text", "id": "badge_3", "label": "Badge 3", "default": "↩️ Retour 90 jours" },
+    { "type": "text", "id": "hero_guarantee", "label": "Ligne garantie", "default": "Garantie satisfaction 90 jours — satisfait ou remboursé" },
+    { "type": "text", "id": "shop_now_text", "label": "Texte « Shop Now »", "default": "Je commande" },
+
+    { "type": "header", "content": "🎥 Section vidéos (ajoute des blocs Vidéo)" },
+    { "type": "text", "id": "social_title", "label": "Titre", "default": "ON A CASSÉ INTERNET" },
+    { "type": "text", "id": "social_sub", "label": "Sous-titre", "default": "Écoutez ce que les humains de chats en disent" },
+    { "type": "text", "id": "trust_1", "label": "Trust 1", "default": "Livraison gratuite" },
+    { "type": "text", "id": "trust_2", "label": "Trust 2", "default": "Satisfait sous 90 jours" },
+    { "type": "text", "id": "trust_3", "label": "Trust 3", "default": "Paiement sécurisé SSL" },
+    { "type": "text", "id": "trust_4", "label": "Trust 4", "default": "+100 000 chats conquis" },
+
+    { "type": "header", "content": "💚 Pourquoi Felispace" },
+    { "type": "text", "id": "why_title", "label": "Titre", "default": "Pourquoi choisir Felispace ?" },
+    { "type": "image_picker", "id": "why_image", "label": "Image (chat dans la grotte)" },
+    { "type": "text", "id": "why_1_title", "label": "Atout 1 titre", "default": "Résistant aux griffes" },
+    { "type": "textarea", "id": "why_1_text", "label": "Atout 1 texte", "default": "Feutre haute densité conçu pour résister aux griffades les plus enthousiastes, saison après saison." },
+    { "type": "text", "id": "why_2_title", "label": "Atout 2 titre", "default": "Feutre premium" },
+    { "type": "textarea", "id": "why_2_text", "label": "Atout 2 texte", "default": "Matière naturelle, douce et chaude, sans produits chimiques agressifs pour la peau de votre chat." },
+    { "type": "text", "id": "why_3_title", "label": "Atout 3 titre", "default": "Structure stable" },
+    { "type": "textarea", "id": "why_3_text", "label": "Atout 3 texte", "default": "Tunnel renforcé qui ne s'effondre pas : votre chat saute, gratte et se cache en toute sécurité." },
+    { "type": "text", "id": "why_4_title", "label": "Atout 4 titre", "default": "Facile à nettoyer" },
+    { "type": "textarea", "id": "why_4_text", "label": "Atout 4 texte", "default": "Un coup d'aspirateur suffit. Le feutre reste beau et propre, lavage à la main possible." },
+
+    { "type": "header", "content": "⭐ Avis (titre)" },
+    { "type": "text", "id": "reviews_title", "label": "Titre", "default": "Les chats adorent Felispace" },
+
+    { "type": "header", "content": "🏆 Bénéfices" },
+    { "type": "text", "id": "benefits_title", "label": "Titre", "default": "Les bienfaits de Felispace" },
+    { "type": "text", "id": "benefit_1_title", "label": "Bénéfice 1 titre", "default": "Meilleur sommeil" },
+    { "type": "textarea", "id": "benefit_1_text", "label": "Bénéfice 1 texte", "default": "Un cocon sombre et enveloppant qui rassure votre chat et favorise ses longues siestes." },
+    { "type": "text", "id": "benefit_2_title", "label": "Bénéfice 2 titre", "default": "Jouet à gratter" },
+    { "type": "textarea", "id": "benefit_2_text", "label": "Bénéfice 2 texte", "default": "Le feutre épais remplace le griffoir : votre chat fait ses griffes sans abîmer votre canapé." },
+    { "type": "text", "id": "benefit_3_title", "label": "Bénéfice 3 titre", "default": "Matière ultra-douce" },
+    { "type": "textarea", "id": "benefit_3_text", "label": "Bénéfice 3 texte", "default": "Doux comme du velours, agréable au toucher, parfait pour les chats les plus exigeants." },
+
+    { "type": "header", "content": "⚔️ Comparatif" },
+    { "type": "text", "id": "compare_title", "label": "Titre", "default": "Nous vs. les autres" },
+    { "type": "text", "id": "compare_tab_1", "label": "Onglet 1", "default": "Grottes en laine" },
+    { "type": "text", "id": "compare_tab_2", "label": "Onglet 2", "default": "Tunnels" },
+    { "type": "text", "id": "compare_tab_3", "label": "Onglet 3", "default": "Autres paniers" },
+    { "type": "text", "id": "compare_ours", "label": "Colonne nous", "default": "Felispace" },
+    { "type": "textarea", "id": "compare_rows", "label": "Lignes (une par ligne)", "default": "Ne s'effondre jamais\nGriffoir efficace\nConçu pour plusieurs chats\nTunnel super résistant\nFacile à nettoyer" },
+
+    { "type": "header", "content": "🛒 Buy box secondaire" },
+    { "type": "text", "id": "buybox_title", "label": "Titre", "default": "Offre votre grotte Felispace aujourd'hui" },
+
+    { "type": "header", "content": "❓ FAQ (titre)" },
+    { "type": "text", "id": "faq_title", "label": "Titre", "default": "Questions fréquentes" },
+
+    { "type": "header", "content": "🛡️ Bandeau garantie" },
+    { "type": "image_picker", "id": "promise_image", "label": "Image de fond" },
+    { "type": "text", "id": "promise_title", "label": "Titre", "default": "Votre chat l'adore ou c'est gratuit !" },
+    { "type": "text", "id": "promise_1", "label": "Promesse 1", "default": "Livraison offerte" },
+    { "type": "text", "id": "promise_2", "label": "Promesse 2", "default": "Remboursé sous 14 jours" },
+    { "type": "text", "id": "promise_3", "label": "Promesse 3", "default": "Garantie usure 90 jours" }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "🎥 Vidéo témoignage",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Vidéo (mp4 Shopify)" },
+        { "type": "image_picker", "id": "poster", "label": "Image de secours" },
+        { "type": "text", "id": "caption", "label": "Légende", "default": "@client_felin" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "❓ Question FAQ",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Question ?" },
+        { "type": "textarea", "id": "answer", "label": "Réponse", "default": "Réponse." }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "⭐ Avis client",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "range", "id": "rating", "label": "Note", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Un coup de cœur !" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Mon chat ne quitte plus sa grotte Felispace." },
+        { "type": "text", "id": "author", "label": "Auteur", "default": "Client vérifié" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WLD — Felispace Landing",
+      "blocks": [
+        { "type": "video", "settings": { "caption": "@minette_paris" } },
+        { "type": "video", "settings": { "caption": "@leo_lechat" } },
+        { "type": "video", "settings": { "caption": "@chatons_cocon" } },
+        { "type": "review", "settings": { "rating": 5, "title": "LES CHATS L'ADORENT !!!", "text": "Produit fantastique, super bien fait et grande, ma chatte l'adore. Livraison rapide.", "author": "Julie D. — Cliente vérifiée" } },
+        { "type": "review", "settings": { "rating": 5, "title": "L'expérience parfaite", "text": "J'ai déballé la grotte et mon chat s'est blotti dedans tout de suite.", "author": "Lucille H. — Cliente vérifiée" } },
+        { "type": "review", "settings": { "rating": 5, "title": "PARFAIT POUR CHAT DIFFICILE", "text": "Mon chat adore s'y prélasser au soleil et se cacher dedans le soir. Au top.", "author": "Miguel S. — Client vérifié" } },
+        { "type": "review", "settings": { "rating": 5, "title": "Enfin tranquille", "text": "Fini les griffures sur le canapé. Elle fait ses griffes uniquement sur la grotte.", "author": "Sophie L. — Cliente vérifiée" } },
+        { "type": "review", "settings": { "rating": 5, "title": "Mes deux chats partagent", "text": "Assez grande pour mes deux chats, ils dorment dedans ensemble. Feutre impressionnant.", "author": "Karim B. — Client vérifié" } },
+        { "type": "review", "settings": { "rating": 5, "title": "Cadeau idéal", "text": "Offerte à ma sœur pour son chaton, succès immédiat. J'en reprends une.", "author": "Émilie R. — Cliente vérifiée" } },
+        { "type": "faq", "settings": { "question": "La grotte Felispace convient-elle à tous les chats ?", "answer": "Oui ! La taille Large convient aux chats jusqu'à 7 kg et la Jumbo aux grands chats ou foyers multi-chats." } },
+        { "type": "faq", "settings": { "question": "De quoi est faite la grotte ?", "answer": "D'un feutre de laine haute densité, naturel, doux et résistant aux griffes, sans produit nocif." } },
+        { "type": "faq", "settings": { "question": "Comment la nettoyer ?", "answer": "Un coup d'aspirateur au quotidien. Pour les taches, lavage à la main à l'eau froide, séchage à plat." } },
+        { "type": "faq", "settings": { "question": "Mon chat va-t-il vraiment l'utiliser ?", "answer": "La forme tunnel répond à l'instinct de cachette du chat. Glissez-y son plaid habituel pour l'adoption." } },
+        { "type": "faq", "settings": { "question": "Sert-elle aussi de griffoir ?", "answer": "Absolument. Le feutre épais est parfait pour faire les griffes et protège vos meubles." } },
+        { "type": "faq", "settings": { "question": "Quels sont les délais de livraison ?", "answer": "Livraison gratuite en 3 à 7 jours ouvrés, avec email de suivi dès l'expédition." } },
+        { "type": "faq", "settings": { "question": "Quelle est votre garantie ?", "answer": "Satisfait ou remboursé 90 jours + garantie usure 90 jours." } },
+        { "type": "faq", "settings": { "question": "Puis-je retourner le produit ?", "answer": "Oui, retours acceptés sous 14 jours, sans question." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

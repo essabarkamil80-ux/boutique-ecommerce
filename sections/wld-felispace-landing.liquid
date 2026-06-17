@@ -29,94 +29,139 @@
     </div>
 
     <div class="wld-felispace-hero__info">
-      <div class="wld-felispace-rating">
+      <div class="wld-felispace-microproof">
         <span class="wld-felispace-stars">★★★★★</span>
-        <strong>{{ section.settings.rating_score }}</strong>
-        <span>{{ section.settings.rating_label }}</span>
-        <span class="wld-felispace-rating__count">{{ section.settings.rating_count }}</span>
+        <strong>{{ section.settings.rating_score }}/5</strong>
+        <span class="wld-felispace-microproof__sep">·</span>
+        <span>{{ section.settings.rating_count }}</span>
+        <span class="wld-felispace-microproof__sep">·</span>
+        <span class="wld-felispace-microproof__cust">{{ section.settings.micro_customers }}</span>
       </div>
 
       <h1 class="wld-felispace-hero__title">{{ section.settings.product_title }}</h1>
 
+      {%- if section.settings.benefit_intro != blank -%}
+        <p class="wld-felispace-hero__intro">{{ section.settings.benefit_intro }}</p>
+      {%- endif -%}
+
       <ul class="wld-felispace-bullets">
-        <li>{{ section.settings.bullet_1 }}</li>
-        <li>{{ section.settings.bullet_2 }}</li>
-        <li>{{ section.settings.bullet_3 }}</li>
+        {%- if section.settings.bullet_1 != blank -%}<li>{{ section.settings.bullet_1 }}</li>{%- endif -%}
+        {%- if section.settings.bullet_2 != blank -%}<li>{{ section.settings.bullet_2 }}</li>{%- endif -%}
+        {%- if section.settings.bullet_3 != blank -%}<li>{{ section.settings.bullet_3 }}</li>{%- endif -%}
+        {%- if section.settings.bullet_4 != blank -%}<li>{{ section.settings.bullet_4 }}</li>{%- endif -%}
+        {%- if section.settings.bullet_5 != blank -%}<li>{{ section.settings.bullet_5 }}</li>{%- endif -%}
       </ul>
 
       {%- if wld_product != blank -%}
       <form method="post" action="/cart/add" class="wld-felispace-buyform wld-felispace-card" data-buyform>
         <input type="hidden" name="id" value="{{ wld_v1.id }}" data-variant-input>
+        <input type="hidden" name="quantity" value="2" data-qty-input>
 
-        <div class="wld-felispace-field">
-          <div class="wld-felispace-field__head">
-            <label class="wld-felispace-field__label">{{ section.settings.style_label }}</label>
-            <span class="wld-felispace-sizechart">{{ section.settings.size_chart_label }}</span>
-          </div>
-          <div class="wld-felispace-options" data-group="style">
-            <button type="button" class="wld-felispace-pill is-active" data-opt>{{ section.settings.style_1 }}</button>
-            <button type="button" class="wld-felispace-pill" data-opt>{{ section.settings.style_2 }}</button>
-          </div>
+        {%- if section.settings.urgency_stock != blank or section.settings.urgency_demand != blank -%}
+        <div class="wld-felispace-urgency">
+          {%- if section.settings.urgency_stock != blank -%}<span class="wld-felispace-urgency__item">⚡ {{ section.settings.urgency_stock }}</span>{%- endif -%}
+          {%- if section.settings.urgency_demand != blank -%}<span class="wld-felispace-urgency__item wld-felispace-urgency__hot">🔥 {{ section.settings.urgency_demand }}</span>{%- endif -%}
         </div>
+        {%- endif -%}
 
         <div class="wld-felispace-field">
-          <label class="wld-felispace-field__label">{{ section.settings.size_label }}</label>
-          <div class="wld-felispace-options" data-group="size">
-            <button type="button" class="wld-felispace-pill is-active" data-opt>{{ section.settings.size_1 }}</button>
-            <button type="button" class="wld-felispace-pill" data-opt>{{ section.settings.size_2 }}</button>
+          <label class="wld-felispace-field__label">{{ section.settings.color_label }}: <span class="wld-felispace-color-selected" data-color-selected>{{ wld_v1.title }}</span></label>
+          <div class="wld-felispace-swatches" data-color-group>
+            {%- if wld_product.variants.size > 1 -%}
+              {%- for v in wld_product.variants -%}
+                {%- assign cn = v.title | downcase -%}
+                {%- assign cdot = '#cccccc' -%}
+                {%- if cn contains 'black' or cn contains 'void' or cn contains 'noir' -%}{%- assign cdot = '#1a1a1a' -%}
+                {%- elsif cn contains 'charcoal' or cn contains 'grey' or cn contains 'gray' or cn contains 'gris' -%}{%- assign cdot = '#8a8a8a' -%}
+                {%- elsif cn contains 'pink' or cn contains 'rose' -%}{%- assign cdot = '#e89ab0' -%}
+                {%- elsif cn contains 'blue' or cn contains 'bleu' or cn contains 'sky' -%}{%- assign cdot = '#7fb0d6' -%}
+                {%- elsif cn contains 'white' or cn contains 'snow' or cn contains 'blanc' -%}{%- assign cdot = '#eeeeee' -%}
+                {%- elsif cn contains 'beige' or cn contains 'sand' -%}{%- assign cdot = '#d8c4a0' -%}
+                {%- elsif cn contains 'green' or cn contains 'sage' -%}{%- assign cdot = '#9cbf8f' -%}
+                {%- elsif cn contains 'ginger' or cn contains 'orange' -%}{%- assign cdot = '#d98a4a' -%}
+                {%- endif -%}
+                <button type="button" class="wld-felispace-swatch{% if forloop.first %} is-active{% endif %}" data-color data-variant-id="{{ v.id }}" data-color-name="{{ v.title | escape }}" aria-label="{{ v.title | escape }}" title="{{ v.title | escape }}">
+                  {%- if v.image -%}
+                    <img src="{{ v.image | image_url: width: 80 }}" alt="{{ v.title | escape }}" width="40" height="40" loading="lazy">
+                  {%- else -%}
+                    <span class="wld-felispace-swatch__dot" style="background: {{ cdot }};"></span>
+                  {%- endif -%}
+                </button>
+              {%- endfor -%}
+            {%- else -%}
+              {%- for i in (1..5) -%}
+                {%- assign cname = 'color_name_' | append: i -%}
+                {%- assign cn0 = section.settings[cname] -%}
+                {%- if cn0 != blank -%}
+                  {%- assign cn = cn0 | downcase -%}
+                  {%- assign cdot = '#cccccc' -%}
+                  {%- if cn contains 'black' or cn contains 'void' or cn contains 'noir' -%}{%- assign cdot = '#1a1a1a' -%}
+                  {%- elsif cn contains 'charcoal' or cn contains 'grey' or cn contains 'gray' or cn contains 'gris' -%}{%- assign cdot = '#8a8a8a' -%}
+                  {%- elsif cn contains 'pink' or cn contains 'rose' -%}{%- assign cdot = '#e89ab0' -%}
+                  {%- elsif cn contains 'blue' or cn contains 'bleu' or cn contains 'sky' -%}{%- assign cdot = '#7fb0d6' -%}
+                  {%- endif -%}
+                  <button type="button" class="wld-felispace-swatch{% if forloop.first %} is-active{% endif %}" data-color data-variant-id="{{ wld_v1.id }}" data-color-name="{{ cn0 | escape }}" title="{{ cn0 | escape }}">
+                    <span class="wld-felispace-swatch__dot" style="background: {{ cdot }};"></span>
+                  </button>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
           </div>
         </div>
 
         <div class="wld-felispace-field">
           <label class="wld-felispace-field__label">{{ section.settings.bundle_label }}</label>
-          <div class="wld-felispace-bundles" data-bundle-group>
-            <button type="button" class="wld-felispace-bundle is-active" data-bundle data-variant-id="{{ wld_v1.id }}">
-              <span class="wld-felispace-bundle__radio"></span>
-              <span class="wld-felispace-bundle__txt">
-                <span class="wld-felispace-bundle__title">{{ section.settings.bundle_1_title }}</span>
-                <span class="wld-felispace-bundle__price">{{ section.settings.bundle_1_price }}</span>
+          <div class="wld-felispace-tiers" data-tier-group>
+            <button type="button" class="wld-felispace-tier" data-tier data-qty="1">
+              <span class="wld-felispace-tier__radio"></span>
+              <span class="wld-felispace-tier__main">
+                <span class="wld-felispace-tier__title">{{ section.settings.tier1_title }}</span>
+                {%- if section.settings.tier1_note != blank -%}<span class="wld-felispace-tier__note">{{ section.settings.tier1_note }}</span>{%- endif -%}
+              </span>
+              <span class="wld-felispace-tier__pricing">
+                <span class="wld-felispace-tier__price">{{ section.settings.tier1_price }}</span>
               </span>
             </button>
-            <button type="button" class="wld-felispace-bundle" data-bundle data-variant-id="{% if wld_v2 %}{{ wld_v2.id }}{% else %}{{ wld_v1.id }}{% endif %}">
-              <span class="wld-felispace-bundle__radio"></span>
-              <span class="wld-felispace-bundle__txt">
-                <span class="wld-felispace-bundle__title">{{ section.settings.bundle_2_title }}</span>
-                <span class="wld-felispace-bundle__price">{{ section.settings.bundle_2_price }}</span>
+
+            <button type="button" class="wld-felispace-tier is-active" data-tier data-qty="2">
+              {%- if section.settings.tier2_badge != blank -%}<span class="wld-felispace-tier__badge">{{ section.settings.tier2_badge }}</span>{%- endif -%}
+              <span class="wld-felispace-tier__radio"></span>
+              <span class="wld-felispace-tier__main">
+                <span class="wld-felispace-tier__title">{{ section.settings.tier2_title }}</span>
+                {%- if section.settings.tier2_save != blank -%}<span class="wld-felispace-tier__save">{{ section.settings.tier2_save }}</span>{%- endif -%}
+              </span>
+              <span class="wld-felispace-tier__pricing">
+                <span class="wld-felispace-tier__price">{{ section.settings.tier2_price }}</span>
+                {%- if section.settings.tier2_compare != blank -%}<span class="wld-felispace-tier__compare">{{ section.settings.tier2_compare }}</span>{%- endif -%}
+              </span>
+            </button>
+
+            <button type="button" class="wld-felispace-tier" data-tier data-qty="3">
+              {%- if section.settings.tier3_badge != blank -%}<span class="wld-felispace-tier__badge wld-felispace-tier__badge--gold">{{ section.settings.tier3_badge }}</span>{%- endif -%}
+              <span class="wld-felispace-tier__radio"></span>
+              <span class="wld-felispace-tier__main">
+                <span class="wld-felispace-tier__title">{{ section.settings.tier3_title }}</span>
+                {%- if section.settings.tier3_save != blank -%}<span class="wld-felispace-tier__save">{{ section.settings.tier3_save }}</span>{%- endif -%}
+              </span>
+              <span class="wld-felispace-tier__pricing">
+                <span class="wld-felispace-tier__price">{{ section.settings.tier3_price }}</span>
+                {%- if section.settings.tier3_compare != blank -%}<span class="wld-felispace-tier__compare">{{ section.settings.tier3_compare }}</span>{%- endif -%}
               </span>
             </button>
           </div>
         </div>
 
-        <div class="wld-felispace-field">
-          <label class="wld-felispace-field__label">{{ section.settings.color_label }}</label>
-          <div class="wld-felispace-colors" data-group="color">
-            {%- for i in (1..5) -%}
-              {%- assign cname = 'color_name_' | append: i -%}
-              {%- assign cimg = 'color_img_' | append: i -%}
-              {%- assign cn = section.settings[cname] -%}
-              {%- if cn != blank -%}
-                <button type="button" class="wld-felispace-color{% if forloop.first %} is-active{% endif %}" data-opt>
-                  <span class="wld-felispace-color__swatch">
-                    {%- if section.settings[cimg] != blank -%}
-                      <img src="{{ section.settings[cimg] | image_url: width: 80 }}" alt="{{ cn | escape }}" width="40" height="40" loading="lazy">
-                    {%- endif -%}
-                  </span>
-                  <span class="wld-felispace-color__name">{{ cn }}</span>
-                  <span class="wld-felispace-color__add">{{ section.settings.color_add_label }}</span>
-                </button>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        </div>
+        <button type="button" class="wld-felispace-cta wld-felispace-cta--buynow" data-buynow>{{ section.settings.buy_now_text }}</button>
+        <button type="submit" class="wld-felispace-cta wld-felispace-cta--secondary" data-addcart>{{ section.settings.cta_text }}</button>
 
-        <button type="submit" class="wld-felispace-cta">{{ section.settings.cta_text }}</button>
+        <p class="wld-felispace-moneyback">🛡️ {{ section.settings.moneyback_text }}</p>
 
-        <div class="wld-felispace-badges">
-          <span>{{ section.settings.badge_1 }}</span>
-          <span>{{ section.settings.badge_2 }}</span>
-          <span>{{ section.settings.badge_3 }}</span>
+        <div class="wld-felispace-trust4">
+          {%- if section.settings.badge_1 != blank -%}<div class="wld-felispace-trust4__item">{{ section.settings.badge_1 }}</div>{%- endif -%}
+          {%- if section.settings.badge_2 != blank -%}<div class="wld-felispace-trust4__item">{{ section.settings.badge_2 }}</div>{%- endif -%}
+          {%- if section.settings.badge_3 != blank -%}<div class="wld-felispace-trust4__item">{{ section.settings.badge_3 }}</div>{%- endif -%}
+          {%- if section.settings.badge_4 != blank -%}<div class="wld-felispace-trust4__item">{{ section.settings.badge_4 }}</div>{%- endif -%}
         </div>
-        <p class="wld-felispace-guarantee-line">🛡️ {{ section.settings.hero_guarantee }}</p>
       </form>
       {%- else -%}
         <button type="button" class="wld-felispace-cta is-disabled" disabled>{{ section.settings.cta_text }}</button>
@@ -248,23 +293,44 @@
     <h2 class="wld-felispace-h2">{{ section.settings.buybox_title }}</h2>
     <form method="post" action="/cart/add" class="wld-felispace-buybox wld-felispace-card" data-buyform>
       <input type="hidden" name="id" value="{{ wld_v1.id }}" data-variant-input>
-      <div class="wld-felispace-bundles wld-felispace-bundles--wide" data-bundle-group>
-        <button type="button" class="wld-felispace-bundle is-active" data-bundle data-variant-id="{{ wld_v1.id }}">
-          <span class="wld-felispace-bundle__radio"></span>
-          <span class="wld-felispace-bundle__txt">
-            <span class="wld-felispace-bundle__title">{{ section.settings.bundle_1_title }}</span>
-            <span class="wld-felispace-bundle__price">{{ section.settings.bundle_1_price }}</span>
+      <input type="hidden" name="quantity" value="2" data-qty-input>
+      <div class="wld-felispace-tiers" data-tier-group>
+        <button type="button" class="wld-felispace-tier" data-tier data-qty="1">
+          <span class="wld-felispace-tier__radio"></span>
+          <span class="wld-felispace-tier__main">
+            <span class="wld-felispace-tier__title">{{ section.settings.tier1_title }}</span>
+            {%- if section.settings.tier1_note != blank -%}<span class="wld-felispace-tier__note">{{ section.settings.tier1_note }}</span>{%- endif -%}
+          </span>
+          <span class="wld-felispace-tier__pricing"><span class="wld-felispace-tier__price">{{ section.settings.tier1_price }}</span></span>
+        </button>
+        <button type="button" class="wld-felispace-tier is-active" data-tier data-qty="2">
+          {%- if section.settings.tier2_badge != blank -%}<span class="wld-felispace-tier__badge">{{ section.settings.tier2_badge }}</span>{%- endif -%}
+          <span class="wld-felispace-tier__radio"></span>
+          <span class="wld-felispace-tier__main">
+            <span class="wld-felispace-tier__title">{{ section.settings.tier2_title }}</span>
+            {%- if section.settings.tier2_save != blank -%}<span class="wld-felispace-tier__save">{{ section.settings.tier2_save }}</span>{%- endif -%}
+          </span>
+          <span class="wld-felispace-tier__pricing">
+            <span class="wld-felispace-tier__price">{{ section.settings.tier2_price }}</span>
+            {%- if section.settings.tier2_compare != blank -%}<span class="wld-felispace-tier__compare">{{ section.settings.tier2_compare }}</span>{%- endif -%}
           </span>
         </button>
-        <button type="button" class="wld-felispace-bundle" data-bundle data-variant-id="{% if wld_v2 %}{{ wld_v2.id }}{% else %}{{ wld_v1.id }}{% endif %}">
-          <span class="wld-felispace-bundle__radio"></span>
-          <span class="wld-felispace-bundle__txt">
-            <span class="wld-felispace-bundle__title">{{ section.settings.bundle_2_title }}</span>
-            <span class="wld-felispace-bundle__price">{{ section.settings.bundle_2_price }}</span>
+        <button type="button" class="wld-felispace-tier" data-tier data-qty="3">
+          {%- if section.settings.tier3_badge != blank -%}<span class="wld-felispace-tier__badge wld-felispace-tier__badge--gold">{{ section.settings.tier3_badge }}</span>{%- endif -%}
+          <span class="wld-felispace-tier__radio"></span>
+          <span class="wld-felispace-tier__main">
+            <span class="wld-felispace-tier__title">{{ section.settings.tier3_title }}</span>
+            {%- if section.settings.tier3_save != blank -%}<span class="wld-felispace-tier__save">{{ section.settings.tier3_save }}</span>{%- endif -%}
+          </span>
+          <span class="wld-felispace-tier__pricing">
+            <span class="wld-felispace-tier__price">{{ section.settings.tier3_price }}</span>
+            {%- if section.settings.tier3_compare != blank -%}<span class="wld-felispace-tier__compare">{{ section.settings.tier3_compare }}</span>{%- endif -%}
           </span>
         </button>
       </div>
-      <button type="submit" class="wld-felispace-cta">{{ section.settings.cta_text }}</button>
+      <button type="button" class="wld-felispace-cta wld-felispace-cta--buynow" data-buynow>{{ section.settings.buy_now_text }}</button>
+      <button type="submit" class="wld-felispace-cta wld-felispace-cta--secondary" data-addcart>{{ section.settings.cta_text }}</button>
+      <p class="wld-felispace-moneyback">🛡️ {{ section.settings.moneyback_text }}</p>
     </form>
   </div>
   {%- endif -%}
@@ -354,6 +420,47 @@
   #wld-felispace-{{ section.id }} .wld-felispace-cta--inline { max-width: 260px; margin: 28px auto 0; }
   #wld-felispace-{{ section.id }} .wld-felispace-badges { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 12px; color: #555; }
   #wld-felispace-{{ section.id }} .wld-felispace-guarantee-line { text-align: center; font-size: 13px; color: #555; margin: 10px 0 0; }
+
+  /* CRO BUY BOX */
+  #wld-felispace-{{ section.id }} .wld-felispace-microproof { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: #444; margin-bottom: 12px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-microproof strong { color: #111; }
+  #wld-felispace-{{ section.id }} .wld-felispace-microproof__sep { color: #c4c4c4; }
+  #wld-felispace-{{ section.id }} .wld-felispace-microproof__cust { font-weight: 600; }
+  #wld-felispace-{{ section.id }} .wld-felispace-hero__intro { font-size: 15px; color: #444; margin: 0 0 14px; }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-urgency { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-urgency__item { font-size: 12.5px; font-weight: 700; color: #8a5a00; background: #fff4d6; border: 1px solid #f0d98a; padding: 6px 11px; border-radius: 8px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-urgency__hot { color: #b23b2e; background: #ffe9e4; border-color: #f3b6ab; }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+  #wld-felispace-{{ section.id }} .wld-felispace-swatch { width: 46px; height: 46px; border-radius: 50%; border: 2px solid #e0e0e0; background: #fff; padding: 3px; cursor: pointer; overflow: hidden; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-swatch img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  #wld-felispace-{{ section.id }} .wld-felispace-swatch__dot { display: block; width: 100%; height: 100%; border-radius: 50%; border: 1px solid rgba(0,0,0,.08); }
+  #wld-felispace-{{ section.id }} .wld-felispace-swatch.is-active { border-color: var(--wld-primary); box-shadow: 0 0 0 2px var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-color-selected { font-weight: 700; }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-tiers { display: flex; flex-direction: column; gap: 11px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier { position: relative; display: flex; align-items: center; gap: 12px; padding: 16px; border: 2px solid #e2e2e2; border-radius: 14px; background: #fff; cursor: pointer; text-align: left; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier.is-active { border-color: var(--wld-primary); background: var(--wld-accent2); }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier__radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #c2c2c2; flex-shrink: 0; position: relative; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier.is-active .wld-felispace-tier__radio { border-color: var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier.is-active .wld-felispace-tier__radio::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier__main { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier__title { font-weight: 800; font-size: 15px; color: #1a1a1a; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier__note { font-size: 12px; color: #777; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier__save { font-size: 12px; font-weight: 700; color: var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier__pricing { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier__price { font-weight: 800; font-size: 18px; color: #111; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier__compare { font-size: 12px; color: #999; text-decoration: line-through; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier__badge { position: absolute; top: -10px; right: 14px; background: var(--wld-primary); color: #fff; font-size: 10.5px; font-weight: 800; letter-spacing: .5px; padding: 3px 10px; border-radius: 999px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tier__badge--gold { background: #c79a3a; }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-cta--buynow { font-size: 18px; padding: 18px 24px; margin-top: 18px; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+  #wld-felispace-{{ section.id }} .wld-felispace-cta--secondary { background: #fff; color: var(--wld-primary); border: 2px solid var(--wld-primary); margin-top: 10px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cta--secondary:hover { background: var(--wld-accent2); filter: none; }
+  #wld-felispace-{{ section.id }} .wld-felispace-moneyback { text-align: center; font-size: 13px; color: #555; margin: 12px 0 0; }
+  #wld-felispace-{{ section.id }} .wld-felispace-trust4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #ededed; }
+  #wld-felispace-{{ section.id }} .wld-felispace-trust4__item { font-size: 12.5px; font-weight: 600; color: #444; }
 
   /* BANDS */
   #wld-felispace-{{ section.id }} .wld-felispace-band { padding: 56px 20px; }
@@ -454,27 +561,71 @@
 
 <script>
   (function () {
+    function fxAddToCart(form, dest, btn) {
+      if (!form) return;
+      var idEl = form.querySelector('[data-variant-input]');
+      var qtyEl = form.querySelector('[data-qty-input]');
+      var id = idEl ? idEl.value : '';
+      var qty = qtyEl ? parseInt(qtyEl.value || '1', 10) : 1;
+      if (!id) { window.location = '/cart'; return; }
+      var original = btn ? btn.innerHTML : '';
+      if (btn) { btn.disabled = true; btn.innerHTML = 'Adding…'; }
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ items: [{ id: Number(id), quantity: qty }] })
+      }).then(function (r) {
+        if (!r.ok) { throw new Error('add failed'); }
+        return r.json();
+      }).then(function () {
+        window.location = dest;
+      }).catch(function () {
+        if (btn) { btn.disabled = false; btn.innerHTML = original; }
+        form.submit();
+      });
+    }
+
     function initFelispace(root) {
       if (!root) return;
 
-      root.querySelectorAll('[data-group]').forEach(function (group) {
-        group.querySelectorAll('[data-opt]').forEach(function (opt) {
-          opt.addEventListener('click', function () {
-            group.querySelectorAll('[data-opt]').forEach(function (o) { o.classList.remove('is-active'); });
-            opt.classList.add('is-active');
+      root.querySelectorAll('[data-color-group]').forEach(function (group) {
+        var form = group.closest('[data-buyform]');
+        var input = form ? form.querySelector('[data-variant-input]') : null;
+        var label = root.querySelector('[data-color-selected]');
+        group.querySelectorAll('[data-color]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            group.querySelectorAll('[data-color]').forEach(function (b) { b.classList.remove('is-active'); });
+            btn.classList.add('is-active');
+            if (input && btn.dataset.variantId) { input.value = btn.dataset.variantId; }
+            if (label && btn.dataset.colorName) { label.textContent = btn.dataset.colorName; }
           });
         });
       });
 
-      root.querySelectorAll('[data-bundle-group]').forEach(function (group) {
+      root.querySelectorAll('[data-tier-group]').forEach(function (group) {
         var form = group.closest('[data-buyform]');
-        var input = form ? form.querySelector('[data-variant-input]') : null;
-        group.querySelectorAll('[data-bundle]').forEach(function (btn) {
+        var qty = form ? form.querySelector('[data-qty-input]') : null;
+        group.querySelectorAll('[data-tier]').forEach(function (btn) {
           btn.addEventListener('click', function () {
-            group.querySelectorAll('[data-bundle]').forEach(function (b) { b.classList.remove('is-active'); });
+            group.querySelectorAll('[data-tier]').forEach(function (b) { b.classList.remove('is-active'); });
             btn.classList.add('is-active');
-            if (input && btn.dataset.variantId) { input.value = btn.dataset.variantId; }
+            if (qty && btn.dataset.qty) { qty.value = btn.dataset.qty; }
           });
+        });
+        var active = group.querySelector('[data-tier].is-active');
+        if (active && qty && active.dataset.qty) { qty.value = active.dataset.qty; }
+      });
+
+      root.querySelectorAll('[data-buynow]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          fxAddToCart(btn.closest('[data-buyform]'), '/checkout', btn);
+        });
+      });
+
+      root.querySelectorAll('[data-buyform]').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          fxAddToCart(form, '/cart', form.querySelector('[data-addcart]'));
         });
       });
 
@@ -534,45 +685,64 @@
 
     { "type": "header", "content": "🦸 Hero" },
     { "type": "image_picker", "id": "hero_image", "label": "Product image" },
-    { "type": "text", "id": "product_title", "label": "Product title", "default": "Felispace™ Cave" },
-    { "type": "text", "id": "rating_score", "label": "Rating", "default": "5.0" },
+    { "type": "text", "id": "product_title", "label": "Product title (benefit-led)", "default": "The Cosy Cat Cave That Saves Your Sofa & Calms Anxious Cats" },
+    { "type": "text", "id": "rating_score", "label": "Rating", "default": "4.9" },
     { "type": "text", "id": "rating_label", "label": "Label", "default": "Excellent" },
     { "type": "text", "id": "rating_count", "label": "Reviews count", "default": "4,287 reviews" },
-    { "type": "text", "id": "bullet_1", "label": "Bullet 1", "default": "No more dull, boring cat beds" },
-    { "type": "text", "id": "bullet_2", "label": "Bullet 2", "default": "No more stress and anxiety for your cat" },
-    { "type": "text", "id": "bullet_3", "label": "Bullet 3", "default": "No more messy cardboard boxes lying around" },
+    { "type": "text", "id": "micro_customers", "label": "Customers line", "default": "Loved by 100,000+ cats" },
+    { "type": "textarea", "id": "benefit_intro", "label": "Short description", "default": "A warm, den-like hideaway your cat will adore — with a built-in scratcher that finally saves your furniture." },
+    { "type": "text", "id": "bullet_1", "label": "Bullet 1", "default": "🐾 Calms anxious & shy cats with a cosy hideaway" },
+    { "type": "text", "id": "bullet_2", "label": "Bullet 2", "default": "🛋️ Protects your sofa — doubles as a durable scratcher" },
+    { "type": "text", "id": "bullet_3", "label": "Bullet 3", "default": "🧶 Premium natural wool felt — soft and warm" },
+    { "type": "text", "id": "bullet_4", "label": "Bullet 4", "default": "💪 Sturdy tunnel that won't collapse" },
+    { "type": "text", "id": "bullet_5", "label": "Bullet 5", "default": "🧼 Easy to clean — just vacuum" },
 
-    { "type": "header", "content": "🎛️ Selectors" },
-    { "type": "text", "id": "style_label", "label": "Style label", "default": "Cave style" },
-    { "type": "text", "id": "size_chart_label", "label": "Size chart link", "default": "📏 Size chart" },
-    { "type": "text", "id": "style_1", "label": "Style 1", "default": "Peekaboo" },
-    { "type": "text", "id": "style_2", "label": "Style 2", "default": "Calming" },
-    { "type": "text", "id": "size_label", "label": "Size label", "default": "Size" },
-    { "type": "text", "id": "size_1", "label": "Size 1", "default": "Large 24\"" },
-    { "type": "text", "id": "size_2", "label": "Size 2", "default": "Jumbo 28\"" },
-    { "type": "text", "id": "bundle_label", "label": "Bundle label", "default": "Select your bundle" },
-    { "type": "text", "id": "bundle_1_title", "label": "Bundle 1 title", "default": "Buy 2 Get 1 Free" },
-    { "type": "text", "id": "bundle_1_price", "label": "Bundle 1 price", "default": "£89 — Most popular" },
-    { "type": "text", "id": "bundle_2_title", "label": "Bundle 2 title", "default": "Buy 1 Get 1 Free" },
-    { "type": "text", "id": "bundle_2_price", "label": "Bundle 2 price", "default": "£59" },
-    { "type": "text", "id": "color_label", "label": "Colour label", "default": "Select your colour" },
-    { "type": "text", "id": "color_add_label", "label": "Colour button text", "default": "Add +" },
-    { "type": "text", "id": "color_name_1", "label": "Colour 1 name", "default": "Misty Grey" },
+    { "type": "header", "content": "🎨 Buy box — colours" },
+    { "type": "text", "id": "color_label", "label": "Colour label", "default": "Colour" },
+    { "type": "paragraph", "content": "Swatches are generated automatically from the product variants. The fields below are only used as a fallback if the product has no variants yet." },
+    { "type": "text", "id": "color_name_1", "label": "Colour 1 (fallback)", "default": "Black" },
     { "type": "image_picker", "id": "color_img_1", "label": "Colour 1 image" },
-    { "type": "text", "id": "color_name_2", "label": "Colour 2 name", "default": "Sky Blue" },
+    { "type": "text", "id": "color_name_2", "label": "Colour 2 (fallback)", "default": "Grey" },
     { "type": "image_picker", "id": "color_img_2", "label": "Colour 2 image" },
-    { "type": "text", "id": "color_name_3", "label": "Colour 3 name", "default": "Charcoal Grey" },
+    { "type": "text", "id": "color_name_3", "label": "Colour 3 (fallback)", "default": "Pink" },
     { "type": "image_picker", "id": "color_img_3", "label": "Colour 3 image" },
-    { "type": "text", "id": "color_name_4", "label": "Colour 4 name", "default": "Sandy Beige" },
+    { "type": "text", "id": "color_name_4", "label": "Colour 4 (fallback)", "default": "Blue" },
     { "type": "image_picker", "id": "color_img_4", "label": "Colour 4 image" },
-    { "type": "text", "id": "color_name_5", "label": "Colour 5 name", "default": "Void Black" },
+    { "type": "text", "id": "color_name_5", "label": "Colour 5 (fallback)", "default": "" },
     { "type": "image_picker", "id": "color_img_5", "label": "Colour 5 image" },
-    { "type": "text", "id": "cta_text", "label": "Button text", "default": "Add to cart" },
-    { "type": "text", "id": "badge_1", "label": "Badge 1", "default": "🔒 Secure checkout" },
-    { "type": "text", "id": "badge_2", "label": "Badge 2", "default": "🚚 Free shipping" },
-    { "type": "text", "id": "badge_3", "label": "Badge 3", "default": "↩️ 90-day returns" },
-    { "type": "text", "id": "hero_guarantee", "label": "Guarantee line", "default": "90-day satisfaction guarantee — love it or your money back" },
-    { "type": "text", "id": "shop_now_text", "label": "Shop now text", "default": "Shop now" },
+
+    { "type": "header", "content": "⚡ Urgency" },
+    { "type": "text", "id": "urgency_stock", "label": "Stock line", "default": "Selling fast — limited stock" },
+    { "type": "text", "id": "urgency_demand", "label": "Demand line", "default": "High demand right now" },
+
+    { "type": "header", "content": "📦 Bundle (boost AOV)" },
+    { "type": "paragraph", "content": "The bundle adds the right QUANTITY to the cart. Create matching automatic discounts in Shopify → Discounts (e.g. 2nd at 50% off, 3rd free) so the savings apply at checkout." },
+    { "type": "text", "id": "bundle_label", "label": "Bundle label", "default": "Choose your bundle & save" },
+    { "type": "text", "id": "tier1_title", "label": "Tier 1 title", "default": "1 Cave" },
+    { "type": "text", "id": "tier1_note", "label": "Tier 1 note", "default": "Standard price" },
+    { "type": "text", "id": "tier1_price", "label": "Tier 1 price", "default": "£59" },
+    { "type": "text", "id": "tier2_title", "label": "Tier 2 title", "default": "2 Caves" },
+    { "type": "text", "id": "tier2_badge", "label": "Tier 2 badge", "default": "MOST POPULAR" },
+    { "type": "text", "id": "tier2_save", "label": "Tier 2 saving", "default": "2nd cave at 50% off — save £29" },
+    { "type": "text", "id": "tier2_price", "label": "Tier 2 price", "default": "£88" },
+    { "type": "text", "id": "tier2_compare", "label": "Tier 2 compare-at", "default": "£118" },
+    { "type": "text", "id": "tier3_title", "label": "Tier 3 title", "default": "3 Caves" },
+    { "type": "text", "id": "tier3_badge", "label": "Tier 3 badge", "default": "BEST VALUE" },
+    { "type": "text", "id": "tier3_save", "label": "Tier 3 saving", "default": "3rd cave FREE — save £59" },
+    { "type": "text", "id": "tier3_price", "label": "Tier 3 price", "default": "£118" },
+    { "type": "text", "id": "tier3_compare", "label": "Tier 3 compare-at", "default": "£177" },
+
+    { "type": "header", "content": "🟢 CTAs & guarantee" },
+    { "type": "text", "id": "buy_now_text", "label": "Primary button (Buy now)", "default": "BUY IT NOW — FREE SHIPPING" },
+    { "type": "text", "id": "cta_text", "label": "Secondary button", "default": "Add to cart" },
+    { "type": "text", "id": "moneyback_text", "label": "Money-back line", "default": "30-day money-back guarantee — love it or your money back" },
+
+    { "type": "header", "content": "✓ Trust badges" },
+    { "type": "text", "id": "badge_1", "label": "Badge 1", "default": "🚚 Free shipping" },
+    { "type": "text", "id": "badge_2", "label": "Badge 2", "default": "🔒 Secure payment" },
+    { "type": "text", "id": "badge_3", "label": "Badge 3", "default": "✅ Satisfaction guarantee" },
+    { "type": "text", "id": "badge_4", "label": "Badge 4", "default": "💬 Responsive support" },
+    { "type": "text", "id": "shop_now_text", "label": "Other buttons « Shop now »", "default": "Shop now" },
 
     { "type": "header", "content": "🎥 Video section (add Video blocks)" },
     { "type": "text", "id": "social_title", "label": "Title", "default": "WE BROKE THE INTERNET" },

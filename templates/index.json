@@ -1,210 +1,37 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "felispace_landing": {
+      "type": "wld-felispace-landing",
       "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Image banner",
-            "heading_size": "h0"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "Give customers details about the banner image(s) or content on the template.",
-            "text_style": "body"
-          }
-        },
-        "button": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
+        "video-1": { "type": "video", "settings": { "caption": "@cat_mum_uk" } },
+        "video-2": { "type": "video", "settings": { "caption": "@leo_the_cat" } },
+        "video-3": { "type": "video", "settings": { "caption": "@cosy_kittens" } },
+        "review-1": { "type": "review", "settings": { "rating": 5, "title": "OUR CATS LOVE IT!!!", "text": "Fantastic product, really well made and roomy. My cat adores it — even my dog tries to climb in! Fast delivery too.", "author": "Julie D. — Verified Customer" } },
+        "review-2": { "type": "review", "settings": { "rating": 5, "title": "The perfect experience", "text": "I unboxed the cave and my cat curled up inside straight away. It was its favourite hiding spot before I'd even finished setting up.", "author": "Lucille H. — Verified Customer" } },
+        "review-3": { "type": "review", "settings": { "rating": 5, "title": "PERFECT FOR FUSSY CATS", "text": "My cat loves lounging in it in the sun and hiding in the little hole in the evening. Brilliant, well worth the slightly higher price.", "author": "Miguel S. — Verified Customer" } },
+        "review-4": { "type": "review", "settings": { "rating": 5, "title": "Finally some peace", "text": "No more scratches on the sofa. She only scratches the cave now. Sturdy and looks lovely in the living room.", "author": "Sophie L. — Verified Customer" } },
+        "review-5": { "type": "review", "settings": { "rating": 5, "title": "Both my cats share it", "text": "Big enough for both my cats — they sleep in it together. The felt quality is impressive.", "author": "Karim B. — Verified Customer" } },
+        "review-6": { "type": "review", "settings": { "rating": 5, "title": "Ideal gift", "text": "Bought it for my sister's kitten and it was an instant hit. Getting one for mine now.", "author": "Emily R. — Verified Customer" } },
+        "faq-1": { "type": "faq", "settings": { "question": "Is the Felispace Cave suitable for all cats?", "answer": "Yes! The Large size suits cats up to 7 kg and the Jumbo is perfect for big cats or multi-cat homes." } },
+        "faq-2": { "type": "faq", "settings": { "question": "What is the cave made of?", "answer": "High-density natural wool felt — soft, warm and scratch-resistant, with no harmful chemicals." } },
+        "faq-3": { "type": "faq", "settings": { "question": "How do I clean it?", "answer": "A quick vacuum for day-to-day care. For stains, hand-wash in cold water and dry flat." } },
+        "faq-4": { "type": "faq", "settings": { "question": "Will my cat actually use it?", "answer": "The tunnel shape taps into your cat's natural urge to hide. If yours is shy, pop their usual blanket inside — adoption is almost guaranteed." } },
+        "faq-5": { "type": "faq", "settings": { "question": "Does it work as a scratching post too?", "answer": "Absolutely. The thick felt is perfect for scratching and protects your furniture." } },
+        "faq-6": { "type": "faq", "settings": { "question": "What are the delivery times?", "answer": "Free UK delivery in 3–7 working days, with a tracking email as soon as it ships." } },
+        "faq-7": { "type": "faq", "settings": { "question": "What is your guarantee?", "answer": "90-day money-back guarantee plus a 90-day wear guarantee. If your cat doesn't love it, you get a refund." } },
+        "faq-8": { "type": "faq", "settings": { "question": "Can I return the product?", "answer": "Yes, returns accepted within 14 days, no questions asked." } }
       },
       "block_order": [
-        "heading",
-        "text",
-        "button"
+        "video-1", "video-2", "video-3",
+        "review-1", "review-2", "review-3", "review-4", "review-5", "review-6",
+        "faq-1", "faq-2", "faq-3", "faq-4", "faq-5", "faq-6", "faq-7", "faq-8"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
-      }
-    },
-    "rich_text": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Talk about your brand",
-            "heading_size": "h1"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.<\/p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "color_scheme": "scheme-1",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 0
-      }
-    },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "show_view_all": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "columns_mobile": "2",
-        "padding_top": 28,
-        "padding_bottom": 36
-      }
-    },
-    "collage": {
-      "type": "collage",
-      "blocks": {
-        "collection-0": {
-          "type": "collection",
-          "settings": {
-            "collection": ""
-          }
-        },
-        "product": {
-          "type": "product",
-          "settings": {
-            "product": "",
-            "second_image": false
-          }
-        },
-        "collection-1": {
-          "type": "collection",
-          "settings": {
-            "collection": ""
-          }
-        }
-      },
-      "block_order": [
-        "collection-0",
-        "product",
-        "collection-1"
-      ],
-      "settings": {
-        "heading": "Multimedia collage",
-        "heading_size": "h2",
-        "desktop_layout": "left",
-        "mobile_layout": "collage",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "video": {
-      "type": "video",
-      "settings": {
-        "heading": "",
-        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
-        "heading_size": "h1",
-        "description": "",
-        "full_width": false,
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "multicolumn": {
-      "type": "multicolumn",
-      "blocks": {
-        "column1": {
-          "type": "column",
-          "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column2": {
-          "type": "column",
-          "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "column3": {
-          "type": "column",
-          "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
-            "link_label": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "column1",
-        "column2",
-        "column3"
-      ],
-      "settings": {
-        "title": "",
-        "heading_size": "h1",
-        "image_width": "third",
-        "image_ratio": "adapt",
-        "columns_desktop": 3,
-        "column_alignment": "center",
-        "background_style": "none",
-        "button_label": "",
-        "button_link": "",
-        "swipe_on_mobile": false,
-        "color_scheme": "scheme-1",
-        "columns_mobile": "1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "product": "donut-cat-bed-for-2-cats-pet-cat-tunnel-toys-kitten-house-basket-interactive-play-toys-for-cats-natural-felt-rabbit-cave-nest-1"
       }
     }
   },
   "order": [
-    "image_banner",
-    "rich_text",
-    "featured_collection",
-    "collage",
-    "video",
-    "multicolumn"
+    "felispace_landing"
   ]
 }

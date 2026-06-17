@@ -1,4 +1,4 @@
-{%- assign wld_product = section.settings.product -%}
+{%- assign wld_product = section.settings.product | default: product -%}
 {%- assign wld_v1 = wld_product.variants[0] -%}
 {%- assign wld_v2 = wld_product.variants[1] -%}
 
@@ -523,14 +523,14 @@
     { "type": "product", "id": "product", "label": "🛒 Produit (la grotte Felispace)" },
 
     { "type": "header", "content": "🎨 Palette (calée sur Cattasaurus)" },
-    { "type": "color", "id": "color_primary", "label": "Vert principal (boutons)", "default": "#1d3c2d" },
-    { "type": "color", "id": "color_accent", "label": "Sage (sections vertes)", "default": "#d7ebc4" },
-    { "type": "color", "id": "color_accent2", "label": "Sélection (vert clair)", "default": "#e8f3da" },
-    { "type": "color", "id": "color_heading", "label": "Titres de section", "default": "#243a2c" },
-    { "type": "color", "id": "color_olive", "label": "Titre produit (olive)", "default": "#6f5f2b" },
-    { "type": "color", "id": "color_cream", "label": "Crème (bandes claires)", "default": "#f3efe4" },
+    { "type": "color", "id": "color_primary", "label": "Vert principal (boutons)", "default": "#1f6f43" },
+    { "type": "color", "id": "color_accent", "label": "Vert lime (sections vertes)", "default": "#d6f0bd" },
+    { "type": "color", "id": "color_accent2", "label": "Sélection (vert clair)", "default": "#eaf7d9" },
+    { "type": "color", "id": "color_heading", "label": "Titres de section", "default": "#1c2e22" },
+    { "type": "color", "id": "color_olive", "label": "Titre produit (olive)", "default": "#6b5d2e" },
+    { "type": "color", "id": "color_cream", "label": "Crème (bandes claires)", "default": "#f4f1e7" },
     { "type": "color", "id": "color_dark", "label": "Sections sombres", "default": "#141414" },
-    { "type": "color", "id": "color_add", "label": "Bouton « Add + »", "default": "#2e7d4f" },
+    { "type": "color", "id": "color_add", "label": "Bouton « Add + »", "default": "#3a8a57" },
 
     { "type": "header", "content": "🦸 Hero" },
     { "type": "image_picker", "id": "hero_image", "label": "Image produit" },

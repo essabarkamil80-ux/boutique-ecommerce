@@ -732,9 +732,7 @@
       endif
     -%}
 
-    <script type="application/ld+json">
-      {{ product | structured_data }}
-    </script>
+    {% include 'alireviews_aggregateRating_structured_data' %}
   </div>
 </product-info>
 

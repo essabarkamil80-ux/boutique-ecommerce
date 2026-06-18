@@ -152,6 +152,10 @@
           </div>
         </div>
 
+        {%- if section.settings.gift_text != blank -%}
+        <div class="wld-felispace-gift">🎁 {{ section.settings.gift_text }}</div>
+        {%- endif -%}
+
         <button type="button" class="wld-felispace-cta wld-felispace-cta--buynow" data-buynow>{{ section.settings.buy_now_text }}</button>
         <button type="submit" class="wld-felispace-cta wld-felispace-cta--secondary" data-addcart>{{ section.settings.cta_text }}</button>
 
@@ -329,6 +333,9 @@
           </span>
         </button>
       </div>
+      {%- if section.settings.gift_text != blank -%}
+      <div class="wld-felispace-gift">🎁 {{ section.settings.gift_text }}</div>
+      {%- endif -%}
       <button type="button" class="wld-felispace-cta wld-felispace-cta--buynow" data-buynow>{{ section.settings.buy_now_text }}</button>
       <button type="submit" class="wld-felispace-cta wld-felispace-cta--secondary" data-addcart>{{ section.settings.cta_text }}</button>
       <p class="wld-felispace-moneyback">🛡️ {{ section.settings.moneyback_text }}</p>
@@ -459,6 +466,8 @@
   #wld-felispace-{{ section.id }} .wld-felispace-tier__compare { font-size: 12px; color: #999; text-decoration: line-through; }
   #wld-felispace-{{ section.id }} .wld-felispace-tier__badge { position: absolute; top: -10px; right: 14px; background: var(--wld-primary); color: #fff; font-size: 10.5px; font-weight: 800; letter-spacing: .5px; padding: 3px 10px; border-radius: 999px; }
   #wld-felispace-{{ section.id }} .wld-felispace-tier__badge--gold { background: #c79a3a; }
+
+  #wld-felispace-{{ section.id }} .wld-felispace-gift { display: flex; align-items: center; gap: 8px; background: var(--wld-accent); border: 1px dashed var(--wld-primary); color: #1a3a26; font-size: 13px; font-weight: 700; line-height: 1.4; padding: 11px 14px; border-radius: 10px; margin: 16px 0 6px; }
 
   #wld-felispace-{{ section.id }} .wld-felispace-cta--buynow { font-size: 18px; padding: 18px 24px; margin-top: 18px; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
   #wld-felispace-{{ section.id }} .wld-felispace-cta--secondary { background: #fff; color: var(--wld-primary); border: 2px solid var(--wld-primary); margin-top: 10px; }
@@ -741,17 +750,18 @@
     { "type": "header", "content": "📦 Bundle (boost AOV)" },
     { "type": "paragraph", "content": "The bundle adds the right QUANTITY to the cart. Create matching automatic discounts in Shopify → Discounts (e.g. 2nd at 50% off, 3rd free) so the savings apply at checkout." },
     { "type": "text", "id": "bundle_label", "label": "Bundle label", "default": "Choose your bundle & save" },
+    { "type": "textarea", "id": "gift_text", "label": "Free gift line (shown above the buttons)", "default": "FREE with every order: digital cat-care guide (PDF) + premium grooming brush" },
     { "type": "text", "id": "tier1_title", "label": "Tier 1 title", "default": "1 Cave" },
-    { "type": "text", "id": "tier1_note", "label": "Tier 1 note", "default": "Standard price" },
+    { "type": "text", "id": "tier1_note", "label": "Tier 1 note", "default": "+ free guide & brush 🎁" },
     { "type": "text", "id": "tier1_price", "label": "Tier 1 price", "default": "£59" },
     { "type": "text", "id": "tier2_title", "label": "Tier 2 title", "default": "2 Caves" },
     { "type": "text", "id": "tier2_badge", "label": "Tier 2 badge", "default": "MOST POPULAR" },
-    { "type": "text", "id": "tier2_save", "label": "Tier 2 saving", "default": "2nd cave at 50% off — save £29" },
+    { "type": "text", "id": "tier2_save", "label": "Tier 2 saving", "default": "2nd cave 50% off + free gifts — save £29" },
     { "type": "text", "id": "tier2_price", "label": "Tier 2 price", "default": "£88" },
     { "type": "text", "id": "tier2_compare", "label": "Tier 2 compare-at", "default": "£118" },
     { "type": "text", "id": "tier3_title", "label": "Tier 3 title", "default": "3 Caves" },
     { "type": "text", "id": "tier3_badge", "label": "Tier 3 badge", "default": "BEST VALUE" },
-    { "type": "text", "id": "tier3_save", "label": "Tier 3 saving", "default": "3rd cave FREE — save £59" },
+    { "type": "text", "id": "tier3_save", "label": "Tier 3 saving", "default": "3rd cave FREE + free gifts — save £59" },
     { "type": "text", "id": "tier3_price", "label": "Tier 3 price", "default": "£118" },
     { "type": "text", "id": "tier3_compare", "label": "Tier 3 compare-at", "default": "£177" },
 

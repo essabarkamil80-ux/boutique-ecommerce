@@ -14,6 +14,8 @@
   id="wld-felispace-{{ section.id }}"
   class="wld-felispace"
   data-section-id="{{ section.id }}"
+  data-size-keyword="{{ section.settings.bigger_size_keyword | escape }}"
+  data-size-uplift="{{ section.settings.bigger_size_uplift }}"
   style="--wld-primary: {{ section.settings.color_primary }}; --wld-accent: {{ section.settings.color_accent }}; --wld-accent2: {{ section.settings.color_accent2 }}; --wld-heading: {{ section.settings.color_heading }}; --wld-olive: {{ section.settings.color_olive }}; --wld-cream: {{ section.settings.color_cream }}; --wld-dark: {{ section.settings.color_dark }}; --wld-add: {{ section.settings.color_add }};{% if section.settings.video_font_family != blank %} --wld-video-font: {{ section.settings.video_font_family }};{% endif %}">
 
   {%- if wld_product == blank -%}
@@ -33,6 +35,20 @@
     </div>
 
     <div class="wld-felispace-hero__info">
+      {%- if section.settings.show_trustpilot -%}
+      <div class="wld-felispace-trustpilot wld-felispace-trustpilot--top">
+        {%- if section.settings.trustpilot_image != blank -%}
+          <img src="{{ section.settings.trustpilot_image | image_url: width: 420 }}" alt="Trustpilot rating" width="200" loading="lazy">
+        {%- else -%}
+          <span class="wld-felispace-tp__score">{{ section.settings.trustpilot_score }}</span>
+          <span class="wld-felispace-tp__stars" aria-hidden="true">
+            {%- for i in (1..5) -%}<span class="wld-felispace-tp__star">★</span>{%- endfor -%}
+          </span>
+          <span class="wld-felispace-tp__brand"><span class="wld-felispace-tp__brandstar">★</span>Trustpilot</span>
+        {%- endif -%}
+        {%- if section.settings.trustpilot_count != blank -%}<span class="wld-felispace-tp__count">{{ section.settings.trustpilot_count }}</span>{%- endif -%}
+      </div>
+      {%- else -%}
       <div class="wld-felispace-microproof">
         <span class="wld-felispace-stars">★★★★★</span>
         <strong>{{ section.settings.rating_score }}/5</strong>
@@ -41,6 +57,7 @@
         <span class="wld-felispace-microproof__sep">·</span>
         <span class="wld-felispace-microproof__cust">{{ section.settings.micro_customers }}</span>
       </div>
+      {%- endif -%}
 
       <h1 class="wld-felispace-hero__title">{{ section.settings.product_title }}</h1>
 
@@ -60,21 +77,6 @@
       <form method="post" action="/cart/add" class="wld-felispace-buyform wld-felispace-card" data-buyform>
         <input type="hidden" name="id" value="{{ wld_default_variant.id }}" data-variant-input>
         <input type="hidden" name="quantity" value="2" data-qty-input>
-
-        {%- if section.settings.show_trustpilot -%}
-        <div class="wld-felispace-trustpilot">
-          {%- if section.settings.trustpilot_image != blank -%}
-            <img src="{{ section.settings.trustpilot_image | image_url: width: 420 }}" alt="Trustpilot rating" width="200" loading="lazy">
-          {%- else -%}
-            <span class="wld-felispace-tp__score">{{ section.settings.trustpilot_score }}</span>
-            <span class="wld-felispace-tp__stars" aria-hidden="true">
-              {%- for i in (1..5) -%}<span class="wld-felispace-tp__star">★</span>{%- endfor -%}
-            </span>
-            <span class="wld-felispace-tp__brand"><span class="wld-felispace-tp__brandstar">★</span>Trustpilot</span>
-          {%- endif -%}
-          {%- if section.settings.trustpilot_count != blank -%}<span class="wld-felispace-tp__count">{{ section.settings.trustpilot_count }}</span>{%- endif -%}
-        </div>
-        {%- endif -%}
 
         {%- if section.settings.urgency_stock != blank or section.settings.urgency_demand != blank -%}
         <div class="wld-felispace-urgency">
@@ -138,7 +140,7 @@
                 {%- if section.settings.tier1_note != blank -%}<span class="wld-felispace-tier__note">{{ section.settings.tier1_note }}</span>{%- endif -%}
               </span>
               <span class="wld-felispace-tier__pricing">
-                <span class="wld-felispace-tier__price">{{ section.settings.tier1_price }}</span>
+                <span class="wld-felispace-tier__price" data-price>{{ section.settings.tier1_price }}</span>
               </span>
             </button>
 
@@ -150,8 +152,8 @@
                 {%- if section.settings.tier2_save != blank -%}<span class="wld-felispace-tier__save">{{ section.settings.tier2_save }}</span>{%- endif -%}
               </span>
               <span class="wld-felispace-tier__pricing">
-                <span class="wld-felispace-tier__price">{{ section.settings.tier2_price }}</span>
-                {%- if section.settings.tier2_compare != blank -%}<span class="wld-felispace-tier__compare">{{ section.settings.tier2_compare }}</span>{%- endif -%}
+                <span class="wld-felispace-tier__price" data-price>{{ section.settings.tier2_price }}</span>
+                {%- if section.settings.tier2_compare != blank -%}<span class="wld-felispace-tier__compare" data-price>{{ section.settings.tier2_compare }}</span>{%- endif -%}
               </span>
             </button>
 
@@ -163,8 +165,8 @@
                 {%- if section.settings.tier3_save != blank -%}<span class="wld-felispace-tier__save">{{ section.settings.tier3_save }}</span>{%- endif -%}
               </span>
               <span class="wld-felispace-tier__pricing">
-                <span class="wld-felispace-tier__price">{{ section.settings.tier3_price }}</span>
-                {%- if section.settings.tier3_compare != blank -%}<span class="wld-felispace-tier__compare">{{ section.settings.tier3_compare }}</span>{%- endif -%}
+                <span class="wld-felispace-tier__price" data-price>{{ section.settings.tier3_price }}</span>
+                {%- if section.settings.tier3_compare != blank -%}<span class="wld-felispace-tier__compare" data-price>{{ section.settings.tier3_compare }}</span>{%- endif -%}
               </span>
             </button>
           </div>
@@ -328,20 +330,6 @@
     <form method="post" action="/cart/add" class="wld-felispace-buybox wld-felispace-card" data-buyform>
       <input type="hidden" name="id" value="{{ wld_default_variant.id }}" data-variant-input>
       <input type="hidden" name="quantity" value="2" data-qty-input>
-      {%- if section.settings.show_trustpilot -%}
-      <div class="wld-felispace-trustpilot">
-        {%- if section.settings.trustpilot_image != blank -%}
-          <img src="{{ section.settings.trustpilot_image | image_url: width: 420 }}" alt="Trustpilot rating" width="200" loading="lazy">
-        {%- else -%}
-          <span class="wld-felispace-tp__score">{{ section.settings.trustpilot_score }}</span>
-          <span class="wld-felispace-tp__stars" aria-hidden="true">
-            {%- for i in (1..5) -%}<span class="wld-felispace-tp__star">★</span>{%- endfor -%}
-          </span>
-          <span class="wld-felispace-tp__brand"><span class="wld-felispace-tp__brandstar">★</span>Trustpilot</span>
-        {%- endif -%}
-        {%- if section.settings.trustpilot_count != blank -%}<span class="wld-felispace-tp__count">{{ section.settings.trustpilot_count }}</span>{%- endif -%}
-      </div>
-      {%- endif -%}
       <div class="wld-felispace-tiers" data-tier-group>
         <button type="button" class="wld-felispace-tier" data-tier data-qty="1">
           <span class="wld-felispace-tier__radio"></span>
@@ -349,7 +337,7 @@
             <span class="wld-felispace-tier__title">{{ section.settings.tier1_title }}</span>
             {%- if section.settings.tier1_note != blank -%}<span class="wld-felispace-tier__note">{{ section.settings.tier1_note }}</span>{%- endif -%}
           </span>
-          <span class="wld-felispace-tier__pricing"><span class="wld-felispace-tier__price">{{ section.settings.tier1_price }}</span></span>
+          <span class="wld-felispace-tier__pricing"><span class="wld-felispace-tier__price" data-price>{{ section.settings.tier1_price }}</span></span>
         </button>
         <button type="button" class="wld-felispace-tier is-active" data-tier data-qty="2">
           {%- if section.settings.tier2_badge != blank -%}<span class="wld-felispace-tier__badge">{{ section.settings.tier2_badge }}</span>{%- endif -%}
@@ -359,8 +347,8 @@
             {%- if section.settings.tier2_save != blank -%}<span class="wld-felispace-tier__save">{{ section.settings.tier2_save }}</span>{%- endif -%}
           </span>
           <span class="wld-felispace-tier__pricing">
-            <span class="wld-felispace-tier__price">{{ section.settings.tier2_price }}</span>
-            {%- if section.settings.tier2_compare != blank -%}<span class="wld-felispace-tier__compare">{{ section.settings.tier2_compare }}</span>{%- endif -%}
+            <span class="wld-felispace-tier__price" data-price>{{ section.settings.tier2_price }}</span>
+            {%- if section.settings.tier2_compare != blank -%}<span class="wld-felispace-tier__compare" data-price>{{ section.settings.tier2_compare }}</span>{%- endif -%}
           </span>
         </button>
         <button type="button" class="wld-felispace-tier" data-tier data-qty="3">
@@ -371,8 +359,8 @@
             {%- if section.settings.tier3_save != blank -%}<span class="wld-felispace-tier__save">{{ section.settings.tier3_save }}</span>{%- endif -%}
           </span>
           <span class="wld-felispace-tier__pricing">
-            <span class="wld-felispace-tier__price">{{ section.settings.tier3_price }}</span>
-            {%- if section.settings.tier3_compare != blank -%}<span class="wld-felispace-tier__compare">{{ section.settings.tier3_compare }}</span>{%- endif -%}
+            <span class="wld-felispace-tier__price" data-price>{{ section.settings.tier3_price }}</span>
+            {%- if section.settings.tier3_compare != blank -%}<span class="wld-felispace-tier__compare" data-price>{{ section.settings.tier3_compare }}</span>{%- endif -%}
           </span>
         </button>
       </div>
@@ -511,6 +499,8 @@
   #wld-felispace-{{ section.id }} .wld-felispace-tier__badge--gold { background: #c79a3a; }
 
   #wld-felispace-{{ section.id }} .wld-felispace-trustpilot { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 18px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-trustpilot--top { justify-content: flex-start; margin: 0 0 14px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-trustpilot--top .wld-felispace-tp__count { width: auto; text-align: left; }
   #wld-felispace-{{ section.id }} .wld-felispace-trustpilot img { width: auto; max-height: 28px; }
   #wld-felispace-{{ section.id }} .wld-felispace-tp__score { font-weight: 800; font-size: 15px; color: #191919; }
   #wld-felispace-{{ section.id }} .wld-felispace-tp__stars { display: flex; gap: 3px; }
@@ -662,6 +652,31 @@
     function initFelispace(root) {
       if (!root) return;
 
+      var sizeKeyword = (root.getAttribute('data-size-keyword') || '').trim().toLowerCase();
+      var sizeUplift = parseFloat(root.getAttribute('data-size-uplift') || '0') || 0;
+
+      function formatPrice(base, factor) {
+        var m = base.match(/^(\D*?)([\d]+(?:[.,][\d]+)?)(.*)$/);
+        if (!m) { return base; }
+        var num = parseFloat(m[2].replace(',', '.'));
+        if (isNaN(num)) { return base; }
+        return m[1] + Math.round(num * factor) + m[3];
+      }
+
+      function applySizePricing() {
+        var active = false;
+        if (sizeKeyword) {
+          root.querySelectorAll('[data-opt-value].is-active').forEach(function (b) {
+            if ((b.getAttribute('data-value') || '').toLowerCase().indexOf(sizeKeyword) > -1) { active = true; }
+          });
+        }
+        var factor = active ? (1 + sizeUplift / 100) : 1;
+        root.querySelectorAll('[data-price]').forEach(function (el) {
+          if (!el.hasAttribute('data-base')) { el.setAttribute('data-base', el.textContent.trim()); }
+          el.textContent = formatPrice(el.getAttribute('data-base'), factor);
+        });
+      }
+
       root.querySelectorAll('[data-buyform]').forEach(function (form) {
         var dataEl = form.querySelector('[data-variants-json]');
         if (!dataEl) { return; }
@@ -689,10 +704,13 @@
             grp.querySelectorAll('[data-opt-value]').forEach(function (b) { b.classList.remove('is-active'); });
             btn.classList.add('is-active');
             resolve();
+            applySizePricing();
           });
         });
         resolve();
       });
+
+      applySizePricing();
 
       root.querySelectorAll('[data-tier-group]').forEach(function (group) {
         var form = group.closest('[data-buyform]');
@@ -788,7 +806,7 @@
 
     { "type": "header", "content": "🦸 Hero" },
     { "type": "image_picker", "id": "hero_image", "label": "Product image" },
-    { "type": "text", "id": "product_title", "label": "Product title (benefit-led)", "default": "The Cosy Cat Cave That Saves Your Sofa & Calms Anxious Cats" },
+    { "type": "text", "id": "product_title", "label": "Product title (benefit-led)", "default": "FeliSpace Calming Donut" },
     { "type": "text", "id": "rating_score", "label": "Rating", "default": "4.9" },
     { "type": "text", "id": "rating_label", "label": "Label", "default": "Excellent" },
     { "type": "text", "id": "rating_count", "label": "Reviews count", "default": "4,287 reviews" },
@@ -813,6 +831,11 @@
     { "type": "image_picker", "id": "color_img_4", "label": "Colour 4 image" },
     { "type": "text", "id": "color_name_5", "label": "Colour 5 (fallback)" },
     { "type": "image_picker", "id": "color_img_5", "label": "Colour 5 image" },
+
+    { "type": "header", "content": "📏 Bigger size price uplift" },
+    { "type": "paragraph", "content": "When a size variant whose name contains the keyword below is selected, all bundle prices shown go up by the % below. IMPORTANT: also set that variant's real price +20% in Shopify so checkout matches." },
+    { "type": "text", "id": "bigger_size_keyword", "label": "Keyword of the bigger size (e.g. 60)", "default": "60" },
+    { "type": "text", "id": "bigger_size_uplift", "label": "Price uplift (%)", "default": "20" },
 
     { "type": "header", "content": "⚡ Urgency" },
     { "type": "text", "id": "urgency_stock", "label": "Stock line", "default": "Selling fast — limited stock" },

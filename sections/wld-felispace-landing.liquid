@@ -6,12 +6,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+{%- if section.settings.video_font_link != blank -%}
+<link href="{{ section.settings.video_font_link }}" rel="stylesheet">
+{%- endif -%}
 
 <section
   id="wld-felispace-{{ section.id }}"
   class="wld-felispace"
   data-section-id="{{ section.id }}"
-  style="--wld-primary: {{ section.settings.color_primary }}; --wld-accent: {{ section.settings.color_accent }}; --wld-accent2: {{ section.settings.color_accent2 }}; --wld-heading: {{ section.settings.color_heading }}; --wld-olive: {{ section.settings.color_olive }}; --wld-cream: {{ section.settings.color_cream }}; --wld-dark: {{ section.settings.color_dark }}; --wld-add: {{ section.settings.color_add }};">
+  style="--wld-primary: {{ section.settings.color_primary }}; --wld-accent: {{ section.settings.color_accent }}; --wld-accent2: {{ section.settings.color_accent2 }}; --wld-heading: {{ section.settings.color_heading }}; --wld-olive: {{ section.settings.color_olive }}; --wld-cream: {{ section.settings.color_cream }}; --wld-dark: {{ section.settings.color_dark }}; --wld-add: {{ section.settings.color_add }};{% if section.settings.video_font_family != blank %} --wld-video-font: {{ section.settings.video_font_family }};{% endif %}">
 
   {%- if wld_product == blank -%}
     <div class="wld-felispace-no-product vel-no-product-notice">
@@ -176,7 +179,7 @@
 
   {% comment %} ============ SOCIAL PROOF + VIDÉOS ============ {% endcomment %}
   <div class="wld-felispace-band wld-felispace-band--cream">
-    <h2 class="wld-felispace-h2">{{ section.settings.social_title }}</h2>
+    <h2 class="wld-felispace-h2 wld-felispace-h2--video">{{ section.settings.social_title }}</h2>
     <p class="wld-felispace-sub">{{ section.settings.social_sub }}</p>
 
     {%- assign vid_count = 0 -%}
@@ -185,11 +188,22 @@
       <div class="wld-felispace-videos">
         {%- for block in section.blocks -%}
           {%- if block.type == 'video' -%}
-            <div class="wld-felispace-vid" {{ block.shopify_attributes }}>
+            <div class="wld-felispace-vid" data-vid {{ block.shopify_attributes }}>
               {%- if block.settings.video != blank -%}
-                {{ block.settings.video | video_tag: image_size: '500x', loop: true, controls: true, muted: true, playsinline: true }}
+                {%- assign vposter = block.settings.poster -%}
+                <video
+                  class="wld-felispace-vid__player"
+                  {% if vposter != blank %}poster="{{ vposter | image_url: width: 720 }}"{% elsif block.settings.video.preview_image %}poster="{{ block.settings.video.preview_image | image_url: width: 720 }}"{% endif %}
+                  preload="none"
+                  loop muted playsinline controls
+                  {% for source in block.settings.video.sources %}{% if source.format == 'mp4' %}{% endif %}{% endfor %}>
+                  {%- for source in block.settings.video.sources -%}
+                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                  {%- endfor -%}
+                </video>
+                <button type="button" class="wld-felispace-vid__play" aria-label="Play video" data-vid-play>▶</button>
               {%- elsif block.settings.poster != blank -%}
-                <img src="{{ block.settings.poster | image_url: width: 500 }}" alt="" loading="lazy" width="500" height="700">
+                <img src="{{ block.settings.poster | image_url: width: 600 }}" alt="" loading="lazy" width="600" height="840">
               {%- else -%}
                 {{ 'lifestyle-1' | placeholder_svg_tag: 'wld-felispace-placeholder' }}
               {%- endif -%}
@@ -485,11 +499,18 @@
   #wld-felispace-{{ section.id }} .wld-felispace-h2--light { color: #fff; }
   #wld-felispace-{{ section.id }} .wld-felispace-sub { text-align: center; color: #555; margin: 0 0 28px; }
 
+  /* VIDEO HEADING (Cattasaurus style) */
+  #wld-felispace-{{ section.id }} .wld-felispace-h2--video { font-family: var(--wld-video-font, 'Inter', sans-serif); font-weight: 800; text-transform: uppercase; letter-spacing: -0.5px; line-height: .95; font-size: clamp(34px, 6vw, 74px); }
+
   /* VIDEOS */
-  #wld-felispace-{{ section.id }} .wld-felispace-videos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 900px; margin: 0 auto 36px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-vid { position: relative; border-radius: 14px; overflow: hidden; background: #000; aspect-ratio: 9/13; }
-  #wld-felispace-{{ section.id }} .wld-felispace-vid video, #wld-felispace-{{ section.id }} .wld-felispace-vid img { width: 100%; height: 100%; object-fit: cover; }
-  #wld-felispace-{{ section.id }} .wld-felispace-vid__cap { position: absolute; left: 10px; bottom: 10px; color: #fff; font-size: 12px; font-weight: 600; text-shadow: 0 1px 4px rgba(0,0,0,.6); }
+  #wld-felispace-{{ section.id }} .wld-felispace-videos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 1180px; margin: 0 auto 36px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid { position: relative; border-radius: 16px; overflow: hidden; background: #000; aspect-ratio: 9/14; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid video, #wld-felispace-{{ section.id }} .wld-felispace-vid img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid__play { position: absolute; inset: 0; margin: auto; width: 64px; height: 64px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); color: #1a1a1a; font-size: 22px; padding-left: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.3); transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid__play:hover { transform: scale(1.08); }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid.is-playing .wld-felispace-vid__play { display: none; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid__cap { position: absolute; left: 12px; bottom: 12px; color: #fff; font-size: 13px; font-weight: 600; text-shadow: 0 1px 4px rgba(0,0,0,.6); pointer-events: none; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid.is-playing .wld-felispace-vid__cap { opacity: 0; }
 
   #wld-felispace-{{ section.id }} .wld-felispace-trust-strip { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px; max-width: 1000px; margin: 0 auto; }
   #wld-felispace-{{ section.id }} .wld-felispace-trust { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
@@ -561,13 +582,14 @@
     #wld-felispace-{{ section.id }} .wld-felispace-why__media { order: -1; }
     #wld-felispace-{{ section.id }} .wld-felispace-reviews { grid-template-columns: repeat(2, 1fr); }
     #wld-felispace-{{ section.id }} .wld-felispace-benefits { grid-template-columns: 1fr; }
-    #wld-felispace-{{ section.id }} .wld-felispace-videos { max-width: 560px; }
+    #wld-felispace-{{ section.id }} .wld-felispace-videos { max-width: 760px; }
   }
   @media (max-width: 540px) {
     #wld-felispace-{{ section.id }} .wld-felispace-band { padding: 40px 16px; }
     #wld-felispace-{{ section.id }} .wld-felispace-bundles { grid-template-columns: 1fr; }
     #wld-felispace-{{ section.id }} .wld-felispace-reviews { grid-template-columns: 1fr; }
-    #wld-felispace-{{ section.id }} .wld-felispace-videos { grid-template-columns: 1fr 1fr; }
+    #wld-felispace-{{ section.id }} .wld-felispace-videos { grid-template-columns: 1fr 1fr; gap: 12px; }
+    #wld-felispace-{{ section.id }} .wld-felispace-vid__play { width: 48px; height: 48px; font-size: 18px; }
     #wld-felispace-{{ section.id }} .wld-felispace-trust-strip { gap: 16px; }
     #wld-felispace-{{ section.id }} .wld-felispace-trust { width: 45%; font-size: 12px; }
   }
@@ -658,6 +680,17 @@
         form.addEventListener('submit', function (e) {
           e.preventDefault();
           fxAddToCart(form, '/cart', form.querySelector('[data-addcart]'));
+        });
+      });
+
+      root.querySelectorAll('[data-vid-play]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var wrap = btn.closest('[data-vid]');
+          var video = wrap ? wrap.querySelector('video') : null;
+          if (!video) { return; }
+          video.preload = 'auto';
+          video.play();
+          wrap.classList.add('is-playing');
         });
       });
 
@@ -780,6 +813,9 @@
     { "type": "header", "content": "🎥 Video section (add Video blocks)" },
     { "type": "text", "id": "social_title", "label": "Title", "default": "WE BROKE THE INTERNET" },
     { "type": "text", "id": "social_sub", "label": "Subtitle", "default": "Hear what cat parents have to say" },
+    { "type": "paragraph", "content": "Custom heading font: paste a Google Fonts <link> URL (just the https://fonts.googleapis.com/... href) and the exact font-family name below. Leave blank to keep the default." },
+    { "type": "text", "id": "video_font_link", "label": "Font link URL (Google Fonts href)" },
+    { "type": "text", "id": "video_font_family", "label": "Font-family name (e.g. Anton)" },
     { "type": "text", "id": "trust_1", "label": "Trust 1", "default": "Free shipping" },
     { "type": "text", "id": "trust_2", "label": "Trust 2", "default": "90-day satisfaction" },
     { "type": "text", "id": "trust_3", "label": "Trust 3", "default": "Secure SSL checkout" },

@@ -70,9 +70,12 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 {%- if section.settings.video_font_link != blank -%}
 <link href="{{ section.settings.video_font_link }}" rel="stylesheet">
+{%- endif -%}
+{%- if section.settings.buy_font_link != blank -%}
+<link href="{{ section.settings.buy_font_link }}" rel="stylesheet">
 {%- endif -%}
 
 <section
@@ -81,7 +84,7 @@
   data-section-id="{{ section.id }}"
   data-size-keyword="{{ section.settings.bigger_size_keyword | escape }}"
   data-size-uplift="{{ section.settings.bigger_size_uplift }}"
-  style="--wld-primary: {{ section.settings.color_primary }}; --wld-accent: {{ section.settings.color_accent }}; --wld-accent2: {{ section.settings.color_accent2 }}; --wld-heading: {{ section.settings.color_heading }}; --wld-olive: {{ section.settings.color_olive }}; --wld-cream: {{ section.settings.color_cream }}; --wld-dark: {{ section.settings.color_dark }}; --wld-add: {{ section.settings.color_add }};{% if section.settings.video_font_family != blank %} --wld-video-font: {{ section.settings.video_font_family }};{% endif %}">
+  style="--wld-primary: {{ section.settings.color_primary }}; --wld-accent: {{ section.settings.color_accent }}; --wld-accent2: {{ section.settings.color_accent2 }}; --wld-heading: {{ section.settings.color_heading }}; --wld-olive: {{ section.settings.color_olive }}; --wld-cream: {{ section.settings.color_cream }}; --wld-dark: {{ section.settings.color_dark }}; --wld-add: {{ section.settings.color_add }};{% if section.settings.video_font_family != blank %} --wld-video-font: {{ section.settings.video_font_family }};{% endif %}{% if section.settings.buy_font_family != blank %} --wld-buy-font: {{ section.settings.buy_font_family }};{% endif %}">
 
   {%- if wld_product == blank -%}
     <div class="wld-felispace-no-product vel-no-product-notice">
@@ -443,6 +446,10 @@
   #wld-felispace-{{ section.id }} .wld-felispace-bullets li { position: relative; padding-left: 26px; margin-bottom: 8px; font-size: 15px; }
   #wld-felispace-{{ section.id }} .wld-felispace-bullets li::before { content: "✓"; position: absolute; left: 0; color: var(--wld-primary); font-weight: 700; }
 
+  #wld-felispace-{{ section.id }} .wld-felispace-buyform,
+  #wld-felispace-{{ section.id }} .wld-felispace-buybox { font-family: var(--wld-buy-font, 'Poppins', sans-serif); }
+  #wld-felispace-{{ section.id }} .wld-felispace-buyform :not(h1):not(h2):not(h3):not(h4),
+  #wld-felispace-{{ section.id }} .wld-felispace-buybox :not(h1):not(h2):not(h3):not(h4) { font-family: var(--wld-buy-font, 'Poppins', sans-serif); }
   #wld-felispace-{{ section.id }} .wld-felispace-card { border: 1px solid #e4e3dd; border-radius: 16px; padding: 22px; background: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.05); }
   #wld-felispace-{{ section.id }} .wld-felispace-field { margin-bottom: 18px; }
   #wld-felispace-{{ section.id }} .wld-felispace-field__head { display: flex; justify-content: space-between; align-items: center; }
@@ -469,7 +476,7 @@
   #wld-felispace-{{ section.id }} .wld-felispace-color__name { font-weight: 600; flex: 1; }
   #wld-felispace-{{ section.id }} .wld-felispace-color__add { font-size: 12px; font-weight: 700; color: #fff; background: var(--wld-add); padding: 5px 12px; border-radius: 999px; }
 
-  #wld-felispace-{{ section.id }} .wld-felispace-cta { display: block; width: 100%; padding: 16px 24px; background: var(--wld-primary); color: #fff; border: 0; border-radius: 999px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 16px; cursor: pointer; text-align: center; text-decoration: none; transition: .15s; margin-top: 6px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cta { display: block; width: 100%; padding: 16px 24px; background: var(--wld-primary); color: #fff; border: 0; border-radius: 999px; font-family: var(--wld-buy-font, 'Poppins', sans-serif); font-weight: 700; font-size: 16px; cursor: pointer; text-align: center; text-decoration: none; transition: .15s; margin-top: 6px; }
   #wld-felispace-{{ section.id }} .wld-felispace-cta:hover { filter: brightness(1.1); }
   #wld-felispace-{{ section.id }} .wld-felispace-cta.is-disabled { opacity: .5; cursor: not-allowed; }
   #wld-felispace-{{ section.id }} .wld-felispace-cta--inline { max-width: 260px; margin: 28px auto 0; }
@@ -921,6 +928,11 @@
     { "type": "text", "id": "cta_text", "label": "Secondary button", "default": "Add to cart" },
     { "type": "text", "id": "moneyback_text", "label": "Money-back line", "default": "30-day money-back guarantee — love it or your money back" },
     { "type": "text", "id": "hero_video_title", "label": "Mini-videos title (under Add to cart)", "default": "See it in action" },
+
+    { "type": "header", "content": "🔤 Buy-zone font (bundle + buttons)" },
+    { "type": "paragraph", "content": "The buy zone uses Poppins by default (close to the Infinity Hoop look). To use your own font: paste a Google Fonts <link> URL and the exact font-family name below." },
+    { "type": "text", "id": "buy_font_link", "label": "Font link URL (Google Fonts href)" },
+    { "type": "text", "id": "buy_font_family", "label": "Font-family name (e.g. Poppins)" },
 
     { "type": "header", "content": "✓ Trust badges" },
     { "type": "text", "id": "badge_1", "label": "Badge 1", "default": "🚚 Free shipping" },

@@ -12,6 +12,24 @@
     "felispace_landing": {
       "type": "wld-felispace-landing",
       "blocks": {
+        "herovid-1": {
+          "type": "hero_video",
+          "settings": {
+            "caption": ""
+          }
+        },
+        "herovid-2": {
+          "type": "hero_video",
+          "settings": {
+            "caption": ""
+          }
+        },
+        "herovid-3": {
+          "type": "hero_video",
+          "settings": {
+            "caption": ""
+          }
+        },
         "video-1": {
           "type": "video",
           "settings": {
@@ -142,6 +160,9 @@
         }
       },
       "block_order": [
+        "herovid-1",
+        "herovid-2",
+        "herovid-3",
         "video-1",
         "video-2",
         "video-3",

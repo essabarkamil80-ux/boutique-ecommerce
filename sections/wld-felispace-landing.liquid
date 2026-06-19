@@ -211,6 +211,33 @@
           {%- if section.settings.badge_3 != blank -%}<div class="wld-felispace-trust4__item">{{ section.settings.badge_3 }}</div>{%- endif -%}
           {%- if section.settings.badge_4 != blank -%}<div class="wld-felispace-trust4__item">{{ section.settings.badge_4 }}</div>{%- endif -%}
         </div>
+
+        {%- assign hv_count = 0 -%}
+        {%- for block in section.blocks -%}{%- if block.type == 'hero_video' -%}{%- assign hv_count = hv_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+        {%- if hv_count > 0 -%}
+        <div class="wld-felispace-herovids">
+          {%- if section.settings.hero_video_title != blank -%}<p class="wld-felispace-herovids__title">{{ section.settings.hero_video_title }}</p>{%- endif -%}
+          <div class="wld-felispace-herovids__row">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'hero_video' -%}
+                <div class="wld-felispace-vid wld-felispace-vid--mini" data-vid {{ block.shopify_attributes }}>
+                  {%- if block.settings.video != blank -%}
+                    <video class="wld-felispace-vid__player" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 400 }}"{% elsif block.settings.video.preview_image %}poster="{{ block.settings.video.preview_image | image_url: width: 400 }}"{% endif %} preload="none" loop muted playsinline controls>
+                      {%- for source in block.settings.video.sources -%}<source src="{{ source.url }}" type="{{ source.mime_type }}">{%- endfor -%}
+                    </video>
+                    <button type="button" class="wld-felispace-vid__play" aria-label="Play video" data-vid-play>▶</button>
+                  {%- elsif block.settings.poster != blank -%}
+                    <img src="{{ block.settings.poster | image_url: width: 400 }}" alt="" loading="lazy" width="400" height="560">
+                  {%- else -%}
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'wld-felispace-placeholder' }}
+                  {%- endif -%}
+                  {%- if block.settings.caption != blank -%}<span class="wld-felispace-vid__cap">{{ block.settings.caption }}</span>{%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- endif -%}
       </form>
       {%- else -%}
         <button type="button" class="wld-felispace-cta is-disabled" disabled>{{ section.settings.cta_text }}</button>
@@ -515,6 +542,14 @@
   #wld-felispace-{{ section.id }} .wld-felispace-moneyback { text-align: center; font-size: 13px; color: #555; margin: 12px 0 0; }
   #wld-felispace-{{ section.id }} .wld-felispace-trust4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #ededed; }
   #wld-felispace-{{ section.id }} .wld-felispace-trust4__item { font-size: 12.5px; font-weight: 600; color: #444; }
+
+  /* HERO BUY-BOX MINI VIDEOS */
+  #wld-felispace-{{ section.id }} .wld-felispace-herovids { margin-top: 18px; padding-top: 16px; border-top: 1px solid #ededed; }
+  #wld-felispace-{{ section.id }} .wld-felispace-herovids__title { font-weight: 700; font-size: 14px; text-align: center; margin: 0 0 12px; color: var(--wld-heading); }
+  #wld-felispace-{{ section.id }} .wld-felispace-herovids__row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid--mini { aspect-ratio: 9/14; border-radius: 12px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid--mini .wld-felispace-vid__play { width: 40px; height: 40px; font-size: 14px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-vid--mini .wld-felispace-vid__cap { left: 8px; bottom: 8px; font-size: 11px; }
 
   /* BANDS */
   #wld-felispace-{{ section.id }} .wld-felispace-band { padding: 56px 20px; }
@@ -885,6 +920,7 @@
     { "type": "text", "id": "buy_now_text", "label": "Primary button (Buy now)", "default": "BUY IT NOW — FREE SHIPPING" },
     { "type": "text", "id": "cta_text", "label": "Secondary button", "default": "Add to cart" },
     { "type": "text", "id": "moneyback_text", "label": "Money-back line", "default": "30-day money-back guarantee — love it or your money back" },
+    { "type": "text", "id": "hero_video_title", "label": "Mini-videos title (under Add to cart)", "default": "See it in action" },
 
     { "type": "header", "content": "✓ Trust badges" },
     { "type": "text", "id": "badge_1", "label": "Badge 1", "default": "🚚 Free shipping" },
@@ -960,6 +996,15 @@
       ]
     },
     {
+      "type": "hero_video",
+      "name": "▶️ Buy-box mini video (under Add to cart)",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Video (Shopify mp4)" },
+        { "type": "image_picker", "id": "poster", "label": "Cover image" },
+        { "type": "text", "id": "caption", "label": "Caption" }
+      ]
+    },
+    {
       "type": "faq",
       "name": "❓ FAQ question",
       "settings": [
@@ -983,6 +1028,9 @@
     {
       "name": "WLD — Felispace Landing",
       "blocks": [
+        { "type": "hero_video", "settings": { "caption": "" } },
+        { "type": "hero_video", "settings": { "caption": "" } },
+        { "type": "hero_video", "settings": { "caption": "" } },
         { "type": "video", "settings": { "caption": "@cat_mum_uk" } },
         { "type": "video", "settings": { "caption": "@leo_the_cat" } },
         { "type": "video", "settings": { "caption": "@cosy_kittens" } },

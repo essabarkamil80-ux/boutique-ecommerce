@@ -261,6 +261,29 @@
       {%- else -%}
         <button type="button" class="wld-felispace-cta is-disabled" disabled>{{ section.settings.cta_text }}</button>
       {%- endif -%}
+
+      {%- if section.settings.show_iconrow -%}
+      <div class="wld-felispace-iconrow">
+        <div class="wld-felispace-iconrow__item"><span class="wld-felispace-iconrow__ico">{{ section.settings.icon_1_emoji }}</span><span class="wld-felispace-iconrow__txt">{{ section.settings.icon_1_text }}</span></div>
+        <div class="wld-felispace-iconrow__item"><span class="wld-felispace-iconrow__ico">{{ section.settings.icon_2_emoji }}</span><span class="wld-felispace-iconrow__txt">{{ section.settings.icon_2_text }}</span></div>
+        <div class="wld-felispace-iconrow__item"><span class="wld-felispace-iconrow__ico">{{ section.settings.icon_3_emoji }}</span><span class="wld-felispace-iconrow__txt">{{ section.settings.icon_3_text }}</span></div>
+      </div>
+      {%- endif -%}
+
+      {%- assign acc_count = 0 -%}
+      {%- for block in section.blocks -%}{%- if block.type == 'bb_accordion' -%}{%- assign acc_count = acc_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+      {%- if acc_count > 0 -%}
+      <div class="wld-felispace-bbacc" data-faq>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'bb_accordion' -%}
+            <div class="wld-felispace-faq__item" {{ block.shopify_attributes }}>
+              <button type="button" class="wld-felispace-faq__q" data-faq-q>{{ block.settings.title }}<span class="wld-felispace-faq__icon">+</span></button>
+              <div class="wld-felispace-faq__a">{{ block.settings.content }}</div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
     </div>
   </div>
 
@@ -567,6 +590,11 @@
   #wld-felispace-{{ section.id }} .wld-felispace-shipbar__left { display: flex; align-items: center; gap: 8px; }
   #wld-felispace-{{ section.id }} .wld-felispace-shipbar__dot { width: 9px; height: 9px; border-radius: 50%; background: #2fb344; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(47,179,68,.18); }
   #wld-felispace-{{ section.id }} .wld-felispace-shipbar__right { display: flex; align-items: center; gap: 5px; white-space: nowrap; font-weight: 700; }
+  #wld-felispace-{{ section.id }} .wld-felispace-iconrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 22px; padding-top: 22px; border-top: 1px solid #ededed; text-align: center; }
+  #wld-felispace-{{ section.id }} .wld-felispace-iconrow__item { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-iconrow__ico { font-size: 27px; line-height: 1; }
+  #wld-felispace-{{ section.id }} .wld-felispace-iconrow__txt { font-size: 11.5px; font-weight: 600; color: #444; line-height: 1.3; }
+  #wld-felispace-{{ section.id }} .wld-felispace-bbacc { margin-top: 20px; }
   #wld-felispace-{{ section.id }} .wld-felispace-moneyback { text-align: center; font-size: 13px; color: #555; margin: 12px 0 0; }
   #wld-felispace-{{ section.id }} .wld-felispace-trust4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #ededed; }
   #wld-felispace-{{ section.id }} .wld-felispace-trust4__item { font-size: 12.5px; font-weight: 600; color: #444; }
@@ -958,6 +986,16 @@
     { "type": "text", "id": "ship_label", "label": "Left text (before date)", "default": "Ships by" },
     { "type": "text", "id": "ship_days", "label": "Ships in X days (auto date)", "default": "7" },
     { "type": "text", "id": "ship_free_text", "label": "Right text", "default": "FREE Shipping" },
+
+    { "type": "header", "content": "✅ Icon row (under mini-videos)" },
+    { "type": "checkbox", "id": "show_iconrow", "label": "Show icon row", "default": true },
+    { "type": "text", "id": "icon_1_emoji", "label": "Icon 1 emoji", "default": "🚚" },
+    { "type": "text", "id": "icon_1_text", "label": "Icon 1 text", "default": "Free UK delivery in 1 week" },
+    { "type": "text", "id": "icon_2_emoji", "label": "Icon 2 emoji", "default": "🛡️" },
+    { "type": "text", "id": "icon_2_text", "label": "Icon 2 text", "default": "30-day money-back guarantee" },
+    { "type": "text", "id": "icon_3_emoji", "label": "Icon 3 emoji", "default": "😌" },
+    { "type": "text", "id": "icon_3_text", "label": "Icon 3 text", "default": "Calms anxious cats" },
+    { "type": "paragraph", "content": "Accordion rows below the icon row: add \"▾ Buy-box accordion\" blocks." },
     { "type": "text", "id": "hero_video_title", "label": "Mini-videos title (under Add to cart)", "default": "See it in action" },
 
     { "type": "header", "content": "🔤 Buy-zone font (bundle + buttons)" },
@@ -1048,6 +1086,14 @@
       ]
     },
     {
+      "type": "bb_accordion",
+      "name": "▾ Buy-box accordion",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Section title" },
+        { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Your text here.</p>" }
+      ]
+    },
+    {
       "type": "faq",
       "name": "❓ FAQ question",
       "settings": [
@@ -1074,6 +1120,10 @@
         { "type": "hero_video", "settings": { "caption": "" } },
         { "type": "hero_video", "settings": { "caption": "" } },
         { "type": "hero_video", "settings": { "caption": "" } },
+        { "type": "bb_accordion", "settings": { "title": "Why cats love it", "content": "<p>The tunnel shape taps into your cat's natural urge to hide and feel safe. Inside its cosy den, an anxious cat relaxes, sleeps better and scratches the felt instead of your sofa.</p>" } },
+        { "type": "bb_accordion", "settings": { "title": "What's included", "content": "<p>1× FeliSpace Calming Donut, plus your free gifts: the FeliSpa Brush™ (£19.90 value) and the exclusive anti-anxiety PDF guide (£14.90 value).</p>" } },
+        { "type": "bb_accordion", "settings": { "title": "30-day guarantee", "content": "<p>If your cat doesn't love it, send it back within 30 days for a full refund — no questions asked.</p>" } },
+        { "type": "bb_accordion", "settings": { "title": "Shipping & returns", "content": "<p>Free UK delivery in around 1 week, with tracking. Easy 14-day returns.</p>" } },
         { "type": "video", "settings": { "caption": "@cat_mum_uk" } },
         { "type": "video", "settings": { "caption": "@leo_the_cat" } },
         { "type": "video", "settings": { "caption": "@cosy_kittens" } },

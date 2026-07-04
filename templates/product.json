@@ -30,6 +30,34 @@
             "caption": ""
           }
         },
+        "bbacc-1": {
+          "type": "bb_accordion",
+          "settings": {
+            "title": "Why cats love it",
+            "content": "<p>The tunnel shape taps into your cat's natural urge to hide and feel safe. Inside its cosy den, an anxious cat relaxes, sleeps better and scratches the felt instead of your sofa.</p>"
+          }
+        },
+        "bbacc-2": {
+          "type": "bb_accordion",
+          "settings": {
+            "title": "What's included",
+            "content": "<p>1× FeliSpace Calming Donut, plus your free gifts: the FeliSpa Brush™ (£19.90 value) and the exclusive anti-anxiety PDF guide (£14.90 value).</p>"
+          }
+        },
+        "bbacc-3": {
+          "type": "bb_accordion",
+          "settings": {
+            "title": "30-day guarantee",
+            "content": "<p>If your cat doesn't love it, send it back within 30 days for a full refund — no questions asked.</p>"
+          }
+        },
+        "bbacc-4": {
+          "type": "bb_accordion",
+          "settings": {
+            "title": "Shipping & returns",
+            "content": "<p>Free UK delivery in around 1 week, with tracking. Easy 14-day returns.</p>"
+          }
+        },
         "video-1": {
           "type": "video",
           "settings": {
@@ -163,6 +191,10 @@
         "herovid-1",
         "herovid-2",
         "herovid-3",
+        "bbacc-1",
+        "bbacc-2",
+        "bbacc-3",
+        "bbacc-4",
         "video-1",
         "video-2",
         "video-3",

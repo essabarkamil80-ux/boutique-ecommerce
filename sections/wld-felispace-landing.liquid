@@ -189,10 +189,16 @@
                   {%- elsif cn contains 'green' or cn contains 'sage' -%}{%- assign cdot = '#9cbf8f' -%}
                   {%- elsif cn contains 'ginger' or cn contains 'orange' -%}{%- assign cdot = '#d98a4a' -%}
                   {%- endif -%}
+                  {%- assign img_key = 'color_img_' | append: forloop.index -%}
+                  {%- assign custom_img = section.settings[img_key] -%}
                   {%- assign swatch_img = blank -%}
-                  {%- for v in wld_product.variants -%}
-                    {%- if v.options[color_idx] == val and v.image != blank -%}{%- assign swatch_img = v.image -%}{%- break -%}{%- endif -%}
-                  {%- endfor -%}
+                  {%- if custom_img != blank -%}
+                    {%- assign swatch_img = custom_img -%}
+                  {%- else -%}
+                    {%- for v in wld_product.variants -%}
+                      {%- if v.options[color_idx] == val and v.image != blank -%}{%- assign swatch_img = v.image -%}{%- break -%}{%- endif -%}
+                    {%- endfor -%}
+                  {%- endif -%}
                   <button type="button" class="wld-felispace-swatch{% if swatch_img != blank %} has-img{% endif %}{% if val == opt.selected_value %} is-active{% endif %}" data-opt-value data-position="{{ opt.position }}" data-value="{{ val | escape }}" aria-label="{{ val | escape }}" title="{{ val | escape }}">
                     {%- if swatch_img != blank -%}
                       <img src="{{ swatch_img | image_url: width: 180 }}" alt="{{ val | escape }}" width="90" height="90" loading="lazy">
@@ -927,19 +933,13 @@
     { "type": "text", "id": "bullet_4", "label": "Bullet 4", "default": "💪 Sturdy tunnel that won't collapse" },
     { "type": "text", "id": "bullet_5", "label": "Bullet 5", "default": "🧼 Easy to clean — just vacuum" },
 
-    { "type": "header", "content": "🎨 Buy box — colours" },
-    { "type": "text", "id": "color_label", "label": "Colour label", "default": "Colour" },
-    { "type": "paragraph", "content": "Swatches are generated automatically from the product variants. The fields below are only used as a fallback if the product has no variants yet." },
-    { "type": "text", "id": "color_name_1", "label": "Colour 1 (fallback)", "default": "Black" },
-    { "type": "image_picker", "id": "color_img_1", "label": "Colour 1 image" },
-    { "type": "text", "id": "color_name_2", "label": "Colour 2 (fallback)", "default": "Grey" },
-    { "type": "image_picker", "id": "color_img_2", "label": "Colour 2 image" },
-    { "type": "text", "id": "color_name_3", "label": "Colour 3 (fallback)", "default": "Pink" },
-    { "type": "image_picker", "id": "color_img_3", "label": "Colour 3 image" },
-    { "type": "text", "id": "color_name_4", "label": "Colour 4 (fallback)", "default": "Blue" },
-    { "type": "image_picker", "id": "color_img_4", "label": "Colour 4 image" },
-    { "type": "text", "id": "color_name_5", "label": "Colour 5 (fallback)" },
-    { "type": "image_picker", "id": "color_img_5", "label": "Colour 5 image" },
+    { "type": "header", "content": "🎨 Colour tile images" },
+    { "type": "paragraph", "content": "Upload one image per colour tile, in the SAME order as they appear on the page (tile 1 = leftmost). Leave empty to show a plain colour square. These override the variant images." },
+    { "type": "image_picker", "id": "color_img_1", "label": "Tile 1 image (leftmost)" },
+    { "type": "image_picker", "id": "color_img_2", "label": "Tile 2 image" },
+    { "type": "image_picker", "id": "color_img_3", "label": "Tile 3 image" },
+    { "type": "image_picker", "id": "color_img_4", "label": "Tile 4 image" },
+    { "type": "image_picker", "id": "color_img_5", "label": "Tile 5 image" },
 
     { "type": "header", "content": "📏 Bigger size price uplift" },
     { "type": "paragraph", "content": "When a size variant whose name contains the keyword below is selected, all bundle prices shown go up by the % below. IMPORTANT: also set that variant's real price +20% in Shopify so checkout matches." },

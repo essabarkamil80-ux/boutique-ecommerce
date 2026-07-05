@@ -55,7 +55,7 @@
           "type": "bb_accordion",
           "settings": {
             "title": "Shipping & returns",
-            "content": "<p>Free UK delivery in around 1 week, with tracking. Easy 14-day returns.</p>"
+            "content": "<p>Free delivery in around 1 week, with tracking. Easy 14-day returns.</p>"
           }
         },
         "video-1": {
@@ -169,7 +169,7 @@
           "type": "faq",
           "settings": {
             "question": "What are the delivery times?",
-            "answer": "Free UK delivery in 3–7 working days, with a tracking email as soon as it ships."
+            "answer": "Free delivery in 3–7 working days, with a tracking email as soon as it ships."
           }
         },
         "faq-7": {
@@ -280,7 +280,7 @@
         "ship_free_text": "FREE Shipping",
         "show_iconrow": true,
         "icon_1_emoji": "🚚",
-        "icon_1_text": "Free UK delivery in 1 week",
+        "icon_1_text": "Free delivery in 1 week",
         "icon_2_emoji": "🛡️",
         "icon_2_text": "30-day money-back guarantee",
         "icon_3_emoji": "😌",

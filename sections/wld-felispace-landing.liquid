@@ -156,7 +156,7 @@
       </ul>
 
       {%- if wld_product != blank -%}
-      <form method="post" action="/cart/add" class="wld-felispace-buyform wld-felispace-card" data-buyform>
+      <form method="post" action="/cart/add" class="wld-felispace-buyform" data-buyform>
         <input type="hidden" name="id" value="{{ wld_default_variant.id }}" data-variant-input>
         <input type="hidden" name="quantity" value="2" data-qty-input>
 
@@ -172,7 +172,7 @@
           {%- assign opt_name = opt.name | downcase -%}
           {%- assign is_color = false -%}
           {%- if opt_name contains 'colour' or opt_name contains 'color' or opt_name contains 'couleur' -%}{%- assign is_color = true -%}{%- endif -%}
-          <div class="wld-felispace-field">
+          <div class="wld-felispace-field wld-felispace-field--sep">
             <label class="wld-felispace-field__label wld-felispace-field__label--bundle">Choose {{ opt.name }} <span class="wld-felispace-opt-selected" data-opt-selected="{{ opt.position }}">{{ opt.selected_value }}</span></label>
             {%- if is_color -%}
               <div class="wld-felispace-swatches" data-option-position="{{ opt.position }}">
@@ -212,7 +212,7 @@
           ]
         </script>
 
-        <div class="wld-felispace-field">
+        <div class="wld-felispace-field wld-felispace-field--sep">
           <label class="wld-felispace-field__label wld-felispace-field__label--bundle">{{ section.settings.bundle_label }}</label>
           {{ wld_tiers }}
         </div>
@@ -491,7 +491,8 @@
   #wld-felispace-{{ section.id }} .wld-felispace-buyform :not(h1):not(h2):not(h3):not(h4),
   #wld-felispace-{{ section.id }} .wld-felispace-buybox :not(h1):not(h2):not(h3):not(h4) { font-family: var(--wld-buy-font, var(--wld-font, 'Montserrat', sans-serif)); }
   #wld-felispace-{{ section.id }} .wld-felispace-card { border: 1px solid #e4e3dd; border-radius: 16px; padding: 22px; background: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.05); }
-  #wld-felispace-{{ section.id }} .wld-felispace-field { margin-bottom: 18px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-field { margin-bottom: 22px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-field--sep { border-top: 1px solid #e8e8e8; padding-top: 24px; margin-top: 4px; }
   #wld-felispace-{{ section.id }} .wld-felispace-field__head { display: flex; justify-content: space-between; align-items: center; }
   #wld-felispace-{{ section.id }} .wld-felispace-field__label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; }
   #wld-felispace-{{ section.id }} .wld-felispace-sizechart { font-size: 12px; color: var(--wld-primary); text-decoration: underline; cursor: pointer; }

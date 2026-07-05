@@ -173,7 +173,7 @@
           {%- assign is_color = false -%}
           {%- if opt_name contains 'colour' or opt_name contains 'color' or opt_name contains 'couleur' -%}{%- assign is_color = true -%}{%- endif -%}
           <div class="wld-felispace-field">
-            <label class="wld-felispace-field__label">{{ opt.name }}: <span class="wld-felispace-opt-selected" data-opt-selected="{{ opt.position }}">{{ opt.selected_value }}</span></label>
+            <label class="wld-felispace-field__label wld-felispace-field__label--bundle">Choose {{ opt.name }} <span class="wld-felispace-opt-selected" data-opt-selected="{{ opt.position }}">{{ opt.selected_value }}</span></label>
             {%- if is_color -%}
               <div class="wld-felispace-swatches" data-option-position="{{ opt.position }}">
                 {%- for val in opt.values -%}
@@ -535,14 +535,15 @@
   #wld-felispace-{{ section.id }} .wld-felispace-urgency__hot { color: #b23b2e; background: #ffe9e4; border-color: #f3b6ab; }
 
   #wld-felispace-{{ section.id }} .wld-felispace-swatches { display: flex; gap: 10px; flex-wrap: wrap; }
-  #wld-felispace-{{ section.id }} .wld-felispace-swatch { width: 46px; height: 46px; border-radius: 50%; border: 2px solid #e0e0e0; background: #fff; padding: 3px; cursor: pointer; overflow: hidden; transition: .15s; }
-  #wld-felispace-{{ section.id }} .wld-felispace-swatch img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-  #wld-felispace-{{ section.id }} .wld-felispace-swatch__dot { display: block; width: 100%; height: 100%; border-radius: 50%; border: 1px solid rgba(0,0,0,.08); }
+  #wld-felispace-{{ section.id }} .wld-felispace-swatch { width: 74px; height: 74px; border-radius: 14px; border: 2px solid #e2e2e2; background: #fff; padding: 4px; cursor: pointer; overflow: hidden; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-swatch img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-swatch__dot { display: block; width: 100%; height: 100%; border-radius: 10px; border: 1px solid rgba(0,0,0,.08); }
+  #wld-felispace-{{ section.id }} .wld-felispace-swatch:hover { border-color: #bdbdbd; }
   #wld-felispace-{{ section.id }} .wld-felispace-swatch.is-active { border-color: var(--wld-primary); box-shadow: 0 0 0 2px var(--wld-primary); }
-  #wld-felispace-{{ section.id }} .wld-felispace-color-selected,
-  #wld-felispace-{{ section.id }} .wld-felispace-opt-selected { font-weight: 700; }
+  #wld-felispace-{{ section.id }} .wld-felispace-opt-selected { font-weight: 600; text-transform: none; letter-spacing: 0; color: #666; margin-left: 4px; }
   #wld-felispace-{{ section.id }} .wld-felispace-optrow { display: flex; gap: 10px; flex-wrap: wrap; }
-  #wld-felispace-{{ section.id }} .wld-felispace-pill2 { flex: 1; min-width: 120px; padding: 12px 14px; border: 2px solid #e0e0e0; background: #fff; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 14px; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-pill2 { flex: 1; min-width: 110px; padding: 15px 14px; border: 2px solid #e2e2e2; background: #fff; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-pill2:hover { border-color: #bdbdbd; }
   #wld-felispace-{{ section.id }} .wld-felispace-pill2.is-active { border-color: var(--wld-primary); background: var(--wld-accent2); }
 
   #wld-felispace-{{ section.id }} .wld-felispace-field__label--bundle { text-transform: uppercase; letter-spacing: .6px; font-size: 16px; font-weight: 800; color: var(--wld-heading); margin-bottom: 12px; }

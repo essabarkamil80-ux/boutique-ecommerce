@@ -175,6 +175,7 @@
           <div class="wld-felispace-field wld-felispace-field--sep">
             <label class="wld-felispace-field__label wld-felispace-field__label--bundle">Choose {{ opt.name }} <span class="wld-felispace-opt-selected" data-opt-selected="{{ opt.position }}">{{ opt.selected_value }}</span></label>
             {%- if is_color -%}
+              {%- assign color_idx = opt.position | minus: 1 -%}
               <div class="wld-felispace-swatches" data-option-position="{{ opt.position }}">
                 {%- for val in opt.values -%}
                   {%- assign cn = val | downcase -%}
@@ -188,8 +189,16 @@
                   {%- elsif cn contains 'green' or cn contains 'sage' -%}{%- assign cdot = '#9cbf8f' -%}
                   {%- elsif cn contains 'ginger' or cn contains 'orange' -%}{%- assign cdot = '#d98a4a' -%}
                   {%- endif -%}
-                  <button type="button" class="wld-felispace-swatch{% if val == opt.selected_value %} is-active{% endif %}" data-opt-value data-position="{{ opt.position }}" data-value="{{ val | escape }}" aria-label="{{ val | escape }}" title="{{ val | escape }}">
-                    <span class="wld-felispace-swatch__dot" style="background: {{ cdot }};"></span>
+                  {%- assign swatch_img = blank -%}
+                  {%- for v in wld_product.variants -%}
+                    {%- if v.options[color_idx] == val and v.image != blank -%}{%- assign swatch_img = v.image -%}{%- break -%}{%- endif -%}
+                  {%- endfor -%}
+                  <button type="button" class="wld-felispace-swatch{% if swatch_img != blank %} has-img{% endif %}{% if val == opt.selected_value %} is-active{% endif %}" data-opt-value data-position="{{ opt.position }}" data-value="{{ val | escape }}" aria-label="{{ val | escape }}" title="{{ val | escape }}">
+                    {%- if swatch_img != blank -%}
+                      <img src="{{ swatch_img | image_url: width: 180 }}" alt="{{ val | escape }}" width="90" height="90" loading="lazy">
+                    {%- else -%}
+                      <span class="wld-felispace-swatch__dot" style="background: {{ cdot }};"></span>
+                    {%- endif -%}
                   </button>
                 {%- endfor -%}
               </div>

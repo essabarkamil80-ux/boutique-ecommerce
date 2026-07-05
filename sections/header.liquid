@@ -71,11 +71,13 @@
     }
   }
 
-  /* Felispace: labelled Menu / Cart like Infinity Hoop */
-  .header__icon--labelled { width: auto; display: inline-flex; align-items: center; gap: 8px; padding: 4px 6px; }
-  .header__icon-label { font-size: 16px; font-weight: 600; letter-spacing: .2px; line-height: 1; }
+  /* Felispace: compact, refined Menu / Cart like Infinity Hoop */
+  .header__icon--labelled { width: auto; min-width: 0; height: auto; min-height: 0; display: inline-flex; align-items: center; gap: 6px; padding: 4px 4px; }
+  .header__icon-label { font-size: 14px; font-weight: 600; letter-spacing: .2px; line-height: 1; }
   .header__icon--menu.header__icon--labelled .header__menu-icons { display: inline-flex; }
+  .header__icon--menu.header__icon--labelled svg { width: 17px; height: 17px; }
   .header__trolley { display: inline-flex; align-items: center; }
+  .header__trolley svg { width: 19px; height: 19px; }
   @media screen and (max-width: 749px) {
     .header__icon-label { display: none; }
   }
@@ -252,7 +254,7 @@
 
       <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart header__icon--labelled link focus-inset" id="cart-icon-bubble">
         <span class="svg-wrapper header__trolley">
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="9" cy="21" r="1.4"></circle>
             <circle cx="18" cy="21" r="1.4"></circle>
             <path d="M2 3h3l2.4 12.4a1.5 1.5 0 0 0 1.5 1.2h8.2a1.5 1.5 0 0 0 1.5-1.2L21.5 7H6"></path>

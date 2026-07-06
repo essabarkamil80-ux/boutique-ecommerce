@@ -423,30 +423,49 @@
     </div>
   </div>
 
-  {% comment %} ================= US VS. ================= {% endcomment %}
+  {% comment %} ================= HOW WE COMPARE (premium) ================= {% endcomment %}
   <div class="wld-felispace-band wld-felispace-band--cream">
     <h2 class="wld-felispace-h2">{{ section.settings.compare_title }}</h2>
-    <div class="wld-felispace-compare">
-      <div class="wld-felispace-compare__tabs" data-compare-tabs>
-        <button type="button" class="wld-felispace-tab is-active" data-tab>{{ section.settings.compare_tab_1 }}</button>
-        <button type="button" class="wld-felispace-tab" data-tab>{{ section.settings.compare_tab_2 }}</button>
-        <button type="button" class="wld-felispace-tab" data-tab>{{ section.settings.compare_tab_3 }}</button>
+    {%- assign vs_count = 0 -%}
+    {%- for b in section.blocks -%}{%- if b.type == 'vs' -%}{%- assign vs_count = vs_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+    {%- if vs_count > 0 -%}
+    <div class="wld-felispace-cmp" data-cmp>
+      <div class="wld-felispace-cmp__tabs" data-cmp-tabs>
+        {%- assign ti = 0 -%}
+        {%- for block in section.blocks -%}{%- if block.type == 'vs' -%}{%- assign ti = ti | plus: 1 -%}
+          <button type="button" class="wld-felispace-cmp__tab{% if ti == 1 %} is-active{% endif %}" data-cmp-tab="{{ ti }}">{{ block.settings.tab_label }}</button>
+        {%- endif -%}{%- endfor -%}
       </div>
-      <table class="wld-felispace-table">
-        <thead>
-          <tr><th></th><th class="wld-felispace-table__ours">{{ section.settings.compare_ours }}</th><th class="wld-felispace-table__them" data-them-label>{{ section.settings.compare_tab_1 }}</th></tr>
-        </thead>
-        <tbody>
-          {%- assign rows = section.settings.compare_rows | newline_to_br | split: '<br />' -%}
-          {%- for row in rows -%}
-            {%- assign r = row | strip -%}
-            {%- if r != blank -%}
-              <tr><td>{{ r }}</td><td class="wld-felispace-yes">✓</td><td class="wld-felispace-no">✕</td></tr>
-            {%- endif -%}
-          {%- endfor -%}
-        </tbody>
-      </table>
+      {%- assign pi = 0 -%}
+      {%- for block in section.blocks -%}{%- if block.type == 'vs' -%}{%- assign pi = pi | plus: 1 -%}
+      <div class="wld-felispace-cmp__panel{% if pi == 1 %} is-active{% endif %}" data-cmp-panel="{{ pi }}" {{ block.shopify_attributes }}>
+        <div class="wld-felispace-cmp__grid">
+          <div class="wld-felispace-cmp__col wld-felispace-cmp__col--ours">
+            <div class="wld-felispace-cmp__head">
+              {%- if section.settings.compare_ours_image != blank -%}<img src="{{ section.settings.compare_ours_image | image_url: width: 320 }}" alt="" loading="lazy" width="160" height="160">{%- else -%}<div class="wld-felispace-cmp__ph">🐾</div>{%- endif -%}
+              <span class="wld-felispace-cmp__label">{{ section.settings.compare_ours_label }}</span>
+            </div>
+            {%- assign ours = block.settings.ours_rows | newline_to_br | split: '<br />' -%}
+            {%- for r in ours -%}{%- assign rr = r | strip -%}{%- if rr != blank -%}{%- assign p = rr | split: '|' -%}
+              <div class="wld-felispace-cmp__row"><span class="wld-felispace-cmp__ic wld-felispace-cmp__ic--yes">✓</span><div class="wld-felispace-cmp__txt"><strong>{{ p[0] | strip }}</strong>{%- if p[1] -%}<span>{{ p[1] | strip }}</span>{%- endif -%}</div></div>
+            {%- endif -%}{%- endfor -%}
+          </div>
+          <div class="wld-felispace-cmp__col wld-felispace-cmp__col--them">
+            <div class="wld-felispace-cmp__head">
+              {%- if block.settings.them_image != blank -%}<img src="{{ block.settings.them_image | image_url: width: 320 }}" alt="" loading="lazy" width="160" height="160">{%- else -%}<div class="wld-felispace-cmp__ph wld-felispace-cmp__ph--them">✕</div>{%- endif -%}
+              <span class="wld-felispace-cmp__label">{{ block.settings.them_label }}</span>
+            </div>
+            {%- assign them = block.settings.them_rows | newline_to_br | split: '<br />' -%}
+            {%- for r in them -%}{%- assign rr = r | strip -%}{%- if rr != blank -%}{%- assign p = rr | split: '|' -%}
+              <div class="wld-felispace-cmp__row"><span class="wld-felispace-cmp__ic wld-felispace-cmp__ic--no">✕</span><div class="wld-felispace-cmp__txt"><strong>{{ p[0] | strip }}</strong>{%- if p[1] -%}<span>{{ p[1] | strip }}</span>{%- endif -%}</div></div>
+            {%- endif -%}{%- endfor -%}
+          </div>
+        </div>
+      </div>
+      {%- endif -%}{%- endfor -%}
+      {%- if wld_product != blank -%}<a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta wld-felispace-cta--inline">{{ section.settings.shop_now_text }}</a>{%- endif -%}
     </div>
+    {%- endif -%}
   </div>
 
   {% comment %} ================= FAQ ================= {% endcomment %}
@@ -690,17 +709,32 @@
   #wld-felispace-{{ section.id }} .wld-felispace-benefit h3 { font-size: 19px; color: var(--wld-heading); }
   #wld-felispace-{{ section.id }} .wld-felispace-benefit p { font-size: 13px; color: #3a3a3a; margin: 0; }
 
-  /* COMPARE */
-  #wld-felispace-{{ section.id }} .wld-felispace-compare { max-width: 760px; margin: 0 auto; }
-  #wld-felispace-{{ section.id }} .wld-felispace-compare__tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-  #wld-felispace-{{ section.id }} .wld-felispace-tab { padding: 8px 18px; border-radius: 999px; border: 1.5px solid #cfcfcf; background: #fff; cursor: pointer; font-weight: 600; font-size: 13px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-tab.is-active { background: var(--wld-primary); color: #fff; border-color: var(--wld-primary); }
-  #wld-felispace-{{ section.id }} .wld-felispace-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; }
-  #wld-felispace-{{ section.id }} .wld-felispace-table th, #wld-felispace-{{ section.id }} .wld-felispace-table td { padding: 14px 16px; text-align: center; border-bottom: 1px solid #eee; font-size: 14px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-table td:first-child { text-align: left; font-weight: 600; }
-  #wld-felispace-{{ section.id }} .wld-felispace-table__ours { background: var(--wld-primary); color: #fff; }
-  #wld-felispace-{{ section.id }} .wld-felispace-yes { color: var(--wld-primary); font-weight: 800; }
-  #wld-felispace-{{ section.id }} .wld-felispace-no { color: #c33; font-weight: 800; }
+  /* COMPARE (premium two-column) */
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp { max-width: 900px; margin: 0 auto; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 34px; flex-wrap: wrap; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__tab { padding: 10px 20px; border-radius: 999px; border: 2px solid #d8d8d0; background: #fff; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; color: #555; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__tab.is-active { background: var(--wld-primary); color: #fff; border-color: var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__panel { display: none; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__panel.is-active { display: block; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; background: #fff; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,.05); }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__col--them { opacity: .92; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__head { text-align: center; margin-bottom: 20px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__head img { width: 120px; height: 120px; object-fit: cover; border-radius: 16px; margin: 0 auto 12px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__ph { width: 120px; height: 120px; border-radius: 16px; margin: 0 auto 12px; background: var(--wld-accent); display: flex; align-items: center; justify-content: center; font-size: 46px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__ph--them { background: #f1f1f1; color: #c33; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__label { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 20px; text-transform: uppercase; letter-spacing: .3px; color: #141414; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__row { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; border-top: 1px solid #eee; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__ic { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__ic--yes { background: var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__ic--no { background: #e0605a; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__txt { display: flex; flex-direction: column; gap: 2px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__txt strong { font-size: 15px; color: #141414; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__txt span { font-size: 13px; color: #666; line-height: 1.4; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp .wld-felispace-cta--inline { margin-top: 34px; }
+  @media (max-width: 620px) {
+    #wld-felispace-{{ section.id }} .wld-felispace-cmp__grid { grid-template-columns: 1fr; gap: 26px; padding: 22px 18px; }
+    #wld-felispace-{{ section.id }} .wld-felispace-cmp__head img, #wld-felispace-{{ section.id }} .wld-felispace-cmp__ph { width: 90px; height: 90px; }
+  }
 
   #wld-felispace-{{ section.id }} .wld-felispace-buybox { max-width: 560px; margin: 0 auto; }
   #wld-felispace-{{ section.id }} .wld-felispace-bundles--wide { margin-bottom: 16px; }
@@ -918,13 +952,14 @@
         });
       });
 
-      root.querySelectorAll('[data-compare-tabs]').forEach(function (tabs) {
-        var label = root.querySelector('[data-them-label]');
-        tabs.querySelectorAll('[data-tab]').forEach(function (tab) {
+      root.querySelectorAll('[data-cmp]').forEach(function (cmp) {
+        var tabs = cmp.querySelectorAll('[data-cmp-tab]');
+        var panels = cmp.querySelectorAll('[data-cmp-panel]');
+        tabs.forEach(function (tab) {
           tab.addEventListener('click', function () {
-            tabs.querySelectorAll('[data-tab]').forEach(function (t) { t.classList.remove('is-active'); });
-            tab.classList.add('is-active');
-            if (label) { label.textContent = tab.textContent; }
+            var id = tab.getAttribute('data-cmp-tab');
+            tabs.forEach(function (t) { t.classList.toggle('is-active', t === tab); });
+            panels.forEach(function (p) { p.classList.toggle('is-active', p.getAttribute('data-cmp-panel') === id); });
           });
         });
       });
@@ -1107,13 +1142,11 @@
     { "type": "text", "id": "benefit_3_title", "label": "Benefit 3 title", "default": "Velvet-soft material" },
     { "type": "textarea", "id": "benefit_3_text", "label": "Benefit 3 text", "default": "As soft as velvet and lovely to the touch — perfect for even the fussiest of cats." },
 
-    { "type": "header", "content": "⚔️ Comparison" },
-    { "type": "text", "id": "compare_title", "label": "Title", "default": "Us vs. the others" },
-    { "type": "text", "id": "compare_tab_1", "label": "Tab 1", "default": "Wool caves" },
-    { "type": "text", "id": "compare_tab_2", "label": "Tab 2", "default": "Tunnels" },
-    { "type": "text", "id": "compare_tab_3", "label": "Tab 3", "default": "Other beds" },
-    { "type": "text", "id": "compare_ours", "label": "Our column", "default": "Felispace" },
-    { "type": "textarea", "id": "compare_rows", "label": "Rows (one per line)", "default": "Never collapses\nEffective scratcher\nDesigned for multiple cats\nSuper-sturdy tunnel\nEasy to clean" },
+    { "type": "header", "content": "⚔️ How we compare" },
+    { "type": "text", "id": "compare_title", "label": "Title", "default": "How we compare" },
+    { "type": "text", "id": "compare_ours_label", "label": "Our column label", "default": "FeliSpace" },
+    { "type": "image_picker", "id": "compare_ours_image", "label": "Our column image" },
+    { "type": "paragraph", "content": "Add one \"⚔️ Comparison tab\" block per competitor. In each block, write rows as \"Title | short description\" (one per line)." },
 
     { "type": "header", "content": "🛒 Secondary buy box" },
     { "type": "text", "id": "buybox_title", "label": "Title", "default": "Get your Felispace Cave today" },
@@ -1156,6 +1189,17 @@
       ]
     },
     {
+      "type": "vs",
+      "name": "⚔️ Comparison tab",
+      "settings": [
+        { "type": "text", "id": "tab_label", "label": "Tab label", "default": "vs Cheap Tunnels" },
+        { "type": "text", "id": "them_label", "label": "Competitor name", "default": "Cheap Tunnels" },
+        { "type": "image_picker", "id": "them_image", "label": "Competitor image" },
+        { "type": "textarea", "id": "ours_rows", "label": "FeliSpace rows (Title | description)", "default": "Calms anxious cats | thick felt muffles noise\nSturdy, won't collapse | keeps its shape for years\nDoubles as a scratcher | saves your furniture\nPremium soft felt | gentle, warm, natural\n30-day guarantee | love it or your money back" },
+        { "type": "textarea", "id": "them_rows", "label": "Competitor rows (Title | description)", "default": "Noisy, flimsy material | stresses shy cats\nCollapses under weight | loses shape fast\nNo scratcher | cats ignore it\nCheap rough fabric | uncomfortable\nNo guarantee | you're on your own" }
+      ]
+    },
+    {
       "type": "faq",
       "name": "❓ FAQ question",
       "settings": [
@@ -1182,6 +1226,9 @@
         { "type": "hero_video", "settings": { "caption": "" } },
         { "type": "hero_video", "settings": { "caption": "" } },
         { "type": "hero_video", "settings": { "caption": "" } },
+        { "type": "vs", "settings": { "tab_label": "vs Cheap Tunnels", "them_label": "Cheap Tunnels" } },
+        { "type": "vs", "settings": { "tab_label": "vs Regular Cat Beds", "them_label": "Regular Cat Beds", "ours_rows": "Enclosed, secure den | anxious cats feel safe\nBuilt-in scratcher | protects your sofa\n2-in-1 bed + tunnel | play and nap\nHolds its shape | won't flatten\n30-day guarantee | risk-free", "them_rows": "Open, exposed bed | shy cats stay away\nNo scratcher | furniture still at risk\nJust a bed | nothing to explore\nFlattens over time | looks worn fast\nOften no guarantee | you take the risk" } },
+        { "type": "vs", "settings": { "tab_label": "vs Cardboard Boxes", "them_label": "Cardboard Boxes", "ours_rows": "Premium felt, lasts years | a real piece of furniture\nWarm & cosy | keeps your cat snug\nEasy to clean | just vacuum\nLooks great at home | you'll want it out\n30-day guarantee | love it or refund", "them_rows": "Falls apart in days | back to square one\nCold and flimsy | not cosy\nGets dirty fast | can't clean it\nLooks messy | you hide it away\nNo guarantee | it's just a box" } },
         { "type": "bb_accordion", "settings": { "title": "Why cats love it", "content": "<p>The tunnel shape taps into your cat's natural urge to hide and feel safe. Inside its cosy den, an anxious cat relaxes, sleeps better and scratches the felt instead of your sofa.</p>" } },
         { "type": "bb_accordion", "settings": { "title": "What's included", "content": "<p>1× FeliSpace Calming Donut, plus your free gifts: the FeliSpa Brush™ ($19.90 value) and the exclusive anti-anxiety PDF guide ($14.90 value).</p>" } },
         { "type": "bb_accordion", "settings": { "title": "30-day guarantee", "content": "<p>If your cat doesn't love it, send it back within 30 days for a full refund — no questions asked.</p>" } },

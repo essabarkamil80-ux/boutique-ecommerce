@@ -131,6 +131,31 @@
             "author": "Emily R. — Verified Customer"
           }
         },
+        "vs-1": {
+          "type": "vs",
+          "settings": {
+            "tab_label": "vs Cheap Tunnels",
+            "them_label": "Cheap Tunnels"
+          }
+        },
+        "vs-2": {
+          "type": "vs",
+          "settings": {
+            "tab_label": "vs Regular Cat Beds",
+            "them_label": "Regular Cat Beds",
+            "ours_rows": "Enclosed, secure den | anxious cats feel safe\nBuilt-in scratcher | protects your sofa\n2-in-1 bed + tunnel | play and nap\nHolds its shape | won't flatten\n30-day guarantee | risk-free",
+            "them_rows": "Open, exposed bed | shy cats stay away\nNo scratcher | furniture still at risk\nJust a bed | nothing to explore\nFlattens over time | looks worn fast\nOften no guarantee | you take the risk"
+          }
+        },
+        "vs-3": {
+          "type": "vs",
+          "settings": {
+            "tab_label": "vs Cardboard Boxes",
+            "them_label": "Cardboard Boxes",
+            "ours_rows": "Premium felt, lasts years | a real piece of furniture\nWarm & cosy | keeps your cat snug\nEasy to clean | just vacuum\nLooks great at home | you'll want it out\n30-day guarantee | love it or refund",
+            "them_rows": "Falls apart in days | back to square one\nCold and flimsy | not cosy\nGets dirty fast | can't clean it\nLooks messy | you hide it away\nNo guarantee | it's just a box"
+          }
+        },
         "faq-1": {
           "type": "faq",
           "settings": {
@@ -205,6 +230,9 @@
         "review-4",
         "review-5",
         "review-6",
+        "vs-1",
+        "vs-2",
+        "vs-3",
         "faq-1",
         "faq-2",
         "faq-3",

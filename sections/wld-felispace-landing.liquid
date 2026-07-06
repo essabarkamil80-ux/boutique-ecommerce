@@ -156,7 +156,7 @@
       </ul>
 
       {%- if wld_product != blank -%}
-      <form method="post" action="/cart/add" class="wld-felispace-buyform" data-buyform>
+      <form method="post" action="/cart/add" id="wld-felispace-buybox-{{ section.id }}" class="wld-felispace-buyform" data-buyform>
         <input type="hidden" name="id" value="{{ wld_default_variant.id }}" data-variant-input>
         <input type="hidden" name="quantity" value="2" data-qty-input>
 
@@ -448,23 +448,6 @@
       </table>
     </div>
   </div>
-
-  {% comment %} ================= BUY BOX 2 ================= {% endcomment %}
-  {%- if wld_product != blank -%}
-  <div id="wld-felispace-buybox-{{ section.id }}" class="wld-felispace-band wld-felispace-band--accent">
-    <h2 class="wld-felispace-h2">{{ section.settings.buybox_title }}</h2>
-    <form method="post" action="/cart/add" class="wld-felispace-buybox wld-felispace-card" data-buyform>
-      <input type="hidden" name="id" value="{{ wld_default_variant.id }}" data-variant-input>
-      <input type="hidden" name="quantity" value="2" data-qty-input>
-      <label class="wld-felispace-field__label wld-felispace-field__label--bundle">{{ section.settings.bundle_label }}</label>
-      {{ wld_tiers }}
-      <button type="button" class="wld-felispace-cta wld-felispace-cta--buynow" data-buynow>{{ section.settings.buy_now_text }}</button>
-      <button type="submit" class="wld-felispace-cta wld-felispace-cta--secondary" data-addcart>{{ section.settings.cta_text }}</button>
-      {{ wld_shipbar }}
-      <p class="wld-felispace-moneyback">🛡️ {{ section.settings.moneyback_text }}</p>
-    </form>
-  </div>
-  {%- endif -%}
 
   {% comment %} ================= FAQ ================= {% endcomment %}
   <div class="wld-felispace-band wld-felispace-band--cream">

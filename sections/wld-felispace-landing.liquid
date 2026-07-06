@@ -347,6 +347,41 @@
     </div>
   </div>
 
+  {% comment %} ================= WHY CHOOSE ================= {% endcomment %}
+  <div class="wld-felispace-band wld-felispace-band--accent">
+    <h2 class="wld-felispace-h2">{{ section.settings.why_title }}</h2>
+    <div class="wld-felispace-why">
+      <div class="wld-felispace-why__col">
+        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">🛡️</span><div><h3>{{ section.settings.why_1_title }}</h3><p>{{ section.settings.why_1_text }}</p></div></div>
+        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">🌿</span><div><h3>{{ section.settings.why_2_title }}</h3><p>{{ section.settings.why_2_text }}</p></div></div>
+      </div>
+      <div class="wld-felispace-why__media">
+        {%- if section.settings.why_image != blank -%}
+          <img src="{{ section.settings.why_image | image_url: width: 700 }}" alt="" loading="lazy" width="700" height="700">
+        {%- else -%}
+          {{ 'product-2' | placeholder_svg_tag: 'wld-felispace-placeholder' }}
+        {%- endif -%}
+      </div>
+      <div class="wld-felispace-why__col">
+        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">💪</span><div><h3>{{ section.settings.why_3_title }}</h3><p>{{ section.settings.why_3_text }}</p></div></div>
+        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">🧼</span><div><h3>{{ section.settings.why_4_title }}</h3><p>{{ section.settings.why_4_text }}</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} ================= BENEFITS ================= {% endcomment %}
+  <div class="wld-felispace-band wld-felispace-band--dark">
+    <h2 class="wld-felispace-h2 wld-felispace-h2--light">{{ section.settings.benefits_title }}</h2>
+    <div class="wld-felispace-benefits">
+      <div class="wld-felispace-benefit"><span class="wld-felispace-benefit__icon">😴</span><h3>{{ section.settings.benefit_1_title }}</h3><p>{{ section.settings.benefit_1_text }}</p></div>
+      <div class="wld-felispace-benefit"><span class="wld-felispace-benefit__icon">🐾</span><h3>{{ section.settings.benefit_2_title }}</h3><p>{{ section.settings.benefit_2_text }}</p></div>
+      <div class="wld-felispace-benefit"><span class="wld-felispace-benefit__icon">🧶</span><h3>{{ section.settings.benefit_3_title }}</h3><p>{{ section.settings.benefit_3_text }}</p></div>
+    </div>
+    {%- if wld_product != blank -%}
+      <a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta wld-felispace-cta--inline">{{ section.settings.shop_now_text }}</a>
+    {%- endif -%}
+  </div>
+
   {% comment %} ================= REVIEWS (slider — Cattasaurus) ================= {% endcomment %}
   <div class="wld-felispace-band wld-felispace-band--dark">
     <h2 class="wld-felispace-h2 wld-felispace-h2--light">{{ section.settings.reviews_title }}</h2>
@@ -399,41 +434,6 @@
         <a href="{{ section.settings.review_cta_link | default: '#' }}" class="wld-felispace-revwrite">✍️ {{ section.settings.review_cta_text }}</a>
       {%- endif -%}
     </div>
-  </div>
-
-  {% comment %} ================= WHY CHOOSE ================= {% endcomment %}
-  <div class="wld-felispace-band wld-felispace-band--accent">
-    <h2 class="wld-felispace-h2">{{ section.settings.why_title }}</h2>
-    <div class="wld-felispace-why">
-      <div class="wld-felispace-why__col">
-        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">🛡️</span><div><h3>{{ section.settings.why_1_title }}</h3><p>{{ section.settings.why_1_text }}</p></div></div>
-        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">🌿</span><div><h3>{{ section.settings.why_2_title }}</h3><p>{{ section.settings.why_2_text }}</p></div></div>
-      </div>
-      <div class="wld-felispace-why__media">
-        {%- if section.settings.why_image != blank -%}
-          <img src="{{ section.settings.why_image | image_url: width: 700 }}" alt="" loading="lazy" width="700" height="700">
-        {%- else -%}
-          {{ 'product-2' | placeholder_svg_tag: 'wld-felispace-placeholder' }}
-        {%- endif -%}
-      </div>
-      <div class="wld-felispace-why__col">
-        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">💪</span><div><h3>{{ section.settings.why_3_title }}</h3><p>{{ section.settings.why_3_text }}</p></div></div>
-        <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">🧼</span><div><h3>{{ section.settings.why_4_title }}</h3><p>{{ section.settings.why_4_text }}</p></div></div>
-      </div>
-    </div>
-  </div>
-
-  {% comment %} ================= BENEFITS ================= {% endcomment %}
-  <div class="wld-felispace-band wld-felispace-band--dark">
-    <h2 class="wld-felispace-h2 wld-felispace-h2--light">{{ section.settings.benefits_title }}</h2>
-    <div class="wld-felispace-benefits">
-      <div class="wld-felispace-benefit"><span class="wld-felispace-benefit__icon">😴</span><h3>{{ section.settings.benefit_1_title }}</h3><p>{{ section.settings.benefit_1_text }}</p></div>
-      <div class="wld-felispace-benefit"><span class="wld-felispace-benefit__icon">🐾</span><h3>{{ section.settings.benefit_2_title }}</h3><p>{{ section.settings.benefit_2_text }}</p></div>
-      <div class="wld-felispace-benefit"><span class="wld-felispace-benefit__icon">🧶</span><h3>{{ section.settings.benefit_3_title }}</h3><p>{{ section.settings.benefit_3_text }}</p></div>
-    </div>
-    {%- if wld_product != blank -%}
-      <a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta wld-felispace-cta--inline">{{ section.settings.shop_now_text }}</a>
-    {%- endif -%}
   </div>
 
   {% comment %} ================= US VS. ================= {% endcomment %}

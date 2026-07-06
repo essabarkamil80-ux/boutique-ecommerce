@@ -347,6 +347,40 @@
     </div>
   </div>
 
+  {% comment %} ================= REVIEWS (slider — Cattasaurus) ================= {% endcomment %}
+  <div class="wld-felispace-band wld-felispace-band--dark">
+    <h2 class="wld-felispace-h2 wld-felispace-h2--light">{{ section.settings.reviews_title }}</h2>
+    {%- if wld_product != blank -%}
+      <a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta wld-felispace-cta--inline wld-felispace-cta--reviews">{{ section.settings.shop_now_text }}</a>
+    {%- endif -%}
+    <div class="wld-felispace-revslider" data-revslider>
+      <div class="wld-felispace-revtrack" data-revtrack>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'review' -%}
+            <article class="wld-felispace-revcard" {{ block.shopify_attributes }}>
+              <div class="wld-felispace-revcard__media">
+                {%- if block.settings.image != blank -%}
+                  <img src="{{ block.settings.image | image_url: width: 640 }}" alt="" loading="lazy" width="420" height="300">
+                {%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'wld-felispace-placeholder' }}{%- endif -%}
+              </div>
+              <div class="wld-felispace-revcard__body">
+                <div class="wld-felispace-revcard__stars">{% for s in (1..block.settings.rating) %}★{% endfor %}</div>
+                <h4 class="wld-felispace-revcard__title">{{ block.settings.title }}</h4>
+                <p class="wld-felispace-revcard__text">{{ block.settings.text }}</p>
+                <span class="wld-felispace-revcard__author">{{ block.settings.author }}</span>
+              </div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="wld-felispace-revnav">
+        <button type="button" class="wld-felispace-revarrow" data-revprev aria-label="Previous">←</button>
+        <div class="wld-felispace-revdots" data-revdots></div>
+        <button type="button" class="wld-felispace-revarrow" data-revnext aria-label="Next">→</button>
+      </div>
+    </div>
+  </div>
+
   {% comment %} ================= WHY CHOOSE ================= {% endcomment %}
   <div class="wld-felispace-band wld-felispace-band--accent">
     <h2 class="wld-felispace-h2">{{ section.settings.why_title }}</h2>
@@ -367,29 +401,6 @@
         <div class="wld-felispace-why__item"><span class="wld-felispace-why__ico">🧼</span><div><h3>{{ section.settings.why_4_title }}</h3><p>{{ section.settings.why_4_text }}</p></div></div>
       </div>
     </div>
-  </div>
-
-  {% comment %} ================= REVIEWS (blocks) ================= {% endcomment %}
-  <div class="wld-felispace-band wld-felispace-band--dark">
-    <h2 class="wld-felispace-h2 wld-felispace-h2--light">{{ section.settings.reviews_title }}</h2>
-    <div class="wld-felispace-reviews">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'review' -%}
-          <article class="wld-felispace-review" {{ block.shopify_attributes }}>
-            {%- if block.settings.image != blank -%}
-              <img class="wld-felispace-review__img" src="{{ block.settings.image | image_url: width: 360 }}" alt="" loading="lazy" width="360" height="270">
-            {%- endif -%}
-            <div class="wld-felispace-review__stars">{% for s in (1..block.settings.rating) %}★{% endfor %}</div>
-            <h4 class="wld-felispace-review__title">{{ block.settings.title }}</h4>
-            <p class="wld-felispace-review__text">{{ block.settings.text }}</p>
-            <span class="wld-felispace-review__author">{{ block.settings.author }}</span>
-          </article>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-    {%- if wld_product != blank -%}
-      <a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta wld-felispace-cta--inline">{{ section.settings.shop_now_text }}</a>
-    {%- endif -%}
   </div>
 
   {% comment %} ================= BENEFITS ================= {% endcomment %}
@@ -659,14 +670,25 @@
   #wld-felispace-{{ section.id }} .wld-felispace-why__item h3 { font-size: 19px; color: var(--wld-heading); margin-bottom: 4px; }
   #wld-felispace-{{ section.id }} .wld-felispace-why__item p { margin: 0; font-size: 13px; color: #3a4a3a; }
 
-  /* REVIEWS */
-  #wld-felispace-{{ section.id }} .wld-felispace-reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; }
-  #wld-felispace-{{ section.id }} .wld-felispace-review { background: #fff; border-radius: 14px; padding: 18px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-review__img { border-radius: 10px; margin-bottom: 12px; aspect-ratio: 4/3; object-fit: cover; width: 100%; }
-  #wld-felispace-{{ section.id }} .wld-felispace-review__stars { color: var(--wld-primary); margin-bottom: 6px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-review__title { font-size: 17px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-review__text { font-size: 13px; color: #555; }
-  #wld-felispace-{{ section.id }} .wld-felispace-review__author { font-size: 12px; font-weight: 700; color: var(--wld-primary); }
+  /* REVIEWS SLIDER (Cattasaurus style) */
+  #wld-felispace-{{ section.id }} .wld-felispace-cta--reviews { display: block; width: max-content; margin: 0 auto 34px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revslider { max-width: 1180px; margin: 0 auto; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revtrack { display: flex; gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 4px; -ms-overflow-style: none; scrollbar-width: none; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revtrack::-webkit-scrollbar { display: none; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard { flex: 0 0 calc((100% - 44px) / 3); scroll-snap-align: start; background: #fff; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard__media { aspect-ratio: 4/3; background: #eee; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard__media img { width: 100%; height: 100%; object-fit: cover; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard__body { padding: 22px 22px 26px; text-align: center; flex: 1; display: flex; flex-direction: column; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard__stars { color: #f5b301; font-size: 18px; letter-spacing: 2px; margin-bottom: 10px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard__title { font-size: 22px; text-transform: uppercase; color: #141414; margin-bottom: 10px; line-height: 1.1; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard__text { font-size: 14px; color: #444; line-height: 1.55; margin: 0 0 18px; flex: 1; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard__author { font-size: 14px; font-weight: 800; color: #141414; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revnav { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 28px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revarrow { width: 46px; height: 46px; border-radius: 50%; border: 2px solid #fff; background: transparent; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: .15s; flex-shrink: 0; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revarrow:hover { background: #fff; color: #141414; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revdots { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 999px; padding: 10px 16px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revdot { width: 8px; height: 8px; border-radius: 50%; border: 0; background: #cfcfcf; padding: 0; cursor: pointer; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revdot.is-active { background: #141414; width: 22px; border-radius: 999px; }
 
   /* BENEFITS */
   #wld-felispace-{{ section.id }} .wld-felispace-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; }
@@ -715,14 +737,14 @@
     #wld-felispace-{{ section.id }} .wld-felispace-hero__media { position: static; }
     #wld-felispace-{{ section.id }} .wld-felispace-why { grid-template-columns: 1fr; }
     #wld-felispace-{{ section.id }} .wld-felispace-why__media { order: -1; }
-    #wld-felispace-{{ section.id }} .wld-felispace-reviews { grid-template-columns: repeat(2, 1fr); }
     #wld-felispace-{{ section.id }} .wld-felispace-benefits { grid-template-columns: 1fr; }
     #wld-felispace-{{ section.id }} .wld-felispace-videos { max-width: 760px; }
+    #wld-felispace-{{ section.id }} .wld-felispace-revcard { flex: 0 0 calc((100% - 22px) / 2); }
   }
   @media (max-width: 540px) {
     #wld-felispace-{{ section.id }} .wld-felispace-band { padding: 40px 16px; }
     #wld-felispace-{{ section.id }} .wld-felispace-bundles { grid-template-columns: 1fr; }
-    #wld-felispace-{{ section.id }} .wld-felispace-reviews { grid-template-columns: 1fr; }
+    #wld-felispace-{{ section.id }} .wld-felispace-revcard { flex: 0 0 86%; }
     #wld-felispace-{{ section.id }} .wld-felispace-videos { grid-template-columns: 1fr 1fr; gap: 12px; }
     #wld-felispace-{{ section.id }} .wld-felispace-vid__play { width: 48px; height: 48px; font-size: 18px; }
     #wld-felispace-{{ section.id }} .wld-felispace-trust-strip { gap: 16px; }
@@ -859,6 +881,30 @@
           video.play();
           wrap.classList.add('is-playing');
         });
+      });
+
+      root.querySelectorAll('[data-revslider]').forEach(function (sl) {
+        var track = sl.querySelector('[data-revtrack]');
+        var dotsWrap = sl.querySelector('[data-revdots]');
+        if (!track) { return; }
+        var cards = track.querySelectorAll('.wld-felispace-revcard');
+        if (!cards.length) { return; }
+        function step() { var r = cards[0].getBoundingClientRect(); return r.width + 22; }
+        var dots = [];
+        cards.forEach(function (c, i) {
+          var d = document.createElement('button');
+          d.type = 'button'; d.className = 'wld-felispace-revdot'; if (i === 0) { d.classList.add('is-active'); }
+          d.addEventListener('click', function () { track.scrollTo({ left: step() * i, behavior: 'smooth' }); });
+          dotsWrap.appendChild(d); dots.push(d);
+        });
+        function setActive() {
+          var idx = Math.round(track.scrollLeft / step());
+          dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); });
+        }
+        track.addEventListener('scroll', function () { window.requestAnimationFrame(setActive); });
+        var prev = sl.querySelector('[data-revprev]'), next = sl.querySelector('[data-revnext]');
+        if (prev) { prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); }); }
+        if (next) { next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); }); }
       });
 
       root.querySelectorAll('[data-faq-q]').forEach(function (q) {

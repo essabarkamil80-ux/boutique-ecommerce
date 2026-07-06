@@ -350,34 +350,54 @@
   {% comment %} ================= REVIEWS (slider — Cattasaurus) ================= {% endcomment %}
   <div class="wld-felispace-band wld-felispace-band--dark">
     <h2 class="wld-felispace-h2 wld-felispace-h2--light">{{ section.settings.reviews_title }}</h2>
-    {%- if wld_product != blank -%}
-      <a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta wld-felispace-cta--inline wld-felispace-cta--reviews">{{ section.settings.shop_now_text }}</a>
-    {%- endif -%}
+    {%- assign rev_count = 0 -%}
+    {%- for b in section.blocks -%}{%- if b.type == 'review' -%}{%- assign rev_count = rev_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+    {%- assign rev_half = rev_count | plus: 1 | divided_by: 2 -%}
     <div class="wld-felispace-revslider" data-revslider>
+      {%- assign rc = 0 -%}
       <div class="wld-felispace-revtrack" data-revtrack>
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'review' -%}
-            <article class="wld-felispace-revcard" {{ block.shopify_attributes }}>
-              <div class="wld-felispace-revcard__media">
-                {%- if block.settings.image != blank -%}
-                  <img src="{{ block.settings.image | image_url: width: 640 }}" alt="" loading="lazy" width="420" height="300">
-                {%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'wld-felispace-placeholder' }}{%- endif -%}
-              </div>
-              <div class="wld-felispace-revcard__body">
-                <div class="wld-felispace-revcard__stars">{% for s in (1..block.settings.rating) %}★{% endfor %}</div>
-                <h4 class="wld-felispace-revcard__title">{{ block.settings.title }}</h4>
-                <p class="wld-felispace-revcard__text">{{ block.settings.text }}</p>
-                <span class="wld-felispace-revcard__author">{{ block.settings.author }}</span>
-              </div>
-            </article>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- for block in section.blocks -%}{%- if block.type == 'review' -%}{%- assign rc = rc | plus: 1 -%}{%- if rc <= rev_half -%}
+          <article class="wld-felispace-revcard" {{ block.shopify_attributes }}>
+            <div class="wld-felispace-revcard__media">{%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 640 }}" alt="" loading="lazy" width="420" height="300">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'wld-felispace-placeholder' }}{%- endif -%}</div>
+            <div class="wld-felispace-revcard__body">
+              <div class="wld-felispace-revcard__stars">{% for s in (1..block.settings.rating) %}★{% endfor %}</div>
+              <h4 class="wld-felispace-revcard__title">{{ block.settings.title }}</h4>
+              <p class="wld-felispace-revcard__text">{{ block.settings.text }}</p>
+              <span class="wld-felispace-revcard__author">{{ block.settings.author }}</span>
+            </div>
+          </article>
+        {%- endif -%}{%- endif -%}{%- endfor -%}
       </div>
+
+      {%- if wld_product != blank -%}
+        <a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta wld-felispace-cta--inline wld-felispace-cta--reviews">{{ section.settings.shop_now_text }}</a>
+      {%- endif -%}
+
+      {%- if rev_count > rev_half -%}
+      {%- assign rc2 = 0 -%}
+      <div class="wld-felispace-revtrack" data-revtrack>
+        {%- for block in section.blocks -%}{%- if block.type == 'review' -%}{%- assign rc2 = rc2 | plus: 1 -%}{%- if rc2 > rev_half -%}
+          <article class="wld-felispace-revcard" {{ block.shopify_attributes }}>
+            <div class="wld-felispace-revcard__media">{%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 640 }}" alt="" loading="lazy" width="420" height="300">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'wld-felispace-placeholder' }}{%- endif -%}</div>
+            <div class="wld-felispace-revcard__body">
+              <div class="wld-felispace-revcard__stars">{% for s in (1..block.settings.rating) %}★{% endfor %}</div>
+              <h4 class="wld-felispace-revcard__title">{{ block.settings.title }}</h4>
+              <p class="wld-felispace-revcard__text">{{ block.settings.text }}</p>
+              <span class="wld-felispace-revcard__author">{{ block.settings.author }}</span>
+            </div>
+          </article>
+        {%- endif -%}{%- endif -%}{%- endfor -%}
+      </div>
+      {%- endif -%}
+
       <div class="wld-felispace-revnav">
         <button type="button" class="wld-felispace-revarrow" data-revprev aria-label="Previous">←</button>
         <div class="wld-felispace-revdots" data-revdots></div>
         <button type="button" class="wld-felispace-revarrow" data-revnext aria-label="Next">→</button>
       </div>
+      {%- if section.settings.review_cta_text != blank -%}
+        <a href="{{ section.settings.review_cta_link | default: '#' }}" class="wld-felispace-revwrite">✍️ {{ section.settings.review_cta_text }}</a>
+      {%- endif -%}
     </div>
   </div>
 
@@ -671,9 +691,10 @@
   #wld-felispace-{{ section.id }} .wld-felispace-why__item p { margin: 0; font-size: 13px; color: #3a4a3a; }
 
   /* REVIEWS SLIDER (Cattasaurus style) */
-  #wld-felispace-{{ section.id }} .wld-felispace-cta--reviews { display: block; width: max-content; margin: 0 auto 34px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cta--reviews { display: block; width: max-content; margin: 30px auto; }
   #wld-felispace-{{ section.id }} .wld-felispace-revslider { max-width: 1180px; margin: 0 auto; }
   #wld-felispace-{{ section.id }} .wld-felispace-revtrack { display: flex; gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 4px; -ms-overflow-style: none; scrollbar-width: none; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revtrack + .wld-felispace-revtrack { margin-top: 22px; }
   #wld-felispace-{{ section.id }} .wld-felispace-revtrack::-webkit-scrollbar { display: none; }
   #wld-felispace-{{ section.id }} .wld-felispace-revcard { flex: 0 0 calc((100% - 44px) / 3); scroll-snap-align: start; background: #fff; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
   #wld-felispace-{{ section.id }} .wld-felispace-revcard__media { aspect-ratio: 4/3; background: #eee; }
@@ -689,6 +710,8 @@
   #wld-felispace-{{ section.id }} .wld-felispace-revdots { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 999px; padding: 10px 16px; }
   #wld-felispace-{{ section.id }} .wld-felispace-revdot { width: 8px; height: 8px; border-radius: 50%; border: 0; background: #cfcfcf; padding: 0; cursor: pointer; transition: .15s; }
   #wld-felispace-{{ section.id }} .wld-felispace-revdot.is-active { background: #141414; width: 22px; border-radius: 999px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revwrite { display: block; width: max-content; margin: 22px auto 0; color: #fff; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; padding: 11px 24px; border: 2px solid rgba(255,255,255,.5); border-radius: 999px; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revwrite:hover { background: #fff; color: #141414; border-color: #fff; }
 
   /* BENEFITS */
   #wld-felispace-{{ section.id }} .wld-felispace-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; }
@@ -884,27 +907,36 @@
       });
 
       root.querySelectorAll('[data-revslider]').forEach(function (sl) {
-        var track = sl.querySelector('[data-revtrack]');
+        var tracks = sl.querySelectorAll('[data-revtrack]');
         var dotsWrap = sl.querySelector('[data-revdots]');
-        if (!track) { return; }
-        var cards = track.querySelectorAll('.wld-felispace-revcard');
+        if (!tracks.length) { return; }
+        var main = tracks[0];
+        var cards = main.querySelectorAll('.wld-felispace-revcard');
         if (!cards.length) { return; }
         function step() { var r = cards[0].getBoundingClientRect(); return r.width + 22; }
+        function scrollAllTo(x, smooth) { tracks.forEach(function (t) { t.scrollTo({ left: x, behavior: smooth ? 'smooth' : 'auto' }); }); }
         var dots = [];
         cards.forEach(function (c, i) {
           var d = document.createElement('button');
           d.type = 'button'; d.className = 'wld-felispace-revdot'; if (i === 0) { d.classList.add('is-active'); }
-          d.addEventListener('click', function () { track.scrollTo({ left: step() * i, behavior: 'smooth' }); });
+          d.addEventListener('click', function () { scrollAllTo(step() * i, true); });
           dotsWrap.appendChild(d); dots.push(d);
         });
+        var syncing = false;
         function setActive() {
-          var idx = Math.round(track.scrollLeft / step());
+          var idx = Math.round(main.scrollLeft / step());
           dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); });
         }
-        track.addEventListener('scroll', function () { window.requestAnimationFrame(setActive); });
+        main.addEventListener('scroll', function () {
+          window.requestAnimationFrame(setActive);
+          if (syncing) { return; }
+          syncing = true;
+          for (var i = 1; i < tracks.length; i++) { tracks[i].scrollLeft = main.scrollLeft; }
+          syncing = false;
+        });
         var prev = sl.querySelector('[data-revprev]'), next = sl.querySelector('[data-revnext]');
-        if (prev) { prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); }); }
-        if (next) { next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); }); }
+        if (prev) { prev.addEventListener('click', function () { scrollAllTo(main.scrollLeft - step(), true); }); }
+        if (next) { next.addEventListener('click', function () { scrollAllTo(main.scrollLeft + step(), true); }); }
       });
 
       root.querySelectorAll('[data-faq-q]').forEach(function (q) {
@@ -1093,6 +1125,8 @@
 
     { "type": "header", "content": "⭐ Reviews (title)" },
     { "type": "text", "id": "reviews_title", "label": "Title", "default": "Cats love Felispace" },
+    { "type": "text", "id": "review_cta_text", "label": "\"Add a review\" button text", "default": "Write a review" },
+    { "type": "url", "id": "review_cta_link", "label": "\"Add a review\" link (review app / form)" },
 
     { "type": "header", "content": "🏆 Benefits" },
     { "type": "text", "id": "benefits_title", "label": "Title", "default": "The benefits of Felispace" },

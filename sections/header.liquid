@@ -1,3 +1,6 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
@@ -71,14 +74,16 @@
     }
   }
 
-  /* Felispace: compact, refined Menu / Cart like Infinity Hoop */
-  .header__icon--labelled { width: auto; min-width: 0; height: auto; min-height: 0; display: inline-flex; align-items: center; gap: 6px; padding: 4px 4px; }
-  .header__icon-label { font-size: 14px; font-weight: 600; letter-spacing: .2px; line-height: 1; }
+  /* Felispace: header cloned from Infinity Hoop — Menu | logo | Cart */
+  .felispace-logo { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.5px; line-height: 1; color: #141414; text-transform: none; white-space: nowrap; }
+  .header__icon--labelled { width: auto; min-width: 0; height: auto; min-height: 0; display: inline-flex; align-items: center; gap: 8px; padding: 4px 2px; color: #141414; }
+  .header__icon-label { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: .1px; line-height: 1; }
   .header__icon--menu.header__icon--labelled .header__menu-icons { display: inline-flex; }
-  .header__icon--menu.header__icon--labelled svg { width: 17px; height: 17px; }
+  .header__icon--menu.header__icon--labelled svg { width: 20px; height: 20px; }
   .header__trolley { display: inline-flex; align-items: center; }
-  .header__trolley svg { width: 19px; height: 19px; }
+  .header__trolley svg { width: 22px; height: 22px; }
   @media screen and (max-width: 749px) {
+    .felispace-logo { font-size: 24px; }
     .header__icon-label { display: none; }
   }
 </style>
@@ -171,7 +176,7 @@
                 }}
               </div>
             {%- else -%}
-              <span class="h2">{{ shop.name }}</span>
+              <span class="felispace-logo">FéliSpace</span>
             {%- endif -%}
           </a>
       {%- if request.page_type == 'index' -%}
@@ -211,7 +216,7 @@
                 }}
               </div>
             {%- else -%}
-              <span class="h2">{{ shop.name }}</span>
+              <span class="felispace-logo">FéliSpace</span>
             {%- endif -%}
           </a>
       {%- if request.page_type == 'index' -%}

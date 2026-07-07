@@ -61,6 +61,7 @@
         "video-1": {
           "type": "video",
           "settings": {
+            "video": "shopify://files/videos/f87f8f1c-d045-4c83-83b2-b03dc92482fd.mp4",
             "caption": "@cat_mum_uk"
           }
         },

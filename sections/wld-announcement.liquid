@@ -50,14 +50,16 @@
     if (!t) return;
     var hours = parseFloat(t.getAttribute('data-hours')) || 12;
     var key = 'wld_annc_end_{{ section.id }}';
-    var end = parseInt(localStorage.getItem(key), 10);
+    function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+    var end = parseInt(read(key), 10);
     var now = Date.now();
-    if (!end || isNaN(end) || end < now) { end = now + hours * 3600 * 1000; localStorage.setItem(key, end); }
+    if (!end || isNaN(end) || end < now) { end = now + hours * 3600 * 1000; store(key, end); }
     var hEl = t.querySelector('[data-h]'), mEl = t.querySelector('[data-m]'), sEl = t.querySelector('[data-s]');
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
     function tick() {
       var diff = end - Date.now();
-      if (diff <= 0) { end = Date.now() + hours * 3600 * 1000; localStorage.setItem(key, end); diff = end - Date.now(); }
+      if (diff <= 0) { end = Date.now() + hours * 3600 * 1000; store(key, end); diff = end - Date.now(); }
       var totalSec = Math.floor(diff / 1000);
       hEl.textContent = pad(Math.floor(totalSec / 3600));
       mEl.textContent = pad(Math.floor((totalSec % 3600) / 60));

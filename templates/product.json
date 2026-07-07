@@ -15,18 +15,21 @@
         "herovid-1": {
           "type": "hero_video",
           "settings": {
+            "video_url": "",
             "caption": ""
           }
         },
         "herovid-2": {
           "type": "hero_video",
           "settings": {
+            "video_url": "",
             "caption": ""
           }
         },
         "herovid-3": {
           "type": "hero_video",
           "settings": {
+            "video_url": "",
             "caption": ""
           }
         },
@@ -61,18 +64,21 @@
         "video-1": {
           "type": "video",
           "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/cdedee86f9b042beb9016c6fde1fd8b8.mp4",
             "caption": "@cat_mum_uk"
           }
         },
         "video-2": {
           "type": "video",
           "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/c544af7c8bea4cc89bdebb1f0b2e5aaa.mp4",
             "caption": "@leo_the_cat"
           }
         },
         "video-3": {
           "type": "video",
           "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/30abae768b894d308d471a03458a29c2.mp4",
             "caption": "@cosy_kittens"
           }
         },

@@ -135,7 +135,9 @@
           "type": "vs",
           "settings": {
             "tab_label": "vs Cheap Tunnels",
-            "them_label": "Cheap Tunnels"
+            "them_label": "Cheap Tunnels",
+            "ours_rows": "Calms anxious cats | thick felt muffles noise\nSturdy, won't collapse | keeps its shape for years\nDoubles as a scratcher | saves your furniture\nPremium soft felt | gentle, warm, natural\n30-day guarantee | love it or your money back",
+            "them_rows": "Noisy, flimsy material | stresses shy cats\nCollapses under weight | loses shape fast\nNo scratcher | cats ignore it\nCheap rough fabric | uncomfortable\nNo guarantee | you're on your own"
           }
         },
         "vs-2": {
@@ -336,6 +338,8 @@
         "why_4_title": "Easy to clean",
         "why_4_text": "A quick vacuum is all it takes. The felt stays clean and beautiful — hand-washable too.",
         "reviews_title": "Cats love Felispace",
+        "review_cta_text": "Write a review",
+        "review_cta_link": "",
         "benefits_title": "The benefits of Felispace",
         "benefit_1_title": "Better sleep",
         "benefit_1_text": "A dark, cosy cocoon that reassures your cat and encourages those long, happy naps.",
@@ -344,11 +348,8 @@
         "benefit_3_title": "Velvet-soft material",
         "benefit_3_text": "As soft as velvet and lovely to the touch — perfect for even the fussiest of cats.",
         "compare_title": "Us vs. the others",
-        "compare_tab_1": "Wool caves",
-        "compare_tab_2": "Tunnels",
-        "compare_tab_3": "Other beds",
-        "compare_ours": "Felispace",
-        "compare_rows": "Never collapses\nEffective scratcher\nDesigned for multiple cats\nSuper-sturdy tunnel\nEasy to clean",
+        "compare_ours_label": "FeliSpace",
+        "compare_ours_image": "shopify://shop_images/Charcoal_0front_wcats.webp",
         "buybox_title": "Get your Felispace Cave today",
         "faq_title": "Frequently asked questions",
         "promise_title": "Your cat loves it or it's free!",

@@ -357,9 +357,16 @@
         "promise_2": "14-day money-back",
         "promise_3": "90-day wear guarantee"
       }
+    },
+    "1783395563b50d77c7": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
-    "felispace_landing"
+    "felispace_landing",
+    "1783395563b50d77c7"
   ]
 }

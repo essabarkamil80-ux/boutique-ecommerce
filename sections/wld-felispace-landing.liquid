@@ -260,6 +260,11 @@
                       {%- for source in block.settings.video.sources -%}<source src="{{ source.url }}" type="{{ source.mime_type }}">{%- endfor -%}
                     </video>
                     <button type="button" class="wld-felispace-vid__play" aria-label="Play video" data-vid-play>▶</button>
+                  {%- elsif block.settings.video_url != blank -%}
+                    <video class="wld-felispace-vid__player" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 400 }}"{% endif %} preload="none" loop muted playsinline controls>
+                      <source src="{{ block.settings.video_url }}" type="video/mp4">
+                    </video>
+                    <button type="button" class="wld-felispace-vid__play" aria-label="Play video" data-vid-play>▶</button>
                   {%- elsif block.settings.poster != blank -%}
                     <img src="{{ block.settings.poster | image_url: width: 400 }}" alt="" loading="lazy" width="400" height="560">
                   {%- else -%}
@@ -325,6 +330,11 @@
                   {%- for source in block.settings.video.sources -%}
                     <source src="{{ source.url }}" type="{{ source.mime_type }}">
                   {%- endfor -%}
+                </video>
+                <button type="button" class="wld-felispace-vid__play" aria-label="Play video" data-vid-play>▶</button>
+              {%- elsif block.settings.video_url != blank -%}
+                <video class="wld-felispace-vid__player" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 720 }}"{% endif %} preload="none" loop muted playsinline controls>
+                  <source src="{{ block.settings.video_url }}" type="video/mp4">
                 </video>
                 <button type="button" class="wld-felispace-vid__play" aria-label="Play video" data-vid-play>▶</button>
               {%- elsif block.settings.poster != blank -%}
@@ -1166,7 +1176,8 @@
       "type": "video",
       "name": "🎥 Video testimonial",
       "settings": [
-        { "type": "video", "id": "video", "label": "Video (Shopify mp4)" },
+        { "type": "video", "id": "video", "label": "Video (upload)" },
+        { "type": "text", "id": "video_url", "label": "OR video link (Shopify .mp4 URL)" },
         { "type": "image_picker", "id": "poster", "label": "Fallback image" },
         { "type": "text", "id": "caption", "label": "Caption", "default": "@cat_parent" }
       ]
@@ -1175,7 +1186,8 @@
       "type": "hero_video",
       "name": "▶️ Buy-box video",
       "settings": [
-        { "type": "video", "id": "video", "label": "Video (Shopify mp4)" },
+        { "type": "video", "id": "video", "label": "Video (upload)" },
+        { "type": "text", "id": "video_url", "label": "OR video link (Shopify .mp4 URL)" },
         { "type": "image_picker", "id": "poster", "label": "Cover image" },
         { "type": "text", "id": "caption", "label": "Caption" }
       ]

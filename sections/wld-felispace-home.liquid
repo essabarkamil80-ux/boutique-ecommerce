@@ -81,6 +81,11 @@
             {%- for s in section.settings.tr_video.sources -%}<source src="{{ s.url }}" type="{{ s.mime_type }}">{%- endfor -%}
           </video>
           <button type="button" class="wld-home-play" data-vid-play aria-label="Play">▶</button>
+        {%- elsif section.settings.tr_video_url != blank -%}
+          <video class="wld-home-vid" {% if section.settings.tr_poster != blank %}poster="{{ section.settings.tr_poster | image_url: width: 900 }}"{% endif %} preload="none" loop muted playsinline controls>
+            <source src="{{ section.settings.tr_video_url }}" type="video/mp4">
+          </video>
+          <button type="button" class="wld-home-play" data-vid-play aria-label="Play">▶</button>
         {%- elsif section.settings.tr_poster != blank -%}
           <img src="{{ section.settings.tr_poster | image_url: width: 900 }}" alt="" loading="lazy" width="700" height="480">
         {%- else -%}
@@ -162,6 +167,11 @@
             {%- if block.settings.video != blank -%}
               <video class="wld-home-vid" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 500 }}"{% endif %} preload="none" loop muted playsinline controls>
                 {%- for s in block.settings.video.sources -%}<source src="{{ s.url }}" type="{{ s.mime_type }}">{%- endfor -%}
+              </video>
+              <button type="button" class="wld-home-play" data-vid-play aria-label="Play">▶</button>
+            {%- elsif block.settings.video_url != blank -%}
+              <video class="wld-home-vid" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 500 }}"{% endif %} preload="none" loop muted playsinline controls>
+                <source src="{{ block.settings.video_url }}" type="video/mp4">
               </video>
               <button type="button" class="wld-home-play" data-vid-play aria-label="Play">▶</button>
             {%- elsif block.settings.poster != blank -%}
@@ -405,7 +415,8 @@
     { "type": "header", "content": "🎥 Transformation (add Benefit blocks)" },
     { "type": "text", "id": "tr_title", "label": "Title", "default": "Your cat's transformation starts here" },
     { "type": "text", "id": "tr_sub", "label": "Subtitle", "default": "Watch a shy, anxious cat claim its new favourite spot in minutes." },
-    { "type": "video", "id": "tr_video", "label": "Video" },
+    { "type": "video", "id": "tr_video", "label": "Video (upload)" },
+    { "type": "text", "id": "tr_video_url", "label": "OR video link (Shopify .mp4 URL)" },
     { "type": "image_picker", "id": "tr_poster", "label": "Video cover" },
     { "type": "text", "id": "tr_cta", "label": "Button", "default": "Shop Felispace" },
 
@@ -461,7 +472,8 @@
       { "type": "text", "id": "author", "label": "Author", "default": "Verified Customer" }
     ]},
     { "type": "ugc", "name": "📱 UGC video", "settings": [
-      { "type": "video", "id": "video", "label": "Video" },
+      { "type": "video", "id": "video", "label": "Video (upload)" },
+      { "type": "text", "id": "video_url", "label": "OR video link (Shopify .mp4 URL)" },
       { "type": "image_picker", "id": "poster", "label": "Cover" }
     ]},
     { "type": "faq", "name": "❓ FAQ", "settings": [

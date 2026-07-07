@@ -75,7 +75,7 @@
   }
 
   /* Felispace: header cloned from Infinity Hoop — Menu | logo | Cart */
-  .felispace-logo { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.5px; line-height: 1; color: #141414; text-transform: none; white-space: nowrap; }
+  .felispace-logo { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; line-height: 1; color: #141414; text-transform: none; white-space: nowrap; }
   .header__icon--labelled { width: auto; min-width: 0; height: auto; min-height: 0; display: inline-flex; align-items: center; gap: 8px; padding: 4px 2px; color: #141414; }
   .header__icon-label { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: .1px; line-height: 1; }
   .header__icon--menu.header__icon--labelled .header__menu-icons { display: inline-flex; }
@@ -83,14 +83,14 @@
   .header__trolley { display: inline-flex; align-items: center; }
   .header__trolley svg { width: 22px; height: 22px; }
   @media screen and (max-width: 749px) {
-    .felispace-logo { font-size: 24px; }
+    .felispace-logo { font-size: 19px; }
     .header__icon-label { display: none; }
   }
 </style>
 
 {%- style -%}
   .header {
-    padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 3rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 3rem;
+    padding: 6px 3rem 6px 3rem;
   }
 
   .section-header {

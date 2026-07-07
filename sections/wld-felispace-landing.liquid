@@ -478,6 +478,28 @@
     {%- endif -%}
   </div>
 
+  {% comment %} ================= SCROLLING IMAGE STRIP (TikTok wall) ================= {% endcomment %}
+  {%- assign strip_count = 0 -%}
+  {%- for b in section.blocks -%}{%- if b.type == 'strip_img' -%}{%- assign strip_count = strip_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+  {%- if strip_count > 0 -%}
+  <div class="wld-felispace-band">
+    <h2 class="wld-felispace-h2">{{ section.settings.strip_title }}</h2>
+    <div class="wld-felispace-strip" data-strip>
+      <div class="wld-felispace-strip__track">
+        {%- for i in (1..2) -%}
+          {%- for block in section.blocks -%}{%- if block.type == 'strip_img' -%}
+            <div class="wld-felispace-strip__item"{% if i == 1 %} {{ block.shopify_attributes }}{% endif %}>
+              {%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 440 }}" alt="" loading="lazy" width="220" height="390">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'wld-felispace-placeholder' }}{%- endif -%}
+            </div>
+          {%- endif -%}{%- endfor -%}
+        {%- endfor -%}
+      </div>
+      {%- if section.settings.strip_badge != blank -%}<div class="wld-felispace-strip__badge">{{ section.settings.strip_badge }}</div>{%- endif -%}
+    </div>
+    {%- if section.settings.strip_foot != blank -%}<p class="wld-felispace-strip__foot">{{ section.settings.strip_foot }}</p>{%- endif -%}
+  </div>
+  {%- endif -%}
+
   {% comment %} ================= FAQ ================= {% endcomment %}
   <div class="wld-felispace-band wld-felispace-band--cream">
     <h2 class="wld-felispace-h2">{{ section.settings.faq_title }}</h2>
@@ -748,6 +770,20 @@
 
   #wld-felispace-{{ section.id }} .wld-felispace-buybox { max-width: 560px; margin: 0 auto; }
   #wld-felispace-{{ section.id }} .wld-felispace-bundles--wide { margin-bottom: 16px; }
+
+  /* SCROLLING IMAGE STRIP */
+  #wld-felispace-{{ section.id }} .wld-felispace-strip { position: relative; overflow: hidden; margin-top: 30px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  #wld-felispace-{{ section.id }} .wld-felispace-strip__track { display: flex; width: max-content; animation: wld-strip-{{ section.id }} 55s linear infinite; }
+  #wld-felispace-{{ section.id }} .wld-felispace-strip:hover .wld-felispace-strip__track { animation-play-state: paused; }
+  #wld-felispace-{{ section.id }} .wld-felispace-strip__item { flex: 0 0 auto; width: 224px; aspect-ratio: 9/16; margin-right: 16px; border-radius: 16px; overflow: hidden; background: #eee; }
+  #wld-felispace-{{ section.id }} .wld-felispace-strip__item img { width: 100%; height: 100%; object-fit: cover; }
+  #wld-felispace-{{ section.id }} .wld-felispace-strip__badge { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); background: #fff; border-radius: 999px; padding: 12px 24px; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 15px; color: #141414; box-shadow: 0 8px 24px rgba(0,0,0,.18); white-space: nowrap; }
+  #wld-felispace-{{ section.id }} .wld-felispace-strip__foot { text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(16px, 2.4vw, 26px); text-transform: uppercase; letter-spacing: .2px; color: #141414; margin: 30px auto 0; max-width: 820px; line-height: 1.25; }
+  @keyframes wld-strip-{{ section.id }} { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (max-width: 600px) {
+    #wld-felispace-{{ section.id }} .wld-felispace-strip__item { width: 150px; margin-right: 12px; }
+    #wld-felispace-{{ section.id }} .wld-felispace-strip__badge { font-size: 13px; padding: 10px 18px; }
+  }
 
   /* FAQ */
   #wld-felispace-{{ section.id }} .wld-felispace-faq { max-width: 760px; margin: 0 auto; }
@@ -1173,6 +1209,12 @@
     { "type": "image_picker", "id": "compare_ours_image", "label": "Our column image" },
     { "type": "paragraph", "content": "Add one \"⚔️ Comparison tab\" block per competitor. In each block, write rows as \"Title | short description\" (one per line)." },
 
+    { "type": "header", "content": "📸 Scrolling image strip (TikTok wall)" },
+    { "type": "text", "id": "strip_title", "label": "Title", "default": "#1 Trending Cat Cave on TikTok" },
+    { "type": "text", "id": "strip_badge", "label": "Floating badge", "default": "🐾 100,000+ Happy Cats" },
+    { "type": "text", "id": "strip_foot", "label": "Footer line", "default": "FELISPACE HAS COMFORTED OVER 100,000+ CATS WORLDWIDE." },
+    { "type": "paragraph", "content": "Add \"📸 Strip image\" blocks (vertical photos work best). They scroll automatically in a loop." },
+
     { "type": "header", "content": "🛒 Secondary buy box" },
     { "type": "text", "id": "buybox_title", "label": "Title", "default": "Get your Felispace Cave today" },
 
@@ -1227,6 +1269,13 @@
       ]
     },
     {
+      "type": "strip_img",
+      "name": "📸 Strip image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (vertical)" }
+      ]
+    },
+    {
       "type": "faq",
       "name": "❓ FAQ question",
       "settings": [
@@ -1256,6 +1305,7 @@
         { "type": "vs", "settings": { "tab_label": "vs Cheap Tunnels", "them_label": "Cheap Tunnels" } },
         { "type": "vs", "settings": { "tab_label": "vs Regular Cat Beds", "them_label": "Regular Cat Beds", "ours_rows": "Enclosed, secure den | anxious cats feel safe\nBuilt-in scratcher | protects your sofa\n2-in-1 bed + tunnel | play and nap\nHolds its shape | won't flatten\n30-day guarantee | risk-free", "them_rows": "Open, exposed bed | shy cats stay away\nNo scratcher | furniture still at risk\nJust a bed | nothing to explore\nFlattens over time | looks worn fast\nOften no guarantee | you take the risk" } },
         { "type": "vs", "settings": { "tab_label": "vs Cardboard Boxes", "them_label": "Cardboard Boxes", "ours_rows": "Premium felt, lasts years | a real piece of furniture\nWarm & cosy | keeps your cat snug\nEasy to clean | just vacuum\nLooks great at home | you'll want it out\n30-day guarantee | love it or refund", "them_rows": "Falls apart in days | back to square one\nCold and flimsy | not cosy\nGets dirty fast | can't clean it\nLooks messy | you hide it away\nNo guarantee | it's just a box" } },
+        { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" },
         { "type": "bb_accordion", "settings": { "title": "Why cats love it", "content": "<p>The tunnel shape taps into your cat's natural urge to hide and feel safe. Inside its cosy den, an anxious cat relaxes, sleeps better and scratches the felt instead of your sofa.</p>" } },
         { "type": "bb_accordion", "settings": { "title": "What's included", "content": "<p>1× FeliSpace Calming Donut, plus your free gifts: the FeliSpa Brush™ ($19.90 value) and the exclusive anti-anxiety PDF guide ($14.90 value).</p>" } },
         { "type": "bb_accordion", "settings": { "title": "30-day guarantee", "content": "<p>If your cat doesn't love it, send it back within 30 days for a full refund — no questions asked.</p>" } },

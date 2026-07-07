@@ -164,6 +164,20 @@
             "them_rows": "Falls apart in days | back to square one\nCold and flimsy | not cosy\nGets dirty fast | can't clean it\nLooks messy | you hide it away\nNo guarantee | it's just a box"
           }
         },
+        "strip-1": { "type": "strip_img", "settings": {} },
+        "strip-2": { "type": "strip_img", "settings": {} },
+        "strip-3": { "type": "strip_img", "settings": {} },
+        "strip-4": { "type": "strip_img", "settings": {} },
+        "strip-5": { "type": "strip_img", "settings": {} },
+        "strip-6": { "type": "strip_img", "settings": {} },
+        "strip-7": { "type": "strip_img", "settings": {} },
+        "strip-8": { "type": "strip_img", "settings": {} },
+        "strip-9": { "type": "strip_img", "settings": {} },
+        "strip-10": { "type": "strip_img", "settings": {} },
+        "strip-11": { "type": "strip_img", "settings": {} },
+        "strip-12": { "type": "strip_img", "settings": {} },
+        "strip-13": { "type": "strip_img", "settings": {} },
+        "strip-14": { "type": "strip_img", "settings": {} },
         "faq-1": {
           "type": "faq",
           "settings": {
@@ -241,6 +255,7 @@
         "vs-1",
         "vs-2",
         "vs-3",
+        "strip-1", "strip-2", "strip-3", "strip-4", "strip-5", "strip-6", "strip-7", "strip-8", "strip-9", "strip-10", "strip-11", "strip-12", "strip-13", "strip-14",
         "faq-1",
         "faq-2",
         "faq-3",

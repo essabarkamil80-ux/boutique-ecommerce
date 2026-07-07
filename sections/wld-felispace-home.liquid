@@ -345,6 +345,20 @@
           video.preload = 'auto'; video.play(); wrap.classList.add('is-playing');
         });
       });
+      if ('IntersectionObserver' in window) {
+        var vio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var wrap = e.target, video = wrap.querySelector('video');
+            if (!video) return;
+            if (e.isIntersecting) {
+              video.muted = true; video.preload = 'auto';
+              var pr = video.play(); if (pr && pr.catch) pr.catch(function () {});
+              wrap.classList.add('is-playing');
+            } else { video.pause(); }
+          });
+        }, { threshold: 0.5 });
+        root.querySelectorAll('[data-vid]').forEach(function (w) { if (w.querySelector('video')) vio.observe(w); });
+      }
       root.querySelectorAll('[data-faq-q]').forEach(function (q) {
         q.addEventListener('click', function () {
           var item = q.parentElement, ans = item.querySelector('.wld-home-faq__a');

@@ -18,6 +18,54 @@
   {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
 {% endif %}
 
+{%- if section.settings.show_countdown -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <div class="wld-cd" id="wld-cd-{{ section.id }}" style="--cd-bg: {{ section.settings.cd_bg }}; --cd-fg: {{ section.settings.cd_fg }};">
+    <div class="wld-cd__inner">
+      <div class="wld-cd__msg">
+        <span class="wld-cd__t">{{ section.settings.cd_message }}</span>
+        {%- if section.settings.cd_subtext != blank -%}<span class="wld-cd__s">{{ section.settings.cd_subtext }}</span>{%- endif -%}
+      </div>
+      {%- if section.settings.cd_show_timer -%}
+      <div class="wld-cd__timer" data-cd-timer data-hours="{{ section.settings.cd_hours }}">
+        <div class="wld-cd__u"><span data-h>00</span><small>{{ section.settings.cd_lh }}</small></div><span class="wld-cd__c">:</span>
+        <div class="wld-cd__u"><span data-m>00</span><small>{{ section.settings.cd_lm }}</small></div><span class="wld-cd__c">:</span>
+        <div class="wld-cd__u"><span data-s>00</span><small>{{ section.settings.cd_ls }}</small></div>
+      </div>
+      {%- endif -%}
+    </div>
+  </div>
+  <style>
+    #wld-cd-{{ section.id }} { background: var(--cd-bg); color: var(--cd-fg); font-family: 'Montserrat', sans-serif; }
+    #wld-cd-{{ section.id }} .wld-cd__inner { max-width: 1400px; margin: 0 auto; padding: 9px 20px; display: flex; align-items: center; justify-content: center; gap: 22px; flex-wrap: wrap; text-align: center; }
+    #wld-cd-{{ section.id }} .wld-cd__msg { display: flex; flex-direction: column; line-height: 1.15; }
+    #wld-cd-{{ section.id }} .wld-cd__t { font-weight: 800; font-size: 14.5px; letter-spacing: .2px; }
+    #wld-cd-{{ section.id }} .wld-cd__s { font-weight: 600; font-size: 11.5px; opacity: .9; margin-top: 2px; }
+    #wld-cd-{{ section.id }} .wld-cd__timer { display: flex; align-items: center; gap: 6px; }
+    #wld-cd-{{ section.id }} .wld-cd__u { display: flex; flex-direction: column; align-items: center; min-width: 30px; }
+    #wld-cd-{{ section.id }} .wld-cd__u span { font-weight: 800; font-size: 17px; line-height: 1; font-variant-numeric: tabular-nums; }
+    #wld-cd-{{ section.id }} .wld-cd__u small { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; opacity: .85; margin-top: 2px; }
+    #wld-cd-{{ section.id }} .wld-cd__c { font-weight: 800; font-size: 16px; margin-top: -8px; }
+    @media (max-width: 600px) { #wld-cd-{{ section.id }} .wld-cd__inner { gap: 14px; padding: 8px 14px; } #wld-cd-{{ section.id }} .wld-cd__t { font-size: 13px; } #wld-cd-{{ section.id }} .wld-cd__u span { font-size: 15px; } }
+  </style>
+  <script>
+    (function () {
+      var el = document.getElementById('wld-cd-{{ section.id }}'); if (!el) return;
+      var t = el.querySelector('[data-cd-timer]'); if (!t) return;
+      var hours = parseFloat(t.getAttribute('data-hours')) || 12;
+      var key = 'wld_cd_end_{{ section.id }}';
+      function store(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+      function read(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+      var end = parseInt(read(key), 10), now = Date.now();
+      if (!end || isNaN(end) || end < now) { end = now + hours*3600*1000; store(key, end); }
+      var h = t.querySelector('[data-h]'), m = t.querySelector('[data-m]'), s = t.querySelector('[data-s]');
+      function pad(n){ return n<10?'0'+n:''+n; }
+      function tick(){ var d = end - Date.now(); if (d<=0){ end = Date.now()+hours*3600*1000; store(key,end); d = end-Date.now(); } var ts = Math.floor(d/1000); h.textContent = pad(Math.floor(ts/3600)); m.textContent = pad(Math.floor((ts%3600)/60)); s.textContent = pad(ts%60); }
+      tick(); setInterval(tick, 1000);
+    })();
+  </script>
+{%- else -%}
 <div
   class="utility-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border{% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only{% endif %}{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header-localization{% endif %}"
 >
@@ -161,6 +209,7 @@
     </div>
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -171,6 +220,18 @@
     "groups": ["header"]
   },
   "settings": [
+    { "type": "header", "content": "🎁 Felispace countdown bar" },
+    { "type": "checkbox", "id": "show_countdown", "label": "Show Felispace countdown bar (replaces the bar above)", "default": true },
+    { "type": "text", "id": "cd_message", "label": "Message", "default": "🎁 FREE shipping + 30% OFF all caves + free gifts" },
+    { "type": "text", "id": "cd_subtext", "label": "Subtext", "default": "Limited-time offer" },
+    { "type": "checkbox", "id": "cd_show_timer", "label": "Show countdown timer", "default": true },
+    { "type": "text", "id": "cd_hours", "label": "Countdown length (hours, resets per visitor)", "default": "12" },
+    { "type": "text", "id": "cd_lh", "label": "Hours label", "default": "Hrs" },
+    { "type": "text", "id": "cd_lm", "label": "Minutes label", "default": "Mins" },
+    { "type": "text", "id": "cd_ls", "label": "Seconds label", "default": "Secs" },
+    { "type": "color", "id": "cd_bg", "label": "Background", "default": "#1f6f43" },
+    { "type": "color", "id": "cd_fg", "label": "Text", "default": "#ffffff" },
+    { "type": "header", "content": "Default announcement bar" },
     {
       "type": "checkbox",
       "id": "auto_rotate",

@@ -3,21 +3,13 @@
   "type": "header",
   "sections": {
     "announcement-bar": {
-      "type": "announcement-bar",
-      "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
-          "settings": {
-            "text": "Welcome to our store",
-            "text_alignment": "center",
-            "color_scheme": "scheme-1",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "announcement-bar-0"
-      ]
+      "type": "wld-announcement",
+      "settings": {
+        "message": "🎁 FREE shipping + 30% OFF all caves + free gifts",
+        "subtext": "Limited-time offer",
+        "show_timer": true,
+        "timer_hours": "12"
+      }
     },
     "header": {
       "type": "header",

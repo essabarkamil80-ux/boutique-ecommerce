@@ -204,7 +204,7 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'faq' -%}
           <div class="wld-home-faq__item" {{ block.shopify_attributes }}>
-            <button type="button" class="wld-home-faq__q" data-faq-q>{{ block.settings.question }}<span class="wld-home-faq__icon">+</span></button>
+            <button type="button" class="wld-home-faq__q" data-faq-q>{{ block.settings.question }}<span class="wld-home-faq__icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span></button>
             <div class="wld-home-faq__a">{{ block.settings.answer }}</div>
           </div>
         {%- endif -%}
@@ -314,13 +314,14 @@
   #wld-home-{{ section.id }} .wld-home-guarantee__body p { color: #555; margin: 0 0 22px; max-width: 480px; }
 
   /* FAQ */
-  #wld-home-{{ section.id }} .wld-home-faq { max-width: 780px; margin: 0 auto; }
-  #wld-home-{{ section.id }} .wld-home-faq__item { border-bottom: 1px solid #ddd; }
-  #wld-home-{{ section.id }} .wld-home-faq__q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 4px; background: none; border: 0; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 16px; text-align: left; }
-  #wld-home-{{ section.id }} .wld-home-faq__icon { font-size: 24px; color: var(--g); flex-shrink: 0; transition: transform .2s; }
-  #wld-home-{{ section.id }} .wld-home-faq__item.is-open .wld-home-faq__icon { transform: rotate(45deg); }
+  #wld-home-{{ section.id }} .wld-home-faq { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+  #wld-home-{{ section.id }} .wld-home-faq__item { background: var(--g-tint); border: 2px solid #e6ece0; border-radius: 16px; overflow: hidden; transition: border-color .15s ease, background .15s ease; }
+  #wld-home-{{ section.id }} .wld-home-faq__item.is-open { border-color: var(--g); background: #fff; }
+  #wld-home-{{ section.id }} .wld-home-faq__q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 24px; background: none; border: 0; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 16px; text-align: left; color: #141414; }
+  #wld-home-{{ section.id }} .wld-home-faq__icon { color: var(--g); flex-shrink: 0; display: inline-flex; transition: transform .25s ease; }
+  #wld-home-{{ section.id }} .wld-home-faq__item.is-open .wld-home-faq__icon { transform: rotate(180deg); }
   #wld-home-{{ section.id }} .wld-home-faq__a { max-height: 0; overflow: hidden; transition: max-height .25s ease; }
-  #wld-home-{{ section.id }} .wld-home-faq__a p { margin: 0 0 20px; color: #555; font-size: 15px; }
+  #wld-home-{{ section.id }} .wld-home-faq__a p { margin: 0; padding: 0 24px 22px; color: #555; font-size: 15px; line-height: 1.55; }
 
   @media (max-width: 900px) {
     #wld-home-{{ section.id }} .wld-home-cards { grid-template-columns: repeat(2, 1fr); }

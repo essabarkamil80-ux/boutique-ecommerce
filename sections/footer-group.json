@@ -1,7 +1,55 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
+    "178347993983b01b08": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_verified_badge_UiA7bp": {
+          "type": "shopify://apps/judge-me-reviews/blocks/verified_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_verified_badge_UiA7bp"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "17834799015c45f8ac": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "178347988441e0557a": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "17834798575c182341": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "17834798527ac7166a": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -23,7 +71,7 @@
           "type": "text",
           "settings": {
             "heading": "Our mission",
-            "subtext": "<p>Share contact information, store details, and brand content with your customers.<\/p>"
+            "subtext": "<p>Share contact information, store details, and brand content with your customers.</p>"
           }
         }
       },
@@ -36,6 +84,7 @@
         "color_scheme": "scheme-1",
         "newsletter_enable": true,
         "newsletter_heading": "Subscribe to our emails",
+        "enable_follow_on_shop": true,
         "show_social": true,
         "enable_country_selector": false,
         "enable_language_selector": false,
@@ -48,6 +97,11 @@
     }
   },
   "order": [
+    "178347993983b01b08",
+    "17834799015c45f8ac",
+    "178347988441e0557a",
+    "17834798575c182341",
+    "17834798527ac7166a",
     "footer"
   ]
 }

@@ -12,31 +12,187 @@
     "felispace_home": {
       "type": "wld-felispace-home",
       "blocks": {
-        "benefit-1": { "type": "benefit", "settings": { "icon": "🐾", "title": "Calms anxious cats", "text": "A warm, den-like hideaway that soothes stress." } },
-        "benefit-2": { "type": "benefit", "settings": { "icon": "🛋️", "title": "Saves your furniture", "text": "Built-in scratcher your cat prefers to the sofa." } },
-        "benefit-3": { "type": "benefit", "settings": { "icon": "🧶", "title": "Premium wool felt", "text": "Soft, warm and made to last." } },
-        "review-1": { "type": "review", "settings": { "title": "BEST DECISION EVER", "text": "My cat curled up inside within a minute. It's her spot now.", "author": "Julie D. — Verified" } },
-        "review-2": { "type": "review", "settings": { "title": "FINALLY SOME PEACE", "text": "No more scratched sofa. She only scratches the cave.", "author": "Sophie L. — Verified" } },
-        "review-3": { "type": "review", "settings": { "title": "SO THANKFUL", "text": "My shy rescue finally feels safe. Game changer.", "author": "Miguel S. — Verified" } },
-        "review-4": { "type": "review", "settings": { "title": "BOTH CATS LOVE IT", "text": "Big enough for both — they nap in it together.", "author": "Karim B. — Verified" } },
-        "ugc-1": { "type": "ugc", "settings": {} },
-        "ugc-2": { "type": "ugc", "settings": {} },
-        "ugc-3": { "type": "ugc", "settings": {} },
-        "ugc-4": { "type": "ugc", "settings": {} },
-        "faq-1": { "type": "faq", "settings": { "question": "Is the Felispace Cave suitable for all cats?", "answer": "<p>Yes — the Large suits cats up to 7kg and the Jumbo is perfect for big or multi-cat homes.</p>" } },
-        "faq-2": { "type": "faq", "settings": { "question": "What is it made of?", "answer": "<p>High-density natural wool felt — soft, warm, scratch-resistant, no harmful chemicals.</p>" } },
-        "faq-3": { "type": "faq", "settings": { "question": "Will my cat actually use it?", "answer": "<p>The tunnel shape taps into your cat's instinct to hide. Pop their blanket inside and adoption is almost guaranteed.</p>" } },
-        "faq-4": { "type": "faq", "settings": { "question": "How do I clean it?", "answer": "<p>A quick vacuum for daily care. Hand-wash cold for stains, dry flat.</p>" } },
-        "faq-5": { "type": "faq", "settings": { "question": "What's your guarantee?", "answer": "<p>30-day money-back guarantee. If your cat doesn't love it, you get a refund.</p>" } }
+        "benefit-1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "🐾",
+            "title": "Calms anxious cats",
+            "text": "A warm, den-like hideaway that soothes stress."
+          }
+        },
+        "benefit-2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "🛋️",
+            "title": "Saves your furniture",
+            "text": "Built-in scratcher your cat prefers to the sofa."
+          }
+        },
+        "benefit-3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "🧶",
+            "title": "Premium wool felt",
+            "text": "Soft, warm and made to last."
+          }
+        },
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "title": "BEST DECISION EVER",
+            "text": "My cat curled up inside within a minute. It's her spot now.",
+            "author": "Julie D. — Verified"
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "title": "FINALLY SOME PEACE",
+            "text": "No more scratched sofa. She only scratches the cave.",
+            "author": "Sophie L. — Verified"
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "title": "SO THANKFUL",
+            "text": "My shy rescue finally feels safe. Game changer.",
+            "author": "Miguel S. — Verified"
+          }
+        },
+        "review-4": {
+          "type": "review",
+          "settings": {
+            "title": "BOTH CATS LOVE IT",
+            "text": "Big enough for both — they nap in it together.",
+            "author": "Karim B. — Verified"
+          }
+        },
+        "ugc-1": {
+          "type": "ugc",
+          "settings": {
+            "video_url": ""
+          }
+        },
+        "ugc-2": {
+          "type": "ugc",
+          "settings": {
+            "video_url": ""
+          }
+        },
+        "ugc-3": {
+          "type": "ugc",
+          "settings": {
+            "video_url": ""
+          }
+        },
+        "ugc-4": {
+          "type": "ugc",
+          "settings": {
+            "video_url": ""
+          }
+        },
+        "faq-1": {
+          "type": "faq",
+          "settings": {
+            "question": "Is the Felispace Cave suitable for all cats?",
+            "answer": "<p>Yes — the Large suits cats up to 7kg and the Jumbo is perfect for big or multi-cat homes.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "faq",
+          "settings": {
+            "question": "What is it made of?",
+            "answer": "<p>High-density natural wool felt — soft, warm, scratch-resistant, no harmful chemicals.</p>"
+          }
+        },
+        "faq-3": {
+          "type": "faq",
+          "settings": {
+            "question": "Will my cat actually use it?",
+            "answer": "<p>The tunnel shape taps into your cat's instinct to hide. Pop their blanket inside and adoption is almost guaranteed.</p>"
+          }
+        },
+        "faq-4": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I clean it?",
+            "answer": "<p>A quick vacuum for daily care. Hand-wash cold for stains, dry flat.</p>"
+          }
+        },
+        "faq-5": {
+          "type": "faq",
+          "settings": {
+            "question": "What's your guarantee?",
+            "answer": "<p>30-day money-back guarantee. If your cat doesn't love it, you get a refund.</p>"
+          }
+        }
       },
       "block_order": [
-        "benefit-1", "benefit-2", "benefit-3",
-        "review-1", "review-2", "review-3", "review-4",
-        "ugc-1", "ugc-2", "ugc-3", "ugc-4",
-        "faq-1", "faq-2", "faq-3", "faq-4", "faq-5"
+        "benefit-1",
+        "benefit-2",
+        "benefit-3",
+        "review-1",
+        "review-2",
+        "review-3",
+        "review-4",
+        "ugc-1",
+        "ugc-2",
+        "ugc-3",
+        "ugc-4",
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5"
       ],
       "settings": {
-        "product": "donut-cat-bed-for-2-cats-pet-cat-tunnel-toys-kitten-house-basket-interactive-play-toys-for-cats-natural-felt-rabbit-cave-nest-1"
+        "product": "donut-cat-bed-for-2-cats-pet-cat-tunnel-toys-kitten-house-basket-interactive-play-toys-for-cats-natural-felt-rabbit-cave-nest-1",
+        "color_primary": "#1f6f43",
+        "color_accent": "#d6f0bd",
+        "color_accent2": "#eaf7d9",
+        "color_cream": "#f4f1e7",
+        "color_dark": "#141414",
+        "hero_tp_label": "Excellent",
+        "hero_title": "The calm your cat has been missing",
+        "hero_sub": "Summer Sale",
+        "hero_offer": "Up to 30% OFF + 2 gifts",
+        "hero_cta": "Shop the cave",
+        "shop_title": "Shop the Felispace Cave",
+        "card_name_prefix": "Felispace Cave",
+        "card_reviews": "1,000+",
+        "card_cta": "Shop now",
+        "tr_title": "Your cat's transformation starts here",
+        "tr_sub": "Watch a shy, anxious cat claim its new favourite spot in minutes.",
+        "tr_video_url": "https://cdn.shopify.com/s/files/1/0934/6262/6682/files/videoframe_7521.png?v=1783479447",
+        "tr_cta": "Shop Felispace",
+        "rev_title": "Hear from real cat parents",
+        "story_eyebrow": "The Felispace difference",
+        "story_title": "They weren't misbehaving. They needed a place to feel safe.",
+        "story_text": "Cats hide when they're overwhelmed. The Felispace Cave gives them a warm, den-like retreat — so they relax, sleep deeper, and scratch the felt instead of your sofa.",
+        "story_cta": "Discover the cave",
+        "stats_eyebrow": "Loved by cats everywhere",
+        "stats_title": "Join the Felispace family",
+        "stat1_num": "92",
+        "stat1_suffix": "%",
+        "stat1_text": "of cats adopt it within 24 hours",
+        "stat2_num": "100000",
+        "stat2_suffix": "+",
+        "stat2_text": "happy cats and counting",
+        "stat3_num": "4",
+        "stat3_suffix": ".7★",
+        "stat3_text": "average rating from 1,000+ reviews",
+        "stats_cta": "Get yours today",
+        "ugc_eyebrow": "Real customers",
+        "ugc_title": "See it in action",
+        "guar_badge": "100%",
+        "guar_badge_word": "Guarantee",
+        "guar_badge_days": "30 days · No questions",
+        "guar_eyebrow": "30-day money-back guarantee",
+        "guar_title": "We know for sure you'll love it",
+        "guar_text": "Give your cat 30 days with the Felispace Cave. If they don't make it their new favourite spot, we'll refund every penny — our 100% money-back promise.",
+        "guar_cta": "Try risk-free",
+        "faq_title": "Questions"
       }
     }
   },

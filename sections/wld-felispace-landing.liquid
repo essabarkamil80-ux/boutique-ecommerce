@@ -515,21 +515,31 @@
     </div>
   </div>
 
-  {% comment %} ================= GUARANTEE BANNER ================= {% endcomment %}
-  <div class="wld-felispace-promise">
-    {%- if section.settings.promise_image != blank -%}
-      <img class="wld-felispace-promise__bg" src="{{ section.settings.promise_image | image_url: width: 1400 }}" alt="" loading="lazy" width="1400" height="500">
+  {% comment %} ================= GUARANTEE (premium reassurance) ================= {% endcomment %}
+  <div class="fs-guarantee">
+    {%- if section.settings.guar_bg != blank -%}
+      <img class="fs-guarantee__bg" src="{{ section.settings.guar_bg | image_url: width: 2200 }}" alt="" loading="lazy" width="2200" height="1100">
     {%- endif -%}
-    <div class="wld-felispace-promise__inner">
-      <h2 class="wld-felispace-promise__title">{{ section.settings.promise_title }}</h2>
-      <ul class="wld-felispace-promise__list">
-        <li>{{ section.settings.promise_1 }}</li>
-        <li>{{ section.settings.promise_2 }}</li>
-        <li>{{ section.settings.promise_3 }}</li>
-      </ul>
-      {%- if wld_product != blank -%}
-        <a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta">{{ section.settings.shop_now_text }}</a>
-      {%- endif -%}
+    <span class="fs-guarantee__overlay"></span>
+    <div class="fs-guarantee__inner">
+      <div class="fs-guarantee__content">
+        <h2 class="fs-guarantee__title">{{ section.settings.guar_title }}</h2>
+        {%- if section.settings.guar_subtitle != blank -%}<p class="fs-guarantee__sub">{{ section.settings.guar_subtitle }}</p>{%- endif -%}
+        <ul class="fs-guarantee__list">
+          {%- if section.settings.guar_b1 != blank -%}<li>{{ section.settings.guar_b1 }}</li>{%- endif -%}
+          {%- if section.settings.guar_b2 != blank -%}<li>{{ section.settings.guar_b2 }}</li>{%- endif -%}
+          {%- if section.settings.guar_b3 != blank -%}<li>{{ section.settings.guar_b3 }}</li>{%- endif -%}
+        </ul>
+        {%- if wld_product != blank -%}<a href="#wld-felispace-buybox-{{ section.id }}" class="fs-guarantee__cta">{{ section.settings.guar_cta }}</a>{%- endif -%}
+        {%- if section.settings.guar_trust_count != blank -%}<p class="fs-guarantee__trust">👥 {{ section.settings.guar_trust_pre }} <strong>{{ section.settings.guar_trust_count }}</strong> {{ section.settings.guar_trust_suffix }}</p>{%- endif -%}
+      </div>
+      <div class="fs-guarantee__badge-wrap" data-fs-badge>
+        <div class="fs-guarantee__badge">
+          <span class="fs-guarantee__badge-big">{{ section.settings.guar_badge_big }}</span>
+          <span class="fs-guarantee__badge-mid">{{ section.settings.guar_badge_mid }}</span>
+          <span class="fs-guarantee__badge-sub">{{ section.settings.guar_badge_sub }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -794,15 +804,36 @@
   #wld-felispace-{{ section.id }} .wld-felispace-faq__a { max-height: 0; overflow: hidden; transition: max-height .25s ease; }
   #wld-felispace-{{ section.id }} .wld-felispace-faq__a p { margin: 0 0 18px; font-size: 14px; color: #555; }
 
-  /* PROMISE */
-  #wld-felispace-{{ section.id }} .wld-felispace-promise { position: relative; min-height: 360px; display: flex; align-items: center; overflow: hidden; }
-  #wld-felispace-{{ section.id }} .wld-felispace-promise__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-  #wld-felispace-{{ section.id }} .wld-felispace-promise__inner { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; padding: 48px 24px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-promise__title { font-size: clamp(28px, 4vw, 46px); color: var(--wld-heading); max-width: 480px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-promise__list { list-style: none; padding: 0; margin: 0 0 24px; max-width: 360px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-promise__list li { padding-left: 24px; position: relative; margin-bottom: 8px; font-weight: 600; }
-  #wld-felispace-{{ section.id }} .wld-felispace-promise__list li::before { content: "✓"; position: absolute; left: 0; color: var(--wld-primary); }
-  #wld-felispace-{{ section.id }} .wld-felispace-promise .wld-felispace-cta { max-width: 240px; }
+  /* GUARANTEE (premium) */
+  #wld-felispace-{{ section.id }} .fs-guarantee { position: relative; min-height: 560px; display: flex; align-items: center; overflow: hidden; background: #141414; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.5) 45%, rgba(0,0,0,.25) 100%); }
+  #wld-felispace-{{ section.id }} .fs-guarantee__inner { position: relative; z-index: 2; max-width: 1140px; margin: 0 auto; padding: 70px 24px; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__content { max-width: 560px; color: #fff; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__title { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(32px, 5vw, 56px); line-height: 1.02; color: #fff; margin: 0 0 12px; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__sub { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: clamp(16px, 2vw, 20px); color: #ededed; margin: 0 0 24px; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__list { list-style: none; padding: 0; margin: 0 0 30px; display: flex; flex-direction: column; gap: 13px; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__list li { position: relative; padding-left: 34px; font-size: 16px; font-weight: 600; color: #fff; line-height: 1.4; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__list li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 23px; height: 23px; border-radius: 50%; background: var(--wld-primary); color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__cta { display: inline-block; background: var(--wld-primary); color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 16px; letter-spacing: .3px; padding: 17px 40px; border-radius: 999px; box-shadow: 0 8px 24px rgba(0,0,0,.35); transition: .18s; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__cta:hover { filter: brightness(1.1); transform: translateY(-2px); }
+  #wld-felispace-{{ section.id }} .fs-guarantee__trust { margin: 15px 0 0; font-size: 14px; color: #dcdcdc; font-weight: 600; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__trust strong { color: #fff; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__badge-wrap { flex-shrink: 0; opacity: 0; transform: scale(.85); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1.35); }
+  #wld-felispace-{{ section.id }} .fs-guarantee__badge-wrap.is-in { opacity: 1; transform: scale(1); }
+  #wld-felispace-{{ section.id }} .fs-guarantee__badge { width: 214px; height: 214px; border-radius: 50%; background: rgba(255,255,255,.12); border: 3px solid var(--wld-primary); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #fff; box-shadow: 0 12px 44px rgba(0,0,0,.45); animation: fs-float 4.5s ease-in-out infinite; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__badge-wrap:hover .fs-guarantee__badge { border-color: #fff; box-shadow: 0 16px 54px rgba(0,0,0,.55); }
+  #wld-felispace-{{ section.id }} .fs-guarantee__badge-big { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 40px; line-height: 1; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__badge-mid { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-top: 7px; max-width: 140px; line-height: 1.25; }
+  #wld-felispace-{{ section.id }} .fs-guarantee__badge-sub { font-size: 11px; opacity: .82; margin-top: 6px; }
+  @keyframes fs-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+  @media (max-width: 780px) {
+    #wld-felispace-{{ section.id }} .fs-guarantee__inner { flex-direction: column-reverse; text-align: center; gap: 28px; padding: 54px 20px; }
+    #wld-felispace-{{ section.id }} .fs-guarantee__content { max-width: 100%; }
+    #wld-felispace-{{ section.id }} .fs-guarantee__list { align-items: flex-start; max-width: 320px; margin-left: auto; margin-right: auto; text-align: left; }
+    #wld-felispace-{{ section.id }} .fs-guarantee__badge { width: 168px; height: 168px; }
+    #wld-felispace-{{ section.id }} .fs-guarantee__badge-big { font-size: 32px; }
+  }
 
   /* RESPONSIVE */
   @media (max-width: 900px) {
@@ -969,6 +1000,15 @@
           });
         }, { threshold: 0.5 });
         root.querySelectorAll('[data-vid]').forEach(function (w) { if (w.querySelector('video')) { vio.observe(w); } });
+      }
+
+      if ('IntersectionObserver' in window) {
+        var bio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); bio.unobserve(e.target); } });
+        }, { threshold: 0.35 });
+        root.querySelectorAll('[data-fs-badge]').forEach(function (b) { bio.observe(b); });
+      } else {
+        root.querySelectorAll('[data-fs-badge]').forEach(function (b) { b.classList.add('is-in'); });
       }
 
       root.querySelectorAll('[data-revslider]').forEach(function (sl) {
@@ -1221,12 +1261,20 @@
     { "type": "header", "content": "❓ FAQ (title)" },
     { "type": "text", "id": "faq_title", "label": "Title", "default": "Frequently asked questions" },
 
-    { "type": "header", "content": "🛡️ Guarantee banner" },
-    { "type": "image_picker", "id": "promise_image", "label": "Background image" },
-    { "type": "text", "id": "promise_title", "label": "Title", "default": "Your cat loves it or it's free!" },
-    { "type": "text", "id": "promise_1", "label": "Promise 1", "default": "Free shipping" },
-    { "type": "text", "id": "promise_2", "label": "Promise 2", "default": "14-day money-back" },
-    { "type": "text", "id": "promise_3", "label": "Promise 3", "default": "90-day wear guarantee" }
+    { "type": "header", "content": "🛡️ Guarantee (reassurance)" },
+    { "type": "image_picker", "id": "guar_bg", "label": "Background photo (cat in the cave)" },
+    { "type": "text", "id": "guar_title", "label": "Title", "default": "Your cat loves it — or you don't pay." },
+    { "type": "text", "id": "guar_subtitle", "label": "Subtitle", "default": "Try FeliSpace risk-free for 30 days." },
+    { "type": "text", "id": "guar_b1", "label": "Bullet 1", "default": "30-Day Money-Back Guarantee — if your cat doesn't adopt it, you're refunded" },
+    { "type": "text", "id": "guar_b2", "label": "Bullet 2", "default": "Free Shipping — delivered to your door at no extra cost" },
+    { "type": "text", "id": "guar_b3", "label": "Bullet 3", "default": "Easy Returns & Exchanges — hassle-free" },
+    { "type": "text", "id": "guar_cta", "label": "Button", "default": "Try It Risk-Free" },
+    { "type": "text", "id": "guar_trust_pre", "label": "Trust line — before number", "default": "Join" },
+    { "type": "text", "id": "guar_trust_count", "label": "Trust line — number", "default": "50+" },
+    { "type": "text", "id": "guar_trust_suffix", "label": "Trust line — after number", "default": "happy cat parents" },
+    { "type": "text", "id": "guar_badge_big", "label": "Badge — big", "default": "30 DAYS" },
+    { "type": "text", "id": "guar_badge_mid", "label": "Badge — middle", "default": "Money-Back Guarantee" },
+    { "type": "text", "id": "guar_badge_sub", "label": "Badge — small", "default": "No questions asked" }
   ],
   "blocks": [
     {

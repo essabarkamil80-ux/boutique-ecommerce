@@ -164,20 +164,62 @@
             "them_rows": "Falls apart in days | back to square one\nCold and flimsy | not cosy\nEasy to replace | just throw it away | neutral\nLooks messy | you hide it away\nNo guarantee | it's just a box"
           }
         },
-        "strip-1": { "type": "strip_img", "settings": {} },
-        "strip-2": { "type": "strip_img", "settings": {} },
-        "strip-3": { "type": "strip_img", "settings": {} },
-        "strip-4": { "type": "strip_img", "settings": {} },
-        "strip-5": { "type": "strip_img", "settings": {} },
-        "strip-6": { "type": "strip_img", "settings": {} },
-        "strip-7": { "type": "strip_img", "settings": {} },
-        "strip-8": { "type": "strip_img", "settings": {} },
-        "strip-9": { "type": "strip_img", "settings": {} },
-        "strip-10": { "type": "strip_img", "settings": {} },
-        "strip-11": { "type": "strip_img", "settings": {} },
-        "strip-12": { "type": "strip_img", "settings": {} },
-        "strip-13": { "type": "strip_img", "settings": {} },
-        "strip-14": { "type": "strip_img", "settings": {} },
+        "strip-1": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-2": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-3": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-4": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-5": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-6": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-7": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-8": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-9": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-10": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-11": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-12": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-13": {
+          "type": "strip_img",
+          "settings": {}
+        },
+        "strip-14": {
+          "type": "strip_img",
+          "settings": {}
+        },
         "faq-1": {
           "type": "faq",
           "settings": {
@@ -255,7 +297,20 @@
         "vs-1",
         "vs-2",
         "vs-3",
-        "strip-1", "strip-2", "strip-3", "strip-4", "strip-5", "strip-6", "strip-7", "strip-8", "strip-9", "strip-10", "strip-11", "strip-12", "strip-13", "strip-14",
+        "strip-1",
+        "strip-2",
+        "strip-3",
+        "strip-4",
+        "strip-5",
+        "strip-6",
+        "strip-7",
+        "strip-8",
+        "strip-9",
+        "strip-10",
+        "strip-11",
+        "strip-12",
+        "strip-13",
+        "strip-14",
         "faq-1",
         "faq-2",
         "faq-3",
@@ -288,6 +343,10 @@
         "bullet_3": "Your cat loves it — or it's free",
         "bullet_4": "",
         "bullet_5": "",
+        "color_img_1": "shopify://shop_images/WhisperingSkyBlue_peephole_wcats.webp",
+        "color_img_2": "shopify://shop_images/rose.webp",
+        "color_img_3": "shopify://shop_images/gris.webp",
+        "color_img_4": "shopify://shop_images/Charcoal_0front_wcats_c05bd5af-6109-4802-b80f-6cf793c7c0d4.webp",
         "bigger_size_keyword": "60",
         "bigger_size_uplift": "20",
         "urgency_stock": "Selling fast — limited stock",
@@ -320,6 +379,8 @@
         "trustpilot_count": "1,500+ reviews",
         "buy_now_text": "BUY IT NOW — FREE SHIPPING",
         "cta_text": "Add to cart",
+        "show_payicons": true,
+        "payicons_label": "Secure checkout — 100% protected",
         "moneyback_text": "30-day money-back guarantee — love it or your money back",
         "show_ship_bar": true,
         "ship_label": "Ships by",
@@ -371,12 +432,23 @@
         "compare_title": "Us vs. the others",
         "compare_ours_label": "FeliSpace",
         "compare_ours_image": "shopify://shop_images/Charcoal_0front_wcats.webp",
+        "strip_title": "#1 Trending Cat Cave on TikTok",
+        "strip_badge": "🐾 100,000+ Happy Cats",
+        "strip_foot": "FELISPACE HAS COMFORTED OVER 100,000+ CATS WORLDWIDE.",
         "buybox_title": "Get your Felispace Cave today",
         "faq_title": "Frequently asked questions",
-        "promise_title": "Your cat loves it or it's free!",
-        "promise_1": "Free shipping",
-        "promise_2": "14-day money-back",
-        "promise_3": "90-day wear guarantee"
+        "guar_title": "Your cat loves it — or you don't pay.",
+        "guar_subtitle": "Try FeliSpace risk-free for 30 days.",
+        "guar_b1": "30-Day Money-Back Guarantee — if your cat doesn't adopt it, you're refunded",
+        "guar_b2": "Free Shipping — delivered to your door at no extra cost",
+        "guar_b3": "Easy Returns & Exchanges — hassle-free",
+        "guar_cta": "Try It Risk-Free",
+        "guar_trust_pre": "Join",
+        "guar_trust_count": "50+",
+        "guar_trust_suffix": "happy cat parents",
+        "guar_badge_big": "30 DAYS",
+        "guar_badge_mid": "Money-Back Guarantee",
+        "guar_badge_sub": "No questions asked"
       }
     },
     "1783395563b50d77c7": {

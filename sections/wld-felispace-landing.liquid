@@ -433,13 +433,9 @@
   {% comment %} ================= REVIEWS (slider — Cattasaurus) ================= {% endcomment %}
   <div class="wld-felispace-band wld-felispace-band--dark">
     <h2 class="wld-felispace-h2 wld-felispace-h2--light">{{ section.settings.reviews_title }}</h2>
-    {%- assign rev_count = 0 -%}
-    {%- for b in section.blocks -%}{%- if b.type == 'review' -%}{%- assign rev_count = rev_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
-    {%- assign rev_half = rev_count | plus: 1 | divided_by: 2 -%}
     <div class="wld-felispace-revslider" data-revslider>
-      {%- assign rc = 0 -%}
       <div class="wld-felispace-revtrack" data-revtrack>
-        {%- for block in section.blocks -%}{%- if block.type == 'review' -%}{%- assign rc = rc | plus: 1 -%}{%- if rc <= rev_half -%}
+        {%- for block in section.blocks -%}{%- if block.type == 'review' -%}
           <article class="wld-felispace-revcard" {{ block.shopify_attributes }}>
             <div class="wld-felispace-revcard__media">{%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 640 }}" alt="" loading="lazy" width="420" height="300">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'wld-felispace-placeholder' }}{%- endif -%}</div>
             <div class="wld-felispace-revcard__body">
@@ -449,28 +445,11 @@
               <span class="wld-felispace-revcard__author">{{ block.settings.author }}</span>
             </div>
           </article>
-        {%- endif -%}{%- endif -%}{%- endfor -%}
+        {%- endif -%}{%- endfor -%}
       </div>
 
       {%- if wld_product != blank -%}
         <a href="#wld-felispace-buybox-{{ section.id }}" class="wld-felispace-cta wld-felispace-cta--inline wld-felispace-cta--reviews">{{ section.settings.shop_now_text }}</a>
-      {%- endif -%}
-
-      {%- if rev_count > rev_half -%}
-      {%- assign rc2 = 0 -%}
-      <div class="wld-felispace-revtrack" data-revtrack>
-        {%- for block in section.blocks -%}{%- if block.type == 'review' -%}{%- assign rc2 = rc2 | plus: 1 -%}{%- if rc2 > rev_half -%}
-          <article class="wld-felispace-revcard" {{ block.shopify_attributes }}>
-            <div class="wld-felispace-revcard__media">{%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 640 }}" alt="" loading="lazy" width="420" height="300">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'wld-felispace-placeholder' }}{%- endif -%}</div>
-            <div class="wld-felispace-revcard__body">
-              <div class="wld-felispace-revcard__stars">{% for s in (1..block.settings.rating) %}★{% endfor %}</div>
-              <h4 class="wld-felispace-revcard__title">{{ block.settings.title }}</h4>
-              <p class="wld-felispace-revcard__text">{{ block.settings.text }}</p>
-              <span class="wld-felispace-revcard__author">{{ block.settings.author }}</span>
-            </div>
-          </article>
-        {%- endif -%}{%- endif -%}{%- endfor -%}
-      </div>
       {%- endif -%}
 
       <div class="wld-felispace-revnav">
@@ -479,8 +458,30 @@
         <button type="button" class="wld-felispace-revarrow" data-revnext aria-label="Next">→</button>
       </div>
       {%- if section.settings.review_cta_text != blank -%}
-        <a href="{{ section.settings.review_cta_link | default: '#' }}" class="wld-felispace-revwrite">✍️ {{ section.settings.review_cta_text }}</a>
+        <button type="button" class="wld-felispace-revwrite" data-revwrite>✍️ {{ section.settings.review_cta_text }}</button>
       {%- endif -%}
+    </div>
+
+    {%- comment -%} Write-a-review modal (client-side, saved in the visitor's browser) {%- endcomment -%}
+    <div class="wld-felispace-revmodal" data-revmodal hidden>
+      <div class="wld-felispace-revmodal__backdrop" data-revclose></div>
+      <div class="wld-felispace-revmodal__box" role="dialog" aria-modal="true" aria-label="Write a review">
+        <button type="button" class="wld-felispace-revmodal__x" data-revclose aria-label="Close">×</button>
+        <h3 class="wld-felispace-revmodal__title">{{ section.settings.review_form_title }}</h3>
+        <form class="wld-felispace-revform" data-revform novalidate>
+          <span class="wld-felispace-revform__label">Your rating</span>
+          <div class="wld-felispace-revstars-in" data-revstars></div>
+          <input class="wld-felispace-revform__field" type="text" name="title" placeholder="Review title" maxlength="80" required>
+          <input class="wld-felispace-revform__field" type="text" name="name" placeholder="Your name" maxlength="40" required>
+          <textarea class="wld-felispace-revform__field" name="text" placeholder="Tell us what you and your cat think…" rows="4" maxlength="500" required></textarea>
+          <label class="wld-felispace-revphoto">
+            <input type="file" accept="image/*" data-revphoto hidden>
+            <span data-revphoto-label>📷 Add a photo (optional)</span>
+          </label>
+          <img class="wld-felispace-revphoto__preview" data-revpreview alt="" hidden>
+          <button type="submit" class="wld-felispace-cta wld-felispace-revform__submit">{{ section.settings.review_form_submit }}</button>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -803,8 +804,32 @@
   #wld-felispace-{{ section.id }} .wld-felispace-revdots { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 999px; padding: 10px 16px; }
   #wld-felispace-{{ section.id }} .wld-felispace-revdot { width: 8px; height: 8px; border-radius: 50%; border: 0; background: #cfcfcf; padding: 0; cursor: pointer; transition: .15s; }
   #wld-felispace-{{ section.id }} .wld-felispace-revdot.is-active { background: #141414; width: 22px; border-radius: 999px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-revwrite { display: block; width: max-content; margin: 22px auto 0; color: #fff; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; padding: 11px 24px; border: 2px solid rgba(255,255,255,.5); border-radius: 999px; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revwrite { display: block; width: max-content; margin: 22px auto 0; color: #fff; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; padding: 11px 24px; border: 2px solid rgba(255,255,255,.5); border-radius: 999px; transition: .15s; background: transparent; cursor: pointer; }
   #wld-felispace-{{ section.id }} .wld-felispace-revwrite:hover { background: #fff; color: #141414; border-color: #fff; }
+  /* User-submitted review card: avatar fallback when no photo */
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard__media--avatar { display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--wld-primary), var(--wld-olive, #2f5233)); }
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard__media--avatar span { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 64px; color: #fff; line-height: 1; }
+  /* Write-a-review modal */
+  #wld-felispace-{{ section.id }} .wld-felispace-revmodal { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revmodal[hidden] { display: none; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revmodal__backdrop { position: absolute; inset: 0; background: rgba(15,20,17,.55); backdrop-filter: blur(2px); }
+  #wld-felispace-{{ section.id }} .wld-felispace-revmodal__box { position: relative; z-index: 1; width: 100%; max-width: 440px; max-height: 90vh; overflow-y: auto; background: #fff; border-radius: 20px; padding: 30px 28px 28px; box-shadow: 0 30px 80px rgba(0,0,0,.35); text-align: left; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revmodal__x { position: absolute; top: 14px; right: 16px; width: 34px; height: 34px; border: 0; background: #f2f2f0; border-radius: 50%; font-size: 20px; line-height: 1; color: #555; cursor: pointer; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revmodal__x:hover { background: #e6e6e4; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revmodal__title { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 22px; color: #141414; margin: 0 0 18px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revform { display: flex; flex-direction: column; gap: 12px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revform__label { font-size: 13px; font-weight: 700; color: #444; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revstars-in { display: flex; gap: 4px; margin: -4px 0 4px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revstar-in { background: none; border: 0; padding: 0; cursor: pointer; font-size: 30px; line-height: 1; color: #dcdce0; transition: color .12s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revstar-in.is-on { color: #f5b301; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revform__field { width: 100%; padding: 12px 14px; border: 1.5px solid #e2e2e2; border-radius: 11px; font-family: 'Inter', sans-serif; font-size: 14px; color: #222; background: #fff; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revform__field:focus { outline: none; border-color: var(--wld-primary); box-shadow: 0 0 0 3px rgba(31,111,67,.12); }
+  #wld-felispace-{{ section.id }} .wld-felispace-revform__field.is-invalid { border-color: #e0605a; box-shadow: 0 0 0 3px rgba(224,96,90,.14); }
+  #wld-felispace-{{ section.id }} textarea.wld-felispace-revform__field { resize: vertical; min-height: 90px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revphoto { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--wld-primary); cursor: pointer; padding: 10px 14px; border: 1.5px dashed #c8d6cc; border-radius: 11px; background: #f7faf8; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revphoto:hover { background: #eef5f0; border-color: var(--wld-primary); }
+  #wld-felispace-{{ section.id }} .wld-felispace-revphoto__preview { width: 100%; max-height: 200px; object-fit: cover; border-radius: 11px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revform__submit { margin-top: 4px; }
 
   /* BENEFITS */
   #wld-felispace-{{ section.id }} .wld-felispace-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; }
@@ -1077,36 +1102,138 @@
       }
 
       root.querySelectorAll('[data-revslider]').forEach(function (sl) {
-        var tracks = sl.querySelectorAll('[data-revtrack]');
+        var track = sl.querySelector('[data-revtrack]');
         var dotsWrap = sl.querySelector('[data-revdots]');
-        if (!tracks.length) { return; }
-        var main = tracks[0];
-        var cards = main.querySelectorAll('.wld-felispace-revcard');
-        if (!cards.length) { return; }
-        function step() { var r = cards[0].getBoundingClientRect(); return r.width + 22; }
-        function scrollAllTo(x, smooth) { tracks.forEach(function (t) { t.scrollTo({ left: x, behavior: smooth ? 'smooth' : 'auto' }); }); }
+        if (!track) { return; }
+        var storeKey = 'felispace-reviews-' + (root.id || 'x');
+
+        function esc(s) {
+          return String(s == null ? '' : s)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+        function buildCard(r) {
+          var art = document.createElement('article');
+          art.className = 'wld-felispace-revcard wld-felispace-revcard--user';
+          var rt = Math.max(1, Math.min(5, parseInt(r.rating, 10) || 5));
+          var stars = new Array(rt + 1).join('★');
+          var media;
+          if (r.img) {
+            media = '<div class="wld-felispace-revcard__media"><img src="' + esc(r.img) + '" alt="" loading="lazy"></div>';
+          } else {
+            var initial = (r.name || '🐾').trim().charAt(0).toUpperCase() || '🐾';
+            media = '<div class="wld-felispace-revcard__media wld-felispace-revcard__media--avatar"><span>' + esc(initial) + '</span></div>';
+          }
+          art.innerHTML = media +
+            '<div class="wld-felispace-revcard__body">' +
+              '<div class="wld-felispace-revcard__stars">' + stars + '</div>' +
+              '<h4 class="wld-felispace-revcard__title">' + esc(r.title) + '</h4>' +
+              '<p class="wld-felispace-revcard__text">' + esc(r.text) + '</p>' +
+              '<span class="wld-felispace-revcard__author">' + esc(r.name) + ' — Verified</span>' +
+            '</div>';
+          return art;
+        }
+        function loadSaved() { try { return JSON.parse(localStorage.getItem(storeKey) || '[]'); } catch (e) { return []; } }
+        function saveAll(arr) { try { localStorage.setItem(storeKey, JSON.stringify(arr)); } catch (e) {} }
+
+        // Inject the visitor's previously published reviews (newest first).
+        var saved = loadSaved();
+        for (var s = saved.length - 1; s >= 0; s--) { track.insertBefore(buildCard(saved[s]), track.firstChild); }
+
+        function step() {
+          var c = track.querySelector('.wld-felispace-revcard');
+          if (!c) { return 320; }
+          return c.getBoundingClientRect().width + 22;
+        }
         var dots = [];
-        cards.forEach(function (c, i) {
-          var d = document.createElement('button');
-          d.type = 'button'; d.className = 'wld-felispace-revdot'; if (i === 0) { d.classList.add('is-active'); }
-          d.addEventListener('click', function () { scrollAllTo(step() * i, true); });
-          dotsWrap.appendChild(d); dots.push(d);
-        });
-        var syncing = false;
+        function rebuildDots() {
+          dotsWrap.innerHTML = ''; dots = [];
+          var cards = track.querySelectorAll('.wld-felispace-revcard');
+          cards.forEach(function (c, i) {
+            var d = document.createElement('button');
+            d.type = 'button'; d.className = 'wld-felispace-revdot'; if (i === 0) { d.classList.add('is-active'); }
+            d.addEventListener('click', function () { track.scrollTo({ left: step() * i, behavior: 'smooth' }); });
+            dotsWrap.appendChild(d); dots.push(d);
+          });
+        }
         function setActive() {
-          var idx = Math.round(main.scrollLeft / step());
+          var idx = Math.round(track.scrollLeft / step());
           dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); });
         }
-        main.addEventListener('scroll', function () {
-          window.requestAnimationFrame(setActive);
-          if (syncing) { return; }
-          syncing = true;
-          for (var i = 1; i < tracks.length; i++) { tracks[i].scrollLeft = main.scrollLeft; }
-          syncing = false;
-        });
+        track.addEventListener('scroll', function () { window.requestAnimationFrame(setActive); });
         var prev = sl.querySelector('[data-revprev]'), next = sl.querySelector('[data-revnext]');
-        if (prev) { prev.addEventListener('click', function () { scrollAllTo(main.scrollLeft - step(), true); }); }
-        if (next) { next.addEventListener('click', function () { scrollAllTo(main.scrollLeft + step(), true); }); }
+        if (prev) { prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); }); }
+        if (next) { next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); }); }
+        rebuildDots();
+
+        // ---- Write a review ----
+        var writeBtn = sl.querySelector('[data-revwrite]');
+        var modal = sl.parentElement.querySelector('[data-revmodal]');
+        if (writeBtn && modal) {
+          var form = modal.querySelector('[data-revform]');
+          var starsWrap = modal.querySelector('[data-revstars]');
+          var photoInput = modal.querySelector('[data-revphoto]');
+          var photoLabel = modal.querySelector('[data-revphoto-label]');
+          var preview = modal.querySelector('[data-revpreview]');
+          var curRating = 5, photoData = '';
+
+          var starBtns = [];
+          for (var st = 1; st <= 5; st++) {
+            (function (val) {
+              var b = document.createElement('button');
+              b.type = 'button'; b.className = 'wld-felispace-revstar-in is-on'; b.textContent = '★';
+              b.setAttribute('aria-label', val + ' star' + (val > 1 ? 's' : ''));
+              b.addEventListener('click', function () {
+                curRating = val;
+                starBtns.forEach(function (sb, i) { sb.classList.toggle('is-on', i < val); });
+              });
+              starsWrap.appendChild(b); starBtns.push(b);
+            })(st);
+          }
+
+          function openModal() { modal.hidden = false; document.body.style.overflow = 'hidden'; }
+          function closeModal() { modal.hidden = true; document.body.style.overflow = ''; }
+          writeBtn.addEventListener('click', openModal);
+          modal.querySelectorAll('[data-revclose]').forEach(function (x) { x.addEventListener('click', closeModal); });
+          document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) { closeModal(); } });
+
+          photoInput.addEventListener('change', function () {
+            var f = photoInput.files && photoInput.files[0];
+            if (!f) { return; }
+            var rd = new FileReader();
+            rd.onload = function (e) {
+              photoData = e.target.result; preview.src = photoData; preview.hidden = false;
+              photoLabel.textContent = '✅ Photo added — tap to change';
+            };
+            rd.readAsDataURL(f);
+          });
+
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var r = {
+              rating: curRating,
+              title: (form.title.value || '').trim(),
+              name: (form.name.value || '').trim(),
+              text: (form.text.value || '').trim(),
+              img: photoData
+            };
+            if (!r.title || !r.name || !r.text) {
+              form.querySelectorAll('[required]').forEach(function (fld) {
+                fld.classList.toggle('is-invalid', !String(fld.value || '').trim());
+              });
+              return;
+            }
+            var arr = loadSaved(); arr.unshift(r); saveAll(arr);
+            track.insertBefore(buildCard(r), track.firstChild);
+            rebuildDots();
+            track.scrollTo({ left: 0, behavior: 'smooth' });
+            form.reset();
+            form.querySelectorAll('.is-invalid').forEach(function (fld) { fld.classList.remove('is-invalid'); });
+            photoData = ''; preview.hidden = true; photoLabel.textContent = '📷 Add a photo (optional)';
+            curRating = 5; starBtns.forEach(function (sb) { sb.classList.add('is-on'); });
+            closeModal();
+          });
+        }
       });
 
       root.querySelectorAll('[data-faq-q]').forEach(function (q) {
@@ -1299,7 +1426,9 @@
     { "type": "header", "content": "⭐ Reviews (title)" },
     { "type": "text", "id": "reviews_title", "label": "Title", "default": "Cats love Felispace" },
     { "type": "text", "id": "review_cta_text", "label": "\"Add a review\" button text", "default": "Write a review" },
-    { "type": "url", "id": "review_cta_link", "label": "\"Add a review\" link (review app / form)" },
+    { "type": "text", "id": "review_form_title", "label": "Review form title", "default": "Write a review" },
+    { "type": "text", "id": "review_form_submit", "label": "Review form submit button", "default": "Publish review" },
+    { "type": "url", "id": "review_cta_link", "label": "\"Add a review\" link (unused — form opens in a popup)" },
 
     { "type": "header", "content": "🏆 Benefits" },
     { "type": "text", "id": "benefits_title", "label": "Title", "default": "The benefits of Felispace" },

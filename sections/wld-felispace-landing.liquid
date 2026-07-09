@@ -122,13 +122,26 @@
         {%- if section.settings.trustpilot_image != blank -%}
           <img src="{{ section.settings.trustpilot_image | image_url: width: 420 }}" alt="Trustpilot rating" width="200" loading="lazy">
         {%- else -%}
-          <span class="wld-felispace-tp__score">{{ section.settings.trustpilot_score }}</span>
+          {%- assign tp_score = section.settings.trustpilot_score | plus: 0.0 -%}
+          {%- assign tp_full = tp_score | floor -%}
+          {%- assign tp_rem = tp_score | minus: tp_full -%}
+          {%- assign tp_half = false -%}
+          {%- if tp_rem >= 0.75 -%}{%- assign tp_full = tp_full | plus: 1 -%}{%- elsif tp_rem >= 0.25 -%}{%- assign tp_half = true -%}{%- endif -%}
+          {%- assign tp_half_idx = tp_full | plus: 1 -%}
           <span class="wld-felispace-tp__stars" aria-hidden="true">
-            {%- for i in (1..5) -%}<span class="wld-felispace-tp__star">★</span>{%- endfor -%}
+            {%- for i in (1..5) -%}
+              {%- if i <= tp_full -%}
+                <span class="wld-felispace-tp__star is-full">★</span>
+              {%- elsif tp_half and i == tp_half_idx -%}
+                <span class="wld-felispace-tp__star is-half">★</span>
+              {%- else -%}
+                <span class="wld-felispace-tp__star">★</span>
+              {%- endif -%}
+            {%- endfor -%}
           </span>
+          <span class="wld-felispace-tp__rating"><strong>{{ section.settings.trustpilot_score }}</strong>/5{%- if section.settings.trustpilot_count != blank -%} <span class="wld-felispace-tp__count">({{ section.settings.trustpilot_count }})</span>{%- endif -%}</span>
           <span class="wld-felispace-tp__brand"><span class="wld-felispace-tp__brandstar">★</span>Trustpilot</span>
         {%- endif -%}
-        {%- if section.settings.trustpilot_count != blank -%}<span class="wld-felispace-tp__count">{{ section.settings.trustpilot_count }}</span>{%- endif -%}
       </div>
       {%- else -%}
       <div class="wld-felispace-microproof">
@@ -654,12 +667,15 @@
   #wld-felispace-{{ section.id }} .wld-felispace-trustpilot--top { justify-content: flex-start; margin: 0 0 6px; gap: 9px; }
   #wld-felispace-{{ section.id }} .wld-felispace-trustpilot--top .wld-felispace-tp__count { width: auto; text-align: left; }
   #wld-felispace-{{ section.id }} .wld-felispace-trustpilot img { width: auto; max-height: 30px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-tp__score { font-weight: 800; font-size: 16px; color: #191919; }
   #wld-felispace-{{ section.id }} .wld-felispace-tp__stars { display: flex; gap: 3px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-tp__star { width: 24px; height: 24px; background: #00b67a; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 15px; line-height: 1; border-radius: 3px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-tp__brand { display: flex; align-items: center; gap: 4px; font-weight: 800; font-size: 15px; color: #191919; }
-  #wld-felispace-{{ section.id }} .wld-felispace-tp__brandstar { color: #00b67a; font-size: 18px; line-height: 1; }
-  #wld-felispace-{{ section.id }} .wld-felispace-tp__count { width: 100%; text-align: center; font-size: 12.5px; color: #777; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tp__star { width: 23px; height: 23px; background: #dcdce6; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 1; border-radius: 2px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tp__star.is-full { background: #00b67a; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tp__star.is-half { background: linear-gradient(90deg, #00b67a 50%, #dcdce6 50%); }
+  #wld-felispace-{{ section.id }} .wld-felispace-tp__rating { font-size: 14px; color: #191919; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tp__rating strong { font-weight: 700; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tp__count { color: #6b6b78; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tp__brand { display: inline-flex; align-items: center; gap: 3px; font-weight: 700; font-size: 15px; color: #191919; letter-spacing: -.2px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-tp__brandstar { color: #00b67a; font-size: 17px; line-height: 1; }
 
   #wld-felispace-{{ section.id }} .wld-felispace-gift { display: flex; align-items: center; gap: 8px; background: var(--wld-accent); border: 1px dashed var(--wld-primary); color: #1a3a26; font-size: 13px; font-weight: 700; line-height: 1.4; padding: 11px 14px; border-radius: 10px; margin: 16px 0 6px; }
 
@@ -1172,7 +1188,7 @@
     { "type": "header", "content": "⭐ Trustpilot badge (top of bundle)" },
     { "type": "checkbox", "id": "show_trustpilot", "label": "Show Trustpilot badge", "default": true },
     { "type": "text", "id": "trustpilot_score", "label": "Score", "default": "4.7" },
-    { "type": "text", "id": "trustpilot_count", "label": "Reviews line", "default": "TrustScore based on 1,500+ reviews" },
+    { "type": "text", "id": "trustpilot_count", "label": "Reviews line", "default": "1,500+ reviews" },
     { "type": "image_picker", "id": "trustpilot_image", "label": "Official Trustpilot logo (optional — replaces the badge above)" },
 
     { "type": "header", "content": "🟢 CTAs & guarantee" },

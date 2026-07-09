@@ -194,8 +194,26 @@
             <label class="wld-felispace-field__label wld-felispace-field__label--bundle">Choose {{ opt.name }} <span class="wld-felispace-opt-selected" data-opt-selected="{{ opt.position }}">{{ opt.selected_value }}</span></label>
             {%- if is_color -%}
               {%- assign color_idx = opt.position | minus: 1 -%}
+              {%- comment -%} Fixed swatch order: noir → gris → bleu → rose (others keep their place after). {%- endcomment -%}
+              {%- assign swatch_sort = '' -%}
+              {%- for val in opt.values -%}
+                {%- assign cn = val | downcase -%}
+                {%- assign rank = '5' -%}
+                {%- if cn contains 'black' or cn contains 'void' or cn contains 'noir' -%}{%- assign rank = '1' -%}
+                {%- elsif cn contains 'charcoal' or cn contains 'grey' or cn contains 'gray' or cn contains 'gris' -%}{%- assign rank = '2' -%}
+                {%- elsif cn contains 'blue' or cn contains 'bleu' or cn contains 'sky' -%}{%- assign rank = '3' -%}
+                {%- elsif cn contains 'pink' or cn contains 'rose' -%}{%- assign rank = '4' -%}
+                {%- endif -%}
+                {%- assign padidx = forloop.index | prepend: '0' | slice: -2, 2 -%}
+                {%- assign swatch_sort = swatch_sort | append: rank | append: padidx | append: '||' | append: val | append: '~~' -%}
+              {%- endfor -%}
+              {%- assign swatch_order = swatch_sort | split: '~~' | sort -%}
               <div class="wld-felispace-swatches" data-option-position="{{ opt.position }}">
-                {%- for val in opt.values -%}
+                {%- for entry in swatch_order -%}
+                  {%- assign ep = entry | split: '||' -%}
+                  {%- assign orig_idx = ep[0] | slice: 1, 2 | plus: 0 -%}
+                  {%- assign val = ep[1] -%}
+                  {%- if val == blank -%}{%- continue -%}{%- endif -%}
                   {%- assign cn = val | downcase -%}
                   {%- assign cdot = '#cccccc' -%}
                   {%- if cn contains 'black' or cn contains 'void' or cn contains 'noir' -%}{%- assign cdot = '#1a1a1a' -%}
@@ -207,7 +225,7 @@
                   {%- elsif cn contains 'green' or cn contains 'sage' -%}{%- assign cdot = '#9cbf8f' -%}
                   {%- elsif cn contains 'ginger' or cn contains 'orange' -%}{%- assign cdot = '#d98a4a' -%}
                   {%- endif -%}
-                  {%- assign img_key = 'color_img_' | append: forloop.index -%}
+                  {%- assign img_key = 'color_img_' | append: orig_idx -%}
                   {%- assign custom_img = section.settings[img_key] -%}
                   {%- assign swatch_img = blank -%}
                   {%- if custom_img != blank -%}

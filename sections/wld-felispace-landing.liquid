@@ -253,6 +253,21 @@
         <button type="button" class="wld-felispace-cta wld-felispace-cta--buynow" data-buynow>{{ section.settings.buy_now_text }}</button>
         <button type="submit" class="wld-felispace-cta wld-felispace-cta--secondary" data-addcart>{{ section.settings.cta_text }}</button>
 
+        {%- if section.settings.show_payicons -%}
+        <div class="wld-felispace-payicons">
+          {%- if section.settings.payicons_label != blank -%}<span class="wld-felispace-payicons__label">🔒 {{ section.settings.payicons_label }}</span>{%- endif -%}
+          <div class="wld-felispace-payicons__row" role="img" aria-label="Accepted payment methods: Visa, Mastercard, American Express, PayPal, Apple Pay, Google Pay, Shop Pay">
+            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#fff" stroke="#e7e7e7"/><text x="19" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="10" font-style="italic" font-weight="700" fill="#1a1f71">VISA</text></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#fff" stroke="#e7e7e7"/><circle cx="16" cy="12" r="6" fill="#eb001b"/><circle cx="23" cy="12" r="6" fill="#f79e1b" fill-opacity=".92"/></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#2e77bc"/><text x="19" y="15.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7" font-weight="700" fill="#fff">AMEX</text></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#fff" stroke="#e7e7e7"/><text x="19" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-style="italic" font-weight="700"><tspan fill="#003087">Pay</tspan><tspan fill="#009cde">Pal</tspan></text></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#fff" stroke="#e7e7e7"/><path d="M10.4 9.1c.28-.35.47-.83.42-1.31-.41.02-.9.27-1.19.62-.26.3-.49.79-.43 1.25.46.04.92-.23 1.2-.56zm.41.66c-.66-.04-1.23.38-1.54.38-.32 0-.8-.36-1.32-.35-.68.01-1.31.4-1.66 1.01-.71 1.23-.19 3.05.5 4.05.34.49.74 1.04 1.27 1.02.51-.02.7-.33 1.32-.33.61 0 .79.33 1.32.32.55-.01.9-.5 1.24-.99.39-.57.55-1.12.56-1.15-.01-.01-1.07-.42-1.08-1.64-.01-1.03.84-1.52.88-1.55-.48-.71-1.23-.79-1.5-.81z" fill="#111"/><text x="24" y="15.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7.5" font-weight="600" fill="#111">Pay</text></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#fff" stroke="#e7e7e7"/><text x="19" y="15.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7.5" font-weight="600"><tspan fill="#4285f4">G</tspan><tspan fill="#5f6368"> Pay</tspan></text></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#5a31f4"/><text x="19" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="8.5" font-weight="700" fill="#fff">shop</text></svg>
+          </div>
+        </div>
+        {%- endif -%}
+
         {{ wld_shipbar }}
 
         <p class="wld-felispace-moneyback">🛡️ {{ section.settings.moneyback_text }}</p>
@@ -687,6 +702,10 @@
   #wld-felispace-{{ section.id }} .wld-felispace-cta--buynow { font-size: 18px; padding: 17px 24px; margin-top: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
   #wld-felispace-{{ section.id }} .wld-felispace-cta--secondary { background: #fff; color: var(--wld-primary); border: 2px solid var(--wld-primary); margin-top: 10px; }
   #wld-felispace-{{ section.id }} .wld-felispace-cta--secondary:hover { background: var(--wld-accent2); filter: none; }
+  #wld-felispace-{{ section.id }} .wld-felispace-payicons { margin-top: 11px; text-align: center; }
+  #wld-felispace-{{ section.id }} .wld-felispace-payicons__label { display: block; font-size: 11px; color: #8a8a8a; margin-bottom: 7px; letter-spacing: .2px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-payicons__row { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-pi { width: 38px; height: 24px; display: block; box-shadow: 0 1px 2px rgba(0,0,0,.06); border-radius: 3px; }
   #wld-felispace-{{ section.id }} .wld-felispace-shipbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; background: #f4f4f4; border-radius: 10px; padding: 10px 14px; margin-top: 12px; font-size: 12.5px; color: #333; }
   #wld-felispace-{{ section.id }} .wld-felispace-shipbar__left { display: flex; align-items: center; gap: 8px; }
   #wld-felispace-{{ section.id }} .wld-felispace-shipbar__dot { width: 9px; height: 9px; border-radius: 50%; background: #2fb344; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(47,179,68,.18); }
@@ -1199,6 +1218,8 @@
     { "type": "header", "content": "🟢 CTAs & guarantee" },
     { "type": "text", "id": "buy_now_text", "label": "Primary button (Buy now)", "default": "BUY IT NOW — FREE SHIPPING" },
     { "type": "text", "id": "cta_text", "label": "Secondary button", "default": "Add to cart" },
+    { "type": "checkbox", "id": "show_payicons", "label": "Show payment icons under Add to cart", "default": true },
+    { "type": "text", "id": "payicons_label", "label": "Payment icons caption", "default": "Secure checkout — 100% protected" },
     { "type": "text", "id": "moneyback_text", "label": "Money-back line", "default": "30-day money-back guarantee — love it or your money back" },
     { "type": "header", "content": "🚚 Shipping bar (under Add to cart)" },
     { "type": "checkbox", "id": "show_ship_bar", "label": "Show shipping bar", "default": true },

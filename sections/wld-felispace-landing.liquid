@@ -46,7 +46,11 @@
     </span>
   </button>
 
-  {%- comment -%} ---- TIER 3 ---- {%- endcomment -%}
+  {%- comment -%}
+    ---- TIER 3 (DÉSACTIVÉ à la demande de Kamil — l'option bundle à +100$) ----
+    Pour le réafficher : supprime simplement ce bloc {%- comment -%} / {%- endcomment -%}
+    autour du <button> ci-dessous. Tout le code et les réglages tier3_* sont conservés.
+
   <button type="button" class="wld-felispace-tier wld-felispace-tier--feature" data-tier data-qty="3">
     {%- if section.settings.tier3_badge != blank -%}<span class="wld-felispace-tier__badge wld-felispace-tier__badge--gold">{{ section.settings.tier3_badge }}</span>{%- endif -%}
     <span class="wld-felispace-tier__radio"></span>
@@ -65,6 +69,7 @@
       {%- if section.settings.tier3_save != blank -%}<span class="wld-felispace-tier__savepill" data-price>{{ section.settings.tier3_save }}</span>{%- endif -%}
     </span>
   </button>
+  {%- endcomment -%}
 </div>
 {%- endcapture -%}
 

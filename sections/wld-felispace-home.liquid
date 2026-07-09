@@ -208,7 +208,7 @@
   </div>
 
   {%- comment -%} ===================== FAQ ===================== {%- endcomment -%}
-  <div class="wld-home-band wld-home-band--cream">
+  <div class="wld-home-band wld-home-band--faq">
     <h2 class="wld-home-h2">{{ section.settings.faq_title }}</h2>
     <div class="wld-home-faq" data-faq>
       {%- for block in section.blocks -%}
@@ -240,6 +240,7 @@
   #wld-home-{{ section.id }} .wld-home-band { padding: 72px 24px; max-width: 1280px; margin: 0 auto; }
   #wld-home-{{ section.id }} .wld-home-band--tint { background: var(--g-tint); max-width: none; }
   #wld-home-{{ section.id }} .wld-home-band--cream { background: var(--cream); max-width: none; }
+  #wld-home-{{ section.id }} .wld-home-band--faq { background: #eae7df; max-width: none; }
   #wld-home-{{ section.id }} .wld-home-h2 { font-size: clamp(28px, 4vw, 46px); text-align: center; text-transform: uppercase; letter-spacing: -.5px; margin-bottom: 8px; }
   #wld-home-{{ section.id }} .wld-home-sub { text-align: center; color: #555; margin: 0 auto 36px; max-width: 640px; }
   #wld-home-{{ section.id }} .wld-home-eyebrow { display: inline-block; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--g); margin-bottom: 10px; }

@@ -143,7 +143,7 @@
             "tab_label": "vs Cheap Tunnels",
             "them_label": "Cheap Tunnels",
             "ours_rows": "Calms anxious cats | thick felt muffles noise\nSturdy, won't collapse | keeps its shape for years\nDoubles as a scratcher | saves your furniture\nPremium soft felt | gentle, warm, natural\n30-day guarantee | love it or your money back",
-            "them_rows": "Noisy, flimsy material | stresses shy cats\nCollapses under weight | loses shape fast\nNo scratcher | cats ignore it\nCheap rough fabric | uncomfortable\nNo guarantee | you're on your own"
+            "them_rows": "Noisy, flimsy material | stresses shy cats\nCollapses under weight | loses shape fast\nNo scratcher | cats ignore it\nSoft nylon material | can be noisy but soft | neutral\nNo guarantee | you're on your own"
           }
         },
         "vs-2": {
@@ -151,8 +151,8 @@
           "settings": {
             "tab_label": "vs Regular Cat Beds",
             "them_label": "Regular Cat Beds",
-            "ours_rows": "Enclosed, secure den | anxious cats feel safe\nBuilt-in scratcher | protects your sofa\n2-in-1 bed + tunnel | play and nap\nHolds its shape | won't flatten\n30-day guarantee | risk-free",
-            "them_rows": "Open, exposed bed | shy cats stay away\nNo scratcher | furniture still at risk\nJust a bed | nothing to explore\nFlattens over time | looks worn fast\nOften no guarantee | you take the risk"
+            "ours_rows": "Enclosed, secure den | anxious cats feel safe\nWashable & easy to clean | quick vacuum or spot-wash\n2-in-1 bed + tunnel | play and nap\nHolds its shape | won't flatten\n30-day guarantee | risk-free",
+            "them_rows": "Open, exposed bed | shy cats stay away\nWashable cover | removable, machine-washable | yes\nJust a bed | nothing to explore\nFlattens over time | looks worn fast\nOften no guarantee | you take the risk"
           }
         },
         "vs-3": {
@@ -161,7 +161,7 @@
             "tab_label": "vs Cardboard Boxes",
             "them_label": "Cardboard Boxes",
             "ours_rows": "Premium felt, lasts years | a real piece of furniture\nWarm & cosy | keeps your cat snug\nEasy to clean | just vacuum\nLooks great at home | you'll want it out\n30-day guarantee | love it or refund",
-            "them_rows": "Falls apart in days | back to square one\nCold and flimsy | not cosy\nGets dirty fast | can't clean it\nLooks messy | you hide it away\nNo guarantee | it's just a box"
+            "them_rows": "Falls apart in days | back to square one\nCold and flimsy | not cosy\nEasy to replace | just throw it away | neutral\nLooks messy | you hide it away\nNo guarantee | it's just a box"
           }
         },
         "strip-1": { "type": "strip_img", "settings": {} },

@@ -490,7 +490,9 @@
             </div>
             {%- assign ours = block.settings.ours_rows | newline_to_br | split: '<br />' -%}
             {%- for r in ours -%}{%- assign rr = r | strip -%}{%- if rr != blank -%}{%- assign p = rr | split: '|' -%}
-              <div class="wld-felispace-cmp__row"><span class="wld-felispace-cmp__ic wld-felispace-cmp__ic--yes">✓</span><div class="wld-felispace-cmp__txt"><strong>{{ p[0] | strip }}</strong>{%- if p[1] -%}<span>{{ p[1] | strip }}</span>{%- endif -%}</div></div>
+              {%- assign st = p[2] | default: 'yes' | strip | downcase -%}
+              {%- if st == 'no' -%}{%- assign ic_cls = 'wld-felispace-cmp__ic--no' -%}{%- assign ic_sym = '✕' -%}{%- elsif st == 'neutral' or st == 'mid' -%}{%- assign ic_cls = 'wld-felispace-cmp__ic--neutral' -%}{%- assign ic_sym = '~' -%}{%- else -%}{%- assign ic_cls = 'wld-felispace-cmp__ic--yes' -%}{%- assign ic_sym = '✓' -%}{%- endif -%}
+              <div class="wld-felispace-cmp__row"><span class="wld-felispace-cmp__ic {{ ic_cls }}">{{ ic_sym }}</span><div class="wld-felispace-cmp__txt"><strong>{{ p[0] | strip }}</strong>{%- if p[1] -%}<span>{{ p[1] | strip }}</span>{%- endif -%}</div></div>
             {%- endif -%}{%- endfor -%}
           </div>
           <div class="wld-felispace-cmp__col wld-felispace-cmp__col--them">
@@ -500,7 +502,9 @@
             </div>
             {%- assign them = block.settings.them_rows | newline_to_br | split: '<br />' -%}
             {%- for r in them -%}{%- assign rr = r | strip -%}{%- if rr != blank -%}{%- assign p = rr | split: '|' -%}
-              <div class="wld-felispace-cmp__row"><span class="wld-felispace-cmp__ic wld-felispace-cmp__ic--no">✕</span><div class="wld-felispace-cmp__txt"><strong>{{ p[0] | strip }}</strong>{%- if p[1] -%}<span>{{ p[1] | strip }}</span>{%- endif -%}</div></div>
+              {%- assign st = p[2] | default: 'no' | strip | downcase -%}
+              {%- if st == 'yes' -%}{%- assign ic_cls = 'wld-felispace-cmp__ic--yes' -%}{%- assign ic_sym = '✓' -%}{%- elsif st == 'neutral' or st == 'mid' -%}{%- assign ic_cls = 'wld-felispace-cmp__ic--neutral' -%}{%- assign ic_sym = '~' -%}{%- else -%}{%- assign ic_cls = 'wld-felispace-cmp__ic--no' -%}{%- assign ic_sym = '✕' -%}{%- endif -%}
+              <div class="wld-felispace-cmp__row"><span class="wld-felispace-cmp__ic {{ ic_cls }}">{{ ic_sym }}</span><div class="wld-felispace-cmp__txt"><strong>{{ p[0] | strip }}</strong>{%- if p[1] -%}<span>{{ p[1] | strip }}</span>{%- endif -%}</div></div>
             {%- endif -%}{%- endfor -%}
           </div>
         </div>
@@ -809,6 +813,7 @@
   #wld-felispace-{{ section.id }} .wld-felispace-cmp__ic { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
   #wld-felispace-{{ section.id }} .wld-felispace-cmp__ic--yes { background: var(--wld-primary); }
   #wld-felispace-{{ section.id }} .wld-felispace-cmp__ic--no { background: #e0605a; }
+  #wld-felispace-{{ section.id }} .wld-felispace-cmp__ic--neutral { background: #bdbdbd; }
   #wld-felispace-{{ section.id }} .wld-felispace-cmp__txt { display: flex; flex-direction: column; gap: 2px; }
   #wld-felispace-{{ section.id }} .wld-felispace-cmp__txt strong { font-size: 15px; color: #141414; }
   #wld-felispace-{{ section.id }} .wld-felispace-cmp__txt span { font-size: 13px; color: #666; line-height: 1.4; }
@@ -1356,8 +1361,8 @@
         { "type": "text", "id": "tab_label", "label": "Tab label", "default": "vs Cheap Tunnels" },
         { "type": "text", "id": "them_label", "label": "Competitor name", "default": "Cheap Tunnels" },
         { "type": "image_picker", "id": "them_image", "label": "Competitor image" },
-        { "type": "textarea", "id": "ours_rows", "label": "FeliSpace rows (Title | description)", "default": "Calms anxious cats | thick felt muffles noise\nSturdy, won't collapse | keeps its shape for years\nDoubles as a scratcher | saves your furniture\nPremium soft felt | gentle, warm, natural\n30-day guarantee | love it or your money back" },
-        { "type": "textarea", "id": "them_rows", "label": "Competitor rows (Title | description)", "default": "Noisy, flimsy material | stresses shy cats\nCollapses under weight | loses shape fast\nNo scratcher | cats ignore it\nCheap rough fabric | uncomfortable\nNo guarantee | you're on your own" }
+        { "type": "textarea", "id": "ours_rows", "label": "FeliSpace rows (Title | description | yes/no/neutral)", "default": "Calms anxious cats | thick felt muffles noise\nSturdy, won't collapse | keeps its shape for years\nDoubles as a scratcher | saves your furniture\nPremium soft felt | gentle, warm, natural\n30-day guarantee | love it or your money back" },
+        { "type": "textarea", "id": "them_rows", "label": "Competitor rows (Title | description | yes/no/neutral)", "default": "Noisy, flimsy material | stresses shy cats\nCollapses under weight | loses shape fast\nNo scratcher | cats ignore it\nSoft nylon material | can be noisy but soft | neutral\nNo guarantee | you're on your own" }
       ]
     },
     {

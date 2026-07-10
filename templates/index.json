@@ -95,36 +95,57 @@
         "faq-1": {
           "type": "faq",
           "settings": {
-            "question": "Is the Felispace Cave suitable for all cats?",
-            "answer": "<p>Yes — the Large suits cats up to 7kg and the Jumbo is perfect for big or multi-cat homes.</p>"
+            "question": "Is the FeliSpace Cave suitable for all cats?",
+            "answer": "<p>Yes! The 50x50x20cm size fits most cats up to 7 kg, and the 60x60x28cm is ideal for big cats or multi-cat homes where two cats share it — one napping on top while the other hides in the tunnel. If you're between sizes, go bigger: cats love having room to stretch and curl up.</p>"
           }
         },
         "faq-2": {
           "type": "faq",
           "settings": {
             "question": "What is it made of?",
-            "answer": "<p>High-density natural wool felt — soft, warm, scratch-resistant, no harmful chemicals.</p>"
+            "answer": "<p>Thick, high-density felt — soft, warm and naturally scratch-resistant, with no harmful chemicals. The dense felt holds its shape over time, muffles outside noise for a calmer space, and feels cosy enough that your cat will want to settle right in.</p>"
           }
         },
         "faq-3": {
           "type": "faq",
           "settings": {
-            "question": "Will my cat actually use it?",
-            "answer": "<p>The tunnel shape taps into your cat's instinct to hide. Pop their blanket inside and adoption is almost guaranteed.</p>"
+            "question": "How do I clean it?",
+            "answer": "<p>Super easy. For everyday care, just run a vacuum over it to lift hair and dust. For the odd stain, hand-wash the spot in cold water and let it air-dry flat. Thanks to the zip, the tunnel opens up completely, so cleaning every corner takes seconds.</p>"
           }
         },
         "faq-4": {
           "type": "faq",
           "settings": {
-            "question": "How do I clean it?",
-            "answer": "<p>A quick vacuum for daily care. Hand-wash cold for stains, dry flat.</p>"
+            "question": "Will my cat actually use it?",
+            "answer": "<p>Almost certainly. The enclosed tunnel shape taps straight into your cat's natural instinct to hide and feel safe. If yours is shy at first, pop their favourite blanket or a treat inside — within a day or two, most cats claim it as their favourite spot. That's exactly why we back it with our guarantee: if your cat doesn't adopt it, you're refunded.</p>"
           }
         },
         "faq-5": {
           "type": "faq",
           "settings": {
+            "question": "Does it work as a scratcher too?",
+            "answer": "<p>Absolutely. The thick felt surface is perfect for scratching, so your cat naturally targets the Cave instead of your sofa, curtains or carpet. It's a bed, a tunnel and a scratcher in one — one purchase that saves your furniture.</p>"
+          }
+        },
+        "faq-6": {
+          "type": "faq",
+          "settings": {
+            "question": "What do I get with my order?",
+            "answer": "<p>Every FeliSpace Cave comes with free bonuses: a free self-cleaning cat grooming brush (one-click hair removal), a free ebook on reducing anxiety in cats, and free shipping — all included at no extra cost. Want one for each of your cats? Add a 2nd Cave at 50% off at checkout.</p>"
+          }
+        },
+        "faq-7": {
+          "type": "faq",
+          "settings": {
+            "question": "What are the delivery times?",
+            "answer": "<p>Shipping is completely free. Your order arrives in 3–7 working days, and you'll get a tracking email the moment it ships so you can follow it all the way to your door.</p>"
+          }
+        },
+        "faq-8": {
+          "type": "faq",
+          "settings": {
             "question": "What's your guarantee?",
-            "answer": "<p>30-day money-back guarantee. If your cat doesn't love it, you get a refund.</p>"
+            "answer": "<p>You're covered by our 30-day money-back guarantee. If your cat doesn't love their new den — or you're not happy for any reason — just reach out within 30 days for a full refund. No stress, no risk.</p>"
           }
         }
       },
@@ -144,7 +165,10 @@
         "faq-2",
         "faq-3",
         "faq-4",
-        "faq-5"
+        "faq-5",
+        "faq-6",
+        "faq-7",
+        "faq-8"
       ],
       "settings": {
         "product": "donut-cat-bed-for-2-cats-pet-cat-tunnel-toys-kitten-house-basket-interactive-play-toys-for-cats-natural-felt-rabbit-cave-nest-1",

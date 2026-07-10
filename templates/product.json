@@ -171,59 +171,87 @@
         },
         "strip-1": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Capture_d_ecran_2026-03-31_181244.png"
+          }
         },
         "strip-2": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/217906_7160879710392_f40aaf57_c5cf_4a62_8c60_d1e5395f8e9b.webp"
+          }
         },
         "strip-3": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Capture_d_ecran_2026-03-31_181315.png"
+          }
         },
         "strip-4": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Capture_d_ecran_2026-04-02_082337.png"
+          }
         },
         "strip-5": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Capture_d_ecran_2026-04-02_081823.png"
+          }
         },
         "strip-6": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/images_2.jpg"
+          }
         },
         "strip-7": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/good-morning-does-anyone-have-a-cattasaurus-cat-cave-for-v0-5j8jxqzf60he1.webp"
+          }
         },
         "strip-8": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/n12m2ul8ozge1.jpg"
+          }
         },
         "strip-9": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/images_2.jpg"
+          }
         },
         "strip-10": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/my-mom-got-my-kitty-a-cattasaurus-its-exactly-what-she-v0-gcd9yimrljuf1.jpg"
+          }
         },
         "strip-11": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/240729-11-roc-tater-tony_bba216c6-b425-4bd0-afdf-24a81f45b760.jpg"
+          }
         },
         "strip-12": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/81Csv5DiTaL._AC_UF350_350_QL80.jpg"
+          }
         },
         "strip-13": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/81JDZ5WIntL._AC_UF350_350_QL80__1.jpg"
+          }
         },
         "strip-14": {
           "type": "strip_img",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/images.jpg"
+          }
         },
         "faq-1": {
           "type": "faq",
@@ -426,6 +454,8 @@
         "why_4_text": "A quick vacuum is all it takes. The felt stays clean and beautiful — hand-washable too.",
         "reviews_title": "Cats love Felispace",
         "review_cta_text": "Write a review",
+        "review_form_title": "Write a review",
+        "review_form_submit": "Publish review",
         "review_cta_link": "",
         "benefits_title": "The benefits of Felispace",
         "benefit_1_title": "Better sleep",

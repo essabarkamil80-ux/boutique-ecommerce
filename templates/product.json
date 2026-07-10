@@ -15,14 +15,14 @@
         "herovid-1": {
           "type": "hero_video",
           "settings": {
-            "video_url": "",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/c5bda0ace5a548bca882312916559681.mp4",
             "caption": ""
           }
         },
         "herovid-2": {
           "type": "hero_video",
           "settings": {
-            "video_url": "",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/be72491b983b414f8921933eceff5d5e.mp4",
             "caption": ""
           }
         },

@@ -29,7 +29,7 @@
         "herovid-3": {
           "type": "hero_video",
           "settings": {
-            "video_url": "",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/9d9d2db6e5844c2d964120a0fe1a48dd.mp4",
             "caption": ""
           }
         },

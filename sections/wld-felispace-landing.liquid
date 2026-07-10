@@ -114,11 +114,33 @@
   {% comment %} ========================= HERO ========================= {% endcomment %}
   <div class="wld-felispace-hero">
     <div class="wld-felispace-hero__media">
-      {%- if section.settings.hero_image != blank -%}
-        <img src="{{ section.settings.hero_image | image_url: width: 900 }}" alt="{{ section.settings.product_title | escape }}" loading="eager" width="900" height="900">
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'wld-felispace-placeholder' }}
-      {%- endif -%}
+      {%- assign gal_keys = 'hero_image,gallery_img_2,gallery_img_3,gallery_img_4,gallery_img_5,gallery_img_6,gallery_img_7,gallery_img_8' | split: ',' -%}
+      {%- assign gal_count = 0 -%}
+      {%- for k in gal_keys -%}{%- if section.settings[k] != blank -%}{%- assign gal_count = gal_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+      <div class="wld-felispace-gallery" data-gallery>
+        <div class="wld-felispace-gallery__main">
+          {%- assign main_set = false -%}
+          {%- for k in gal_keys -%}{%- assign gimg = section.settings[k] -%}
+            {%- if gimg != blank and main_set == false -%}
+              <img data-gallery-main src="{{ gimg | image_url: width: 900 }}" alt="{{ section.settings.product_title | escape }}" loading="eager" width="900" height="900">
+              {%- assign main_set = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if main_set == false -%}{{ 'product-1' | placeholder_svg_tag: 'wld-felispace-placeholder' }}{%- endif -%}
+        </div>
+        {%- if gal_count > 1 -%}
+        <div class="wld-felispace-gallery__thumbs">
+          {%- assign ti = 0 -%}
+          {%- for k in gal_keys -%}{%- assign gimg = section.settings[k] -%}
+            {%- if gimg != blank -%}{%- assign ti = ti | plus: 1 -%}
+              <button type="button" class="wld-felispace-gallery__thumb{% if ti == 1 %} is-active{% endif %}" data-gallery-thumb data-full="{{ gimg | image_url: width: 900 }}" aria-label="View image {{ ti }}">
+                <img src="{{ gimg | image_url: width: 200 }}" alt="" loading="lazy" width="100" height="100">
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- endif -%}
+      </div>
     </div>
 
     <div class="wld-felispace-hero__info">
@@ -612,6 +634,13 @@
   #wld-felispace-{{ section.id }} .wld-felispace-hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 42px; max-width: 1360px; margin: 0 auto; padding: 24px 28px 34px; align-items: start; }
   #wld-felispace-{{ section.id }} .wld-felispace-hero__media { position: sticky; top: 20px; align-self: start; }
   #wld-felispace-{{ section.id }} .wld-felispace-hero__media img { border-radius: 18px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-gallery__main { position: relative; }
+  #wld-felispace-{{ section.id }} .wld-felispace-gallery__main img { width: 100%; display: block; border-radius: 18px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-gallery__thumbs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-gallery__thumb { width: 76px; height: 76px; padding: 0; border: 2px solid #e4e4e4; border-radius: 12px; background: #fff; cursor: pointer; overflow: hidden; transition: border-color .15s, transform .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-gallery__thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; display: block; }
+  #wld-felispace-{{ section.id }} .wld-felispace-gallery__thumb:hover { border-color: #bfcabf; }
+  #wld-felispace-{{ section.id }} .wld-felispace-gallery__thumb.is-active { border-color: var(--wld-primary); box-shadow: 0 0 0 2px rgba(31,111,67,.15); }
   #wld-felispace-{{ section.id }} .wld-felispace-rating { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #444; margin-bottom: 10px; flex-wrap: wrap; }
   #wld-felispace-{{ section.id }} .wld-felispace-stars { color: var(--wld-primary); letter-spacing: 1px; }
   #wld-felispace-{{ section.id }} .wld-felispace-rating__count { color: #777; }
@@ -1104,6 +1133,20 @@
         root.querySelectorAll('[data-fs-badge]').forEach(function (b) { b.classList.add('is-in'); });
       }
 
+      root.querySelectorAll('[data-gallery]').forEach(function (g) {
+        var mainImg = g.querySelector('[data-gallery-main]');
+        var thumbs = g.querySelectorAll('[data-gallery-thumb]');
+        if (!mainImg || !thumbs.length) { return; }
+        thumbs.forEach(function (t) {
+          t.addEventListener('click', function () {
+            var full = t.getAttribute('data-full');
+            if (full) { mainImg.src = full; }
+            thumbs.forEach(function (x) { x.classList.remove('is-active'); });
+            t.classList.add('is-active');
+          });
+        });
+      });
+
       root.querySelectorAll('[data-revslider]').forEach(function (sl) {
         var track = sl.querySelector('[data-revtrack]');
         var dotsWrap = sl.querySelector('[data-revdots]');
@@ -1319,7 +1362,14 @@
     { "type": "text", "id": "main_font_family", "label": "Font-family name (e.g. Montserrat)" },
 
     { "type": "header", "content": "🦸 Hero" },
-    { "type": "image_picker", "id": "hero_image", "label": "Product image" },
+    { "type": "image_picker", "id": "hero_image", "label": "Product image 1 (main)" },
+    { "type": "image_picker", "id": "gallery_img_2", "label": "Product image 2" },
+    { "type": "image_picker", "id": "gallery_img_3", "label": "Product image 3" },
+    { "type": "image_picker", "id": "gallery_img_4", "label": "Product image 4" },
+    { "type": "image_picker", "id": "gallery_img_5", "label": "Product image 5" },
+    { "type": "image_picker", "id": "gallery_img_6", "label": "Product image 6" },
+    { "type": "image_picker", "id": "gallery_img_7", "label": "Product image 7" },
+    { "type": "image_picker", "id": "gallery_img_8", "label": "Product image 8" },
     { "type": "text", "id": "product_title", "label": "Product title (benefit-led)", "default": "FeliSpace Calming Donut" },
     { "type": "text", "id": "rating_score", "label": "Rating", "default": "4.7" },
     { "type": "text", "id": "rating_label", "label": "Label", "default": "Excellent" },

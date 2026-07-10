@@ -807,6 +807,9 @@
   #wld-felispace-{{ section.id }} .wld-felispace-revwrite { display: block; width: max-content; margin: 22px auto 0; color: #fff; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; padding: 11px 24px; border: 2px solid rgba(255,255,255,.5); border-radius: 999px; transition: .15s; background: transparent; cursor: pointer; }
   #wld-felispace-{{ section.id }} .wld-felispace-revwrite:hover { background: #fff; color: #141414; border-color: #fff; }
   /* User-submitted review card: avatar fallback when no photo */
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard--user { position: relative; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard__del { position: absolute; top: 8px; right: 8px; z-index: 3; width: 28px; height: 28px; border: 0; border-radius: 50%; background: rgba(20,20,20,.55); color: #fff; font-size: 18px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-revcard__del:hover { background: #e0605a; }
   #wld-felispace-{{ section.id }} .wld-felispace-revcard__media--avatar { display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--wld-primary), var(--wld-olive, #2f5233)); }
   #wld-felispace-{{ section.id }} .wld-felispace-revcard__media--avatar span { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 64px; color: #fff; line-height: 1; }
   /* Write-a-review modal */
@@ -1115,6 +1118,7 @@
         function buildCard(r) {
           var art = document.createElement('article');
           art.className = 'wld-felispace-revcard wld-felispace-revcard--user';
+          if (r.id) { art.setAttribute('data-rev-id', r.id); }
           var rt = Math.max(1, Math.min(5, parseInt(r.rating, 10) || 5));
           var stars = new Array(rt + 1).join('★');
           var media;
@@ -1125,20 +1129,37 @@
             media = '<div class="wld-felispace-revcard__media wld-felispace-revcard__media--avatar"><span>' + esc(initial) + '</span></div>';
           }
           art.innerHTML = media +
+            '<button type="button" class="wld-felispace-revcard__del" data-revdel aria-label="Delete this review" title="Delete (visible to you only)">×</button>' +
             '<div class="wld-felispace-revcard__body">' +
               '<div class="wld-felispace-revcard__stars">' + stars + '</div>' +
               '<h4 class="wld-felispace-revcard__title">' + esc(r.title) + '</h4>' +
               '<p class="wld-felispace-revcard__text">' + esc(r.text) + '</p>' +
-              '<span class="wld-felispace-revcard__author">' + esc(r.name) + ' — Verified</span>' +
+              '<span class="wld-felispace-revcard__author">' + esc(r.name) + ' — Verified Customer</span>' +
             '</div>';
           return art;
         }
         function loadSaved() { try { return JSON.parse(localStorage.getItem(storeKey) || '[]'); } catch (e) { return []; } }
         function saveAll(arr) { try { localStorage.setItem(storeKey, JSON.stringify(arr)); } catch (e) {} }
+        function newId() { return 'r' + (window.Date ? Date.now() : 0) + '_' + Math.floor((window.Math ? Math.random() : 0) * 1e6); }
 
         // Inject the visitor's previously published reviews (newest first).
         var saved = loadSaved();
+        var idsAdded = false;
+        saved.forEach(function (r) { if (!r.id) { r.id = newId(); idsAdded = true; } });
+        if (idsAdded) { saveAll(saved); }
         for (var s = saved.length - 1; s >= 0; s--) { track.insertBefore(buildCard(saved[s]), track.firstChild); }
+
+        // Delete a self-published review (these cards live only in this browser).
+        track.addEventListener('click', function (e) {
+          var del = e.target && e.target.closest ? e.target.closest('[data-revdel]') : null;
+          if (!del) { return; }
+          var card = del.closest('.wld-felispace-revcard');
+          if (!card) { return; }
+          var id = card.getAttribute('data-rev-id');
+          saveAll(loadSaved().filter(function (r) { return String(r.id) !== String(id); }));
+          card.parentNode.removeChild(card);
+          rebuildDots();
+        });
 
         function step() {
           var c = track.querySelector('.wld-felispace-revcard');
@@ -1211,6 +1232,7 @@
           form.addEventListener('submit', function (e) {
             e.preventDefault();
             var r = {
+              id: newId(),
               rating: curRating,
               title: (form.title.value || '').trim(),
               name: (form.name.value || '').trim(),

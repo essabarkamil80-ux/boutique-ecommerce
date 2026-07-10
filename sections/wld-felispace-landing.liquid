@@ -275,13 +275,13 @@
         <div class="wld-felispace-payicons">
           {%- if section.settings.payicons_label != blank -%}<span class="wld-felispace-payicons__label">🔒 {{ section.settings.payicons_label }}</span>{%- endif -%}
           <div class="wld-felispace-payicons__row" role="img" aria-label="Accepted payment methods: Visa, Mastercard, American Express, PayPal, Apple Pay, Google Pay, Shop Pay">
-            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#fff" stroke="#e7e7e7"/><text x="19" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="10" font-style="italic" font-weight="700" fill="#1a1f71">VISA</text></svg>
-            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#fff" stroke="#e7e7e7"/><circle cx="16" cy="12" r="6" fill="#eb001b"/><circle cx="23" cy="12" r="6" fill="#f79e1b" fill-opacity=".92"/></svg>
-            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#2e77bc"/><text x="19" y="15.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7" font-weight="700" fill="#fff">AMEX</text></svg>
-            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#fff" stroke="#e7e7e7"/><text x="19" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-style="italic" font-weight="700"><tspan fill="#003087">Pay</tspan><tspan fill="#009cde">Pal</tspan></text></svg>
-            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#fff" stroke="#e7e7e7"/><path d="M10.4 9.1c.28-.35.47-.83.42-1.31-.41.02-.9.27-1.19.62-.26.3-.49.79-.43 1.25.46.04.92-.23 1.2-.56zm.41.66c-.66-.04-1.23.38-1.54.38-.32 0-.8-.36-1.32-.35-.68.01-1.31.4-1.66 1.01-.71 1.23-.19 3.05.5 4.05.34.49.74 1.04 1.27 1.02.51-.02.7-.33 1.32-.33.61 0 .79.33 1.32.32.55-.01.9-.5 1.24-.99.39-.57.55-1.12.56-1.15-.01-.01-1.07-.42-1.08-1.64-.01-1.03.84-1.52.88-1.55-.48-.71-1.23-.79-1.5-.81z" fill="#111"/><text x="24" y="15.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7.5" font-weight="600" fill="#111">Pay</text></svg>
-            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#fff" stroke="#e7e7e7"/><text x="19" y="15.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7.5" font-weight="600"><tspan fill="#4285f4">G</tspan><tspan fill="#5f6368"> Pay</tspan></text></svg>
-            <svg class="wld-felispace-pi" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#5a31f4"/><text x="19" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="8.5" font-weight="700" fill="#fff">shop</text></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 40 26" aria-label="Visa"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="11" font-style="italic" font-weight="800" letter-spacing=".4" fill="#1434CB">VISA</text></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 40 26" aria-label="Mastercard"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><circle cx="16.5" cy="13" r="7" fill="#eb001b"/><circle cx="23.5" cy="13" r="7" fill="#f79e1b"/><path d="M20 7.9a7 7 0 0 1 0 10.2 7 7 0 0 1 0-10.2z" fill="#ff5f00"/></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 40 26" aria-label="American Express"><rect width="40" height="26" rx="4" fill="#1F72CD"/><rect x="4" y="9.5" width="32" height="7" rx="1" fill="#fff"/><text x="20" y="15" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6" font-weight="800" fill="#1F72CD" letter-spacing=".3">AMEX</text></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 40 26" aria-label="PayPal"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="10" font-style="italic" font-weight="800"><tspan fill="#003087">Pay</tspan><tspan fill="#009cde">Pal</tspan></text></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 40 26" aria-label="Apple Pay"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><path d="M14.1 10.2c.31-.39.52-.92.46-1.46-.45.02-1 .3-1.32.69-.29.33-.55.87-.48 1.39.51.04 1.02-.26 1.34-.62zm.45.73c-.73-.04-1.36.42-1.71.42-.35 0-.89-.4-1.46-.39-.75.01-1.45.44-1.84 1.12-.79 1.36-.2 3.38.56 4.49.37.54.82 1.15 1.4 1.13.56-.02.78-.36 1.46-.36.68 0 .88.36 1.47.35.61-.01 1-.55 1.37-1.09.43-.63.61-1.24.62-1.27-.01-.01-1.19-.46-1.2-1.82-.01-1.13.93-1.68.97-1.71-.53-.79-1.36-.88-1.66-.9z" fill="#000"/><text x="26" y="17" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="600" fill="#000">Pay</text></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 40 26" aria-label="Google Pay"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><path d="M14.9 13.05c0-.3-.03-.59-.08-.87H11v1.65h2.2a1.88 1.88 0 0 1-.82 1.23v1.02h1.32c.77-.71 1.2-1.76 1.2-3.03z" fill="#4285F4"/><path d="M11 17c1.1 0 2.03-.36 2.7-.99l-1.32-1.02c-.37.25-.84.39-1.38.39-1.06 0-1.96-.71-2.28-1.68H7.36v1.05A4.08 4.08 0 0 0 11 17z" fill="#34A853"/><path d="M8.72 13.7a2.45 2.45 0 0 1 0-1.57v-1.05H7.36a4.08 4.08 0 0 0 0 3.67l1.36-1.05z" fill="#FBBC04"/><path d="M11 10.45c.6 0 1.13.21 1.56.6l1.16-1.16A4.03 4.03 0 0 0 11 8.83a4.08 4.08 0 0 0-3.64 2.25l1.36 1.05c.32-.97 1.22-1.68 2.28-1.68z" fill="#EA4335"/><text x="27" y="16.8" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="8.5" font-weight="600" fill="#5f6368">Pay</text></svg>
+            <svg class="wld-felispace-pi" viewBox="0 0 40 26" aria-label="Shop Pay"><rect width="40" height="26" rx="4" fill="#5A31F4"/><text x="20" y="16.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="#fff" letter-spacing=".2">shop</text></svg>
           </div>
         </div>
         {%- endif -%}
@@ -670,7 +670,7 @@
   #wld-felispace-{{ section.id }} .wld-felispace-urgency__hot { color: #b23b2e; background: #ffe9e4; border-color: #f3b6ab; }
 
   #wld-felispace-{{ section.id }} .wld-felispace-swatches { display: flex; flex-wrap: wrap; gap: 9px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-swatch { width: 58px; height: 58px; border-radius: 11px; border: 2px solid #e2e2e2; background: #fff; padding: 3px; cursor: pointer; overflow: hidden; transition: .15s; }
+  #wld-felispace-{{ section.id }} .wld-felispace-swatch { width: 68px; height: 68px; border-radius: 13px; border: 2px solid #e2e2e2; background: #fff; padding: 3px; cursor: pointer; overflow: hidden; transition: .15s; }
   #wld-felispace-{{ section.id }} .wld-felispace-swatch img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
   #wld-felispace-{{ section.id }} .wld-felispace-swatch__dot { display: block; width: 100%; height: 100%; border-radius: 10px; border: 1px solid rgba(0,0,0,.08); }
   #wld-felispace-{{ section.id }} .wld-felispace-swatch:hover { border-color: #bdbdbd; }
@@ -728,7 +728,7 @@
   #wld-felispace-{{ section.id }} .wld-felispace-payicons { margin-top: 11px; text-align: center; }
   #wld-felispace-{{ section.id }} .wld-felispace-payicons__label { display: block; font-size: 11px; color: #8a8a8a; margin-bottom: 7px; letter-spacing: .2px; }
   #wld-felispace-{{ section.id }} .wld-felispace-payicons__row { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
-  #wld-felispace-{{ section.id }} .wld-felispace-pi { width: 38px; height: 24px; display: block; box-shadow: 0 1px 2px rgba(0,0,0,.06); border-radius: 3px; }
+  #wld-felispace-{{ section.id }} .wld-felispace-pi { width: 44px; height: 28px; display: block; box-shadow: 0 1px 3px rgba(0,0,0,.1); border-radius: 4px; }
   #wld-felispace-{{ section.id }} .wld-felispace-shipbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; background: #f4f4f4; border-radius: 10px; padding: 10px 14px; margin-top: 12px; font-size: 12.5px; color: #333; }
   #wld-felispace-{{ section.id }} .wld-felispace-shipbar__left { display: flex; align-items: center; gap: 8px; }
   #wld-felispace-{{ section.id }} .wld-felispace-shipbar__dot { width: 9px; height: 9px; border-radius: 50%; background: #2fb344; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(47,179,68,.18); }
@@ -1321,7 +1321,7 @@
     { "type": "header", "content": "🦸 Hero" },
     { "type": "image_picker", "id": "hero_image", "label": "Product image" },
     { "type": "text", "id": "product_title", "label": "Product title (benefit-led)", "default": "FeliSpace Calming Donut" },
-    { "type": "text", "id": "rating_score", "label": "Rating", "default": "4.9" },
+    { "type": "text", "id": "rating_score", "label": "Rating", "default": "4.7" },
     { "type": "text", "id": "rating_label", "label": "Label", "default": "Excellent" },
     { "type": "text", "id": "rating_count", "label": "Reviews count", "default": "1,200+ reviews" },
     { "type": "text", "id": "micro_customers", "label": "Customers line", "default": "Loved by 5,000+ cats" },
@@ -1383,7 +1383,7 @@
 
     { "type": "header", "content": "⭐ Trustpilot badge (top of bundle)" },
     { "type": "checkbox", "id": "show_trustpilot", "label": "Show Trustpilot badge", "default": true },
-    { "type": "text", "id": "trustpilot_score", "label": "Score", "default": "4.9" },
+    { "type": "text", "id": "trustpilot_score", "label": "Score", "default": "4.7" },
     { "type": "text", "id": "trustpilot_count", "label": "Reviews line", "default": "1,200+ reviews" },
     { "type": "image_picker", "id": "trustpilot_image", "label": "Official Trustpilot logo (optional — replaces the badge above)" },
 
@@ -1470,7 +1470,7 @@
     { "type": "header", "content": "📸 Scrolling image strip (TikTok wall)" },
     { "type": "text", "id": "strip_title", "label": "Title", "default": "Thousands of cats have already adopted it. Why not yours?" },
     { "type": "text", "id": "strip_badge", "label": "Floating badge", "default": "🐾 5,000+ Happy Cats" },
-    { "type": "text", "id": "strip_foot", "label": "Footer line", "default": "🐾 OVER 5,000+ HAPPY CATS WORLDWIDE • 📦 FREE SHIPPING TODAY • ⭐ 4.9/5 RATED BY CAT OWNERS" },
+    { "type": "text", "id": "strip_foot", "label": "Footer line", "default": "🐾 OVER 5,000+ HAPPY CATS WORLDWIDE • 📦 FREE SHIPPING TODAY • ⭐ 4.7/5 RATED BY CAT OWNERS" },
     { "type": "paragraph", "content": "Add \"📸 Strip image\" blocks (vertical photos work best). They scroll automatically in a loop." },
 
     { "type": "header", "content": "🛒 Secondary buy box" },
@@ -1575,7 +1575,7 @@
         { "type": "bb_accordion", "settings": { "title": "Why cats love it", "content": "<p>The tunnel shape taps into your cat's natural urge to hide and feel safe. Inside its cosy den, an anxious cat relaxes, sleeps better and scratches the felt instead of your sofa.</p>" } },
         { "type": "bb_accordion", "settings": { "title": "What's included", "content": "<p>1× FeliSpace Calming Donut, plus your free gifts: the FeliSpa Brush™ ($19.90 value) and the exclusive anti-anxiety PDF guide ($14.90 value).</p>" } },
         { "type": "bb_accordion", "settings": { "title": "30-day guarantee", "content": "<p>If your cat doesn't love it, send it back within 30 days for a full refund — no questions asked.</p>" } },
-        { "type": "bb_accordion", "settings": { "title": "Shipping & returns", "content": "<p>Free delivery in around 1 week, with tracking. Easy 14-day returns.</p>" } },
+        { "type": "bb_accordion", "settings": { "title": "Shipping & returns", "content": "<p>Free delivery in around 1 week, with tracking. And you're covered by our 30-day money-back guarantee — if your cat doesn't love it, send it back within 30 days for a full refund, no questions asked.</p>" } },
         { "type": "video", "settings": { "caption": "@cat_mum_uk" } },
         { "type": "video", "settings": { "caption": "@leo_the_cat" } },
         { "type": "video", "settings": { "caption": "@cosy_kittens" } },
@@ -1592,7 +1592,7 @@
         { "type": "faq", "settings": { "question": "Does it work as a scratching post too?", "answer": "Absolutely. The thick felt is perfect for scratching and protects your furniture." } },
         { "type": "faq", "settings": { "question": "What are the delivery times?", "answer": "Free delivery in 3–7 working days, with a tracking email as soon as it ships." } },
         { "type": "faq", "settings": { "question": "What's your guarantee?", "answer": "30-day money-back guarantee. If your cat doesn't love it, you get a full refund." } },
-        { "type": "faq", "settings": { "question": "Can I return the product?", "answer": "Yes, returns accepted within 14 days, no questions asked." } }
+        { "type": "faq", "settings": { "question": "Can I return the product?", "answer": "Yes — you're covered by our 30-day money-back guarantee, no questions asked." } }
       ]
     }
   ]

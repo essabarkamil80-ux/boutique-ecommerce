@@ -48,6 +48,7 @@
         "review-2": {
           "type": "review",
           "settings": {
+            "image": "shopify://shop_images/images_2.jpg",
             "title": "The perfect experience",
             "text": "I unboxed the cave and my cat curled up inside straight away. It was its favourite hiding spot before I'd even finished setting up.",
             "author": "Lucille H. — Verified Customer"
@@ -56,6 +57,7 @@
         "review-3": {
           "type": "review",
           "settings": {
+            "image": "shopify://shop_images/boo-on-cattasaurus-300x289.jpg",
             "title": "PERFECT FOR FUSSY CATS",
             "text": "My cat loves lounging in it in the sun and hiding in the little hole in the evening. Brilliant, well worth the slightly higher price.",
             "author": "Miguel S. — Verified Customer"
@@ -64,6 +66,7 @@
         "review-4": {
           "type": "review",
           "settings": {
+            "image": "shopify://shop_images/Capture_d_ecran_2026-04-02_081446.png",
             "title": "Finally some peace",
             "text": "No more scratches on the sofa. She only scratches the cave now. Sturdy and looks lovely in the living room.",
             "author": "Sophie L. — Verified Customer"

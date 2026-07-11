@@ -11,9 +11,12 @@
   style="--g: {{ section.settings.color_primary }}; --g-soft: {{ section.settings.color_accent }}; --g-tint: {{ section.settings.color_accent2 }}; --cream: {{ section.settings.color_cream }}; --dark: {{ section.settings.color_dark }};">
 
   {%- comment -%} ===================== HERO ===================== {%- endcomment -%}
-  <div class="wld-home-hero">
+  <div class="wld-home-hero{% if section.settings.hero_image_mobile != blank %} has-mobile-img{% endif %}">
     {%- if section.settings.hero_image != blank -%}
-      <img class="wld-home-hero__bg" src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="" loading="eager" width="2000" height="1000">
+      <img class="wld-home-hero__bg wld-home-hero__bg--desktop" src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="" loading="eager" width="2000" height="1000">
+    {%- endif -%}
+    {%- if section.settings.hero_image_mobile != blank -%}
+      <img class="wld-home-hero__bg wld-home-hero__bg--mobile" src="{{ section.settings.hero_image_mobile | image_url: width: 1200 }}" alt="" loading="eager" width="1080" height="1440">
     {%- endif -%}
     {%- if hp != blank -%}<a class="wld-home-hero__link" href="{{ hp.url }}" aria-label="Shop the Felispace Cave"></a>{%- endif -%}
     <div class="wld-home-hero__inner">
@@ -259,6 +262,7 @@
   /* HERO */
   #wld-home-{{ section.id }} .wld-home-hero { position: relative; min-height: 560px; display: flex; align-items: center; overflow: hidden; background: var(--g-soft); }
   #wld-home-{{ section.id }} .wld-home-hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  #wld-home-{{ section.id }} .wld-home-hero__bg--mobile { display: none; }
   #wld-home-{{ section.id }} .wld-home-hero__link { position: absolute; inset: 0; z-index: 1; }
   #wld-home-{{ section.id }} .wld-home-hero__inner { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; padding: 60px 24px; width: 100%; pointer-events: none; }
   #wld-home-{{ section.id }} .wld-home-hero__inner a, #wld-home-{{ section.id }} .wld-home-hero__inner button { pointer-events: auto; }
@@ -335,10 +339,12 @@
   #wld-home-{{ section.id }} .wld-home-guarantee__body p { color: #444; margin: 0 0 26px; max-width: 500px; font-size: 17px; line-height: 1.55; }
   #wld-home-{{ section.id }} .wld-home-btn--arrow span { display: inline-block; transition: transform .15s ease; }
   #wld-home-{{ section.id }} .wld-home-btn--arrow:hover span { transform: translateX(4px); }
-  /* Mobile hero: show the full banner image (no cropping) */
+  /* Mobile hero: full banner image (no cropping); use the portrait image if provided */
   @media (max-width: 749px) {
     #wld-home-{{ section.id }} .wld-home-hero { min-height: 0; display: block; }
-    #wld-home-{{ section.id }} .wld-home-hero__bg { position: static; width: 100%; height: auto; object-fit: contain; }
+    #wld-home-{{ section.id }} .wld-home-hero__bg--desktop { position: static; width: 100%; height: auto; object-fit: contain; }
+    #wld-home-{{ section.id }} .wld-home-hero.has-mobile-img .wld-home-hero__bg--desktop { display: none; }
+    #wld-home-{{ section.id }} .wld-home-hero.has-mobile-img .wld-home-hero__bg--mobile { display: block; position: static; width: 100%; height: auto; object-fit: contain; }
     #wld-home-{{ section.id }} .wld-home-hero__inner { position: absolute; inset: 0; padding: 20px 16px; display: flex; flex-direction: column; justify-content: center; }
   }
 
@@ -454,7 +460,8 @@
     { "type": "color", "id": "color_dark", "label": "Dark", "default": "#141414" },
 
     { "type": "header", "content": "🦸 Hero" },
-    { "type": "image_picker", "id": "hero_image", "label": "Hero background image" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image — desktop (wide / landscape)" },
+    { "type": "image_picker", "id": "hero_image_mobile", "label": "Hero image — mobile (portrait / vertical)" },
     { "type": "text", "id": "hero_tp_label", "label": "Trustpilot label", "default": "Excellent" },
     { "type": "text", "id": "hero_title", "label": "Title", "default": "The calm your cat has been missing" },
     { "type": "text", "id": "hero_sub", "label": "Subtitle", "default": "Summer Sale" },

@@ -21,10 +21,10 @@
         <span class="wld-home-tp__stars">★★★★★</span>
         <span class="wld-home-tp__brand">Trustpilot</span>
       </div>
-      <h1 class="wld-home-hero__title">{{ section.settings.hero_title }}</h1>
+      {%- if section.settings.hero_title != blank -%}<h1 class="wld-home-hero__title">{{ section.settings.hero_title }}</h1>{%- endif -%}
       {%- if section.settings.hero_sub != blank -%}<p class="wld-home-hero__sub">{{ section.settings.hero_sub }}</p>{%- endif -%}
       {%- if section.settings.hero_offer != blank -%}<div class="wld-home-hero__offer">{{ section.settings.hero_offer }}</div>{%- endif -%}
-      {%- if hp != blank -%}
+      {%- if hp != blank and section.settings.hero_cta != blank -%}
         <a href="{{ hp.url | default: '#' }}" class="wld-home-btn wld-home-btn--hero">{{ section.settings.hero_cta }}</a>
       {%- endif -%}
     </div>

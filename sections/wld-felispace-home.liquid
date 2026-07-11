@@ -15,6 +15,7 @@
     {%- if section.settings.hero_image != blank -%}
       <img class="wld-home-hero__bg" src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="" loading="eager" width="2000" height="1000">
     {%- endif -%}
+    {%- if hp != blank -%}<a class="wld-home-hero__link" href="{{ hp.url }}" aria-label="Shop the Felispace Cave"></a>{%- endif -%}
     <div class="wld-home-hero__inner">
       {%- if section.settings.hero_tp_label != blank -%}
       <div class="wld-home-hero__tp">
@@ -258,7 +259,9 @@
   /* HERO */
   #wld-home-{{ section.id }} .wld-home-hero { position: relative; min-height: 560px; display: flex; align-items: center; overflow: hidden; background: var(--g-soft); }
   #wld-home-{{ section.id }} .wld-home-hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-  #wld-home-{{ section.id }} .wld-home-hero__inner { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 60px 24px; width: 100%; }
+  #wld-home-{{ section.id }} .wld-home-hero__link { position: absolute; inset: 0; z-index: 1; }
+  #wld-home-{{ section.id }} .wld-home-hero__inner { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; padding: 60px 24px; width: 100%; pointer-events: none; }
+  #wld-home-{{ section.id }} .wld-home-hero__inner a, #wld-home-{{ section.id }} .wld-home-hero__inner button { pointer-events: auto; }
   #wld-home-{{ section.id }} .wld-home-hero__tp { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 18px; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 15px; }
   #wld-home-{{ section.id }} .wld-home-hero__title { font-size: clamp(40px, 7vw, 88px); line-height: .96; text-transform: uppercase; letter-spacing: -1px; max-width: 640px; }
   #wld-home-{{ section.id }} .wld-home-hero__sub { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: clamp(18px, 2.2vw, 26px); margin: 10px 0 0; }
@@ -332,6 +335,13 @@
   #wld-home-{{ section.id }} .wld-home-guarantee__body p { color: #444; margin: 0 0 26px; max-width: 500px; font-size: 17px; line-height: 1.55; }
   #wld-home-{{ section.id }} .wld-home-btn--arrow span { display: inline-block; transition: transform .15s ease; }
   #wld-home-{{ section.id }} .wld-home-btn--arrow:hover span { transform: translateX(4px); }
+  /* Mobile hero: show the full banner image (no cropping) */
+  @media (max-width: 749px) {
+    #wld-home-{{ section.id }} .wld-home-hero { min-height: 0; display: block; }
+    #wld-home-{{ section.id }} .wld-home-hero__bg { position: static; width: 100%; height: auto; object-fit: contain; }
+    #wld-home-{{ section.id }} .wld-home-hero__inner { position: absolute; inset: 0; padding: 20px 16px; display: flex; flex-direction: column; justify-content: center; }
+  }
+
   @media (max-width: 820px) {
     #wld-home-{{ section.id }} .wld-home-guarantee__inner { grid-template-columns: 1fr; gap: 30px; text-align: center; padding: 56px 20px; }
     #wld-home-{{ section.id }} .wld-home-guarantee__media { max-width: 420px; margin: 0 auto; }

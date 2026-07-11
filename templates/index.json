@@ -39,8 +39,9 @@
         "review-1": {
           "type": "review",
           "settings": {
-            "title": "BEST DECISION EVER",
-            "text": "My cat curled up inside within a minute. It's her spot now.",
+            "image": "shopify://shop_images/81JDZ5WIntL._AC_UF350_350_QL80__1.jpg",
+            "title": "our cats love it!!!",
+            "text": "",
             "author": "Julie D. — Verified"
           }
         },

@@ -27,7 +27,44 @@
   }
 {%- endstyle -%}
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* FeliSpace — force a black footer regardless of the theme color scheme */
+  #shopify-section-{{ section.id }} .footer {
+    --color-background: 13, 13, 13;
+    --gradient-background: #0d0d0d;
+    --color-foreground: 235, 235, 235;
+    --color-link: 205, 205, 205;
+    --color-border: 255, 255, 255;
+    background-color: #0d0d0d !important;
+    background-image: none !important;
+    border-top: 0 !important;
+  }
+  #shopify-section-{{ section.id }} .footer .footer-block__heading,
+  #shopify-section-{{ section.id }} .footer .rte,
+  #shopify-section-{{ section.id }} .footer h2 { color: #ffffff; }
+  #shopify-section-{{ section.id }} .footer a { color: #cfcfcf; }
+  #shopify-section-{{ section.id }} .footer a:hover { color: #ffffff; }
+  #shopify-section-{{ section.id }} .footer .copyright__content,
+  #shopify-section-{{ section.id }} .footer .copyright__content a { color: #8f8f8f; }
+  #shopify-section-{{ section.id }} .footer .footer__content-bottom { border-top: 1px solid rgba(255,255,255,.12); }
+  #shopify-section-{{ section.id }} .footer .field__input { background: #1c1c1c; color: #fff; border-color: rgba(255,255,255,.22); }
+  #shopify-section-{{ section.id }} .footer .field__label { color: #aaa; }
+  /* Logo bar */
+  #shopify-section-{{ section.id }} .fs-footer-logo { text-align: center; padding: 36px 0 4px; }
+  #shopify-section-{{ section.id }} .fs-footer-logo img { height: 42px; width: auto; filter: brightness(0) invert(1); }
+  #shopify-section-{{ section.id }} .fs-footer-logo__text { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 27px; letter-spacing: .5px; color: #fff; }
+</style>
+
 <footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="fs-footer-logo page-width">
+    {%- if settings.logo != blank -%}
+      <img src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" width="200" loading="lazy">
+    {%- else -%}
+      <span class="fs-footer-logo__text">FéliSpace</span>
+    {%- endif -%}
+  </div>
   {%- liquid
     assign has_social_icons = true
     if settings.social_facebook_link == blank and settings.social_instagram_link == blank and settings.social_youtube_link == blank and settings.social_tiktok_link == blank and settings.social_twitter_link == blank and settings.social_pinterest_link == blank and settings.social_snapchat_link == blank and settings.social_tumblr_link == blank and settings.social_vimeo_link == blank

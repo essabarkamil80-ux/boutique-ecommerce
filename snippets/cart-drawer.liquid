@@ -17,6 +17,48 @@
   }
 </style>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  #CartDrawer { --fs-green: #1f6f43; --fs-green-dark: #17512f; --fs-cream: #f7f4ea; }
+  #CartDrawer .drawer__inner { background: #fffdf8; }
+  #CartDrawer .drawer__heading { font-family: 'Montserrat', sans-serif; font-weight: 800; }
+
+  /* Free shipping + offer timer */
+  #CartDrawer .felispace-cart-timer { margin: 0 1.5rem 1.1rem; padding: 12px 14px; border-radius: 14px; background: linear-gradient(135deg, var(--fs-green), var(--fs-green-dark)); color: #fff; box-shadow: 0 6px 16px rgba(31,111,67,.22); }
+  #CartDrawer .felispace-cart-timer__row { display: flex; align-items: center; gap: 9px; font-size: 13.5px; line-height: 1.35; }
+  #CartDrawer .felispace-cart-timer__ico { font-size: 20px; flex-shrink: 0; }
+  #CartDrawer .felispace-cart-timer__txt strong { font-weight: 800; }
+  #CartDrawer .felispace-cart-timer__clock { display: inline-block; background: rgba(255,255,255,.22); padding: 1px 8px; border-radius: 6px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  #CartDrawer .felispace-cart-timer__bar { margin-top: 9px; height: 6px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  #CartDrawer .felispace-cart-timer__bar span { display: block; height: 100%; width: 100%; background: #ffe08a; border-radius: 999px; transition: width 1s linear; }
+
+  /* Checkout button — brand green, warm */
+  #CartDrawer .cart__checkout-button { background: var(--fs-green); color: #fff; border-radius: 999px; font-family: 'Montserrat', sans-serif; font-weight: 800; letter-spacing: .3px; box-shadow: 0 8px 20px rgba(31,111,67,.30); border: 0; transition: .15s; }
+  #CartDrawer .cart__checkout-button:hover:not([disabled]) { background: var(--fs-green-dark); transform: translateY(-1px); }
+
+  /* Ebook reassurance under the button */
+  #CartDrawer .felispace-cart-ebook { margin: 12px 0 0; text-align: center; font-size: 12.5px; color: #5a5a5a; line-height: 1.45; }
+  #CartDrawer .felispace-cart-ebook strong { color: var(--fs-green); }
+
+  /* Included free gifts */
+  #CartDrawer .felispace-cart-gifts { margin: 14px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--fs-cream); }
+  #CartDrawer .felispace-cart-gifts__title { display: block; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 13px; color: #2a2a2a; margin-bottom: 8px; }
+  #CartDrawer .felispace-cart-gifts__title span { color: var(--fs-green); }
+  #CartDrawer .felispace-cart-gifts ul { list-style: none; margin: 0; padding: 0; }
+  #CartDrawer .felispace-cart-gifts li { position: relative; padding-left: 23px; font-size: 12.5px; color: #444; margin-bottom: 5px; line-height: 1.4; }
+  #CartDrawer .felispace-cart-gifts li::before { content: "✓"; position: absolute; left: 0; top: 1px; width: 15px; height: 15px; border-radius: 50%; background: var(--fs-green); color: #fff; font-size: 9px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  #CartDrawer .felispace-cart-gifts em { color: #8a8a8a; font-style: normal; }
+
+  /* Trust line */
+  #CartDrawer .felispace-cart-trust { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 14px 0 0; font-size: 11.5px; color: #555; font-weight: 600; }
+  #CartDrawer .felispace-cart-trust__dot { color: #ccc; }
+
+  /* Payment icons */
+  #CartDrawer .felispace-cart-pay { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 10px 0 2px; }
+  #CartDrawer .felispace-cart-pay svg { width: 40px; height: 26px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+</style>
+
 <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
   <div id="CartDrawer" class="cart-drawer">
     <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
@@ -74,6 +116,20 @@
           </span>
         </button>
       </div>
+
+      {%- if cart != empty -%}
+        <div class="felispace-cart-timer" data-felispace-timer-wrap>
+          <div class="felispace-cart-timer__row">
+            <span class="felispace-cart-timer__ico">🎁</span>
+            <span class="felispace-cart-timer__txt">
+              <strong>FREE shipping + 2nd Cave −50%</strong> reserved for
+              <span class="felispace-cart-timer__clock" data-felispace-cart-timer>15:00</span>
+            </span>
+          </div>
+          <div class="felispace-cart-timer__bar"><span data-felispace-timer-bar></span></div>
+        </div>
+      {%- endif -%}
+
       <cart-drawer-items
         {% if cart == empty %}
           class=" is-empty"
@@ -572,10 +628,71 @@
               disabled
             {% endif %}
           >
-            {{ 'sections.cart.checkout' | t }}
+            🔒 {{ 'sections.cart.checkout' | t }}{% unless cart == empty %} • {{ cart.total_price | money }}{% endunless %}
           </button>
         </div>
+
+        {%- unless cart == empty -%}
+        <p class="felispace-cart-ebook">📧 Your <strong>FREE anti-anxiety ebook</strong> is sent to your email right after purchase.</p>
+
+        <div class="felispace-cart-gifts">
+          <span class="felispace-cart-gifts__title">🎁 Included with your order — <span>FREE</span></span>
+          <ul>
+            <li>FeliSpa Brush™ <em>($19.90 value)</em></li>
+            <li>Anti-anxiety ebook <em>(emailed after purchase)</em></li>
+            <li>Free shipping — 3–7 working days</li>
+          </ul>
+        </div>
+
+        <div class="felispace-cart-trust">
+          <span>🔒 Secure checkout</span>
+          <span class="felispace-cart-trust__dot">•</span>
+          <span>🛡️ 30-day money-back</span>
+          <span class="felispace-cart-trust__dot">•</span>
+          <span>🚚 Free shipping</span>
+        </div>
+
+        <div class="felispace-cart-pay" aria-label="Accepted payment methods">
+          <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="11" font-style="italic" font-weight="800" fill="#1434CB">VISA</text></svg>
+          <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><circle cx="16.5" cy="13" r="7" fill="#eb001b"/><circle cx="23.5" cy="13" r="7" fill="#f79e1b"/><path d="M20 7.9a7 7 0 0 1 0 10.2 7 7 0 0 1 0-10.2z" fill="#ff5f00"/></svg>
+          <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#1F72CD"/><rect x="4" y="9.5" width="32" height="7" rx="1" fill="#fff"/><text x="20" y="15" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="6" font-weight="800" fill="#1F72CD" letter-spacing=".3">AMEX</text></svg>
+          <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="10" font-style="italic" font-weight="800"><tspan fill="#003087">Pay</tspan><tspan fill="#009cde">Pal</tspan></text></svg>
+          <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><path d="M14.1 10.2c.31-.39.52-.92.46-1.46-.45.02-1 .3-1.32.69-.29.33-.55.87-.48 1.39.51.04 1.02-.26 1.34-.62zm.45.73c-.73-.04-1.36.42-1.71.42-.35 0-.89-.4-1.46-.39-.75.01-1.45.44-1.84 1.12-.79 1.36-.2 3.38.56 4.49.37.54.82 1.15 1.4 1.13.56-.02.78-.36 1.46-.36.68 0 .88.36 1.47.35.61-.01 1-.55 1.37-1.09.43-.63.61-1.24.62-1.27-.01-.01-1.19-.46-1.2-1.82-.01-1.13.93-1.68.97-1.71-.53-.79-1.36-.88-1.66-.9z" fill="#000"/><text x="26" y="17" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="600" fill="#000">Pay</text></svg>
+          <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#5A31F4"/><text x="20" y="16.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="800" fill="#fff" letter-spacing=".2">shop</text></svg>
+        </div>
+        {%- endunless -%}
       </div>
     </div>
   </div>
 </cart-drawer>
+
+<script>
+  (function () {
+    if (window.__felispaceCartTimer) { return; }
+    window.__felispaceCartTimer = true;
+    var KEY = 'felispace_cart_deadline';
+    var DURATION = 15 * 60 * 1000; // 15 minutes, evergreen per visitor
+    function getDeadline() {
+      var d = parseInt(localStorage.getItem(KEY), 10);
+      if (!d || isNaN(d) || d - Date.now() > DURATION || d < Date.now()) {
+        d = Date.now() + DURATION;
+        try { localStorage.setItem(KEY, d); } catch (e) {}
+      }
+      return d;
+    }
+    function tick() {
+      var clocks = document.querySelectorAll('[data-felispace-cart-timer]');
+      if (!clocks.length) { return; }
+      var remaining = getDeadline() - Date.now();
+      if (remaining < 0) { remaining = 0; }
+      var m = Math.floor(remaining / 60000);
+      var s = Math.floor((remaining % 60000) / 1000);
+      var txt = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+      clocks.forEach(function (c) { c.textContent = txt; });
+      var pct = Math.max(0, (remaining / DURATION) * 100);
+      document.querySelectorAll('[data-felispace-timer-bar]').forEach(function (b) { b.style.width = pct + '%'; });
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>

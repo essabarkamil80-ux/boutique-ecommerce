@@ -329,12 +329,12 @@
               {%- if block.type == 'hero_video' -%}
                 <div class="wld-felispace-vid wld-felispace-vid--mini" data-vid {{ block.shopify_attributes }}>
                   {%- if block.settings.video != blank -%}
-                    <video class="wld-felispace-vid__player" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 400 }}"{% elsif block.settings.video.preview_image %}poster="{{ block.settings.video.preview_image | image_url: width: 400 }}"{% endif %} preload="none" loop muted playsinline controls>
+                    <video class="wld-felispace-vid__player" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 400 }}"{% elsif block.settings.video.preview_image %}poster="{{ block.settings.video.preview_image | image_url: width: 400 }}"{% endif %} preload="none" loop muted playsinline disablepictureinpicture>
                       {%- for source in block.settings.video.sources -%}<source src="{{ source.url }}" type="{{ source.mime_type }}">{%- endfor -%}
                     </video>
                     <button type="button" class="wld-felispace-vid__play" aria-label="Play video" data-vid-play>▶</button>
                   {%- elsif block.settings.video_url != blank -%}
-                    <video class="wld-felispace-vid__player" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 400 }}"{% endif %} preload="none" loop muted playsinline controls>
+                    <video class="wld-felispace-vid__player" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 400 }}"{% endif %} preload="none" loop muted playsinline disablepictureinpicture>
                       <source src="{{ block.settings.video_url }}" type="video/mp4">
                     </video>
                     <button type="button" class="wld-felispace-vid__play" aria-label="Play video" data-vid-play>▶</button>
@@ -398,7 +398,7 @@
                   class="wld-felispace-vid__player"
                   {% if vposter != blank %}poster="{{ vposter | image_url: width: 720 }}"{% elsif block.settings.video.preview_image %}poster="{{ block.settings.video.preview_image | image_url: width: 720 }}"{% endif %}
                   preload="none"
-                  loop muted playsinline controls
+                  loop muted playsinline disablepictureinpicture
                   {% for source in block.settings.video.sources %}{% if source.format == 'mp4' %}{% endif %}{% endfor %}>
                   {%- for source in block.settings.video.sources -%}
                     <source src="{{ source.url }}" type="{{ source.mime_type }}">
@@ -406,7 +406,7 @@
                 </video>
                 <button type="button" class="wld-felispace-vid__play" aria-label="Play video" data-vid-play>▶</button>
               {%- elsif block.settings.video_url != blank -%}
-                <video class="wld-felispace-vid__player" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 720 }}"{% endif %} preload="none" loop muted playsinline controls>
+                <video class="wld-felispace-vid__player" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 720 }}"{% endif %} preload="none" loop muted playsinline disablepictureinpicture>
                   <source src="{{ block.settings.video_url }}" type="video/mp4">
                 </video>
                 <button type="button" class="wld-felispace-vid__play" aria-label="Play video" data-vid-play>▶</button>

@@ -83,12 +83,12 @@
     <div class="wld-home-tr">
       <div class="wld-home-tr__media" data-vid>
         {%- if section.settings.tr_video != blank -%}
-          <video class="wld-home-vid" {% if section.settings.tr_poster != blank %}poster="{{ section.settings.tr_poster | image_url: width: 900 }}"{% endif %} preload="none" loop muted playsinline controls>
+          <video class="wld-home-vid" {% if section.settings.tr_poster != blank %}poster="{{ section.settings.tr_poster | image_url: width: 900 }}"{% endif %} preload="none" loop muted playsinline disablepictureinpicture>
             {%- for s in section.settings.tr_video.sources -%}<source src="{{ s.url }}" type="{{ s.mime_type }}">{%- endfor -%}
           </video>
           <button type="button" class="wld-home-play" data-vid-play aria-label="Play">▶</button>
         {%- elsif section.settings.tr_video_url != blank -%}
-          <video class="wld-home-vid" {% if section.settings.tr_poster != blank %}poster="{{ section.settings.tr_poster | image_url: width: 900 }}"{% endif %} preload="none" loop muted playsinline controls>
+          <video class="wld-home-vid" {% if section.settings.tr_poster != blank %}poster="{{ section.settings.tr_poster | image_url: width: 900 }}"{% endif %} preload="none" loop muted playsinline disablepictureinpicture>
             <source src="{{ section.settings.tr_video_url }}" type="video/mp4">
           </video>
           <button type="button" class="wld-home-play" data-vid-play aria-label="Play">▶</button>
@@ -171,12 +171,12 @@
         {%- if block.type == 'ugc' -%}
           <div class="wld-home-ugc__item" data-vid {{ block.shopify_attributes }}>
             {%- if block.settings.video != blank -%}
-              <video class="wld-home-vid" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 500 }}"{% endif %} preload="none" loop muted playsinline controls>
+              <video class="wld-home-vid" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 500 }}"{% endif %} preload="none" loop muted playsinline disablepictureinpicture>
                 {%- for s in block.settings.video.sources -%}<source src="{{ s.url }}" type="{{ s.mime_type }}">{%- endfor -%}
               </video>
               <button type="button" class="wld-home-play" data-vid-play aria-label="Play">▶</button>
             {%- elsif block.settings.video_url != blank -%}
-              <video class="wld-home-vid" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 500 }}"{% endif %} preload="none" loop muted playsinline controls>
+              <video class="wld-home-vid" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 500 }}"{% endif %} preload="none" loop muted playsinline disablepictureinpicture>
                 <source src="{{ block.settings.video_url }}" type="video/mp4">
               </video>
               <button type="button" class="wld-home-play" data-vid-play aria-label="Play">▶</button>

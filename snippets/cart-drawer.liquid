@@ -11,6 +11,31 @@
 <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
 
+{%- comment -%} Reusable brand logo (uses your Shopify logo setting, text fallback) {%- endcomment -%}
+{%- capture felispace_logo -%}
+  <div class="felispace-cart-logo">
+    {%- if settings.logo != blank -%}
+      <img src="{{ settings.logo | image_url: width: 320 }}" alt="{{ shop.name | escape }}" class="felispace-cart-logo__img" width="160" loading="lazy">
+    {%- else -%}
+      <span class="felispace-cart-logo__text">FéliSpace</span>
+    {%- endif -%}
+  </div>
+{%- endcapture -%}
+
+{%- comment -%} Reusable free-shipping + offer timer {%- endcomment -%}
+{%- capture felispace_timer -%}
+  <div class="felispace-cart-timer">
+    <div class="felispace-cart-timer__row">
+      <span class="felispace-cart-timer__ico">🎁</span>
+      <span class="felispace-cart-timer__txt">
+        <strong>FREE shipping + 2nd Cave −50%</strong> reserved for
+        <span class="felispace-cart-timer__clock" data-felispace-cart-timer>15:00</span>
+      </span>
+    </div>
+    <div class="felispace-cart-timer__bar"><span data-felispace-timer-bar></span></div>
+  </div>
+{%- endcapture -%}
+
 <style>
   .drawer {
     visibility: hidden;
@@ -25,6 +50,13 @@
   #CartDrawer .felispace-empty__close { position: absolute; top: 16px; right: 16px; z-index: 5; background: none; border: 0; cursor: pointer; padding: 6px; color: #333; }
   #CartDrawer .felispace-empty__close .svg-wrapper { width: 22px; height: 22px; display: inline-flex; }
   #CartDrawer .drawer__heading { font-family: 'Montserrat', sans-serif; font-weight: 800; }
+
+  /* Brand logo in the cart */
+  #CartDrawer .felispace-cart-logo { text-align: center; padding: 12px 0 4px; }
+  #CartDrawer .felispace-cart-logo__img { height: 30px; width: auto; display: inline-block; }
+  #CartDrawer .felispace-cart-logo__text { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: .5px; color: #1a1a1a; }
+  #CartDrawer .felispace-empty .felispace-cart-logo { padding: 0 0 4px; }
+  #CartDrawer .felispace-empty .felispace-cart-timer { margin: 8px 0 20px; width: 100%; max-width: 320px; }
 
   /* Free shipping + offer timer (compact) */
   #CartDrawer .felispace-cart-timer { margin: 0 1.5rem .85rem; padding: 9px 12px; border-radius: 12px; background: linear-gradient(135deg, var(--fs-green), var(--fs-green-dark)); color: #fff; box-shadow: 0 5px 14px rgba(31,111,67,.20); }
@@ -109,6 +141,8 @@
               >
                 <span class="svg-wrapper">{{- 'icon-close.svg' | inline_asset_content -}}</span>
               </button>
+              {{ felispace_logo }}
+              {{ felispace_timer }}
               <div class="felispace-empty__icon">🐈</div>
               <h2 class="felispace-empty__title">Your cart is empty</h2>
               <p class="felispace-empty__text">Your cat's cosy new den is just one click away.</p>
@@ -129,6 +163,7 @@
           {%- endif -%}
         </div>
       {%- endif -%}
+      {%- unless cart == empty -%}{{ felispace_logo }}{%- endunless -%}
       <div class="drawer__header">
         <h2 class="drawer__heading">{{ 'sections.cart.title' | t }}</h2>
         <button
@@ -143,18 +178,7 @@
         </button>
       </div>
 
-      {%- if cart != empty -%}
-        <div class="felispace-cart-timer" data-felispace-timer-wrap>
-          <div class="felispace-cart-timer__row">
-            <span class="felispace-cart-timer__ico">🎁</span>
-            <span class="felispace-cart-timer__txt">
-              <strong>FREE shipping + 2nd Cave −50%</strong> reserved for
-              <span class="felispace-cart-timer__clock" data-felispace-cart-timer>15:00</span>
-            </span>
-          </div>
-          <div class="felispace-cart-timer__bar"><span data-felispace-timer-bar></span></div>
-        </div>
-      {%- endif -%}
+      {%- unless cart == empty -%}{{ felispace_timer }}{%- endunless -%}
 
       <cart-drawer-items
         {% if cart == empty %}

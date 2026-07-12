@@ -21,16 +21,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
   #CartDrawer { --fs-green: #1f6f43; --fs-green-dark: #17512f; --fs-cream: #f7f4ea; }
-  #CartDrawer .drawer__inner { background: #fffdf8; }
+  #CartDrawer .drawer__inner { background: #fffdf8; position: relative; }
+  #CartDrawer .felispace-empty__close { position: absolute; top: 16px; right: 16px; z-index: 5; background: none; border: 0; cursor: pointer; padding: 6px; color: #333; }
+  #CartDrawer .felispace-empty__close .svg-wrapper { width: 22px; height: 22px; display: inline-flex; }
   #CartDrawer .drawer__heading { font-family: 'Montserrat', sans-serif; font-weight: 800; }
 
-  /* Free shipping + offer timer */
-  #CartDrawer .felispace-cart-timer { margin: 0 1.5rem 1.1rem; padding: 12px 14px; border-radius: 14px; background: linear-gradient(135deg, var(--fs-green), var(--fs-green-dark)); color: #fff; box-shadow: 0 6px 16px rgba(31,111,67,.22); }
-  #CartDrawer .felispace-cart-timer__row { display: flex; align-items: center; gap: 9px; font-size: 13.5px; line-height: 1.35; }
-  #CartDrawer .felispace-cart-timer__ico { font-size: 20px; flex-shrink: 0; }
+  /* Free shipping + offer timer (compact) */
+  #CartDrawer .felispace-cart-timer { margin: 0 1.5rem .85rem; padding: 9px 12px; border-radius: 12px; background: linear-gradient(135deg, var(--fs-green), var(--fs-green-dark)); color: #fff; box-shadow: 0 5px 14px rgba(31,111,67,.20); }
+  #CartDrawer .felispace-cart-timer__row { display: flex; align-items: center; gap: 8px; font-size: 12.5px; line-height: 1.3; }
+  #CartDrawer .felispace-cart-timer__ico { font-size: 16px; flex-shrink: 0; }
   #CartDrawer .felispace-cart-timer__txt strong { font-weight: 800; }
-  #CartDrawer .felispace-cart-timer__clock { display: inline-block; background: rgba(255,255,255,.22); padding: 1px 8px; border-radius: 6px; font-weight: 800; font-variant-numeric: tabular-nums; }
-  #CartDrawer .felispace-cart-timer__bar { margin-top: 9px; height: 6px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  #CartDrawer .felispace-cart-timer__clock { display: inline-block; background: rgba(255,255,255,.22); padding: 1px 7px; border-radius: 6px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  #CartDrawer .felispace-cart-timer__bar { margin-top: 7px; height: 5px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
   #CartDrawer .felispace-cart-timer__bar span { display: block; height: 100%; width: 100%; background: #ffe08a; border-radius: 999px; transition: width 1s linear; }
 
   /* Checkout button — brand green, warm */
@@ -38,25 +40,51 @@
   #CartDrawer .cart__checkout-button:hover:not([disabled]) { background: var(--fs-green-dark); transform: translateY(-1px); }
 
   /* Ebook reassurance under the button */
-  #CartDrawer .felispace-cart-ebook { margin: 12px 0 0; text-align: center; font-size: 12.5px; color: #5a5a5a; line-height: 1.45; }
+  #CartDrawer .felispace-cart-ebook { margin: 10px 0 0; text-align: center; font-size: 12px; color: #5a5a5a; line-height: 1.4; }
   #CartDrawer .felispace-cart-ebook strong { color: var(--fs-green); }
 
-  /* Included free gifts */
-  #CartDrawer .felispace-cart-gifts { margin: 14px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--fs-cream); }
-  #CartDrawer .felispace-cart-gifts__title { display: block; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 13px; color: #2a2a2a; margin-bottom: 8px; }
+  /* Included free gifts (collapsible to keep it light) */
+  #CartDrawer .felispace-cart-gifts { margin: 12px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--fs-cream); }
+  #CartDrawer .felispace-cart-gifts__title { display: flex; align-items: center; gap: 6px; cursor: pointer; list-style: none; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 12.5px; color: #2a2a2a; }
+  #CartDrawer .felispace-cart-gifts__title::-webkit-details-marker { display: none; }
   #CartDrawer .felispace-cart-gifts__title span { color: var(--fs-green); }
-  #CartDrawer .felispace-cart-gifts ul { list-style: none; margin: 0; padding: 0; }
-  #CartDrawer .felispace-cart-gifts li { position: relative; padding-left: 23px; font-size: 12.5px; color: #444; margin-bottom: 5px; line-height: 1.4; }
+  #CartDrawer .felispace-cart-gifts__title::after { content: "⌄"; margin-left: auto; font-size: 15px; line-height: 1; transition: transform .2s; }
+  #CartDrawer .felispace-cart-gifts[open] .felispace-cart-gifts__title::after { transform: rotate(180deg); }
+  #CartDrawer .felispace-cart-gifts ul { list-style: none; margin: 9px 0 2px; padding: 0; }
+  #CartDrawer .felispace-cart-gifts li { position: relative; padding-left: 22px; font-size: 12px; color: #444; margin-bottom: 4px; line-height: 1.4; }
   #CartDrawer .felispace-cart-gifts li::before { content: "✓"; position: absolute; left: 0; top: 1px; width: 15px; height: 15px; border-radius: 50%; background: var(--fs-green); color: #fff; font-size: 9px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
   #CartDrawer .felispace-cart-gifts em { color: #8a8a8a; font-style: normal; }
 
   /* Trust line */
-  #CartDrawer .felispace-cart-trust { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 14px 0 0; font-size: 11.5px; color: #555; font-weight: 600; }
+  #CartDrawer .felispace-cart-trust { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 7px; margin: 11px 0 0; font-size: 11px; color: #555; font-weight: 600; }
   #CartDrawer .felispace-cart-trust__dot { color: #ccc; }
 
   /* Payment icons */
-  #CartDrawer .felispace-cart-pay { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 10px 0 2px; }
-  #CartDrawer .felispace-cart-pay svg { width: 40px; height: 26px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+  #CartDrawer .felispace-cart-pay { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: 9px 0 2px; }
+  #CartDrawer .felispace-cart-pay svg { width: 36px; height: 23px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+
+  /* Empty cart — branded & warm */
+  #CartDrawer .felispace-empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 10px 8px; }
+  #CartDrawer .felispace-empty__icon { font-size: 52px; line-height: 1; margin-bottom: 8px; }
+  #CartDrawer .felispace-empty__title { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 22px; color: #1a1a1a; margin: 0 0 6px; }
+  #CartDrawer .felispace-empty__text { font-size: 14px; color: #666; margin: 0 0 20px; max-width: 260px; line-height: 1.5; }
+  #CartDrawer .felispace-empty__btn { display: inline-block; background: var(--fs-green); color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 15px; padding: 14px 34px; border-radius: 999px; text-decoration: none; box-shadow: 0 8px 20px rgba(31,111,67,.28); transition: .15s; }
+  #CartDrawer .felispace-empty__btn:hover { background: var(--fs-green-dark); transform: translateY(-1px); }
+  #CartDrawer .felispace-empty__trust { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 7px; margin-top: 16px; font-size: 11.5px; color: #666; font-weight: 600; }
+
+  /* Mobile: lighter & tighter so the product stays the focus */
+  @media (max-width: 749px) {
+    #CartDrawer .felispace-cart-timer { margin: 0 1rem .7rem; padding: 8px 11px; }
+    #CartDrawer .felispace-cart-timer__row { font-size: 11.5px; gap: 7px; }
+    #CartDrawer .felispace-cart-timer__ico { font-size: 15px; }
+    #CartDrawer .felispace-cart-ebook { font-size: 11.5px; margin-top: 9px; }
+    #CartDrawer .felispace-cart-gifts { margin-top: 10px; padding: 9px 11px; }
+    #CartDrawer .felispace-cart-trust { font-size: 10.5px; gap: 6px; margin-top: 9px; }
+    #CartDrawer .felispace-cart-pay { gap: 4px; margin-top: 8px; }
+    #CartDrawer .felispace-cart-pay svg { width: 32px; height: 21px; }
+    #CartDrawer .felispace-empty__icon { font-size: 44px; }
+    #CartDrawer .felispace-empty__title { font-size: 19px; }
+  }
 </style>
 
 <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
@@ -72,28 +100,26 @@
       {%- if cart == empty -%}
         <div class="drawer__inner-empty">
           <div class="cart-drawer__warnings center{% if settings.cart_drawer_collection != blank %} cart-drawer__warnings--has-collection{% endif %}">
-            <div class="cart-drawer__empty-content">
-              <h2 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h2>
+            <div class="cart-drawer__empty-content felispace-empty">
               <button
-                class="drawer__close"
+                class="felispace-empty__close"
                 type="button"
                 onclick="this.closest('cart-drawer').close()"
                 aria-label="{{ 'accessibility.close' | t }}"
               >
-                <span class="svg-wrapper">
-                  {{- 'icon-close.svg' | inline_asset_content -}}
-                </span>
+                <span class="svg-wrapper">{{- 'icon-close.svg' | inline_asset_content -}}</span>
               </button>
-              <a href="{{ routes.all_products_collection_url }}" class="button">
-                {{ 'general.continue_shopping' | t }}
+              <div class="felispace-empty__icon">🐈</div>
+              <h2 class="felispace-empty__title">Your cart is empty</h2>
+              <p class="felispace-empty__text">Your cat's cosy new den is just one click away.</p>
+              <a href="{{ routes.all_products_collection_url }}" class="felispace-empty__btn">
+                Shop the Cave
               </a>
-
-              {%- if shop.customer_accounts_enabled and customer == null -%}
-                <p class="cart__login-title h3">{{ 'sections.cart.login.title' | t }}</p>
-                <p class="cart__login-paragraph">
-                  {{ 'sections.cart.login.paragraph_html' | t: link: routes.account_login_url }}
-                </p>
-              {%- endif -%}
+              <div class="felispace-empty__trust">
+                <span>🚚 Free shipping</span>
+                <span class="felispace-cart-trust__dot">•</span>
+                <span>🛡️ 30-day money-back</span>
+              </div>
             </div>
           </div>
           {%- if settings.cart_drawer_collection != blank -%}
@@ -635,14 +661,14 @@
         {%- unless cart == empty -%}
         <p class="felispace-cart-ebook">📧 Your <strong>FREE anti-anxiety ebook</strong> is sent to your email right after purchase.</p>
 
-        <div class="felispace-cart-gifts">
-          <span class="felispace-cart-gifts__title">🎁 Included with your order — <span>FREE</span></span>
+        <details class="felispace-cart-gifts">
+          <summary class="felispace-cart-gifts__title">🎁 Included free gifts — <span>FREE</span></summary>
           <ul>
             <li>FeliSpa Brush™ <em>($19.90 value)</em></li>
             <li>Anti-anxiety ebook <em>(emailed after purchase)</em></li>
             <li>Free shipping — 3–7 working days</li>
           </ul>
-        </div>
+        </details>
 
         <div class="felispace-cart-trust">
           <span>🔒 Secure checkout</span>

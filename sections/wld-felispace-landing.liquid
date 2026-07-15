@@ -984,13 +984,26 @@
 
 <script>
   (function () {
+    function fxTrackAddToCart(id, qty, res) {
+      try {
+        var item = (res && res.items && res.items[0]) || res || {};
+        var unit = item.final_price ? (item.final_price / 100) : (item.price ? item.price / 100 : 0);
+        var val = unit * (qty || 1);
+        var cur = (window.Shopify && Shopify.currency && Shopify.currency.active) || 'EUR';
+        if (typeof window.fbq === 'function') { window.fbq('track', 'AddToCart', { content_type: 'product', content_ids: [String(id)], value: val, currency: cur }); }
+        if (window.ttq && typeof window.ttq.track === 'function') { window.ttq.track('AddToCart', { content_id: String(id), value: val, currency: cur, quantity: qty }); }
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'add_to_cart', value: val, currency: cur, item_id: String(id), quantity: qty });
+      } catch (e) {}
+    }
+
     function fxAddToCart(form, dest, btn) {
       if (!form) return;
       var idEl = form.querySelector('[data-variant-input]');
       var qtyEl = form.querySelector('[data-qty-input]');
       var id = idEl ? idEl.value : '';
       var qty = qtyEl ? parseInt(qtyEl.value || '1', 10) : 1;
-      if (!id) { window.location = '/cart'; return; }
+      if (!id) { form.submit(); return; }
       var original = btn ? btn.innerHTML : '';
       if (btn) { btn.disabled = true; btn.innerHTML = 'Adding…'; }
       var drawer = dest === 'drawer' ? document.querySelector('cart-drawer') : null;
@@ -1008,6 +1021,7 @@
         return r.json();
       }).then(function (res) {
         if (btn) { btn.disabled = false; btn.innerHTML = original; }
+        fxTrackAddToCart(id, qty, res);
         if (!drawer) { window.location = dest === 'drawer' ? '/cart' : dest; return; }
         try {
           if (res.sections && res.sections['cart-drawer']) {
@@ -1427,14 +1441,14 @@
     { "type": "header", "content": "📦 Bundle (boost AOV)" },
     { "type": "paragraph", "content": "The bundle adds the right QUANTITY to the cart. Create matching automatic discounts in Shopify → Discounts (2nd cave 50% off, 3rd cave free) so the savings apply at checkout." },
     { "type": "text", "id": "bundle_label", "label": "Bundle heading", "default": "Choose your bundle" },
-    { "type": "textarea", "id": "bundle_gifts", "label": "Free gifts (shown in EVERY tier — one per line)", "default": "FeliSpa Brush™ — $19.90 value\nExclusive anti-anxiety PDF guide — $14.90 value" },
+    { "type": "textarea", "id": "bundle_gifts", "label": "Free gifts (shown in EVERY tier — one per line)", "default": "FeliSpa Brush™ — €19,90 value\nExclusive anti-anxiety PDF guide — €14,90 value" },
 
     { "type": "paragraph", "content": "— Tier 1 —" },
     { "type": "text", "id": "tier1_title", "label": "Tier 1 title", "default": "1 Cave" },
     { "type": "text", "id": "tier1_sub", "label": "Tier 1 subtitle", "default": "Just getting started" },
     { "type": "text", "id": "tier1_badge", "label": "Tier 1 badge (optional)" },
     { "type": "textarea", "id": "tier1_items", "label": "Tier 1 items (one per line)", "default": "1 FeliSpace Calming Donut" },
-    { "type": "text", "id": "tier1_price", "label": "Tier 1 price", "default": "$59" },
+    { "type": "text", "id": "tier1_price", "label": "Tier 1 price", "default": "€55,99" },
     { "type": "text", "id": "tier1_compare", "label": "Tier 1 compare-at (optional)" },
     { "type": "text", "id": "tier1_save", "label": "Tier 1 savings pill (optional)" },
 
@@ -1443,18 +1457,18 @@
     { "type": "text", "id": "tier2_sub", "label": "Tier 2 subtitle", "default": "Most loved by cat parents" },
     { "type": "text", "id": "tier2_badge", "label": "Tier 2 badge", "default": "MOST POPULAR" },
     { "type": "textarea", "id": "tier2_items", "label": "Tier 2 items (one per line)", "default": "2 FeliSpace Calming Donuts\n2nd cave 50% OFF" },
-    { "type": "text", "id": "tier2_price", "label": "Tier 2 price", "default": "$88" },
-    { "type": "text", "id": "tier2_compare", "label": "Tier 2 compare-at", "default": "$118" },
-    { "type": "text", "id": "tier2_save", "label": "Tier 2 savings pill", "default": "SAVE $30" },
+    { "type": "text", "id": "tier2_price", "label": "Tier 2 price", "default": "€83,99" },
+    { "type": "text", "id": "tier2_compare", "label": "Tier 2 compare-at", "default": "€111,98" },
+    { "type": "text", "id": "tier2_save", "label": "Tier 2 savings pill", "default": "SAVE €28" },
 
     { "type": "paragraph", "content": "— Tier 3 —" },
     { "type": "text", "id": "tier3_title", "label": "Tier 3 title", "default": "3 Caves" },
     { "type": "text", "id": "tier3_sub", "label": "Tier 3 subtitle", "default": "Best for multi-cat homes" },
     { "type": "text", "id": "tier3_badge", "label": "Tier 3 badge", "default": "BEST VALUE" },
     { "type": "textarea", "id": "tier3_items", "label": "Tier 3 items (one per line)", "default": "3 FeliSpace Calming Donuts\n3rd cave FREE" },
-    { "type": "text", "id": "tier3_price", "label": "Tier 3 price", "default": "$118" },
-    { "type": "text", "id": "tier3_compare", "label": "Tier 3 compare-at", "default": "$177" },
-    { "type": "text", "id": "tier3_save", "label": "Tier 3 savings pill", "default": "SAVE $59" },
+    { "type": "text", "id": "tier3_price", "label": "Tier 3 price", "default": "€111,98" },
+    { "type": "text", "id": "tier3_compare", "label": "Tier 3 compare-at", "default": "€167,97" },
+    { "type": "text", "id": "tier3_save", "label": "Tier 3 savings pill", "default": "SAVE €56" },
 
     { "type": "header", "content": "⭐ Trustpilot badge (top of bundle)" },
     { "type": "checkbox", "id": "show_trustpilot", "label": "Show Trustpilot badge", "default": true },
@@ -1648,7 +1662,7 @@
         { "type": "vs", "settings": { "tab_label": "vs Cardboard Boxes", "them_label": "Cardboard Boxes", "ours_rows": "Premium felt, lasts years | a real piece of furniture\nWarm & cosy | keeps your cat snug\nEasy to clean | just vacuum\nLooks great at home | you'll want it out\n30-day guarantee | love it or refund", "them_rows": "Falls apart in days | back to square one\nCold and flimsy | not cosy\nGets dirty fast | can't clean it\nLooks messy | you hide it away\nNo guarantee | it's just a box" } },
         { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" }, { "type": "strip_img" },
         { "type": "bb_accordion", "settings": { "title": "Why cats love it", "content": "<p>The tunnel shape taps into your cat's natural urge to hide and feel safe. Inside its cosy den, an anxious cat relaxes, sleeps better and scratches the felt instead of your sofa.</p>" } },
-        { "type": "bb_accordion", "settings": { "title": "What's included", "content": "<p>1× FeliSpace Calming Donut, plus your free gifts: the FeliSpa Brush™ ($19.90 value) and the exclusive anti-anxiety PDF guide ($14.90 value).</p>" } },
+        { "type": "bb_accordion", "settings": { "title": "What's included", "content": "<p>1× FeliSpace Calming Donut, plus your free gifts: the FeliSpa Brush™ (€19,90 value) and the exclusive anti-anxiety PDF guide (€14,90 value).</p>" } },
         { "type": "bb_accordion", "settings": { "title": "30-day guarantee", "content": "<p>If your cat doesn't love it, send it back within 30 days for a full refund — no questions asked.</p>" } },
         { "type": "bb_accordion", "settings": { "title": "Shipping & returns", "content": "<p>Free delivery in around 1 week, with tracking. And you're covered by our 30-day money-back guarantee — if your cat doesn't love it, send it back within 30 days for a full refund, no questions asked.</p>" } },
         { "type": "video", "settings": { "caption": "@cat_mum_uk" } },

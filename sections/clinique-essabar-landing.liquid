@@ -172,6 +172,29 @@
   </div>
   {%- endif -%}
 
+  {%- comment -%} ============ SHADE SHOWCASE ============ {%- endcomment -%}
+  {%- assign shades = section.blocks | where: 'type', 'shade' -%}
+  {%- if shades.size > 0 -%}
+  <div class="ce-band">
+    <h2 class="ce-h2">{{ section.settings.shades_title }}</h2>
+    <p class="ce-sub">{{ section.settings.shades_sub }}</p>
+    <div class="ce-shades">
+      {%- for block in shades -%}
+        <figure class="ce-shade" {{ block.shopify_attributes }}>
+          <div class="ce-shade__media">
+            {%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 500 }}" alt="{{ block.settings.name | escape }}" loading="lazy">{%- else -%}{{ 'product-2' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}
+            <span class="ce-shade__idx">{{ forloop.index }}</span>
+          </div>
+          <figcaption>
+            <span class="ce-shade__name">{{ block.settings.name }}</span>
+            <span class="ce-shade__code">{{ block.settings.code }}</span>
+          </figcaption>
+        </figure>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
   {%- comment -%} ============ BENEFITS ============ {%- endcomment -%}
   {%- assign benefits = section.blocks | where: 'type', 'benefit' -%}
   {%- if benefits.size > 0 -%}
@@ -187,6 +210,34 @@
       {%- endfor -%}
     </div>
     <button type="button" class="ce-btn ce-btn--primary ce-btn--center" data-open-drawer>{{ section.settings.cta_buy }}</button>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ============ UGC VIDEOS ============ {%- endcomment -%}
+  {%- assign ugcs = section.blocks | where: 'type', 'ugc' -%}
+  {%- if ugcs.size > 0 -%}
+  <div class="ce-band ce-band--tint">
+    <h2 class="ce-h2">{{ section.settings.ugc_title }}</h2>
+    <p class="ce-sub">{{ section.settings.ugc_sub }}</p>
+    <div class="ce-ugc">
+      {%- for block in ugcs -%}
+        <div class="ce-ugc__item" data-vid {{ block.shopify_attributes }}>
+          {%- if block.settings.video != blank -%}
+            <video class="ce-ugc__vid" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 500 }}"{% endif %} preload="none" loop muted playsinline disablepictureinpicture>
+              {%- for s in block.settings.video.sources -%}<source src="{{ s.url }}" type="{{ s.mime_type }}">{%- endfor -%}
+            </video>
+            <button type="button" class="ce-ugc__play" data-vid-play aria-label="Lire">▶</button>
+          {%- elsif block.settings.video_url != blank -%}
+            <video class="ce-ugc__vid" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 500 }}"{% endif %} preload="none" loop muted playsinline disablepictureinpicture>
+              <source src="{{ block.settings.video_url }}" type="video/mp4">
+            </video>
+            <button type="button" class="ce-ugc__play" data-vid-play aria-label="Lire">▶</button>
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
   </div>
   {%- endif -%}
 
@@ -526,8 +577,27 @@
   #ce-{{ section.id }} .ce-drawer__trust { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; font-size: 12px; color: #6a6f75; }
   #ce-{{ section.id }} .ce-pay--drawer { justify-content: center; margin-top: 12px; }
 
+  /* Shade showcase */
+  #ce-{{ section.id }} .ce-shades { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  #ce-{{ section.id }} .ce-shade { margin: 0; }
+  #ce-{{ section.id }} .ce-shade__media { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 1/1; background: var(--ce-tint); }
+  #ce-{{ section.id }} .ce-shade__media img { width: 100%; height: 100%; object-fit: cover; }
+  #ce-{{ section.id }} .ce-shade__idx { position: absolute; top: 8px; left: 8px; width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,.9); color: var(--ce-ink); font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  #ce-{{ section.id }} .ce-shade figcaption { text-align: center; margin-top: 9px; }
+  #ce-{{ section.id }} .ce-shade__name { display: block; font-size: 13.5px; font-weight: 600; }
+  #ce-{{ section.id }} .ce-shade__code { display: block; font-size: 11.5px; color: #9aa0a6; }
+
+  /* UGC videos */
+  #ce-{{ section.id }} .ce-ugc { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  #ce-{{ section.id }} .ce-ugc__item { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 9/16; background: #e9e6e0; cursor: pointer; }
+  #ce-{{ section.id }} .ce-ugc__vid { width: 100%; height: 100%; object-fit: cover; }
+  #ce-{{ section.id }} .ce-ugc__play { position: absolute; inset: 0; margin: auto; width: 52px; height: 52px; border-radius: 50%; border: 0; background: rgba(255,255,255,.9); color: var(--ce-ink); font-size: 16px; padding-left: 3px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  #ce-{{ section.id }} .ce-ugc__item.is-playing .ce-ugc__play { display: none; }
+
   /* Desktop */
   @media (min-width: 750px) {
+    #ce-{{ section.id }} .ce-shades { gap: 16px; }
+    #ce-{{ section.id }} .ce-ugc { grid-template-columns: repeat(4, 1fr); gap: 14px; }
     #ce-{{ section.id }} .ce-hero { grid-template-columns: 1fr 1fr; gap: 44px; padding: 40px 20px 20px; align-items: start; }
     #ce-{{ section.id }} .ce-hero__media { position: sticky; top: 20px; }
     #ce-{{ section.id }} .ce-steps { grid-template-columns: repeat(2, 1fr); }
@@ -636,6 +706,18 @@
         entries.forEach(function (e) { sticky.hidden = e.isIntersecting; });
       }, { rootMargin: '0px 0px -80% 0px' }).observe(hero);
     }
+
+    /* UGC videos: muted, no sound, autoplay in view + tap to toggle */
+    root.querySelectorAll('[data-vid]').forEach(function (wrap) {
+      var v = wrap.querySelector('video');
+      if (!v) return;
+      function play() { v.muted = true; v.preload = 'auto'; var p = v.play(); if (p && p.catch) p.catch(function () {}); wrap.classList.add('is-playing'); }
+      function pause() { v.pause(); wrap.classList.remove('is-playing'); }
+      wrap.addEventListener('click', function () { if (v.paused) play(); else pause(); });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) { es.forEach(function (e) { e.isIntersecting ? play() : pause(); }); }, { threshold: 0.6 }).observe(wrap);
+      }
+    });
   })();
 </script>
 
@@ -682,6 +764,12 @@
     { "type": "image_picker", "id": "ba_after", "label": "Image Après" },
     { "type": "header", "content": "Bénéfices" },
     { "type": "text", "id": "benefits_title", "label": "Titre", "default": "Pourquoi Clinique Essabar" },
+    { "type": "header", "content": "Choix de teinte" },
+    { "type": "text", "id": "shades_title", "label": "Titre", "default": "Trouvez votre teinte idéale" },
+    { "type": "text", "id": "shades_sub", "label": "Sous-titre", "default": "Du plus naturel au plus éclatant — choisissez la nuance qui vous ressemble." },
+    { "type": "header", "content": "Vidéos clients (selfies)" },
+    { "type": "text", "id": "ugc_title", "label": "Titre", "default": "Le sourire de nos clients" },
+    { "type": "text", "id": "ugc_sub", "label": "Sous-titre", "default": "Des expériences réelles, filmées par nos clients." },
     { "type": "header", "content": "Comparatif" },
     { "type": "checkbox", "id": "cmp_enable", "label": "Afficher", "default": true },
     { "type": "text", "id": "cmp_title", "label": "Titre", "default": "Le choix évident" },
@@ -725,6 +813,24 @@
       ]
     },
     {
+      "type": "shade",
+      "name": "Teinte",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "name", "label": "Nom", "default": "Blanc naturel" },
+        { "type": "text", "id": "code", "label": "Référence teinte", "default": "A1" }
+      ]
+    },
+    {
+      "type": "ugc",
+      "name": "Vidéo client",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Vidéo (fichier)" },
+        { "type": "text", "id": "video_url", "label": "OU URL vidéo (.mp4)" },
+        { "type": "image_picker", "id": "poster", "label": "Miniature (poster)" }
+      ]
+    },
+    {
       "type": "review",
       "name": "Avis",
       "settings": [
@@ -757,6 +863,13 @@
         { "type": "benefit", "settings": { "icon": "🦷", "title": "Non invasif", "text": "Se clipse par-dessus vos dents, sans les limer ni les abîmer." } },
         { "type": "benefit", "settings": { "icon": "♻️", "title": "Réutilisable", "text": "Conçues pour durer et se réutiliser au quotidien." } },
         { "type": "benefit", "settings": { "icon": "🛡️", "title": "Qualité clinique", "text": "Matériau premium sans BPA, confortable et résistant." } },
+        { "type": "shade", "settings": { "name": "Ivoire", "code": "A3" } },
+        { "type": "shade", "settings": { "name": "Blanc naturel", "code": "A1" } },
+        { "type": "shade", "settings": { "name": "Hollywood", "code": "BL2" } },
+        { "type": "ugc", "settings": {} },
+        { "type": "ugc", "settings": {} },
+        { "type": "ugc", "settings": {} },
+        { "type": "ugc", "settings": {} },
         { "type": "review", "settings": { "title": "Bluffant de réalisme", "text": "Je n'osais plus sourire. En 2 minutes je pose mes facettes et le résultat est incroyable. Personne ne voit la différence.", "author": "Sarah M. — Cliente vérifiée" } },
         { "type": "review", "settings": { "title": "Enfin confiant", "text": "Le kit d'empreinte est super simple. Les facettes sont ultra confortables et le rendu est bluffant. Je recommande à 100%.", "author": "Julien R. — Client vérifié" } },
         { "type": "review", "settings": { "title": "Ça a changé ma vie", "text": "Après des années à cacher mes dents, je souris enfin sur les photos. Merci Clinique Essabar.", "author": "Amélie D. — Cliente vérifiée" } },

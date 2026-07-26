@@ -1,0 +1,772 @@
+{%- comment -%}
+  Clinique Essabar — Premium clip-on veneers product landing (mobile-first, high-conversion)
+  Funnel: "Acheter" → options drawer → "Continuer" → direct to checkout.
+  All content is editable in the theme editor. Placeholders included where assets are missing.
+{%- endcomment -%}
+
+{%- assign prod = section.settings.product | default: product -%}
+{%- assign acc = section.settings.color_accent -%}
+{%- assign ink = section.settings.color_ink -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<section id="ce-{{ section.id }}" class="ce"
+  style="--ce-acc: {{ acc }}; --ce-ink: {{ ink }}; --ce-bg: {{ section.settings.color_bg }}; --ce-tint: {{ section.settings.color_tint }}; --ce-line: {{ section.settings.color_line }};">
+
+  {%- comment -%} ============ TRUST STRIP ============ {%- endcomment -%}
+  <div class="ce-strip">
+    <div class="ce-strip__track">
+      <span>✓ Sur-mesure sans dentiste</span><i>·</i>
+      <span>🚚 Livraison offerte &amp; suivie</span><i>·</i>
+      <span>🛡️ Garantie satisfait ou remboursé 30 jours</span><i>·</i>
+      <span>🔒 Paiement sécurisé</span><i>·</i>
+      <span>✓ Sur-mesure sans dentiste</span><i>·</i>
+      <span>🚚 Livraison offerte &amp; suivie</span><i>·</i>
+      <span>🛡️ Garantie 30 jours</span><i>·</i>
+      <span>🔒 Paiement sécurisé</span><i>·</i>
+    </div>
+  </div>
+
+  {%- comment -%} ============ HERO / BUY BOX ============ {%- endcomment -%}
+  <div class="ce-hero">
+    <div class="ce-hero__media">
+      {%- assign imgs = prod.images -%}
+      <div class="ce-gallery" data-gallery>
+        <div class="ce-gallery__main">
+          {%- if imgs.size > 0 -%}
+            {%- for image in imgs limit: 6 -%}
+              <div class="ce-gallery__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}">
+                <img src="{{ image | image_url: width: 1200 }}" alt="{{ image.alt | default: prod.title | escape }}" width="1000" height="1000" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="ce-gallery__slide is-active" data-slide="0">{{ 'product-1' | placeholder_svg_tag: 'ce-ph' }}</div>
+            <div class="ce-gallery__slide" data-slide="1">{{ 'product-2' | placeholder_svg_tag: 'ce-ph' }}</div>
+          {%- endif -%}
+        </div>
+        <div class="ce-gallery__thumbs">
+          {%- if imgs.size > 0 -%}
+            {%- for image in imgs limit: 6 -%}
+              <button type="button" class="ce-gallery__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Voir l'image {{ forloop.index }}">
+                <img src="{{ image | image_url: width: 200 }}" alt="" width="80" height="80" loading="lazy">
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            <button type="button" class="ce-gallery__thumb is-active" data-thumb="0">{{ 'product-1' | placeholder_svg_tag: 'ce-ph' }}</button>
+            <button type="button" class="ce-gallery__thumb" data-thumb="1">{{ 'product-2' | placeholder_svg_tag: 'ce-ph' }}</button>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="ce-hero__info">
+      <span class="ce-eyebrow">{{ section.settings.brand_name }}</span>
+      <h1 class="ce-title">{{ section.settings.hero_title }}</h1>
+
+      <div class="ce-rating">
+        <span class="ce-stars">★★★★★</span>
+        <span class="ce-rating__txt">{{ section.settings.rating }} · {{ section.settings.review_count }}</span>
+      </div>
+
+      <p class="ce-lede">{{ section.settings.hero_sub }}</p>
+
+      {%- if section.settings.usp_list != blank -%}
+        <ul class="ce-usp">
+          {%- assign usps = section.settings.usp_list | newline_to_br | split: '<br />' -%}
+          {%- for u in usps -%}{%- assign ut = u | strip -%}{%- if ut != blank -%}<li>{{ ut }}</li>{%- endif -%}{%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      <div class="ce-price">
+        {%- if prod != blank -%}
+          <span class="ce-price__now">{{ prod.price | money }}</span>
+          {%- if prod.compare_at_price > prod.price -%}
+            <span class="ce-price__was">{{ prod.compare_at_price | money }}</span>
+            {%- assign save = prod.compare_at_price | minus: prod.price -%}
+            <span class="ce-price__save">Économisez {{ save | money }}</span>
+          {%- endif -%}
+        {%- else -%}
+          <span class="ce-price__now">{{ section.settings.fallback_price }}</span>
+        {%- endif -%}
+      </div>
+      <div class="ce-price__note">{{ section.settings.price_note }}</div>
+
+      <button type="button" class="ce-btn ce-btn--primary ce-btn--lg" data-open-drawer>
+        {{ section.settings.cta_buy }}
+      </button>
+
+      <div class="ce-reassure">
+        <span>🔒 {{ section.settings.reassure_1 }}</span>
+        <span>🚚 {{ section.settings.reassure_2 }}</span>
+        <span>🛡️ {{ section.settings.reassure_3 }}</span>
+      </div>
+
+      <div class="ce-pay">
+        <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17.5" text-anchor="middle" font-family="Arial" font-size="11" font-style="italic" font-weight="800" fill="#1434CB">VISA</text></svg>
+        <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><circle cx="16.5" cy="13" r="7" fill="#eb001b"/><circle cx="23.5" cy="13" r="7" fill="#f79e1b"/></svg>
+        <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#1F72CD"/><rect x="4" y="9.5" width="32" height="7" rx="1" fill="#fff"/><text x="20" y="15" text-anchor="middle" font-family="Arial" font-size="6" font-weight="800" fill="#1F72CD">AMEX</text></svg>
+        <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17" text-anchor="middle" font-family="Arial" font-size="10" font-style="italic" font-weight="800"><tspan fill="#003087">Pay</tspan><tspan fill="#009cde">Pal</tspan></text></svg>
+        <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#000"/><text x="20" y="17" text-anchor="middle" font-family="Arial" font-size="9" font-weight="600" fill="#fff">Pay</text></svg>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ============ PRESS / AS SEEN IN ============ {%- endcomment -%}
+  {%- if section.settings.press_title != blank -%}
+  <div class="ce-press">
+    <span class="ce-press__label">{{ section.settings.press_title }}</span>
+    <div class="ce-press__row">
+      {%- for i in (1..5) -%}
+        {%- assign key = 'press_logo_' | append: i -%}
+        {%- if section.settings[key] != blank -%}
+          <img src="{{ section.settings[key] | image_url: width: 240 }}" alt="" loading="lazy" height="26">
+        {%- else -%}
+          <span class="ce-press__ph">LOGO</span>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ============ HOW IT WORKS ============ {%- endcomment -%}
+  {%- assign steps = section.blocks | where: 'type', 'step' -%}
+  {%- if steps.size > 0 -%}
+  <div class="ce-band">
+    <h2 class="ce-h2">{{ section.settings.steps_title }}</h2>
+    <p class="ce-sub">{{ section.settings.steps_sub }}</p>
+    <div class="ce-steps">
+      {%- for block in steps -%}
+        <div class="ce-step" {{ block.shopify_attributes }}>
+          <span class="ce-step__num">{{ forloop.index }}</span>
+          <div class="ce-step__body">
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ============ BEFORE / AFTER ============ {%- endcomment -%}
+  {%- if section.settings.ba_enable -%}
+  <div class="ce-band ce-band--tint">
+    <h2 class="ce-h2">{{ section.settings.ba_title }}</h2>
+    <p class="ce-sub">{{ section.settings.ba_sub }}</p>
+    <div class="ce-ba">
+      <figure class="ce-ba__col">
+        <div class="ce-ba__media">
+          {%- if section.settings.ba_before != blank -%}<img src="{{ section.settings.ba_before | image_url: width: 800 }}" alt="Avant" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}
+          <span class="ce-ba__tag ce-ba__tag--before">Avant</span>
+        </div>
+      </figure>
+      <figure class="ce-ba__col">
+        <div class="ce-ba__media">
+          {%- if section.settings.ba_after != blank -%}<img src="{{ section.settings.ba_after | image_url: width: 800 }}" alt="Après" loading="lazy">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}
+          <span class="ce-ba__tag ce-ba__tag--after">Après</span>
+        </div>
+      </figure>
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ============ BENEFITS ============ {%- endcomment -%}
+  {%- assign benefits = section.blocks | where: 'type', 'benefit' -%}
+  {%- if benefits.size > 0 -%}
+  <div class="ce-band">
+    <h2 class="ce-h2">{{ section.settings.benefits_title }}</h2>
+    <div class="ce-benefits">
+      {%- for block in benefits -%}
+        <div class="ce-benefit" {{ block.shopify_attributes }}>
+          <span class="ce-benefit__ico">{{ block.settings.icon }}</span>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+    <button type="button" class="ce-btn ce-btn--primary ce-btn--center" data-open-drawer>{{ section.settings.cta_buy }}</button>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ============ COMPARISON ============ {%- endcomment -%}
+  {%- if section.settings.cmp_enable -%}
+  <div class="ce-band ce-band--tint">
+    <h2 class="ce-h2">{{ section.settings.cmp_title }}</h2>
+    <div class="ce-cmp">
+      <table class="ce-cmp__table">
+        <thead>
+          <tr>
+            <th class="ce-cmp__feat"></th>
+            <th class="ce-cmp__ours">{{ section.settings.cmp_ours }}</th>
+            <th>{{ section.settings.cmp_them1 }}</th>
+            <th>{{ section.settings.cmp_them2 }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- assign rows = section.settings.cmp_rows | newline_to_br | split: '<br />' -%}
+          {%- for row in rows -%}
+            {%- assign rt = row | strip -%}{%- if rt == blank -%}{%- continue -%}{%- endif -%}
+            {%- assign cells = rt | split: '|' -%}
+            <tr>
+              <td class="ce-cmp__feat">{{ cells[0] | strip }}</td>
+              <td class="ce-cmp__ours">{% if cells[1] and cells[1] | strip == 'x' %}<span class="ce-x">✕</span>{% else %}<span class="ce-check">✓</span>{% if cells[1] %} {{ cells[1] | strip }}{% endif %}{% endif %}</td>
+              <td>{% if cells[2] and cells[2] | strip == '✓' %}<span class="ce-check ce-check--mute">✓</span>{% else %}<span class="ce-x">✕</span>{% if cells[2] %} {{ cells[2] | strip }}{% endif %}{% endif %}</td>
+              <td>{% if cells[3] and cells[3] | strip == '✓' %}<span class="ce-check ce-check--mute">✓</span>{% else %}<span class="ce-x">✕</span>{% if cells[3] %} {{ cells[3] | strip }}{% endif %}{% endif %}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ============ REVIEWS ============ {%- endcomment -%}
+  {%- assign reviews = section.blocks | where: 'type', 'review' -%}
+  {%- if reviews.size > 0 -%}
+  <div class="ce-band">
+    <h2 class="ce-h2">{{ section.settings.reviews_title }}</h2>
+    <div class="ce-tp">
+      <span class="ce-stars">★★★★★</span>
+      <span class="ce-tp__txt">{{ section.settings.reviews_sub }}</span>
+    </div>
+    <div class="ce-reviews">
+      {%- for block in reviews -%}
+        <article class="ce-review" {{ block.shopify_attributes }}>
+          <div class="ce-review__top">
+            <span class="ce-stars ce-stars--sm">★★★★★</span>
+            <span class="ce-review__verified">✓ Achat vérifié</span>
+          </div>
+          {%- if block.settings.title != blank -%}<h3 class="ce-review__title">{{ block.settings.title }}</h3>{%- endif -%}
+          <p class="ce-review__text">{{ block.settings.text }}</p>
+          <div class="ce-review__author">
+            {%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 80 }}" alt="" width="36" height="36" loading="lazy">{%- else -%}<span class="ce-review__avatar">{{ block.settings.author | slice: 0 }}</span>{%- endif -%}
+            <span>{{ block.settings.author }}</span>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ============ GUARANTEE ============ {%- endcomment -%}
+  {%- if section.settings.guarantee_enable -%}
+  <div class="ce-band">
+    <div class="ce-guarantee">
+      <span class="ce-guarantee__badge">🛡️</span>
+      <h2 class="ce-h2">{{ section.settings.guarantee_title }}</h2>
+      <p class="ce-sub">{{ section.settings.guarantee_text }}</p>
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ============ FAQ ============ {%- endcomment -%}
+  {%- assign faqs = section.blocks | where: 'type', 'faq' -%}
+  {%- if faqs.size > 0 -%}
+  <div class="ce-band ce-band--tint">
+    <h2 class="ce-h2">{{ section.settings.faq_title }}</h2>
+    <div class="ce-faq">
+      {%- for block in faqs -%}
+        <details class="ce-faq__item" {{ block.shopify_attributes }}>
+          <summary>{{ block.settings.question }}<span class="ce-faq__ico">+</span></summary>
+          <div class="ce-faq__ans">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ============ FINAL CTA ============ {%- endcomment -%}
+  <div class="ce-final">
+    <h2 class="ce-final__title">{{ section.settings.final_title }}</h2>
+    <p class="ce-final__sub">{{ section.settings.final_sub }}</p>
+    <button type="button" class="ce-btn ce-btn--primary ce-btn--lg" data-open-drawer>{{ section.settings.cta_buy }}</button>
+    <div class="ce-reassure ce-reassure--center">
+      <span>🔒 {{ section.settings.reassure_1 }}</span>
+      <span>🛡️ {{ section.settings.reassure_3 }}</span>
+    </div>
+  </div>
+
+  {%- comment -%} ============ STICKY MOBILE BAR ============ {%- endcomment -%}
+  <div class="ce-sticky" data-sticky hidden>
+    <div class="ce-sticky__info">
+      <span class="ce-sticky__name">{{ section.settings.sticky_name }}</span>
+      <span class="ce-sticky__price">{% if prod != blank %}{{ prod.price | money }}{% else %}{{ section.settings.fallback_price }}{% endif %}</span>
+    </div>
+    <button type="button" class="ce-btn ce-btn--primary" data-open-drawer>{{ section.settings.cta_buy }}</button>
+  </div>
+
+  {%- comment -%} ============ OPTION DRAWER (FUNNEL) ============ {%- endcomment -%}
+  <div class="ce-drawer" data-drawer hidden>
+    <div class="ce-drawer__overlay" data-close-drawer></div>
+    <div class="ce-drawer__panel" role="dialog" aria-label="Choisir vos options">
+      <div class="ce-drawer__head">
+        <span class="ce-drawer__title">{{ section.settings.drawer_title }}</span>
+        <button type="button" class="ce-drawer__close" data-close-drawer aria-label="Fermer">✕</button>
+      </div>
+
+      <div class="ce-drawer__product">
+        {%- if imgs.size > 0 -%}<img src="{{ imgs[0] | image_url: width: 160 }}" alt="" width="60" height="60">{%- else -%}{{ 'product-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}
+        <div>
+          <span class="ce-drawer__pname">{{ prod.title | default: section.settings.hero_title }}</span>
+          <span class="ce-drawer__pprice" data-drawer-price>{% if prod != blank %}{{ prod.price | money }}{% else %}{{ section.settings.fallback_price }}{% endif %}</span>
+        </div>
+      </div>
+
+      {%- if prod != blank and prod.has_only_default_variant == false -%}
+        <div class="ce-opts" data-variants='{{ prod.variants | json | escape }}'>
+          {%- for opt in prod.options_with_values -%}
+            <div class="ce-opt" data-opt-pos="{{ opt.position }}">
+              <span class="ce-opt__label">{{ opt.name }} : <b data-opt-selected="{{ opt.position }}">{{ opt.selected_value }}</b></span>
+              <div class="ce-opt__values">
+                {%- for val in opt.values -%}
+                  <button type="button" class="ce-opt__val{% if val == opt.selected_value %} is-active{% endif %}" data-opt-value data-value="{{ val | escape }}">{{ val }}</button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <input type="hidden" data-variant-input value="{{ prod.selected_or_first_available_variant.id }}">
+      {%- elsif prod != blank -%}
+        <input type="hidden" data-variant-input value="{{ prod.selected_or_first_available_variant.id }}">
+      {%- endif -%}
+
+      <div class="ce-qty">
+        <span class="ce-qty__label">Quantité</span>
+        <div class="ce-qty__ctrl">
+          <button type="button" data-qty-minus aria-label="Moins">−</button>
+          <input type="number" value="1" min="1" data-qty-input inputmode="numeric" aria-label="Quantité">
+          <button type="button" data-qty-plus aria-label="Plus">+</button>
+        </div>
+      </div>
+
+      <button type="button" class="ce-btn ce-btn--primary ce-btn--lg ce-btn--full" data-checkout>
+        {{ section.settings.cta_continue }}
+      </button>
+      <div class="ce-drawer__trust">
+        <span>🔒 {{ section.settings.reassure_1 }}</span><i>·</i><span>🛡️ {{ section.settings.reassure_3 }}</span>
+      </div>
+      <div class="ce-pay ce-pay--drawer">
+        <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17.5" text-anchor="middle" font-family="Arial" font-size="11" font-style="italic" font-weight="800" fill="#1434CB">VISA</text></svg>
+        <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><circle cx="16.5" cy="13" r="7" fill="#eb001b"/><circle cx="23.5" cy="13" r="7" fill="#f79e1b"/></svg>
+        <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17" text-anchor="middle" font-family="Arial" font-size="10" font-style="italic" font-weight="800"><tspan fill="#003087">Pay</tspan><tspan fill="#009cde">Pal</tspan></text></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- style -%}
+  #ce-{{ section.id }}.ce { --ce-radius: 16px; background: var(--ce-bg); color: var(--ce-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; }
+  #ce-{{ section.id }} * { box-sizing: border-box; }
+  #ce-{{ section.id }} h1, #ce-{{ section.id }} h2, #ce-{{ section.id }} h3 { font-family: 'Fraunces', Georgia, serif; font-weight: 500; letter-spacing: -.01em; }
+  #ce-{{ section.id }} img { max-width: 100%; display: block; }
+  #ce-{{ section.id }} .ce-ph svg, #ce-{{ section.id }} .ce-ph { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Trust strip */
+  #ce-{{ section.id }} .ce-strip { background: var(--ce-ink); color: #fff; overflow: hidden; }
+  #ce-{{ section.id }} .ce-strip__track { display: flex; gap: 18px; align-items: center; white-space: nowrap; padding: 9px 0; font-size: 12px; animation: ce-marquee 26s linear infinite; }
+  #ce-{{ section.id }} .ce-strip i { opacity: .4; }
+  @keyframes ce-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Hero */
+  #ce-{{ section.id }} .ce-hero { max-width: 1160px; margin: 0 auto; padding: 22px 20px 8px; display: grid; grid-template-columns: 1fr; gap: 22px; }
+  #ce-{{ section.id }} .ce-gallery__main { position: relative; border-radius: var(--ce-radius); overflow: hidden; background: var(--ce-tint); aspect-ratio: 1/1; }
+  #ce-{{ section.id }} .ce-gallery__slide { position: absolute; inset: 0; opacity: 0; transition: opacity .3s; }
+  #ce-{{ section.id }} .ce-gallery__slide.is-active { opacity: 1; }
+  #ce-{{ section.id }} .ce-gallery__slide img { width: 100%; height: 100%; object-fit: cover; }
+  #ce-{{ section.id }} .ce-gallery__thumbs { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
+  #ce-{{ section.id }} .ce-gallery__thumbs::-webkit-scrollbar { display: none; }
+  #ce-{{ section.id }} .ce-gallery__thumb { flex: 0 0 62px; width: 62px; height: 62px; border-radius: 11px; overflow: hidden; border: 1.5px solid var(--ce-line); background: var(--ce-tint); cursor: pointer; padding: 0; }
+  #ce-{{ section.id }} .ce-gallery__thumb.is-active { border-color: var(--ce-acc); }
+  #ce-{{ section.id }} .ce-gallery__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  #ce-{{ section.id }} .ce-eyebrow { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--ce-acc); }
+  #ce-{{ section.id }} .ce-title { font-size: clamp(28px, 6.5vw, 40px); line-height: 1.08; margin: 8px 0 12px; }
+  #ce-{{ section.id }} .ce-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  #ce-{{ section.id }} .ce-stars { color: #e8b400; letter-spacing: 1px; font-size: 15px; }
+  #ce-{{ section.id }} .ce-stars--sm { font-size: 13px; }
+  #ce-{{ section.id }} .ce-rating__txt { font-size: 13px; color: var(--ce-ink); opacity: .7; }
+  #ce-{{ section.id }} .ce-lede { font-size: 15.5px; line-height: 1.6; color: #4a4f55; margin: 0 0 16px; }
+  #ce-{{ section.id }} .ce-usp { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 9px; }
+  #ce-{{ section.id }} .ce-usp li { position: relative; padding-left: 27px; font-size: 14.5px; line-height: 1.4; color: #2c3036; }
+  #ce-{{ section.id }} .ce-usp li::before { content: "✓"; position: absolute; left: 0; top: -1px; width: 19px; height: 19px; border-radius: 50%; background: color-mix(in srgb, var(--ce-acc) 12%, #fff); color: var(--ce-acc); font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+
+  #ce-{{ section.id }} .ce-price { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  #ce-{{ section.id }} .ce-price__now { font-size: 30px; font-weight: 700; letter-spacing: -.02em; }
+  #ce-{{ section.id }} .ce-price__was { font-size: 18px; color: #a0a4a8; text-decoration: line-through; }
+  #ce-{{ section.id }} .ce-price__save { font-size: 12.5px; font-weight: 700; color: var(--ce-acc); background: color-mix(in srgb, var(--ce-acc) 10%, #fff); padding: 3px 10px; border-radius: 999px; }
+  #ce-{{ section.id }} .ce-price__note { font-size: 12.5px; color: #8b9096; margin: 5px 0 18px; }
+
+  /* Buttons */
+  #ce-{{ section.id }} .ce-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 15px; border: 0; border-radius: 999px; cursor: pointer; transition: transform .12s, background .15s, box-shadow .15s; text-decoration: none; }
+  #ce-{{ section.id }} .ce-btn--primary { background: var(--ce-acc); color: #fff; padding: 15px 30px; box-shadow: 0 8px 22px color-mix(in srgb, var(--ce-acc) 32%, transparent); }
+  #ce-{{ section.id }} .ce-btn--primary:hover { transform: translateY(-1px); box-shadow: 0 12px 28px color-mix(in srgb, var(--ce-acc) 40%, transparent); }
+  #ce-{{ section.id }} .ce-btn--primary:active { transform: translateY(0); }
+  #ce-{{ section.id }} .ce-btn--lg { width: 100%; padding: 17px 30px; font-size: 16px; }
+  #ce-{{ section.id }} .ce-btn--full { width: 100%; }
+  #ce-{{ section.id }} .ce-btn--center { display: flex; margin: 26px auto 0; min-width: 260px; }
+
+  #ce-{{ section.id }} .ce-reassure { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px; font-size: 12px; color: #6a6f75; }
+  #ce-{{ section.id }} .ce-reassure--center { justify-content: center; }
+  #ce-{{ section.id }} .ce-pay { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+  #ce-{{ section.id }} .ce-pay svg { width: 40px; height: 26px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+  /* Press */
+  #ce-{{ section.id }} .ce-press { max-width: 1000px; margin: 26px auto; padding: 22px 20px; border-top: 1px solid var(--ce-line); border-bottom: 1px solid var(--ce-line); text-align: center; }
+  #ce-{{ section.id }} .ce-press__label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #9aa0a6; }
+  #ce-{{ section.id }} .ce-press__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 22px 34px; margin-top: 14px; }
+  #ce-{{ section.id }} .ce-press__ph { font-weight: 700; letter-spacing: 2px; color: #c8ccd0; font-size: 15px; }
+
+  /* Bands */
+  #ce-{{ section.id }} .ce-band { max-width: 1080px; margin: 0 auto; padding: 44px 20px; }
+  #ce-{{ section.id }} .ce-band--tint { max-width: 100%; background: var(--ce-tint); }
+  #ce-{{ section.id }} .ce-band--tint > * { max-width: 1080px; margin-left: auto; margin-right: auto; }
+  #ce-{{ section.id }} .ce-h2 { font-size: clamp(23px, 5vw, 32px); line-height: 1.15; text-align: center; margin: 0 0 8px; }
+  #ce-{{ section.id }} .ce-sub { text-align: center; color: #6a6f75; font-size: 15px; line-height: 1.55; max-width: 560px; margin: 0 auto 26px; }
+
+  /* Steps */
+  #ce-{{ section.id }} .ce-steps { display: grid; gap: 14px; }
+  #ce-{{ section.id }} .ce-step { display: flex; gap: 16px; align-items: flex-start; padding: 18px; border: 1px solid var(--ce-line); border-radius: var(--ce-radius); background: var(--ce-bg); }
+  #ce-{{ section.id }} .ce-step__num { flex: 0 0 34px; width: 34px; height: 34px; border-radius: 50%; background: var(--ce-ink); color: #fff; font-family: 'Fraunces', serif; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  #ce-{{ section.id }} .ce-step__body h3 { font-size: 17px; margin: 2px 0 5px; }
+  #ce-{{ section.id }} .ce-step__body p { font-size: 14px; color: #6a6f75; line-height: 1.5; margin: 0; }
+
+  /* Before/After */
+  #ce-{{ section.id }} .ce-ba { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  #ce-{{ section.id }} .ce-ba__col { margin: 0; }
+  #ce-{{ section.id }} .ce-ba__media { position: relative; border-radius: var(--ce-radius); overflow: hidden; aspect-ratio: 3/4; background: #e9e6e0; }
+  #ce-{{ section.id }} .ce-ba__media img { width: 100%; height: 100%; object-fit: cover; }
+  #ce-{{ section.id }} .ce-ba__tag { position: absolute; top: 12px; left: 12px; font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; background: rgba(255,255,255,.92); color: var(--ce-ink); }
+  #ce-{{ section.id }} .ce-ba__tag--after { background: var(--ce-acc); color: #fff; }
+
+  /* Benefits */
+  #ce-{{ section.id }} .ce-benefits { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  #ce-{{ section.id }} .ce-benefit { padding: 22px; border: 1px solid var(--ce-line); border-radius: var(--ce-radius); text-align: center; background: var(--ce-bg); }
+  #ce-{{ section.id }} .ce-benefit__ico { font-size: 28px; }
+  #ce-{{ section.id }} .ce-benefit h3 { font-size: 17px; margin: 10px 0 6px; }
+  #ce-{{ section.id }} .ce-benefit p { font-size: 14px; color: #6a6f75; line-height: 1.5; margin: 0; }
+
+  /* Comparison */
+  #ce-{{ section.id }} .ce-cmp { overflow-x: auto; }
+  #ce-{{ section.id }} .ce-cmp__table { width: 100%; border-collapse: collapse; min-width: 460px; background: var(--ce-bg); border-radius: var(--ce-radius); overflow: hidden; }
+  #ce-{{ section.id }} .ce-cmp__table th, #ce-{{ section.id }} .ce-cmp__table td { padding: 13px 12px; font-size: 13px; text-align: center; border-bottom: 1px solid var(--ce-line); }
+  #ce-{{ section.id }} .ce-cmp__table thead th { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 12.5px; }
+  #ce-{{ section.id }} .ce-cmp__feat { text-align: left !important; color: #4a4f55; font-weight: 500; }
+  #ce-{{ section.id }} .ce-cmp__ours { background: color-mix(in srgb, var(--ce-acc) 8%, #fff); color: var(--ce-ink); font-weight: 600; }
+  #ce-{{ section.id }} thead .ce-cmp__ours { background: var(--ce-acc); color: #fff; }
+  #ce-{{ section.id }} .ce-check { color: var(--ce-acc); font-weight: 800; }
+  #ce-{{ section.id }} .ce-check--mute { color: #c0c4c8; }
+  #ce-{{ section.id }} .ce-x { color: #d76b6b; font-weight: 800; }
+
+  /* Reviews */
+  #ce-{{ section.id }} .ce-tp { display: flex; align-items: center; justify-content: center; gap: 8px; margin: -14px 0 24px; font-size: 13px; color: #6a6f75; }
+  #ce-{{ section.id }} .ce-reviews { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  #ce-{{ section.id }} .ce-review { padding: 20px; border: 1px solid var(--ce-line); border-radius: var(--ce-radius); background: var(--ce-bg); }
+  #ce-{{ section.id }} .ce-review__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  #ce-{{ section.id }} .ce-review__verified { font-size: 11px; color: var(--ce-acc); font-weight: 600; }
+  #ce-{{ section.id }} .ce-review__title { font-size: 16px; margin: 0 0 6px; }
+  #ce-{{ section.id }} .ce-review__text { font-size: 14px; color: #4a4f55; line-height: 1.55; margin: 0 0 14px; }
+  #ce-{{ section.id }} .ce-review__author { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
+  #ce-{{ section.id }} .ce-review__author img { border-radius: 50%; width: 36px; height: 36px; object-fit: cover; }
+  #ce-{{ section.id }} .ce-review__avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--ce-acc); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; text-transform: uppercase; }
+
+  /* Guarantee */
+  #ce-{{ section.id }} .ce-guarantee { text-align: center; max-width: 620px; margin: 0 auto; padding: 34px 24px; border: 1px solid var(--ce-line); border-radius: 22px; background: var(--ce-tint); }
+  #ce-{{ section.id }} .ce-guarantee__badge { font-size: 40px; }
+  #ce-{{ section.id }} .ce-guarantee .ce-h2 { margin: 10px 0 8px; }
+
+  /* FAQ */
+  #ce-{{ section.id }} .ce-faq { max-width: 720px; margin: 0 auto; }
+  #ce-{{ section.id }} .ce-faq__item { border-bottom: 1px solid var(--ce-line); }
+  #ce-{{ section.id }} .ce-faq__item summary { list-style: none; cursor: pointer; padding: 18px 4px; font-size: 15.5px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  #ce-{{ section.id }} .ce-faq__item summary::-webkit-details-marker { display: none; }
+  #ce-{{ section.id }} .ce-faq__ico { font-size: 22px; color: var(--ce-acc); transition: transform .2s; flex: 0 0 auto; }
+  #ce-{{ section.id }} .ce-faq__item[open] .ce-faq__ico { transform: rotate(45deg); }
+  #ce-{{ section.id }} .ce-faq__ans { padding: 0 4px 20px; font-size: 14.5px; color: #5a5f65; line-height: 1.6; }
+
+  /* Final CTA */
+  #ce-{{ section.id }} .ce-final { text-align: center; max-width: 620px; margin: 0 auto; padding: 50px 20px 60px; }
+  #ce-{{ section.id }} .ce-final__title { font-size: clamp(24px, 5.5vw, 34px); line-height: 1.15; margin: 0 0 10px; }
+  #ce-{{ section.id }} .ce-final__sub { color: #6a6f75; font-size: 15px; margin: 0 0 24px; }
+  #ce-{{ section.id }} .ce-final .ce-btn--lg { max-width: 360px; margin: 0 auto; }
+
+  /* Sticky bar */
+  #ce-{{ section.id }} .ce-sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: flex; align-items: center; gap: 12px; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.96); backdrop-filter: blur(8px); border-top: 1px solid var(--ce-line); box-shadow: 0 -4px 20px rgba(0,0,0,.06); }
+  #ce-{{ section.id }} .ce-sticky__info { display: flex; flex-direction: column; line-height: 1.2; }
+  #ce-{{ section.id }} .ce-sticky__name { font-size: 12px; color: #6a6f75; }
+  #ce-{{ section.id }} .ce-sticky__price { font-size: 17px; font-weight: 700; }
+  #ce-{{ section.id }} .ce-sticky .ce-btn { flex: 1; padding: 14px; }
+
+  /* Drawer */
+  #ce-{{ section.id }} .ce-drawer { position: fixed; inset: 0; z-index: 60; }
+  #ce-{{ section.id }} .ce-drawer__overlay { position: absolute; inset: 0; background: rgba(15,18,20,.5); opacity: 0; transition: opacity .25s; }
+  #ce-{{ section.id }} .ce-drawer.is-open .ce-drawer__overlay { opacity: 1; }
+  #ce-{{ section.id }} .ce-drawer__panel { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; border-radius: 22px 22px 0 0; padding: 20px 20px calc(22px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform .3s cubic-bezier(.2,.8,.2,1); max-height: 92vh; overflow-y: auto; max-width: 520px; margin: 0 auto; }
+  #ce-{{ section.id }} .ce-drawer.is-open .ce-drawer__panel { transform: translateY(0); }
+  #ce-{{ section.id }} .ce-drawer__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  #ce-{{ section.id }} .ce-drawer__title { font-family: 'Fraunces', serif; font-size: 20px; }
+  #ce-{{ section.id }} .ce-drawer__close { background: var(--ce-tint); border: 0; width: 34px; height: 34px; border-radius: 50%; font-size: 15px; cursor: pointer; color: var(--ce-ink); }
+  #ce-{{ section.id }} .ce-drawer__product { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--ce-tint); border-radius: 14px; margin-bottom: 18px; }
+  #ce-{{ section.id }} .ce-drawer__product img { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; }
+  #ce-{{ section.id }} .ce-drawer__pname { display: block; font-weight: 600; font-size: 14px; }
+  #ce-{{ section.id }} .ce-drawer__pprice { display: block; font-size: 15px; font-weight: 700; margin-top: 2px; }
+  #ce-{{ section.id }} .ce-opt { margin-bottom: 18px; }
+  #ce-{{ section.id }} .ce-opt__label { font-size: 13.5px; color: #4a4f55; }
+  #ce-{{ section.id }} .ce-opt__label b { color: var(--ce-ink); }
+  #ce-{{ section.id }} .ce-opt__values { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 9px; }
+  #ce-{{ section.id }} .ce-opt__val { padding: 10px 16px; border: 1.5px solid var(--ce-line); background: #fff; border-radius: 10px; font-size: 13.5px; font-weight: 500; cursor: pointer; transition: .12s; color: var(--ce-ink); }
+  #ce-{{ section.id }} .ce-opt__val.is-active { border-color: var(--ce-acc); background: color-mix(in srgb, var(--ce-acc) 8%, #fff); color: var(--ce-acc); font-weight: 600; }
+  #ce-{{ section.id }} .ce-qty { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  #ce-{{ section.id }} .ce-qty__label { font-size: 13.5px; color: #4a4f55; }
+  #ce-{{ section.id }} .ce-qty__ctrl { display: flex; align-items: center; border: 1.5px solid var(--ce-line); border-radius: 10px; overflow: hidden; }
+  #ce-{{ section.id }} .ce-qty__ctrl button { width: 40px; height: 42px; border: 0; background: #fff; font-size: 18px; cursor: pointer; color: var(--ce-ink); }
+  #ce-{{ section.id }} .ce-qty__ctrl input { width: 46px; height: 42px; border: 0; text-align: center; font-size: 15px; font-weight: 600; -moz-appearance: textfield; }
+  #ce-{{ section.id }} .ce-qty__ctrl input::-webkit-outer-spin-button, #ce-{{ section.id }} .ce-qty__ctrl input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  #ce-{{ section.id }} .ce-drawer__trust { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; font-size: 12px; color: #6a6f75; }
+  #ce-{{ section.id }} .ce-pay--drawer { justify-content: center; margin-top: 12px; }
+
+  /* Desktop */
+  @media (min-width: 750px) {
+    #ce-{{ section.id }} .ce-hero { grid-template-columns: 1fr 1fr; gap: 44px; padding: 40px 20px 20px; align-items: start; }
+    #ce-{{ section.id }} .ce-hero__media { position: sticky; top: 20px; }
+    #ce-{{ section.id }} .ce-steps { grid-template-columns: repeat(2, 1fr); }
+    #ce-{{ section.id }} .ce-benefits { grid-template-columns: repeat(3, 1fr); }
+    #ce-{{ section.id }} .ce-reviews { grid-template-columns: repeat(3, 1fr); }
+    #ce-{{ section.id }} .ce-ba { gap: 20px; }
+    #ce-{{ section.id }} .ce-sticky { display: none; }
+  }
+{%- endstyle -%}
+
+<script>
+  (function () {
+    var root = document.getElementById('ce-{{ section.id }}');
+    if (!root) return;
+
+    /* Gallery */
+    var slides = root.querySelectorAll('[data-slide]');
+    root.querySelectorAll('[data-thumb]').forEach(function (t) {
+      t.addEventListener('click', function () {
+        var i = t.getAttribute('data-thumb');
+        slides.forEach(function (s) { s.classList.toggle('is-active', s.getAttribute('data-slide') === i); });
+        root.querySelectorAll('[data-thumb]').forEach(function (x) { x.classList.toggle('is-active', x === t); });
+      });
+    });
+
+    /* Variant resolution */
+    var opts = root.querySelector('[data-variants]');
+    var input = root.querySelector('[data-variant-input]');
+    var variants = [];
+    if (opts) { try { variants = JSON.parse(opts.getAttribute('data-variants')); } catch (e) {} }
+    function money(cents) {
+      try { return (cents / 100).toLocaleString(undefined, { style: 'currency', currency: (window.Shopify && Shopify.currency && Shopify.currency.active) || 'USD' }); }
+      catch (e) { return '$' + (cents / 100).toFixed(2); }
+    }
+    function resolve() {
+      if (!opts || !variants.length) return;
+      var sel = [];
+      root.querySelectorAll('[data-opt-pos]').forEach(function (g) {
+        var pos = parseInt(g.getAttribute('data-opt-pos'), 10);
+        var active = g.querySelector('[data-opt-value].is-active');
+        sel[pos - 1] = active ? active.getAttribute('data-value') : null;
+        var lbl = root.querySelector('[data-opt-selected="' + pos + '"]');
+        if (lbl && active) lbl.textContent = active.getAttribute('data-value');
+      });
+      var match = variants.filter(function (v) { return v.options.every(function (o, i) { return o === sel[i]; }); })[0];
+      if (match) {
+        if (input) input.value = match.id;
+        var p = root.querySelector('[data-drawer-price]');
+        if (p) p.textContent = money(match.price);
+      }
+    }
+    root.querySelectorAll('[data-opt-value]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var g = b.closest('[data-opt-pos]');
+        g.querySelectorAll('[data-opt-value]').forEach(function (x) { x.classList.remove('is-active'); });
+        b.classList.add('is-active');
+        resolve();
+      });
+    });
+    resolve();
+
+    /* Quantity */
+    var qty = root.querySelector('[data-qty-input]');
+    root.querySelector('[data-qty-minus]') && root.querySelector('[data-qty-minus]').addEventListener('click', function () { qty.value = Math.max(1, (parseInt(qty.value, 10) || 1) - 1); });
+    root.querySelector('[data-qty-plus]') && root.querySelector('[data-qty-plus]').addEventListener('click', function () { qty.value = (parseInt(qty.value, 10) || 1) + 1; });
+
+    /* Drawer */
+    var drawer = root.querySelector('[data-drawer]');
+    function openDrawer() { if (!drawer) return; drawer.hidden = false; requestAnimationFrame(function () { drawer.classList.add('is-open'); }); document.body.style.overflow = 'hidden'; }
+    function closeDrawer() { if (!drawer) return; drawer.classList.remove('is-open'); document.body.style.overflow = ''; setTimeout(function () { drawer.hidden = true; }, 300); }
+    root.querySelectorAll('[data-open-drawer]').forEach(function (b) { b.addEventListener('click', openDrawer); });
+    root.querySelectorAll('[data-close-drawer]').forEach(function (b) { b.addEventListener('click', closeDrawer); });
+
+    /* Checkout (buy now → direct to checkout) */
+    var checkoutBtn = root.querySelector('[data-checkout]');
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', function () {
+        var id = input ? input.value : '';
+        var q = qty ? (parseInt(qty.value, 10) || 1) : 1;
+        if (!id) { window.location = '/cart'; return; }
+        var original = checkoutBtn.innerHTML;
+        checkoutBtn.disabled = true; checkoutBtn.innerHTML = 'Redirection…';
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ items: [{ id: Number(id), quantity: q }] })
+        }).then(function (r) { if (!r.ok) throw new Error('add'); return r.json(); })
+          .then(function (res) {
+            try {
+              var it = (res.items && res.items[0]) || res || {};
+              var val = (it.final_price ? it.final_price / 100 : 0) * q;
+              var cur = (window.Shopify && Shopify.currency && Shopify.currency.active) || 'USD';
+              if (typeof window.fbq === 'function') { fbq('track', 'AddToCart', { content_ids: [String(id)], content_type: 'product', value: val, currency: cur }); fbq('track', 'InitiateCheckout', { value: val, currency: cur }); }
+              if (window.ttq && ttq.track) { ttq.track('InitiateCheckout', { value: val, currency: cur }); }
+            } catch (e) {}
+            window.location = '/checkout';
+          }).catch(function () { checkoutBtn.disabled = false; checkoutBtn.innerHTML = original; window.location = '/cart'; });
+      });
+    }
+
+    /* Sticky bar: show after hero scrolled past */
+    var sticky = root.querySelector('[data-sticky]');
+    var hero = root.querySelector('.ce-hero__info');
+    if (sticky && hero && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { sticky.hidden = e.isIntersecting; });
+      }, { rootMargin: '0px 0px -80% 0px' }).observe(hero);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Clinique Essabar Landing",
+  "tag": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Produit" },
+    { "type": "header", "content": "Couleurs" },
+    { "type": "color", "id": "color_accent", "label": "Accent (marque)", "default": "#0e7a5f" },
+    { "type": "color", "id": "color_ink", "label": "Texte / encre", "default": "#14181c" },
+    { "type": "color", "id": "color_bg", "label": "Fond", "default": "#ffffff" },
+    { "type": "color", "id": "color_tint", "label": "Fond secondaire", "default": "#f5f3ef" },
+    { "type": "color", "id": "color_line", "label": "Bordures", "default": "#e7e4dd" },
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "brand_name", "label": "Nom de marque", "default": "Clinique Essabar" },
+    { "type": "text", "id": "hero_title", "label": "Titre", "default": "Facettes Dentaires Amovibles Premium" },
+    { "type": "textarea", "id": "hero_sub", "label": "Sous-titre", "default": "Un sourire éclatant en quelques secondes, sans dentiste et sans douleur. Fabriquées sur-mesure à partir de votre empreinte, pour un rendu naturel et confortable." },
+    { "type": "text", "id": "rating", "label": "Note", "default": "4,9/5" },
+    { "type": "text", "id": "review_count", "label": "Nombre d'avis", "default": "2 400+ clients satisfaits" },
+    { "type": "textarea", "id": "usp_list", "label": "Points clés (un par ligne)", "default": "Rendu naturel, sur-mesure à votre sourire\nSe clipse en secondes, sans colle ni douleur\nRéutilisable — une alternative aux facettes à 8 000 $\nQualité clinique, matériau premium sans BPA" },
+    { "type": "text", "id": "fallback_price", "label": "Prix (si aucun produit)", "default": "215,99 $" },
+    { "type": "text", "id": "price_note", "label": "Note sous le prix", "default": "Paiement en 4x sans frais disponible · Livraison offerte" },
+    { "type": "text", "id": "cta_buy", "label": "Bouton Acheter", "default": "Acheter — Commencer" },
+    { "type": "text", "id": "reassure_1", "label": "Réassurance 1", "default": "Paiement 100% sécurisé" },
+    { "type": "text", "id": "reassure_2", "label": "Réassurance 2", "default": "Livraison offerte & suivie" },
+    { "type": "text", "id": "reassure_3", "label": "Réassurance 3", "default": "Garantie 30 jours" },
+    { "type": "header", "content": "Bandeau presse / confiance" },
+    { "type": "text", "id": "press_title", "label": "Titre", "default": "Recommandé par des milliers de sourires" },
+    { "type": "image_picker", "id": "press_logo_1", "label": "Logo 1" },
+    { "type": "image_picker", "id": "press_logo_2", "label": "Logo 2" },
+    { "type": "image_picker", "id": "press_logo_3", "label": "Logo 3" },
+    { "type": "image_picker", "id": "press_logo_4", "label": "Logo 4" },
+    { "type": "image_picker", "id": "press_logo_5", "label": "Logo 5" },
+    { "type": "header", "content": "Comment ça marche" },
+    { "type": "text", "id": "steps_title", "label": "Titre", "default": "Votre sourire sur-mesure en 4 étapes" },
+    { "type": "text", "id": "steps_sub", "label": "Sous-titre", "default": "Simple, rapide, entièrement à domicile." },
+    { "type": "header", "content": "Avant / Après" },
+    { "type": "checkbox", "id": "ba_enable", "label": "Afficher", "default": true },
+    { "type": "text", "id": "ba_title", "label": "Titre", "default": "La transformation" },
+    { "type": "text", "id": "ba_sub", "label": "Sous-titre", "default": "Des résultats visibles immédiatement." },
+    { "type": "image_picker", "id": "ba_before", "label": "Image Avant" },
+    { "type": "image_picker", "id": "ba_after", "label": "Image Après" },
+    { "type": "header", "content": "Bénéfices" },
+    { "type": "text", "id": "benefits_title", "label": "Titre", "default": "Pourquoi Clinique Essabar" },
+    { "type": "header", "content": "Comparatif" },
+    { "type": "checkbox", "id": "cmp_enable", "label": "Afficher", "default": true },
+    { "type": "text", "id": "cmp_title", "label": "Titre", "default": "Le choix évident" },
+    { "type": "text", "id": "cmp_ours", "label": "Colonne nous", "default": "Clinique Essabar" },
+    { "type": "text", "id": "cmp_them1", "label": "Colonne 1", "default": "Dentiste" },
+    { "type": "text", "id": "cmp_them2", "label": "Colonne 2", "default": "Bas de gamme" },
+    { "type": "textarea", "id": "cmp_rows", "label": "Lignes (Critère | nous | col1 | col2). '✓' ou 'x'", "default": "Prix abordable | ✓ | x | ✓\nSans dentiste ni rendez-vous | ✓ | x | ✓\nSur-mesure à votre empreinte | ✓ | ✓ | x\nSans douleur, non invasif | ✓ | x | ✓\nRéutilisable | ✓ | x | x\nQualité premium & durable | ✓ | ✓ | x\nGarantie 30 jours | ✓ | x | x" },
+    { "type": "header", "content": "Avis" },
+    { "type": "text", "id": "reviews_title", "label": "Titre", "default": "Ils ont retrouvé le sourire" },
+    { "type": "text", "id": "reviews_sub", "label": "Sous-titre", "default": "Noté 4,9/5 par plus de 2 400 clients" },
+    { "type": "header", "content": "Garantie" },
+    { "type": "checkbox", "id": "guarantee_enable", "label": "Afficher", "default": true },
+    { "type": "text", "id": "guarantee_title", "label": "Titre", "default": "Satisfait ou remboursé — 30 jours" },
+    { "type": "textarea", "id": "guarantee_text", "label": "Texte", "default": "Essayez vos facettes chez vous sans aucun risque. Si vous n'êtes pas totalement conquis, contactez-nous sous 30 jours pour un remboursement intégral. Votre sourire, notre priorité." },
+    { "type": "header", "content": "FAQ" },
+    { "type": "text", "id": "faq_title", "label": "Titre", "default": "Questions fréquentes" },
+    { "type": "header", "content": "CTA final" },
+    { "type": "text", "id": "final_title", "label": "Titre", "default": "Prêt à révéler votre plus beau sourire ?" },
+    { "type": "text", "id": "final_sub", "label": "Sous-titre", "default": "Rejoignez des milliers de clients qui sourient à nouveau avec confiance." },
+    { "type": "header", "content": "Barre mobile / Tunnel" },
+    { "type": "text", "id": "sticky_name", "label": "Nom (barre mobile)", "default": "Facettes Premium" },
+    { "type": "text", "id": "drawer_title", "label": "Titre du tunnel", "default": "Personnalisez vos facettes" },
+    { "type": "text", "id": "cta_continue", "label": "Bouton Continuer", "default": "Continuer vers le paiement" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Étape",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titre", "default": "Commandez votre kit" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Recevez chez vous votre kit d'empreinte dentaire premium, avec un guide simple pas-à-pas." }
+      ]
+    },
+    {
+      "type": "benefit",
+      "name": "Bénéfice",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icône (emoji)", "default": "✨" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Rendu naturel" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Une teinte et une forme sur-mesure pour un sourire crédible et lumineux." }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Avis",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo client" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Bluffant de réalisme" },
+        { "type": "textarea", "id": "text", "label": "Avis", "default": "Je n'osais plus sourire. En 2 minutes je pose mes facettes et le résultat est incroyable. Personne ne voit la différence." },
+        { "type": "text", "id": "author", "label": "Auteur", "default": "Sarah M. — Cliente vérifiée" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Est-ce que ça abîme mes dents ?" },
+        { "type": "richtext", "id": "answer", "label": "Réponse", "default": "<p>Non. Nos facettes sont amovibles et non invasives : elles se clipsent par-dessus vos dents sans les limer ni les abîmer. Vous les retirez quand vous voulez.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Clinique Essabar Landing",
+      "blocks": [
+        { "type": "step", "settings": { "title": "1. Commandez votre kit", "text": "Recevez chez vous le kit d'empreinte premium avec un guide simple pas-à-pas." } },
+        { "type": "step", "settings": { "title": "2. Prenez votre empreinte", "text": "En quelques minutes, réalisez l'empreinte de votre sourire à la maison." } },
+        { "type": "step", "settings": { "title": "3. On fabrique sur-mesure", "text": "Nos artisans conçoivent vos facettes à la teinte et à la forme choisies." } },
+        { "type": "step", "settings": { "title": "4. Souriez", "text": "Recevez vos facettes finies, clipsez-les et profitez de votre nouveau sourire." } },
+        { "type": "benefit", "settings": { "icon": "✨", "title": "Rendu naturel", "text": "Teinte et forme sur-mesure pour un sourire crédible et lumineux." } },
+        { "type": "benefit", "settings": { "icon": "😁", "title": "Sans dentiste", "text": "Tout se fait à domicile, sans rendez-vous ni fauteuil." } },
+        { "type": "benefit", "settings": { "icon": "💸", "title": "Jusqu'à 97% d'économies", "text": "Une alternative premium aux facettes traditionnelles à plusieurs milliers." } },
+        { "type": "benefit", "settings": { "icon": "🦷", "title": "Non invasif", "text": "Se clipse par-dessus vos dents, sans les limer ni les abîmer." } },
+        { "type": "benefit", "settings": { "icon": "♻️", "title": "Réutilisable", "text": "Conçues pour durer et se réutiliser au quotidien." } },
+        { "type": "benefit", "settings": { "icon": "🛡️", "title": "Qualité clinique", "text": "Matériau premium sans BPA, confortable et résistant." } },
+        { "type": "review", "settings": { "title": "Bluffant de réalisme", "text": "Je n'osais plus sourire. En 2 minutes je pose mes facettes et le résultat est incroyable. Personne ne voit la différence.", "author": "Sarah M. — Cliente vérifiée" } },
+        { "type": "review", "settings": { "title": "Enfin confiant", "text": "Le kit d'empreinte est super simple. Les facettes sont ultra confortables et le rendu est bluffant. Je recommande à 100%.", "author": "Julien R. — Client vérifié" } },
+        { "type": "review", "settings": { "title": "Ça a changé ma vie", "text": "Après des années à cacher mes dents, je souris enfin sur les photos. Merci Clinique Essabar.", "author": "Amélie D. — Cliente vérifiée" } },
+        { "type": "faq", "settings": { "question": "Est-ce que ça abîme mes dents ?", "answer": "<p>Non. Nos facettes sont amovibles et non invasives : elles se clipsent par-dessus vos dents sans les limer ni les abîmer.</p>" } },
+        { "type": "faq", "settings": { "question": "Comment se passe la prise d'empreinte ?", "answer": "<p>Vous recevez un kit complet avec un guide pas-à-pas. La prise d'empreinte se fait chez vous en quelques minutes, puis vous nous la renvoyez (frais offerts).</p>" } },
+        { "type": "faq", "settings": { "question": "Puis-je manger et boire avec ?", "answer": "<p>Nos facettes sont conçues pour un usage esthétique confortable. Nous recommandons de les retirer pour les repas afin de préserver leur longévité.</p>" } },
+        { "type": "faq", "settings": { "question": "Quel est le délai de livraison ?", "answer": "<p>Vous recevez d'abord votre kit d'empreinte rapidement. Une fois votre empreinte renvoyée, vos facettes sur-mesure sont fabriquées et expédiées sous quelques semaines.</p>" } },
+        { "type": "faq", "settings": { "question": "Et si je ne suis pas satisfait ?", "answer": "<p>Vous êtes couvert par notre garantie satisfait ou remboursé de 30 jours. Contactez-nous et nous vous remboursons intégralement.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

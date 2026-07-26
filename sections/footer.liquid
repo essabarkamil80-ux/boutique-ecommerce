@@ -62,7 +62,7 @@
     {%- if settings.logo != blank -%}
       <img src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" width="200" loading="lazy">
     {%- else -%}
-      <span class="fs-footer-logo__text">FéliSpace</span>
+      <span class="fs-footer-logo__text">{{ shop.name }}</span>
     {%- endif -%}
   </div>
   {%- liquid

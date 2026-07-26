@@ -17,7 +17,7 @@
     {%- if settings.logo != blank -%}
       <img src="{{ settings.logo | image_url: width: 320 }}" alt="{{ shop.name | escape }}" class="felispace-cart-logo__img" width="160" loading="lazy">
     {%- else -%}
-      <span class="felispace-cart-logo__text">FéliSpace</span>
+      <span class="felispace-cart-logo__text">{{ shop.name }}</span>
     {%- endif -%}
   </div>
 {%- endcapture -%}
@@ -28,7 +28,7 @@
     <div class="felispace-cart-timer__row">
       <span class="felispace-cart-timer__ico">🎁</span>
       <span class="felispace-cart-timer__txt">
-        <strong>FREE shipping + 2nd Cave −50%</strong> reserved for
+        <strong>Votre panier est réservé</strong> pendant
         <span class="felispace-cart-timer__clock" data-felispace-cart-timer>15:00</span>
       </span>
     </div>
@@ -45,7 +45,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  #CartDrawer { --fs-green: #1f6f43; --fs-green-dark: #17512f; --fs-cream: #f7f4ea; }
+  #CartDrawer { --fs-green: #0e7a5f; --fs-green-dark: #0a5c47; --fs-cream: #f7f4ea; }
   #CartDrawer .drawer__inner { background: #fffdf8; position: relative; }
   #CartDrawer .felispace-empty__close { position: absolute; top: 16px; right: 16px; z-index: 5; background: none; border: 0; cursor: pointer; padding: 6px; color: #333; }
   #CartDrawer .felispace-empty__close .svg-wrapper { width: 22px; height: 22px; display: inline-flex; }
@@ -144,15 +144,15 @@
               {{ felispace_logo }}
               {{ felispace_timer }}
               <div class="felispace-empty__icon">🐈</div>
-              <h2 class="felispace-empty__title">Your cart is empty</h2>
-              <p class="felispace-empty__text">Your cat's cosy new den is just one click away.</p>
+              <h2 class="felispace-empty__title">Votre panier est vide</h2>
+              <p class="felispace-empty__text">Ajoutez un produit pour commencer votre commande.</p>
               <a href="{{ routes.all_products_collection_url }}" class="felispace-empty__btn">
-                Shop the Cave
+                Voir le produit
               </a>
               <div class="felispace-empty__trust">
-                <span>🚚 Free shipping</span>
+                <span>🚚 Livraison offerte</span>
                 <span class="felispace-cart-trust__dot">•</span>
-                <span>🛡️ 30-day money-back</span>
+                <span>🛡️ Garantie 30 jours</span>
               </div>
             </div>
           </div>
@@ -683,23 +683,23 @@
         </div>
 
         {%- unless cart == empty -%}
-        <p class="felispace-cart-ebook">📧 Your <strong>FREE anti-anxiety ebook</strong> is sent to your email right after purchase.</p>
+        <p class="felispace-cart-ebook">🔒 <strong>Paiement 100% sécurisé</strong> — vos données sont protégées.</p>
 
         <details class="felispace-cart-gifts">
-          <summary class="felispace-cart-gifts__title">🎁 Included free gifts — <span>FREE</span></summary>
+          <summary class="felispace-cart-gifts__title">✓ Inclus avec votre commande</summary>
           <ul>
-            <li>FeliSpa Brush™ <em>($19.90 value)</em></li>
-            <li>Anti-anxiety ebook <em>(emailed after purchase)</em></li>
-            <li>Free shipping — 3–7 working days</li>
+            <li>Kit d'empreinte premium <em>(guide pas-à-pas)</em></li>
+            <li>Livraison &amp; retour offerts</li>
+            <li>Garantie satisfait ou remboursé 30 jours</li>
           </ul>
         </details>
 
         <div class="felispace-cart-trust">
-          <span>🔒 Secure checkout</span>
+          <span>🔒 Paiement sécurisé</span>
           <span class="felispace-cart-trust__dot">•</span>
-          <span>🛡️ 30-day money-back</span>
+          <span>🛡️ Garantie 30 jours</span>
           <span class="felispace-cart-trust__dot">•</span>
-          <span>🚚 Free shipping</span>
+          <span>🚚 Livraison offerte</span>
         </div>
 
         <div class="felispace-cart-pay" aria-label="Accepted payment methods">

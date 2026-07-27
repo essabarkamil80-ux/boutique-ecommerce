@@ -260,11 +260,15 @@
           {%- for row in rows -%}
             {%- assign rt = row | strip -%}{%- if rt == blank -%}{%- continue -%}{%- endif -%}
             {%- assign cells = rt | split: '|' -%}
+            {%- assign c0 = cells[0] | strip -%}
+            {%- assign c1 = cells[1] | strip -%}
+            {%- assign c2 = cells[2] | strip -%}
+            {%- assign c3 = cells[3] | strip -%}
             <tr>
-              <td class="ce-cmp__feat">{{ cells[0] | strip }}</td>
-              <td class="ce-cmp__ours">{% if cells[1] and cells[1] | strip == 'x' %}<span class="ce-x">✕</span>{% else %}<span class="ce-check">✓</span>{% if cells[1] %} {{ cells[1] | strip }}{% endif %}{% endif %}</td>
-              <td>{% if cells[2] and cells[2] | strip == '✓' %}<span class="ce-check ce-check--mute">✓</span>{% else %}<span class="ce-x">✕</span>{% if cells[2] %} {{ cells[2] | strip }}{% endif %}{% endif %}</td>
-              <td>{% if cells[3] and cells[3] | strip == '✓' %}<span class="ce-check ce-check--mute">✓</span>{% else %}<span class="ce-x">✕</span>{% if cells[3] %} {{ cells[3] | strip }}{% endif %}{% endif %}</td>
+              <td class="ce-cmp__feat">{{ c0 }}</td>
+              <td class="ce-cmp__ours">{% if c1 == 'x' %}<span class="ce-x">✕</span>{% elsif c1 == blank or c1 == '✓' %}<span class="ce-check">✓</span>{% else %}<span class="ce-check">✓</span> {{ c1 }}{% endif %}</td>
+              <td>{% if c2 == '✓' %}<span class="ce-check ce-check--mute">✓</span>{% elsif c2 == blank or c2 == 'x' %}<span class="ce-x">✕</span>{% else %}{{ c2 }}{% endif %}</td>
+              <td>{% if c3 == '✓' %}<span class="ce-check ce-check--mute">✓</span>{% elsif c3 == blank or c3 == 'x' %}<span class="ce-x">✕</span>{% else %}{{ c3 }}{% endif %}</td>
             </tr>
           {%- endfor -%}
         </tbody>

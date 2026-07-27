@@ -176,7 +176,7 @@
                 }}
               </div>
             {%- else -%}
-              <span class="felispace-logo">FéliSpace</span>
+              {%- if settings.logo != blank -%}<img src="{{ settings.logo | image_url: width: 320 }}" alt="{{ shop.name | escape }}" style="height:28px;width:auto;display:block;" loading="eager">{%- else -%}<span class="felispace-logo">{{ shop.name }}</span>{%- endif -%}
             {%- endif -%}
           </a>
       {%- if request.page_type == 'index' -%}
@@ -216,7 +216,7 @@
                 }}
               </div>
             {%- else -%}
-              <span class="felispace-logo">FéliSpace</span>
+              {%- if settings.logo != blank -%}<img src="{{ settings.logo | image_url: width: 320 }}" alt="{{ shop.name | escape }}" style="height:28px;width:auto;display:block;" loading="eager">{%- else -%}<span class="felispace-logo">{{ shop.name }}</span>{%- endif -%}
             {%- endif -%}
           </a>
       {%- if request.page_type == 'index' -%}

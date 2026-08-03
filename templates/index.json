@@ -1,14 +1,5 @@
 {
   "sections": {
-    "synctest": {
-      "type": "custom-liquid",
-      "settings": {
-        "custom_liquid": "<div style=\"background:#0e7a5f;color:#fff;text-align:center;padding:16px;font-weight:800;font-size:18px;font-family:sans-serif;letter-spacing:.3px;\">✅ CONNEXION GITHUB OK — Clinique Essabar est bien synchronisée</div>",
-        "color_scheme": "scheme-1",
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
     "hero": {
       "type": "rich-text",
       "blocks": {
@@ -31,5 +22,5 @@
       "settings": { "title": "Pourquoi Clinique Essabar", "color_scheme": "scheme-1", "columns_desktop": 3, "column_alignment": "center", "background_style": "none", "padding_top": 24, "padding_bottom": 56 }
     }
   },
-  "order": ["synctest", "hero", "trust"]
+  "order": ["hero", "trust"]
 }

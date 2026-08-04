@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <section id="ce-{{ section.id }}" class="ce"
-  style="--ce-acc: {{ section.settings.color_accent }}; --ce-acc-dark: {{ section.settings.color_accent_dark }}; --ce-ink: {{ section.settings.color_ink }}; --ce-bg: {{ section.settings.color_bg }}; --ce-tint: {{ section.settings.color_tint }}; --ce-line: {{ section.settings.color_line }};">
+  style="--ce-acc: {{ section.settings.color_accent }}; --ce-acc-dark: {{ section.settings.color_accent_dark }}; --ce-ink: {{ section.settings.color_ink }}; --ce-bg: #ffffff; --ce-tint: #f2f5f4; --ce-line: #e4e9e8;">
 
   {%- comment -%} ============ 1. HERO / BUY BOX ============ {%- endcomment -%}
   <div class="ce-hero">
@@ -58,10 +58,8 @@
           {%- if prod.compare_at_price > prod.price -%}<span class="ce-price__was">{{ prod.compare_at_price | money }}</span>{%- endif -%}
           <span class="ce-price__now">{{ prod.price | money }}</span>
         {%- else -%}
-          {%- if section.settings.fallback_compare != blank -%}<span class="ce-price__was">{{ section.settings.fallback_compare }}</span>{%- endif -%}
           <span class="ce-price__now">{{ section.settings.fallback_price }}</span>
         {%- endif -%}
-        {%- if section.settings.save_badge != blank -%}<span class="ce-price__save">{{ section.settings.save_badge }}</span>{%- endif -%}
       </div>
 
       <div class="ce-rating">
@@ -103,9 +101,9 @@
         <button type="button" class="ce-btn ce-btn--primary ce-btn--full" data-addcart>{{ section.settings.cta_add }}</button>
 
         <div class="ce-reassure">
-          <span>🔒 {{ section.settings.reassure_1 }}</span>
-          <span>🚚 {{ section.settings.reassure_2 }}</span>
-          <span>🛡️ {{ section.settings.reassure_3 }}</span>
+          <span>🔒 Paiement sécurisé</span>
+          <span>🚚 Livraison offerte</span>
+          <span>🛡️ Garantie 30 jours</span>
         </div>
         <div class="ce-pay">
           <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17.5" text-anchor="middle" font-family="Arial" font-size="11" font-style="italic" font-weight="800" fill="#1434CB">VISA</text></svg>
@@ -128,7 +126,7 @@
       <div class="ce-innov__body">
         <h2 class="ce-h2 ce-h2--left">{{ section.settings.innov_title }}</h2>
         <div class="ce-rte">{{ section.settings.innov_text }}</div>
-        <button type="button" class="ce-btn ce-btn--primary" data-addcart>{{ section.settings.innov_cta }}</button>
+        <button type="button" class="ce-btn ce-btn--primary" data-addcart>Commander</button>
       </div>
     </div>
   </div>
@@ -142,7 +140,7 @@
         <span class="ce-express__title">{{ section.settings.express_title }}</span>
         <span class="ce-express__sub">{{ section.settings.express_sub }}</span>
       </div>
-      <button type="button" class="ce-btn ce-btn--dark" data-addcart>{{ section.settings.express_cta }}</button>
+      <button type="button" class="ce-btn ce-btn--dark" data-addcart>Ajouter</button>
     </div>
   </div>
   {%- endif -%}
@@ -153,14 +151,14 @@
     <div class="ce-brandline">{{ section.settings.brand_name }}</div>
     <div class="ce-tabs" data-tabs>
       <div class="ce-tabs__nav">
-        <button type="button" class="ce-tab is-active" data-tab="0">{{ section.settings.tab1_label }}</button>
-        <button type="button" class="ce-tab" data-tab="1">{{ section.settings.tab2_label }}</button>
-        <button type="button" class="ce-tab" data-tab="2">{{ section.settings.tab3_label }}</button>
+        <button type="button" class="ce-tab is-active" data-tab="0">Avant</button>
+        <button type="button" class="ce-tab" data-tab="1">Pendant</button>
+        <button type="button" class="ce-tab" data-tab="2">Après</button>
       </div>
       <div class="ce-tabs__panes">
-        <div class="ce-tabpane is-active" data-pane="0">{%- if section.settings.tab1_image != blank -%}<img src="{{ section.settings.tab1_image | image_url: width: 900 }}" alt="{{ section.settings.tab1_label }}" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
-        <div class="ce-tabpane" data-pane="1">{%- if section.settings.tab2_image != blank -%}<img src="{{ section.settings.tab2_image | image_url: width: 900 }}" alt="{{ section.settings.tab2_label }}" loading="lazy">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
-        <div class="ce-tabpane" data-pane="2">{%- if section.settings.tab3_image != blank -%}<img src="{{ section.settings.tab3_image | image_url: width: 900 }}" alt="{{ section.settings.tab3_label }}" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
+        <div class="ce-tabpane is-active" data-pane="0">{%- if section.settings.tab1_image != blank -%}<img src="{{ section.settings.tab1_image | image_url: width: 900 }}" alt="Avant" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
+        <div class="ce-tabpane" data-pane="1">{%- if section.settings.tab2_image != blank -%}<img src="{{ section.settings.tab2_image | image_url: width: 900 }}" alt="Pendant" loading="lazy">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
+        <div class="ce-tabpane" data-pane="2">{%- if section.settings.tab3_image != blank -%}<img src="{{ section.settings.tab3_image | image_url: width: 900 }}" alt="Après" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
       </div>
     </div>
   </div>
@@ -231,9 +229,8 @@
   {%- assign bas = section.blocks | where: 'type', 'ba_photo' -%}
   {%- if bas.size > 0 -%}
   <div class="ce-band ce-band--tint">
-    <span class="ce-tag">{{ section.settings.ba_tag }}</span>
+    <span class="ce-tag">Résultats</span>
     <h2 class="ce-h2">{{ section.settings.ba_title }}</h2>
-    <p class="ce-sub">{{ section.settings.ba_sub }}</p>
     <div class="ce-bagrid">
       {%- for block in bas -%}
         <div class="ce-bacell" {{ block.shopify_attributes }}>
@@ -249,7 +246,7 @@
   {%- if reviews.size > 0 -%}
   <div class="ce-band">
     <h2 class="ce-h2">{{ section.settings.reviews_title }}</h2>
-    <div class="ce-tp"><span class="ce-stars">★★★★★</span><span class="ce-tp__txt">{{ section.settings.reviews_sub }}</span></div>
+    <div class="ce-tp"><span class="ce-stars">★★★★★</span><span class="ce-tp__txt">Noté 4,9/5 par nos clients</span></div>
     <div class="ce-wall">
       {%- for block in reviews -%}
         <article class="ce-rev" {{ block.shopify_attributes }}>
@@ -275,7 +272,6 @@
         <p class="ce-wa__sub">{{ section.settings.wa_sub }}</p>
         <div class="ce-wa__btns">
           <button type="button" class="ce-btn ce-btn--white" data-addcart>{{ section.settings.wa_cta1 }}</button>
-          {%- if section.settings.wa_cta2 != blank -%}<a href="#ce-{{ section.id }}" class="ce-btn ce-btn--ghost">{{ section.settings.wa_cta2 }}</a>{%- endif -%}
         </div>
       </div>
       <div class="ce-wa__media">
@@ -581,9 +577,6 @@
     { "type": "color", "id": "color_accent", "label": "Accent", "default": "#15776a" },
     { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0f5b51" },
     { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
-    { "type": "color", "id": "color_bg", "label": "Fond", "default": "#ffffff" },
-    { "type": "color", "id": "color_tint", "label": "Fond secondaire", "default": "#f2f5f4" },
-    { "type": "color", "id": "color_line", "label": "Bordures", "default": "#e4e9e8" },
     { "type": "header", "content": "Hero / Fiche produit" },
     { "type": "text", "id": "brand_name", "label": "Nom de marque", "default": "Clinique Essabar" },
     { "type": "text", "id": "hero_badge", "label": "Badge", "default": "Nouveau" },
@@ -592,32 +585,22 @@
     { "type": "text", "id": "rating", "label": "Note", "default": "4,9/5" },
     { "type": "text", "id": "review_count", "label": "Avis", "default": "2 400+ avis" },
     { "type": "text", "id": "fallback_price", "label": "Prix (si aucun produit)", "default": "215,99 $" },
-    { "type": "text", "id": "fallback_compare", "label": "Prix barré (si aucun produit)", "default": "" },
-    { "type": "text", "id": "save_badge", "label": "Badge promo", "default": "-20%" },
     { "type": "text", "id": "steps_title", "label": "Titre des étapes", "default": "Quatre étapes simples" },
     { "type": "text", "id": "cta_add", "label": "Bouton principal", "default": "Ajouter au panier" },
-    { "type": "text", "id": "reassure_1", "label": "Réassurance 1", "default": "Paiement sécurisé" },
-    { "type": "text", "id": "reassure_2", "label": "Réassurance 2", "default": "Livraison offerte" },
-    { "type": "text", "id": "reassure_3", "label": "Réassurance 3", "default": "Garantie 30 jours" },
     { "type": "header", "content": "Section Innovation" },
     { "type": "checkbox", "id": "innov_enable", "label": "Afficher", "default": true },
     { "type": "image_picker", "id": "innov_image", "label": "Image" },
     { "type": "text", "id": "innov_title", "label": "Titre", "default": "Une innovation pour un sourire éclatant" },
     { "type": "richtext", "id": "innov_text", "label": "Texte", "default": "<p>Nos facettes se posent en quelques secondes, sans dentiste et sans douleur. Fabriquées sur-mesure à partir de votre empreinte, elles offrent un rendu naturel et un confort optimal au quotidien.</p>" },
-    { "type": "text", "id": "innov_cta", "label": "Bouton", "default": "Commander" },
     { "type": "header", "content": "Upsell (production express)" },
     { "type": "checkbox", "id": "express_enable", "label": "Afficher", "default": true },
     { "type": "text", "id": "express_title", "label": "Titre", "default": "Production express — 20 $" },
     { "type": "text", "id": "express_sub", "label": "Sous-titre", "default": "Recevez vos facettes en priorité, plus rapidement." },
-    { "type": "text", "id": "express_cta", "label": "Bouton", "default": "Ajouter" },
     { "type": "header", "content": "Onglets Avant / Pendant / Après" },
     { "type": "checkbox", "id": "tabs_enable", "label": "Afficher", "default": true },
-    { "type": "text", "id": "tab1_label", "label": "Onglet 1", "default": "Avant" },
-    { "type": "image_picker", "id": "tab1_image", "label": "Image 1" },
-    { "type": "text", "id": "tab2_label", "label": "Onglet 2", "default": "Pendant" },
-    { "type": "image_picker", "id": "tab2_image", "label": "Image 2" },
-    { "type": "text", "id": "tab3_label", "label": "Onglet 3", "default": "Après" },
-    { "type": "image_picker", "id": "tab3_image", "label": "Image 3" },
+    { "type": "image_picker", "id": "tab1_image", "label": "Image Avant" },
+    { "type": "image_picker", "id": "tab2_image", "label": "Image Pendant" },
+    { "type": "image_picker", "id": "tab3_image", "label": "Image Après" },
     { "type": "header", "content": "Vidéos clients" },
     { "type": "text", "id": "ugc_title", "label": "Titre", "default": "Le sourire de nos clients" },
     { "type": "text", "id": "ugc_sub", "label": "Sous-titre", "default": "Des expériences réelles, filmées par nos clients." },
@@ -626,18 +609,14 @@
     { "type": "header", "content": "Comparaison des teintes" },
     { "type": "text", "id": "shades_title", "label": "Titre", "default": "Comparaison réelle des teintes" },
     { "type": "header", "content": "Avant / Après (photos)" },
-    { "type": "text", "id": "ba_tag", "label": "Étiquette", "default": "Résultats" },
     { "type": "text", "id": "ba_title", "label": "Titre", "default": "Avant / Après" },
-    { "type": "text", "id": "ba_sub", "label": "Sous-titre", "default": "Un nouveau sourire, en toute confiance." },
     { "type": "header", "content": "Avis" },
     { "type": "text", "id": "reviews_title", "label": "Titre", "default": "Plus de 55 000 sourires déjà transformés" },
-    { "type": "text", "id": "reviews_sub", "label": "Sous-titre", "default": "Noté 4,9/5 par nos clients" },
     { "type": "header", "content": "Bandeau support / WhatsApp" },
     { "type": "checkbox", "id": "wa_enable", "label": "Afficher", "default": true },
     { "type": "text", "id": "wa_title", "label": "Titre", "default": "La prise d'empreinte la plus simple au monde" },
     { "type": "textarea", "id": "wa_sub", "label": "Texte", "default": "Un tutoriel vidéo et une assistance dédiée vous accompagnent à chaque étape. Votre nouveau sourire vous attend 😁" },
     { "type": "text", "id": "wa_cta1", "label": "Bouton 1", "default": "Commander maintenant" },
-    { "type": "text", "id": "wa_cta2", "label": "Bouton 2", "default": "Voir les avis" },
     { "type": "image_picker", "id": "wa_image", "label": "Image" },
     { "type": "header", "content": "Barre mobile" },
     { "type": "text", "id": "sticky_name", "label": "Nom", "default": "Facettes Premium" }

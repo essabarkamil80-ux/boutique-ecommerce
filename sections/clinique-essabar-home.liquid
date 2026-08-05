@@ -1,0 +1,365 @@
+{% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
+{%- comment -%} Clinique Essabar — homepage (reference DTC structure, own code + placeholders) {%- endcomment -%}
+{%- assign prod = section.settings.product | default: product -%}
+{%- if prod != blank -%}{%- assign purl = prod.url -%}{%- else -%}{%- assign purl = '/collections/all' -%}{%- endif -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<section id="ch-{{ section.id }}" class="ch" style="--ch-acc: {{ section.settings.color_accent }}; --ch-acc-dark: {{ section.settings.color_accent_dark }}; --ch-ink: {{ section.settings.color_ink }};">
+
+  {%- comment -%} ===== 1. HERO ===== {%- endcomment -%}
+  <div class="ch-hero">
+    <div class="ch-hero__media">
+      {%- if section.settings.hero_video_url != blank -%}
+        <video autoplay loop muted playsinline disablepictureinpicture {% if section.settings.hero_image != blank %}poster="{{ section.settings.hero_image | image_url: width: 1400 }}"{% endif %}>
+          <source src="{{ section.settings.hero_video_url }}" type="video/mp4">
+        </video>
+      {%- elsif section.settings.hero_image != blank -%}
+        <img src="{{ section.settings.hero_image | image_url: width: 1600 }}" alt="" loading="eager">
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'ch-ph' }}
+      {%- endif -%}
+    </div>
+    <div class="ch-hero__txt">
+      <h1 class="ch-hero__title">{{ section.settings.hero_title }}</h1>
+      <p class="ch-hero__sub">{{ section.settings.hero_sub }}</p>
+    </div>
+  </div>
+
+  {%- comment -%} ===== 2. PRODUCT / SHADE CARDS ===== {%- endcomment -%}
+  {%- assign cards = section.blocks | where: 'type', 'card' -%}
+  {%- if cards.size > 0 -%}
+  <div class="ch-band">
+    <div class="ch-cards">
+      {%- for block in cards -%}
+        <a class="ch-card" href="{{ purl }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.badge != blank -%}<span class="ch-card__badge">{{ block.settings.badge }}</span>{%- endif -%}
+          <div class="ch-card__media">
+            {%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.name | escape }}" loading="lazy">{%- else -%}{{ 'product-2' | placeholder_svg_tag: 'ch-ph' }}{%- endif -%}
+          </div>
+          <div class="ch-card__name">{{ block.settings.name }}</div>
+          {%- if block.settings.subtitle != blank -%}<div class="ch-card__sub">{{ block.settings.subtitle }}</div>{%- endif -%}
+          <div class="ch-card__price">
+            {%- if block.settings.compare != blank -%}<span class="ch-card__was">{{ block.settings.compare }}</span>{%- endif -%}
+            <span class="ch-card__now">{{ block.settings.price }}</span>
+          </div>
+          <span class="ch-btn ch-btn--sm">{{ section.settings.card_cta }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== 3. HOW IT WORKS ===== {%- endcomment -%}
+  {%- assign steps = section.blocks | where: 'type', 'step' -%}
+  {%- if steps.size > 0 -%}
+  <div class="ch-band ch-band--tint">
+    <span class="ch-eyebrow ch-eyebrow--center">{{ section.settings.steps_eyebrow }}</span>
+    <h2 class="ch-h2">{{ section.settings.steps_title }}</h2>
+    <p class="ch-sub">{{ section.settings.steps_sub }}</p>
+    <div class="ch-how">
+      <div class="ch-how__media">
+        {%- if section.settings.steps_image != blank -%}<img src="{{ section.settings.steps_image | image_url: width: 1000 }}" alt="" loading="lazy">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'ch-ph' }}{%- endif -%}
+      </div>
+      <div class="ch-how__steps">
+        {%- for block in steps -%}
+          <div class="ch-step" {{ block.shopify_attributes }}>
+            <span class="ch-step__tag">Étape {{ forloop.index }}</span>
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== 4. FEATURES ICONS ===== {%- endcomment -%}
+  {%- assign feats = section.blocks | where: 'type', 'feature' -%}
+  {%- if feats.size > 0 -%}
+  <div class="ch-band ch-band--tight">
+    <div class="ch-brandline">{{ section.settings.feat_label }}</div>
+    <div class="ch-feats">
+      {%- for block in feats -%}
+        <div class="ch-feat" {{ block.shopify_attributes }}>
+          <span class="ch-feat__ico">{{ block.settings.icon }}</span>
+          {%- if block.settings.label != blank -%}<span class="ch-feat__lbl">{{ block.settings.label }}</span>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== 5. WHY (accordion + media) ===== {%- endcomment -%}
+  {%- assign whys = section.blocks | where: 'type', 'why' -%}
+  {%- if whys.size > 0 -%}
+  <div class="ch-band">
+    <div class="ch-why">
+      <div class="ch-why__panel">
+        <div class="ch-why__head">{{ section.settings.why_title }}</div>
+        {%- for block in whys -%}
+          <details class="ch-why__item"{% if forloop.first %} open{% endif %} {{ block.shopify_attributes }}>
+            <summary>{{ block.settings.title }}<span class="ch-why__ico">⌄</span></summary>
+            <div class="ch-why__body">{{ block.settings.text }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+      <div class="ch-why__media">
+        {%- if section.settings.why_image != blank -%}<img src="{{ section.settings.why_image | image_url: width: 900 }}" alt="" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ch-ph' }}{%- endif -%}
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== 6. STATS BAND ===== {%- endcomment -%}
+  {%- if section.settings.stats_enable -%}
+  <div class="ch-stats">
+    <div class="ch-stats__media">
+      {%- if section.settings.stats_image != blank -%}<img src="{{ section.settings.stats_image | image_url: width: 1200 }}" alt="" loading="lazy">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'ch-ph' }}{%- endif -%}
+    </div>
+    <div class="ch-stats__list">
+      {%- assign rows = section.settings.stats_lines | newline_to_br | split: '<br />' -%}
+      {%- for row in rows -%}
+        {%- assign rt = row | strip -%}{%- if rt == blank -%}{%- continue -%}{%- endif -%}
+        {%- assign parts = rt | split: '|' -%}
+        {%- assign big = parts[0] | strip -%}
+        {%- assign small = parts[1] | strip -%}
+        <div class="ch-stat"><span class="ch-stat__big">{{ big }}</span>{%- if small != blank -%}<span class="ch-stat__small">{{ small }}</span>{%- endif -%}</div>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== 7. KIT CTA BAND ===== {%- endcomment -%}
+  {%- if section.settings.kit_enable -%}
+  <div class="ch-kit">
+    <div class="ch-kit__inner">
+      <div class="ch-kit__txt">
+        <h2 class="ch-kit__title">{{ section.settings.kit_title }}</h2>
+        <p class="ch-kit__sub">{{ section.settings.kit_text }}</p>
+        <a href="{{ purl }}" class="ch-btn ch-btn--white">{{ section.settings.kit_cta }}</a>
+      </div>
+      <div class="ch-kit__media">
+        {%- if section.settings.kit_image != blank -%}<img src="{{ section.settings.kit_image | image_url: width: 800 }}" alt="" loading="lazy">{%- else -%}{{ 'product-1' | placeholder_svg_tag: 'ch-ph' }}{%- endif -%}
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== 8. SOCIAL ===== {%- endcomment -%}
+  {%- assign socials = section.blocks | where: 'type', 'social' -%}
+  {%- if socials.size > 0 -%}
+  <div class="ch-band">
+    <span class="ch-eyebrow ch-eyebrow--center">{{ section.settings.social_eyebrow }}</span>
+    <h2 class="ch-h2">{{ section.settings.social_title }}</h2>
+    <p class="ch-sub">{{ section.settings.social_sub }}</p>
+    <div class="ch-social">
+      {%- for block in socials -%}
+        {%- if block.settings.link != blank -%}<a class="ch-social__item" href="{{ block.settings.link }}" target="_blank" rel="noopener" {{ block.shopify_attributes }}>{%- else -%}<div class="ch-social__item" {{ block.shopify_attributes }}>{%- endif -%}
+          {%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 500 }}" alt="" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ch-ph' }}{%- endif -%}
+        {%- if block.settings.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+</section>
+
+{%- style -%}
+  #ch-{{ section.id }}.ch { background: #fff; color: var(--ch-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; }
+  #ch-{{ section.id }} * { box-sizing: border-box; }
+  #ch-{{ section.id }} h1, #ch-{{ section.id }} h2, #ch-{{ section.id }} h3 { font-family: 'Manrope', sans-serif; font-weight: 800; letter-spacing: -.02em; }
+  #ch-{{ section.id }} img { max-width: 100%; display: block; }
+  #ch-{{ section.id }} .ch-ph, #ch-{{ section.id }} .ch-ph svg { width: 100%; height: 100%; object-fit: cover; }
+
+  #ch-{{ section.id }} .ch-band { max-width: 1140px; margin: 0 auto; padding: 48px 18px; }
+  #ch-{{ section.id }} .ch-band--tight { padding: 20px 18px 34px; }
+  #ch-{{ section.id }} .ch-band--tint { max-width: 100%; background: #f2f5f4; }
+  #ch-{{ section.id }} .ch-band--tint > * { max-width: 1140px; margin-left: auto; margin-right: auto; }
+  #ch-{{ section.id }} .ch-h2 { font-size: clamp(23px, 5vw, 32px); text-align: center; margin: 0 0 8px; line-height: 1.15; }
+  #ch-{{ section.id }} .ch-sub { text-align: center; color: #6a747c; font-size: 15px; max-width: 620px; margin: 0 auto 26px; line-height: 1.55; }
+  #ch-{{ section.id }} .ch-eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ch-acc); }
+  #ch-{{ section.id }} .ch-eyebrow--center { display: block; text-align: center; margin-bottom: 6px; }
+  #ch-{{ section.id }} .ch-brandline { text-align: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 20px; color: var(--ch-acc); margin-bottom: 16px; }
+
+  #ch-{{ section.id }} .ch-btn { display: inline-flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 15px; border: 0; border-radius: 10px; cursor: pointer; text-decoration: none; padding: 14px 26px; background: var(--ch-acc); color: #fff; transition: .15s; }
+  #ch-{{ section.id }} .ch-btn:hover { background: var(--ch-acc-dark); transform: translateY(-1px); }
+  #ch-{{ section.id }} .ch-btn--sm { padding: 10px 20px; font-size: 13.5px; }
+  #ch-{{ section.id }} .ch-btn--white { background: #fff; color: var(--ch-acc); }
+
+  /* Hero */
+  #ch-{{ section.id }} .ch-hero__media { width: 100%; aspect-ratio: 16/10; background: #e9ecef; overflow: hidden; }
+  #ch-{{ section.id }} .ch-hero__media img, #ch-{{ section.id }} .ch-hero__media video { width: 100%; height: 100%; object-fit: cover; }
+  #ch-{{ section.id }} .ch-hero__txt { text-align: center; padding: 30px 18px 4px; max-width: 720px; margin: 0 auto; }
+  #ch-{{ section.id }} .ch-hero__title { font-size: clamp(26px, 6vw, 38px); line-height: 1.1; margin: 0 0 10px; }
+  #ch-{{ section.id }} .ch-hero__sub { font-size: 15.5px; color: #55606a; line-height: 1.5; margin: 0; }
+
+  /* Cards */
+  #ch-{{ section.id }} .ch-cards { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  #ch-{{ section.id }} .ch-card { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px 16px; border: 1px solid #e4e9e8; border-radius: 16px; background: #fff; text-decoration: none; color: var(--ch-ink); transition: .15s; }
+  #ch-{{ section.id }} .ch-card:hover { box-shadow: 0 12px 30px rgba(0,0,0,.08); transform: translateY(-2px); }
+  #ch-{{ section.id }} .ch-card__badge { position: absolute; top: 12px; left: 12px; background: var(--ch-acc); color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 4px 9px; border-radius: 5px; }
+  #ch-{{ section.id }} .ch-card__media { width: 100%; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: #f2f5f4; margin-bottom: 14px; }
+  #ch-{{ section.id }} .ch-card__media img { width: 100%; height: 100%; object-fit: cover; }
+  #ch-{{ section.id }} .ch-card__name { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 17px; }
+  #ch-{{ section.id }} .ch-card__sub { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #9aa4ac; margin-top: 3px; }
+  #ch-{{ section.id }} .ch-card__price { display: flex; gap: 8px; align-items: baseline; margin: 10px 0 14px; }
+  #ch-{{ section.id }} .ch-card__was { color: #9aa4ac; text-decoration: line-through; font-size: 14px; }
+  #ch-{{ section.id }} .ch-card__now { font-weight: 800; font-size: 18px; color: var(--ch-acc); }
+
+  /* How it works */
+  #ch-{{ section.id }} .ch-how { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: center; }
+  #ch-{{ section.id }} .ch-how__media { border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: #e9ecef; }
+  #ch-{{ section.id }} .ch-how__media img { width: 100%; height: 100%; object-fit: cover; }
+  #ch-{{ section.id }} .ch-how__steps { display: grid; gap: 14px; }
+  #ch-{{ section.id }} .ch-step { background: #fff; border: 1px solid #e4e9e8; border-radius: 12px; padding: 16px 18px; }
+  #ch-{{ section.id }} .ch-step__tag { display: inline-block; background: var(--ch-ink); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 5px; margin-bottom: 8px; }
+  #ch-{{ section.id }} .ch-step h3 { font-size: 16px; margin: 0 0 5px; }
+  #ch-{{ section.id }} .ch-step p { font-size: 13.5px; color: #6a747c; line-height: 1.5; margin: 0; }
+
+  /* Features */
+  #ch-{{ section.id }} .ch-feats { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px 26px; }
+  #ch-{{ section.id }} .ch-feat { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 80px; }
+  #ch-{{ section.id }} .ch-feat__ico { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--ch-acc); color: var(--ch-acc); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  #ch-{{ section.id }} .ch-feat__lbl { font-size: 11px; color: #6a747c; text-align: center; line-height: 1.2; }
+
+  /* Why */
+  #ch-{{ section.id }} .ch-why { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: start; }
+  #ch-{{ section.id }} .ch-why__head { background: var(--ch-acc); color: #fff; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 17px; padding: 14px 18px; border-radius: 12px 12px 0 0; }
+  #ch-{{ section.id }} .ch-why__panel { border: 1px solid #e4e9e8; border-radius: 12px; overflow: hidden; }
+  #ch-{{ section.id }} .ch-why__item { border-top: 1px solid #e4e9e8; }
+  #ch-{{ section.id }} .ch-why__item summary { list-style: none; cursor: pointer; padding: 14px 18px; font-size: 14.5px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+  #ch-{{ section.id }} .ch-why__item summary::-webkit-details-marker { display: none; }
+  #ch-{{ section.id }} .ch-why__ico { color: var(--ch-acc); transition: transform .2s; }
+  #ch-{{ section.id }} .ch-why__item[open] .ch-why__ico { transform: rotate(180deg); }
+  #ch-{{ section.id }} .ch-why__body { padding: 0 18px 16px; font-size: 13.5px; color: #55606a; line-height: 1.55; }
+  #ch-{{ section.id }} .ch-why__media { border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: #e9ecef; }
+  #ch-{{ section.id }} .ch-why__media img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Stats */
+  #ch-{{ section.id }} .ch-stats { position: relative; min-height: 340px; display: flex; align-items: center; }
+  #ch-{{ section.id }} .ch-stats__media { position: absolute; inset: 0; }
+  #ch-{{ section.id }} .ch-stats__media img { width: 100%; height: 100%; object-fit: cover; }
+  #ch-{{ section.id }} .ch-stats__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.15), rgba(0,0,0,.45)); }
+  #ch-{{ section.id }} .ch-stats__list { position: relative; margin-left: auto; padding: 40px 24px; color: #fff; text-align: right; max-width: 50%; }
+  #ch-{{ section.id }} .ch-stat { margin-bottom: 14px; }
+  #ch-{{ section.id }} .ch-stat__big { display: block; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(26px, 5vw, 40px); line-height: 1; }
+  #ch-{{ section.id }} .ch-stat__small { font-size: 13px; opacity: .9; }
+
+  /* Kit */
+  #ch-{{ section.id }} .ch-kit { background: linear-gradient(120deg, var(--ch-acc), var(--ch-acc-dark)); color: #fff; }
+  #ch-{{ section.id }} .ch-kit__inner { max-width: 1140px; margin: 0 auto; padding: 40px 18px; display: grid; grid-template-columns: 1fr; gap: 20px; align-items: center; }
+  #ch-{{ section.id }} .ch-kit__title { font-size: clamp(22px, 5vw, 30px); color: #fff; margin: 0 0 10px; line-height: 1.2; }
+  #ch-{{ section.id }} .ch-kit__sub { font-size: 15px; opacity: .92; line-height: 1.55; margin: 0 0 20px; }
+  #ch-{{ section.id }} .ch-kit__media { border-radius: 16px; overflow: hidden; }
+
+  /* Social */
+  #ch-{{ section.id }} .ch-social { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  #ch-{{ section.id }} .ch-social__item { display: block; border-radius: 14px; overflow: hidden; aspect-ratio: 1/1; background: #e9ecef; }
+  #ch-{{ section.id }} .ch-social__item img { width: 100%; height: 100%; object-fit: cover; }
+
+  @media (min-width: 750px) {
+    #ch-{{ section.id }} .ch-hero__media { aspect-ratio: 21/9; }
+    #ch-{{ section.id }} .ch-cards { grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    #ch-{{ section.id }} .ch-how { grid-template-columns: 1.1fr 1fr; gap: 40px; }
+    #ch-{{ section.id }} .ch-why { grid-template-columns: 1fr 1fr; gap: 40px; }
+    #ch-{{ section.id }} .ch-kit__inner { grid-template-columns: 1.2fr 1fr; padding: 52px 18px; }
+    #ch-{{ section.id }} .ch-social { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Clinique Essabar Home",
+  "tag": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Produit (liens des cartes)" },
+    { "type": "header", "content": "Couleurs" },
+    { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
+    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0b7a78" },
+    { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Image (ou poster vidéo)" },
+    { "type": "text", "id": "hero_video_url", "label": "URL vidéo .mp4 (optionnel)" },
+    { "type": "text", "id": "hero_title", "label": "Titre", "default": "Clinique Essabar — Prothèse dentaire cosmétique" },
+    { "type": "textarea", "id": "hero_sub", "label": "Sous-titre", "default": "Personnalisées et adaptées à vos dents. Sans dentiste. Disponibles en trois teintes." },
+    { "type": "header", "content": "Cartes produit" },
+    { "type": "text", "id": "card_cta", "label": "Bouton carte", "default": "Vers le produit" },
+    { "type": "header", "content": "Comment ça marche" },
+    { "type": "text", "id": "steps_eyebrow", "label": "Étiquette", "default": "Simple & rapide" },
+    { "type": "text", "id": "steps_title", "label": "Titre", "default": "Comment ça fonctionne" },
+    { "type": "text", "id": "steps_sub", "label": "Sous-titre", "default": "Votre nouveau sourire en seulement 3 étapes." },
+    { "type": "image_picker", "id": "steps_image", "label": "Image lifestyle" },
+    { "type": "header", "content": "Icônes atouts" },
+    { "type": "text", "id": "feat_label", "label": "Titre", "default": "Nos atouts" },
+    { "type": "header", "content": "Pourquoi (accordéon)" },
+    { "type": "text", "id": "why_title", "label": "Titre du panneau", "default": "Pourquoi Clinique Essabar ?" },
+    { "type": "image_picker", "id": "why_image", "label": "Image" },
+    { "type": "header", "content": "Bande statistiques" },
+    { "type": "checkbox", "id": "stats_enable", "label": "Afficher", "default": true },
+    { "type": "image_picker", "id": "stats_image", "label": "Image de fond" },
+    { "type": "textarea", "id": "stats_lines", "label": "Stats (Gros | petit, une par ligne)", "default": "55 000+ | clients satisfaits\nAbordable | alternative à 2000 $\nRapide | en 8 jours" },
+    { "type": "header", "content": "Bandeau kit" },
+    { "type": "checkbox", "id": "kit_enable", "label": "Afficher", "default": true },
+    { "type": "text", "id": "kit_title", "label": "Titre", "default": "Votre kit d'empreinte pour la maison" },
+    { "type": "textarea", "id": "kit_text", "label": "Texte", "default": "La méthode d'empreinte la plus simple au monde — avec tutoriel vidéo et assistance dédiée. Commandez dès maintenant." },
+    { "type": "text", "id": "kit_cta", "label": "Bouton", "default": "Commander maintenant" },
+    { "type": "image_picker", "id": "kit_image", "label": "Image (packaging)" },
+    { "type": "header", "content": "Réseaux sociaux" },
+    { "type": "text", "id": "social_eyebrow", "label": "Étiquette", "default": "Communauté" },
+    { "type": "text", "id": "social_title", "label": "Titre", "default": "Réseaux sociaux" },
+    { "type": "text", "id": "social_sub", "label": "Sous-titre", "default": "Rejoignez la communauté et partagez votre sourire." }
+  ],
+  "blocks": [
+    { "type": "card", "name": "Carte produit", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "badge", "label": "Badge", "default": "" },
+      { "type": "text", "id": "name", "label": "Nom", "default": "Facettes Premium" },
+      { "type": "text", "id": "subtitle", "label": "Sous-titre", "default": "Sur-mesure" },
+      { "type": "text", "id": "price", "label": "Prix", "default": "129,90 €" },
+      { "type": "text", "id": "compare", "label": "Prix barré", "default": "" }
+    ] },
+    { "type": "step", "name": "Étape", "settings": [
+      { "type": "text", "id": "title", "label": "Titre", "default": "Commandez en ligne" },
+      { "type": "textarea", "id": "text", "label": "Texte", "default": "Recevez votre kit d'empreinte premium avec un guide simple." }
+    ] },
+    { "type": "feature", "name": "Icône atout", "settings": [
+      { "type": "text", "id": "icon", "label": "Icône (emoji)", "default": "✨" },
+      { "type": "text", "id": "label", "label": "Label", "default": "" }
+    ] },
+    { "type": "why", "name": "Ligne (Pourquoi)", "settings": [
+      { "type": "text", "id": "title", "label": "Titre", "default": "Qualité premium" },
+      { "type": "textarea", "id": "text", "label": "Texte", "default": "Fabriquées avec un matériau haut de gamme pour un rendu naturel et durable." }
+    ] },
+    { "type": "social", "name": "Post social", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "url", "id": "link", "label": "Lien" }
+    ] }
+  ],
+  "presets": [
+    { "name": "Clinique Essabar Home", "blocks": [
+      { "type": "card", "settings": { "badge": "Ivoire", "name": "Facettes Premium", "subtitle": "Sur-mesure", "price": "129,90 €", "compare": "199,90 €" } },
+      { "type": "card", "settings": { "badge": "Blanc naturel", "name": "Facettes Premium", "subtitle": "Sur-mesure", "price": "129,90 €", "compare": "199,90 €" } },
+      { "type": "card", "settings": { "badge": "Hollywood", "name": "Facettes Premium", "subtitle": "Sur-mesure", "price": "129,90 €", "compare": "199,90 €" } },
+      { "type": "step", "settings": { "title": "Commandez en ligne", "text": "Recevez votre kit d'empreinte premium avec un guide pas-à-pas." } },
+      { "type": "step", "settings": { "title": "Prenez votre empreinte", "text": "En quelques minutes, à la maison, puis renvoyez-la (frais offerts)." } },
+      { "type": "step", "settings": { "title": "Recevez vos facettes", "text": "Fabriquées sur-mesure et expédiées chez vous." } },
+      { "type": "feature", "settings": { "icon": "✨" } },
+      { "type": "feature", "settings": { "icon": "😁" } },
+      { "type": "feature", "settings": { "icon": "🦷" } },
+      { "type": "feature", "settings": { "icon": "💧" } },
+      { "type": "feature", "settings": { "icon": "🛡️" } },
+      { "type": "feature", "settings": { "icon": "♻️" } },
+      { "type": "why", "settings": { "title": "Sur-mesure & qualité", "text": "Fabriquées à partir de votre empreinte, avec un matériau premium pour un rendu naturel." } },
+      { "type": "why", "settings": { "title": "Innovant & précis", "text": "Une technologie qui épouse parfaitement vos dents pour un confort optimal." } },
+      { "type": "why", "settings": { "title": "Testé & approuvé", "text": "Des milliers de clients ont retrouvé le sourire avec Clinique Essabar." } },
+      { "type": "why", "settings": { "title": "Simple & rapide", "text": "Tout se fait à domicile, sans dentiste ni rendez-vous." } },
+      { "type": "social", "settings": {} },
+      { "type": "social", "settings": {} },
+      { "type": "social", "settings": {} },
+      { "type": "social", "settings": {} }
+    ] }
+  ]
+}
+{% endschema %}

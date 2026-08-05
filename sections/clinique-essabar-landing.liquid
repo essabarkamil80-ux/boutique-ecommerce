@@ -57,6 +57,10 @@
         {%- if prod != blank -%}
           {%- if prod.compare_at_price > prod.price -%}<span class="ce-price__was">{{ prod.compare_at_price | money }}</span>{%- endif -%}
           <span class="ce-price__now">{{ prod.price | money }}</span>
+          {%- if prod.compare_at_price > prod.price -%}
+            {%- assign ce_disc = prod.compare_at_price | minus: prod.price | times: 100 | divided_by: prod.compare_at_price -%}
+            <span class="ce-price__save">-{{ ce_disc }}%</span>
+          {%- endif -%}
         {%- else -%}
           <span class="ce-price__now">{{ section.settings.fallback_price }}</span>
         {%- endif -%}
@@ -252,10 +256,10 @@
         <article class="ce-rev" {{ block.shopify_attributes }}>
           {%- if block.settings.image != blank -%}<div class="ce-rev__img"><img src="{{ block.settings.image | image_url: width: 500 }}" alt="" loading="lazy"></div>{%- endif -%}
           <div class="ce-rev__body">
-            <div class="ce-rev__top"><span class="ce-stars ce-stars--sm">★★★★★</span><span class="ce-rev__v">✓ Vérifié</span></div>
+            <div class="ce-rev__top"><span class="ce-stars ce-stars--sm">★★★★★</span><span class="ce-rev__v">✓ Achat vérifié</span></div>
             {%- if block.settings.title != blank -%}<h3 class="ce-rev__title">{{ block.settings.title }}</h3>{%- endif -%}
             <p class="ce-rev__text">{{ block.settings.text }}</p>
-            <div class="ce-rev__auth">— {{ block.settings.author }}</div>
+            <div class="ce-rev__auth">{{ block.settings.author }}{%- if block.settings.date != blank -%} <span class="ce-rev__date">· {{ block.settings.date }}</span>{%- endif -%}</div>
           </div>
         </article>
       {%- endfor -%}
@@ -427,6 +431,7 @@
   #ce-{{ section.id }} .ce-rev__title { font-size: 15px; margin: 0 0 5px; }
   #ce-{{ section.id }} .ce-rev__text { font-size: 13.5px; color: #4a545c; line-height: 1.55; margin: 0 0 10px; }
   #ce-{{ section.id }} .ce-rev__auth { font-size: 12.5px; font-weight: 600; color: #6a747c; }
+  #ce-{{ section.id }} .ce-rev__date { font-weight: 500; color: #9aa4ac; }
 
   /* WhatsApp / support CTA */
   #ce-{{ section.id }} .ce-wa { background: linear-gradient(135deg, var(--ce-acc), var(--ce-acc-dark)); color: #fff; }
@@ -574,8 +579,8 @@
   "settings": [
     { "type": "product", "id": "product", "label": "Produit" },
     { "type": "header", "content": "Couleurs" },
-    { "type": "color", "id": "color_accent", "label": "Accent", "default": "#15776a" },
-    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0f5b51" },
+    { "type": "color", "id": "color_accent", "label": "Accent", "default": "#00a896" },
+    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#007f6e" },
     { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
     { "type": "header", "content": "Hero / Fiche produit" },
     { "type": "text", "id": "brand_name", "label": "Nom de marque", "default": "Clinique Essabar" },
@@ -626,7 +631,7 @@
     { "type": "shade", "name": "Teinte", "settings": [ { "type": "image_picker", "id": "image", "label": "Image" }, { "type": "text", "id": "name", "label": "Nom", "default": "Blanc naturel" }, { "type": "text", "id": "code", "label": "Référence", "default": "A1" } ] },
     { "type": "ugc", "name": "Vidéo client", "settings": [ { "type": "video", "id": "video", "label": "Vidéo" }, { "type": "text", "id": "video_url", "label": "OU URL .mp4" }, { "type": "image_picker", "id": "poster", "label": "Miniature" } ] },
     { "type": "ba_photo", "name": "Photo avant/après", "settings": [ { "type": "image_picker", "id": "image", "label": "Image" } ] },
-    { "type": "review", "name": "Avis", "settings": [ { "type": "image_picker", "id": "image", "label": "Photo" }, { "type": "text", "id": "title", "label": "Titre", "default": "Bluffant de réalisme" }, { "type": "textarea", "id": "text", "label": "Avis", "default": "Résultat incroyable, personne ne voit la différence." }, { "type": "text", "id": "author", "label": "Auteur", "default": "Sarah M." } ] },
+    { "type": "review", "name": "Avis", "settings": [ { "type": "image_picker", "id": "image", "label": "Photo" }, { "type": "text", "id": "title", "label": "Titre", "default": "Bluffant de réalisme" }, { "type": "textarea", "id": "text", "label": "Avis", "default": "Résultat incroyable, personne ne voit la différence." }, { "type": "text", "id": "author", "label": "Auteur", "default": "Sarah M." }, { "type": "text", "id": "date", "label": "Date", "default": "" } ] },
     { "type": "faq", "name": "FAQ", "settings": [ { "type": "text", "id": "question", "label": "Question", "default": "Est-ce que ça abîme mes dents ?" }, { "type": "richtext", "id": "answer", "label": "Réponse", "default": "<p>Non, nos facettes sont amovibles et non invasives.</p>" } ] }
   ],
   "presets": [

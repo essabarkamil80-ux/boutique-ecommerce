@@ -1,0 +1,343 @@
+{% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,UnusedAssign{% endcomment %}
+{%- liquid
+  assign ns = section.id
+  assign acc = section.settings.accent | default: '#12a3a0'
+-%}
+
+<style>
+  #ceh-{{ ns }} { --ceh-acc: {{ acc }}; --ceh-ink: #14201f; --ceh-line: #e8ecec; }
+  #ceh-{{ ns }} * { box-sizing: border-box; }
+  #ceh-{{ ns }} .ceh-wrap { position: sticky; top: 0; z-index: 40; background: #fff; border-bottom: 1px solid var(--ceh-line); }
+  #ceh-{{ ns }} .ceh-bar { max-width: 1240px; margin: 0 auto; padding: 14px 20px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; }
+  #ceh-{{ ns }} .ceh-logo { justify-self: start; display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ceh-ink); font-weight: 700; font-size: 20px; letter-spacing: .2px; }
+  #ceh-{{ ns }} .ceh-logo img { display: block; height: {{ section.settings.logo_height | default: 34 }}px; width: auto; }
+  #ceh-{{ ns }} .ceh-nav { justify-self: center; display: flex; align-items: center; gap: 4px; }
+  #ceh-{{ ns }} .ceh-navitem { position: relative; }
+  #ceh-{{ ns }} .ceh-navlink { display: inline-flex; align-items: center; gap: 6px; padding: 10px 14px; text-decoration: none; color: var(--ceh-ink); font-weight: 600; font-size: 15px; border-radius: 8px; transition: color .15s, background .15s; cursor: pointer; background: none; border: 0; font-family: inherit; }
+  #ceh-{{ ns }} .ceh-navlink:hover { color: var(--ceh-acc); background: #f4faf9; }
+  #ceh-{{ ns }} .ceh-navlink .ceh-caret { width: 10px; height: 10px; transition: transform .18s; opacity: .55; }
+  #ceh-{{ ns }} .ceh-navitem:hover .ceh-caret { transform: rotate(180deg); }
+  #ceh-{{ ns }} .ceh-icons { justify-self: end; display: flex; align-items: center; gap: 6px; }
+  #ceh-{{ ns }} .ceh-ic { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 10px; color: var(--ceh-ink); text-decoration: none; background: none; border: 0; cursor: pointer; position: relative; transition: background .15s; }
+  #ceh-{{ ns }} .ceh-ic:hover { background: #f4faf9; color: var(--ceh-acc); }
+  #ceh-{{ ns }} .ceh-ic svg { width: 22px; height: 22px; }
+  #ceh-{{ ns }} .ceh-count { position: absolute; top: 4px; right: 4px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--ceh-acc); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+  /* Mega dropdown */
+  #ceh-{{ ns }} .ceh-mega { position: absolute; left: 50%; top: calc(100% + 8px); transform: translateX(-50%) translateY(6px); background: #fff; border: 1px solid var(--ceh-line); border-radius: 16px; box-shadow: 0 24px 60px -20px rgba(20,32,31,.25); padding: 22px; opacity: 0; visibility: hidden; transition: opacity .18s, transform .18s, visibility .18s; z-index: 50; }
+  #ceh-{{ ns }} .ceh-navitem:hover .ceh-mega,
+  #ceh-{{ ns }} .ceh-navitem:focus-within .ceh-mega { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  #ceh-{{ ns }} .ceh-mega::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; }
+  #ceh-{{ ns }} .ceh-mega-h { font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; color: #8a9a98; font-weight: 700; margin: 0 0 14px; }
+
+  /* Product mega: color swatches */
+  #ceh-{{ ns }} .ceh-swatches { display: flex; gap: 16px; }
+  #ceh-{{ ns }} .ceh-swatch { width: 160px; text-decoration: none; color: var(--ceh-ink); display: block; border-radius: 12px; padding: 8px; transition: background .15s; }
+  #ceh-{{ ns }} .ceh-swatch:hover { background: #f4faf9; }
+  #ceh-{{ ns }} .ceh-swatch-img { width: 100%; aspect-ratio: 1/1; border-radius: 10px; overflow: hidden; background: #f2f5f4; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+  #ceh-{{ ns }} .ceh-swatch-img img { width: 100%; height: 100%; object-fit: cover; }
+  #ceh-{{ ns }} .ceh-dot { width: 42px; height: 42px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 1px var(--ceh-line); }
+  #ceh-{{ ns }} .ceh-swatch-name { font-weight: 700; font-size: 15px; }
+  #ceh-{{ ns }} .ceh-swatch-sub { font-size: 13px; color: #7c8b89; margin-top: 2px; }
+  #ceh-{{ ns }} .ceh-mega-cta { display: inline-block; margin-top: 16px; color: var(--ceh-acc); font-weight: 700; text-decoration: none; font-size: 14px; }
+
+  /* Images mega */
+  #ceh-{{ ns }} .ceh-cards { display: grid; grid-template-columns: repeat(3, 200px); gap: 16px; }
+  #ceh-{{ ns }} .ceh-card { text-decoration: none; color: var(--ceh-ink); display: block; }
+  #ceh-{{ ns }} .ceh-card-img { width: 100%; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; background: #f2f5f4; margin-bottom: 8px; }
+  #ceh-{{ ns }} .ceh-card-img img { width: 100%; height: 100%; object-fit: cover; }
+  #ceh-{{ ns }} .ceh-card-t { font-weight: 600; font-size: 14px; }
+
+  /* Mobile */
+  #ceh-{{ ns }} .ceh-burger { display: none; }
+  #ceh-{{ ns }} .ceh-mobile { display: none; }
+  @media (max-width: 989px) {
+    #ceh-{{ ns }} .ceh-bar { grid-template-columns: auto 1fr auto; }
+    #ceh-{{ ns }} .ceh-nav { display: none; }
+    #ceh-{{ ns }} .ceh-logo { justify-self: center; font-size: 18px; }
+    #ceh-{{ ns }} .ceh-burger { display: inline-flex; justify-self: start; }
+    #ceh-{{ ns }} .ceh-icons { gap: 2px; }
+    #ceh-{{ ns }} .ceh-ic { width: 40px; height: 40px; }
+    #ceh-{{ ns }} .ceh-mobile { display: block; position: fixed; inset: 0 0 0 auto; width: min(86vw, 360px); background: #fff; z-index: 60; transform: translateX(100%); transition: transform .25s ease; box-shadow: -20px 0 60px -20px rgba(0,0,0,.3); overflow-y: auto; padding: 18px; }
+    #ceh-{{ ns }} .ceh-mobile.is-open { transform: translateX(0); }
+    #ceh-{{ ns }} .ceh-scrim { display: none; position: fixed; inset: 0; background: rgba(20,32,31,.4); z-index: 59; }
+    #ceh-{{ ns }} .ceh-scrim.is-open { display: block; }
+    #ceh-{{ ns }} .ceh-m-close { float: right; background: none; border: 0; font-size: 26px; line-height: 1; cursor: pointer; color: var(--ceh-ink); }
+    #ceh-{{ ns }} .ceh-m-link { display: block; padding: 14px 6px; border-bottom: 1px solid var(--ceh-line); color: var(--ceh-ink); text-decoration: none; font-weight: 600; font-size: 16px; }
+    #ceh-{{ ns }} .ceh-m-swatches { display: flex; gap: 12px; padding: 12px 6px; }
+    #ceh-{{ ns }} .ceh-m-swatch { text-align: center; text-decoration: none; color: var(--ceh-ink); font-size: 12px; }
+    #ceh-{{ ns }} .ceh-m-swatch .ceh-dot { width: 38px; height: 38px; margin: 0 auto 6px; }
+  }
+</style>
+
+<div id="ceh-{{ ns }}">
+  <div class="ceh-wrap">
+    <div class="ceh-bar">
+
+      <button class="ceh-ic ceh-burger" type="button" aria-label="Menu" data-ceh-open>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+
+      <a href="{{ routes.root_url }}" class="ceh-logo">
+        {%- if section.settings.logo != blank -%}
+          {{ section.settings.logo | image_url: width: 400 | image_tag: alt: shop.name, loading: 'eager' }}
+        {%- else -%}
+          {{ shop.name }}
+        {%- endif -%}
+      </a>
+
+      <nav class="ceh-nav">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+
+            {%- when 'link' -%}
+              <div class="ceh-navitem" {{ block.shopify_attributes }}>
+                <a class="ceh-navlink" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | default: 'Lien' }}</a>
+              </div>
+
+            {%- when 'mega_product' -%}
+              <div class="ceh-navitem" {{ block.shopify_attributes }}>
+                <a class="ceh-navlink" href="{{ block.settings.link | default: '#' }}">
+                  {{ block.settings.label | default: 'Facette Dentaire' }}
+                  <svg class="ceh-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </a>
+                <div class="ceh-mega">
+                  <p class="ceh-mega-h">{{ block.settings.heading | default: 'Choisissez votre teinte' }}</p>
+                  <div class="ceh-swatches">
+                    {%- for i in (1..3) -%}
+                      {%- assign kname = 'sw' | append: i | append: '_name' -%}
+                      {%- assign kcode = 'sw' | append: i | append: '_code' -%}
+                      {%- assign kcolor = 'sw' | append: i | append: '_color' -%}
+                      {%- assign kimg = 'sw' | append: i | append: '_img' -%}
+                      {%- assign klink = 'sw' | append: i | append: '_link' -%}
+                      {%- assign sname = block.settings[kname] -%}
+                      {%- if sname != blank -%}
+                        <a class="ceh-swatch" href="{{ block.settings[klink] | default: block.settings.link | default: '#' }}">
+                          <div class="ceh-swatch-img">
+                            {%- if block.settings[kimg] != blank -%}
+                              {{ block.settings[kimg] | image_url: width: 320 | image_tag: alt: sname }}
+                            {%- else -%}
+                              <span class="ceh-dot" style="background: {{ block.settings[kcolor] | default: '#f0ead6' }};"></span>
+                            {%- endif -%}
+                          </div>
+                          <div class="ceh-swatch-name">{{ sname }}</div>
+                          <div class="ceh-swatch-sub">{{ block.settings[kcode] }}</div>
+                        </a>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                  {%- if block.settings.cta_text != blank -%}
+                    <a class="ceh-mega-cta" href="{{ block.settings.link | default: '#' }}">{{ block.settings.cta_text }} →</a>
+                  {%- endif -%}
+                </div>
+              </div>
+
+            {%- when 'mega_images' -%}
+              <div class="ceh-navitem" {{ block.shopify_attributes }}>
+                <a class="ceh-navlink" href="{{ block.settings.link | default: '#' }}">
+                  {{ block.settings.label | default: 'Expériences' }}
+                  <svg class="ceh-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </a>
+                <div class="ceh-mega">
+                  <p class="ceh-mega-h">{{ block.settings.heading | default: 'Découvrir' }}</p>
+                  <div class="ceh-cards">
+                    {%- for i in (1..3) -%}
+                      {%- assign ktitle = 'card' | append: i | append: '_title' -%}
+                      {%- assign kimg = 'card' | append: i | append: '_img' -%}
+                      {%- assign klink = 'card' | append: i | append: '_link' -%}
+                      {%- assign ctitle = block.settings[ktitle] -%}
+                      {%- if ctitle != blank -%}
+                        <a class="ceh-card" href="{{ block.settings[klink] | default: '#' }}">
+                          <div class="ceh-card-img">
+                            {%- if block.settings[kimg] != blank -%}
+                              {{ block.settings[kimg] | image_url: width: 400 | image_tag: alt: ctitle }}
+                            {%- endif -%}
+                          </div>
+                          <div class="ceh-card-t">{{ ctitle }}</div>
+                        </a>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </div>
+
+          {%- endcase -%}
+        {%- endfor -%}
+      </nav>
+
+      <div class="ceh-icons">
+        {%- if section.settings.show_search -%}
+          <a class="ceh-ic" href="{{ routes.search_url }}" aria-label="Recherche">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.show_account -%}
+          <a class="ceh-ic" href="{% if shop.customer_accounts_enabled %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="Compte">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </a>
+        {%- endif -%}
+        <button class="ceh-ic" type="button" aria-label="Panier" data-ceh-cart>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ceh-count" id="ceh-count-{{ ns }}"{% if cart.item_count == 0 %} style="display:none"{% endif %}>{{ cart.item_count }}</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="ceh-scrim" data-ceh-scrim></div>
+  <div class="ceh-mobile" data-ceh-panel>
+    <button class="ceh-m-close" type="button" aria-label="Fermer" data-ceh-close>&times;</button>
+    <div style="clear:both"></div>
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'link' -%}
+          <a class="ceh-m-link" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label }}</a>
+        {%- when 'mega_product' -%}
+          <a class="ceh-m-link" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | default: 'Facette Dentaire' }}</a>
+          <div class="ceh-m-swatches">
+            {%- for i in (1..3) -%}
+              {%- assign kname = 'sw' | append: i | append: '_name' -%}
+              {%- assign kcolor = 'sw' | append: i | append: '_color' -%}
+              {%- assign kimg = 'sw' | append: i | append: '_img' -%}
+              {%- assign klink = 'sw' | append: i | append: '_link' -%}
+              {%- assign sname = block.settings[kname] -%}
+              {%- if sname != blank -%}
+                <a class="ceh-m-swatch" href="{{ block.settings[klink] | default: block.settings.link | default: '#' }}">
+                  {%- if block.settings[kimg] != blank -%}
+                    <span class="ceh-dot" style="background-image:url({{ block.settings[kimg] | image_url: width: 120 }});background-size:cover;"></span>
+                  {%- else -%}
+                    <span class="ceh-dot" style="background: {{ block.settings[kcolor] | default: '#f0ead6' }};"></span>
+                  {%- endif -%}
+                  {{ sname }}
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- when 'mega_images' -%}
+          <a class="ceh-m-link" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | default: 'Expériences' }}</a>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{%- if settings.cart_type != 'page' -%}
+  {%- render 'cart-drawer' -%}
+{%- endif -%}
+
+<script>
+  (function(){
+    var root = document.getElementById('ceh-{{ ns }}');
+    if (!root) return;
+    var panel = root.querySelector('[data-ceh-panel]');
+    var scrim = root.querySelector('[data-ceh-scrim]');
+    function openM(){ panel.classList.add('is-open'); scrim.classList.add('is-open'); }
+    function closeM(){ panel.classList.remove('is-open'); scrim.classList.remove('is-open'); }
+    root.querySelectorAll('[data-ceh-open]').forEach(function(b){ b.addEventListener('click', openM); });
+    root.querySelectorAll('[data-ceh-close]').forEach(function(b){ b.addEventListener('click', closeM); });
+    if (scrim) scrim.addEventListener('click', closeM);
+
+    root.querySelectorAll('[data-ceh-cart]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var d = document.querySelector('cart-drawer');
+        if (d && typeof d.open === 'function') { d.open(); }
+        else { window.location.href = '{{ routes.cart_url }}'; }
+      });
+    });
+
+    document.addEventListener('cart:refresh', updateCount);
+    function updateCount(){
+      fetch('{{ routes.cart_url }}.js').then(function(r){return r.json();}).then(function(c){
+        var el = document.getElementById('ceh-count-{{ ns }}');
+        if (!el) return;
+        el.textContent = c.item_count;
+        el.style.display = c.item_count > 0 ? '' : 'none';
+      }).catch(function(){});
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "En-tête Clinique",
+  "class": "ceh-section",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_height", "min": 20, "max": 70, "step": 2, "unit": "px", "label": "Hauteur du logo", "default": 34 },
+    { "type": "color", "id": "accent", "label": "Couleur d'accent", "default": "#12a3a0" },
+    { "type": "checkbox", "id": "show_search", "label": "Afficher la recherche", "default": true },
+    { "type": "checkbox", "id": "show_account", "label": "Afficher le compte", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Lien simple",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texte", "default": "Accueil" },
+        { "type": "url", "id": "link", "label": "Lien" }
+      ]
+    },
+    {
+      "type": "mega_product",
+      "name": "Menu produit (teintes)",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texte du menu", "default": "Facette Dentaire" },
+        { "type": "url", "id": "link", "label": "Lien produit" },
+        { "type": "text", "id": "heading", "label": "Titre du panneau", "default": "Choisissez votre teinte" },
+        { "type": "text", "id": "cta_text", "label": "Texte du bouton", "default": "Voir le produit" },
+        { "type": "header", "content": "Teinte 1" },
+        { "type": "text", "id": "sw1_name", "label": "Nom", "default": "Ivoire" },
+        { "type": "text", "id": "sw1_code", "label": "Code / sous-titre", "default": "A3" },
+        { "type": "color", "id": "sw1_color", "label": "Couleur pastille", "default": "#efe4cf" },
+        { "type": "image_picker", "id": "sw1_img", "label": "Image (optionnelle)" },
+        { "type": "url", "id": "sw1_link", "label": "Lien" },
+        { "type": "header", "content": "Teinte 2" },
+        { "type": "text", "id": "sw2_name", "label": "Nom", "default": "Blanc naturel" },
+        { "type": "text", "id": "sw2_code", "label": "Code / sous-titre", "default": "A1" },
+        { "type": "color", "id": "sw2_color", "label": "Couleur pastille", "default": "#f5f0e6" },
+        { "type": "image_picker", "id": "sw2_img", "label": "Image (optionnelle)" },
+        { "type": "url", "id": "sw2_link", "label": "Lien" },
+        { "type": "header", "content": "Teinte 3" },
+        { "type": "text", "id": "sw3_name", "label": "Nom", "default": "Hollywood" },
+        { "type": "text", "id": "sw3_code", "label": "Code / sous-titre", "default": "BL2" },
+        { "type": "color", "id": "sw3_color", "label": "Couleur pastille", "default": "#ffffff" },
+        { "type": "image_picker", "id": "sw3_img", "label": "Image (optionnelle)" },
+        { "type": "url", "id": "sw3_link", "label": "Lien" }
+      ]
+    },
+    {
+      "type": "mega_images",
+      "name": "Menu images (Expériences)",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texte du menu", "default": "Expériences" },
+        { "type": "url", "id": "link", "label": "Lien" },
+        { "type": "text", "id": "heading", "label": "Titre du panneau", "default": "Découvrir" },
+        { "type": "header", "content": "Carte 1" },
+        { "type": "image_picker", "id": "card1_img", "label": "Image" },
+        { "type": "text", "id": "card1_title", "label": "Titre", "default": "Avant / Après" },
+        { "type": "url", "id": "card1_link", "label": "Lien" },
+        { "type": "header", "content": "Carte 2" },
+        { "type": "image_picker", "id": "card2_img", "label": "Image" },
+        { "type": "text", "id": "card2_title", "label": "Titre", "default": "Témoignages" },
+        { "type": "url", "id": "card2_link", "label": "Lien" },
+        { "type": "header", "content": "Carte 3" },
+        { "type": "image_picker", "id": "card3_img", "label": "Image" },
+        { "type": "text", "id": "card3_title", "label": "Titre", "default": "Guide d'utilisation" },
+        { "type": "url", "id": "card3_link", "label": "Lien" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "En-tête Clinique",
+      "blocks": [
+        { "type": "link", "settings": { "label": "Accueil" } },
+        { "type": "mega_product" },
+        { "type": "mega_images" },
+        { "type": "link", "settings": { "label": "Contact" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

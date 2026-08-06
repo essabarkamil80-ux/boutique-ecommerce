@@ -37,22 +37,19 @@
       }
     },
     "header": {
-      "type": "header",
+      "type": "clinique-essabar-header",
+      "blocks": {
+        "link_home": { "type": "link", "settings": { "label": "Accueil", "link": "/" } },
+        "mega_prod": { "type": "mega_product", "settings": { "label": "Facette Dentaire", "link": "/collections/all", "heading": "Choisissez votre teinte", "cta_text": "Voir le produit", "sw1_name": "Ivoire", "sw1_code": "A3", "sw1_color": "#efe4cf", "sw2_name": "Blanc naturel", "sw2_code": "A1", "sw2_color": "#f5f0e6", "sw3_name": "Hollywood", "sw3_code": "BL2", "sw3_color": "#ffffff" } },
+        "mega_exp": { "type": "mega_images", "settings": { "label": "Expériences", "heading": "Découvrir", "card1_title": "Avant / Après", "card2_title": "Témoignages", "card3_title": "Guide d'utilisation" } },
+        "link_contact": { "type": "link", "settings": { "label": "Contact", "link": "/pages/contact" } }
+      },
+      "block_order": ["link_home", "mega_prod", "mega_exp", "link_contact"],
       "settings": {
-        "logo_position": "middle-center",
-        "mobile_logo_position": "center",
-        "menu": "main-menu",
-        "menu_type_desktop": "drawer",
-        "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
-        "color_scheme": "scheme-1",
-        "menu_color_scheme": "",
-        "enable_country_selector": false,
-        "enable_language_selector": false,
-        "enable_customer_avatar": true,
-        "margin_bottom": 0,
-        "padding_top": 16,
-        "padding_bottom": 16
+        "logo_height": 34,
+        "accent": "#12a3a0",
+        "show_search": true,
+        "show_account": true
       }
     },
     "1783399194d92da214": {

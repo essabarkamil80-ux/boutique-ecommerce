@@ -95,7 +95,7 @@
         {%- assign steps = section.blocks | where: 'type', 'step' -%}
         {%- if steps.size > 0 -%}
           <div class="ce-steps-mini">
-            <span class="ce-steps-mini__title">{{ section.settings.steps_title }}</span>
+            <span class="ce-steps-mini__title">Quatre étapes simples</span>
             <ol>
               {%- for block in steps -%}<li {{ block.shopify_attributes }}><span>{{ forloop.index }}</span>{{ block.settings.title }}</li>{%- endfor -%}
             </ol>
@@ -158,8 +158,8 @@
   <div class="ce-band ce-band--tight">
     <div class="ce-express">
       <div class="ce-express__txt">
-        <span class="ce-express__title">{{ section.settings.express_title }}</span>
-        <span class="ce-express__sub">{{ section.settings.express_sub }}</span>
+        <span class="ce-express__title">Production express — 20 $</span>
+        <span class="ce-express__sub">Recevez vos facettes en priorité, plus rapidement.</span>
       </div>
       <button type="button" class="ce-btn ce-btn--dark" data-addcart>Ajouter</button>
     </div>
@@ -189,8 +189,8 @@
   {%- assign ugcs = section.blocks | where: 'type', 'ugc' -%}
   {%- if ugcs.size > 0 -%}
   <div class="ce-band">
-    <h2 class="ce-h2">{{ section.settings.ugc_title }}</h2>
-    <p class="ce-sub">{{ section.settings.ugc_sub }}</p>
+    <h2 class="ce-h2">Le sourire de nos clients</h2>
+    <p class="ce-sub">Des expériences réelles, filmées par nos clients.</p>
     <div class="ce-ugc">
       {%- for block in ugcs -%}
         <div class="ce-ugc__item" data-vid {{ block.shopify_attributes }}>
@@ -215,7 +215,7 @@
   {%- assign faqs = section.blocks | where: 'type', 'faq' -%}
   {%- if faqs.size > 0 -%}
   <div class="ce-band ce-band--tint">
-    <div class="ce-faqhead">{{ section.settings.faq_title }}</div>
+    <div class="ce-faqhead">Questions fréquentes</div>
     <div class="ce-faq">
       {%- for block in faqs -%}
         <details class="ce-faq__item"{% if forloop.first %} open{% endif %} {{ block.shopify_attributes }}>
@@ -231,7 +231,7 @@
   {%- assign shades = section.blocks | where: 'type', 'shade' -%}
   {%- if shades.size > 0 -%}
   <div class="ce-band">
-    <h2 class="ce-h2">{{ section.settings.shades_title }}</h2>
+    <h2 class="ce-h2">Comparaison réelle des teintes</h2>
     <div class="ce-shades">
       {%- for block in shades -%}
         <figure class="ce-shade" {{ block.shopify_attributes }}>
@@ -251,7 +251,7 @@
   {%- if bas.size > 0 -%}
   <div class="ce-band ce-band--tint">
     <span class="ce-tag">Résultats</span>
-    <h2 class="ce-h2">{{ section.settings.ba_title }}</h2>
+    <h2 class="ce-h2">Avant / Après</h2>
     <div class="ce-bagrid">
       {%- for block in bas -%}
         <div class="ce-bacell" {{ block.shopify_attributes }}>
@@ -266,7 +266,7 @@
   {%- assign reviews = section.blocks | where: 'type', 'review' -%}
   {%- if reviews.size > 0 -%}
   <div class="ce-band">
-    <h2 class="ce-h2">{{ section.settings.reviews_title }}</h2>
+    <h2 class="ce-h2">Plus de 55 000 sourires déjà transformés</h2>
     <div class="ce-tp"><span class="ce-stars">★★★★★</span><span class="ce-tp__txt">Noté 4,9/5 par nos clients</span></div>
     <div class="ce-wall">
       {%- for block in reviews -%}
@@ -315,7 +315,7 @@
   {%- comment -%} ============ STICKY MOBILE BAR ============ {%- endcomment -%}
   <div class="ce-sticky" data-sticky hidden>
     <div class="ce-sticky__info">
-      <span class="ce-sticky__name">{{ section.settings.sticky_name }}</span>
+      <span class="ce-sticky__name">Facettes Premium</span>
       <span class="ce-sticky__price">{% if prod != blank %}{{ prod.price | money }}{% else %}{{ section.settings.fallback_price }}{% endif %}</span>
     </div>
     <button type="button" class="ce-btn ce-btn--primary" data-addcart>{{ section.settings.cta_add }}</button>
@@ -622,11 +622,9 @@
   "tag": "section",
   "settings": [
     { "type": "product", "id": "product", "label": "Produit" },
-    { "type": "header", "content": "Couleurs" },
     { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
     { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0b7a78" },
     { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
-    { "type": "header", "content": "Hero / Fiche produit" },
     { "type": "text", "id": "brand_name", "label": "Nom de marque", "default": "Clinique Essabar" },
     { "type": "text", "id": "hero_badge", "label": "Badge", "default": "Nouveau" },
     { "type": "text", "id": "hero_title", "label": "Titre", "default": "Facettes Dentaires Amovibles Premium" },
@@ -634,45 +632,24 @@
     { "type": "text", "id": "rating", "label": "Note", "default": "4,9/5" },
     { "type": "text", "id": "review_count", "label": "Avis", "default": "2 400+ avis" },
     { "type": "text", "id": "fallback_price", "label": "Prix (si aucun produit)", "default": "215,99 $" },
-    { "type": "text", "id": "steps_title", "label": "Titre des étapes", "default": "Quatre étapes simples" },
     { "type": "text", "id": "cta_add", "label": "Bouton principal", "default": "Ajouter au panier" },
     { "type": "textarea", "id": "buy_accordions", "label": "Accordéons fiche (Titre | Contenu, un par ligne)", "default": "Détails du produit | Facettes amovibles premium, fabriquées sur-mesure à partir de votre empreinte.\nUtilisation | Se clipsent en quelques secondes, sans colle ni douleur.\nMatériau & entretien | Résine premium sans BPA. Nettoyage à l'eau tiède." },
-    { "type": "header", "content": "Section Innovation" },
-    { "type": "checkbox", "id": "innov_enable", "label": "Afficher", "default": true },
-    { "type": "image_picker", "id": "innov_image", "label": "Image" },
-    { "type": "text", "id": "innov_title", "label": "Titre", "default": "Une innovation pour un sourire éclatant" },
-    { "type": "richtext", "id": "innov_text", "label": "Texte", "default": "<p>Nos facettes se posent en quelques secondes, sans dentiste et sans douleur. Fabriquées sur-mesure à partir de votre empreinte, elles offrent un rendu naturel et un confort optimal au quotidien.</p>" },
-    { "type": "header", "content": "Upsell (production express)" },
-    { "type": "checkbox", "id": "express_enable", "label": "Afficher", "default": true },
-    { "type": "text", "id": "express_title", "label": "Titre", "default": "Production express — 20 $" },
-    { "type": "text", "id": "express_sub", "label": "Sous-titre", "default": "Recevez vos facettes en priorité, plus rapidement." },
-    { "type": "header", "content": "Onglets Avant / Pendant / Après" },
-    { "type": "checkbox", "id": "tabs_enable", "label": "Afficher", "default": true },
+    { "type": "checkbox", "id": "innov_enable", "label": "Afficher Innovation", "default": true },
+    { "type": "image_picker", "id": "innov_image", "label": "Image Innovation" },
+    { "type": "text", "id": "innov_title", "label": "Titre Innovation", "default": "Une innovation pour un sourire éclatant" },
+    { "type": "richtext", "id": "innov_text", "label": "Texte Innovation", "default": "<p>Nos facettes se posent en quelques secondes, sans dentiste et sans douleur. Fabriquées sur-mesure à partir de votre empreinte, elles offrent un rendu naturel et un confort optimal au quotidien.</p>" },
+    { "type": "checkbox", "id": "express_enable", "label": "Afficher Upsell express", "default": true },
+    { "type": "checkbox", "id": "tabs_enable", "label": "Afficher Onglets", "default": true },
     { "type": "image_picker", "id": "tab1_image", "label": "Image Avant" },
     { "type": "image_picker", "id": "tab2_image", "label": "Image Pendant" },
     { "type": "image_picker", "id": "tab3_image", "label": "Image Après" },
-    { "type": "header", "content": "Vidéos clients" },
-    { "type": "text", "id": "ugc_title", "label": "Titre", "default": "Le sourire de nos clients" },
-    { "type": "text", "id": "ugc_sub", "label": "Sous-titre", "default": "Des expériences réelles, filmées par nos clients." },
-    { "type": "header", "content": "FAQ" },
-    { "type": "text", "id": "faq_title", "label": "Titre", "default": "Questions fréquentes" },
-    { "type": "header", "content": "Comparaison des teintes" },
-    { "type": "text", "id": "shades_title", "label": "Titre", "default": "Comparaison réelle des teintes" },
-    { "type": "header", "content": "Avant / Après (photos)" },
-    { "type": "text", "id": "ba_title", "label": "Titre", "default": "Avant / Après" },
-    { "type": "header", "content": "Avis" },
-    { "type": "text", "id": "reviews_title", "label": "Titre", "default": "Plus de 55 000 sourires déjà transformés" },
-    { "type": "header", "content": "Bandeau support / WhatsApp" },
-    { "type": "checkbox", "id": "wa_enable", "label": "Afficher", "default": true },
-    { "type": "text", "id": "wa_title", "label": "Titre", "default": "La prise d'empreinte la plus simple au monde" },
-    { "type": "textarea", "id": "wa_sub", "label": "Texte", "default": "Un tutoriel vidéo et une assistance dédiée vous accompagnent à chaque étape. Votre nouveau sourire vous attend 😁" },
-    { "type": "text", "id": "wa_cta1", "label": "Bouton 1", "default": "Commander maintenant" },
-    { "type": "image_picker", "id": "wa_image", "label": "Image" },
-    { "type": "header", "content": "Bloc SEO (bas de page)" },
-    { "type": "checkbox", "id": "seo_enable", "label": "Afficher", "default": true },
-    { "type": "richtext", "id": "seo_text", "label": "Texte SEO", "default": "<p>Nos facettes dentaires amovibles offrent une alternative esthétique premium, sans dentiste et sans douleur. Fabriquées sur-mesure à partir de votre empreinte, elles se clipsent en quelques secondes pour un sourire naturel et lumineux, réutilisable au quotidien.</p>" },
-    { "type": "header", "content": "Barre mobile" },
-    { "type": "text", "id": "sticky_name", "label": "Nom", "default": "Facettes Premium" }
+    { "type": "checkbox", "id": "wa_enable", "label": "Afficher Bandeau support", "default": true },
+    { "type": "text", "id": "wa_title", "label": "Titre support", "default": "La prise d'empreinte la plus simple au monde" },
+    { "type": "textarea", "id": "wa_sub", "label": "Texte support", "default": "Un tutoriel vidéo et une assistance dédiée vous accompagnent à chaque étape. Votre nouveau sourire vous attend 😁" },
+    { "type": "text", "id": "wa_cta1", "label": "Bouton support", "default": "Commander maintenant" },
+    { "type": "image_picker", "id": "wa_image", "label": "Image support" },
+    { "type": "checkbox", "id": "seo_enable", "label": "Afficher SEO", "default": true },
+    { "type": "richtext", "id": "seo_text", "label": "Texte SEO", "default": "<p>Nos facettes dentaires amovibles offrent une alternative esthétique premium, sans dentiste et sans douleur. Fabriquées sur-mesure à partir de votre empreinte, elles se clipsent en quelques secondes pour un sourire naturel et lumineux, réutilisable au quotidien.</p>" }
   ],
   "blocks": [
     { "type": "step", "name": "Étape", "settings": [ { "type": "text", "id": "title", "label": "Texte", "default": "Recevez votre kit d'empreinte" } ] },

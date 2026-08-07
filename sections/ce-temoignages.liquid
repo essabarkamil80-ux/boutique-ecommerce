@@ -1,0 +1,246 @@
+{% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
+{%- comment -%} Clinique Essabar — Témoignages / Expériences (reference DTC structure, own code + placeholders) {%- endcomment -%}
+{%- assign prod = section.settings.product | default: product -%}
+{%- if prod != blank -%}{%- assign purl = prod.url -%}{%- else -%}{%- assign purl = '/collections/all' -%}{%- endif -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<section id="tm-{{ section.id }}" class="tm" style="--tm-acc: {{ section.settings.color_accent }}; --tm-acc-dark: {{ section.settings.color_accent_dark }}; --tm-ink: {{ section.settings.color_ink }};">
+
+  {%- comment -%} ===== HEADER ===== {%- endcomment -%}
+  <div class="tm-head">
+    {%- if section.settings.eyebrow != blank -%}<span class="tm-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    <h1 class="tm-title">{{ section.settings.title }}</h1>
+    {%- if section.settings.subtitle != blank -%}<p class="tm-lead">{{ section.settings.subtitle }}</p>{%- endif -%}
+    {%- if section.settings.intro != blank -%}<div class="tm-intro">{{ section.settings.intro }}</div>{%- endif -%}
+  </div>
+
+  {%- comment -%} ===== FEATURED INTERVIEW ===== {%- endcomment -%}
+  {%- if section.settings.feat_enable -%}
+  <div class="tm-feat">
+    <div class="tm-feat__media">
+      {%- if section.settings.feat_video_url != blank -%}
+        <video controls playsinline {% if section.settings.feat_poster != blank %}poster="{{ section.settings.feat_poster | image_url: width: 1000 }}"{% endif %}>
+          <source src="{{ section.settings.feat_video_url }}" type="video/mp4">
+        </video>
+      {%- elsif section.settings.feat_video != blank -%}
+        {{ section.settings.feat_video | video_tag: image_size: '1000x', controls: true }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'tm-ph' }}
+        <span class="tm-play">▶</span>
+      {%- endif -%}
+    </div>
+    <div class="tm-feat__panel">
+      <h3 class="tm-feat__name">{{ section.settings.feat_name }}</h3>
+      <div class="tm-feat__quote">{{ section.settings.feat_quote }}</div>
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== VIDEO WALL ===== {%- endcomment -%}
+  {%- assign vids = section.blocks | where: 'type', 'vid' -%}
+  {%- if vids.size > 0 -%}
+  <div class="tm-band">
+    {%- if section.settings.wall_eyebrow != blank -%}<span class="tm-eyebrow tm-eyebrow--c">{{ section.settings.wall_eyebrow }}</span>{%- endif -%}
+    <h2 class="tm-h2">{{ section.settings.wall_title }}</h2>
+    {%- if section.settings.wall_sub != blank -%}<p class="tm-sub">{{ section.settings.wall_sub }}</p>{%- endif -%}
+    <div class="tm-wall">
+      {%- for block in vids -%}
+        <div class="tm-vid" {{ block.shopify_attributes }}>
+          {%- if block.settings.video_url != blank -%}
+            <video controls playsinline {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 500 }}"{% endif %}>
+              <source src="{{ block.settings.video_url }}" type="video/mp4">
+            </video>
+          {%- elsif block.settings.video != blank -%}
+            {{ block.settings.video | video_tag: image_size: '500x', controls: true }}
+          {%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'tm-ph' }}{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== FAQ (teal accordion) ===== {%- endcomment -%}
+  {%- assign faqs = section.blocks | where: 'type', 'faq' -%}
+  {%- if faqs.size > 0 -%}
+  <div class="tm-band">
+    <div class="tm-faq">
+      <div class="tm-faq__head">{{ section.settings.faq_title }}</div>
+      {%- for block in faqs -%}
+        <details class="tm-faq__item"{% if forloop.first %} open{% endif %} {{ block.shopify_attributes }}>
+          <summary>{{ block.settings.question }}<span class="tm-faq__ico">⌄</span></summary>
+          <div class="tm-faq__body">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== TEAL CTA BAND ===== {%- endcomment -%}
+  {%- if section.settings.cta_enable -%}
+  <div class="tm-cta">
+    <div class="tm-cta__inner">
+      <div class="tm-cta__txt">
+        <p class="tm-cta__sub">{{ section.settings.cta_text }}</p>
+        <p class="tm-cta__big">{{ section.settings.cta_big }}</p>
+        <div class="tm-cta__btns">
+          <a href="{{ purl }}" class="tm-btn tm-btn--dark">{{ section.settings.cta_btn1 }}</a>
+          {%- if section.settings.cta_btn2 != blank -%}<a href="{{ section.settings.cta_btn2_link | default: '/pages/contact' }}" class="tm-btn tm-btn--dark">{{ section.settings.cta_btn2 }}</a>{%- endif -%}
+        </div>
+      </div>
+      <div class="tm-cta__media">
+        {%- if section.settings.cta_image != blank -%}<img src="{{ section.settings.cta_image | image_url: width: 900 }}" alt="" loading="lazy">{%- else -%}{{ 'product-1' | placeholder_svg_tag: 'tm-ph' }}{%- endif -%}
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- if section.settings.stat_line != blank -%}
+  <div class="tm-statwrap"><span class="tm-stat">{{ section.settings.stat_line }}</span></div>
+  {%- endif -%}
+
+  {%- comment -%} ===== BOTTOM TEXT ===== {%- endcomment -%}
+  {%- if section.settings.foot_title != blank -%}
+  <div class="tm-foot">
+    <h2 class="tm-foot__title">{{ section.settings.foot_title }}</h2>
+    {%- if section.settings.foot_text != blank -%}<div class="tm-foot__text">{{ section.settings.foot_text }}</div>{%- endif -%}
+    {%- if section.settings.foot_link_label != blank -%}<a href="{{ section.settings.foot_link | default: purl }}" class="tm-foot__link">{{ section.settings.foot_link_label }} →</a>{%- endif -%}
+  </div>
+  {%- endif -%}
+
+</section>
+
+{%- style -%}
+  #tm-{{ section.id }}.tm { background: #fff; color: var(--tm-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+  #tm-{{ section.id }} * { box-sizing: border-box; }
+  #tm-{{ section.id }} h1, #tm-{{ section.id }} h2, #tm-{{ section.id }} h3 { font-family: 'Manrope', sans-serif; font-weight: 800; letter-spacing: -.02em; }
+  #tm-{{ section.id }} img { max-width: 100%; display: block; }
+  #tm-{{ section.id }} .tm-ph, #tm-{{ section.id }} .tm-ph svg { width: 100%; height: 100%; object-fit: cover; }
+  #tm-{{ section.id }} .tm-band { max-width: 1140px; margin: 0 auto; padding: 40px 18px; }
+  #tm-{{ section.id }} .tm-h2 { font-size: clamp(21px, 4.5vw, 30px); text-align: center; margin: 0 0 8px; }
+  #tm-{{ section.id }} .tm-sub { text-align: center; color: #6a747c; font-size: 15px; max-width: 640px; margin: 0 auto 24px; line-height: 1.55; }
+  #tm-{{ section.id }} .tm-eyebrow { display: inline-block; background: #e6f5f4; color: var(--tm-acc); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 12px; border-radius: 6px; }
+  #tm-{{ section.id }} .tm-eyebrow--c { display: block; width: fit-content; margin: 0 auto 10px; }
+
+  #tm-{{ section.id }} .tm-head { max-width: 1140px; margin: 0 auto; padding: 40px 18px 4px; }
+  #tm-{{ section.id }} .tm-title { font-size: clamp(24px, 5vw, 34px); line-height: 1.12; margin: 14px 0 8px; }
+  #tm-{{ section.id }} .tm-lead { font-size: 16px; font-weight: 600; margin: 0 0 8px; }
+  #tm-{{ section.id }} .tm-intro { font-size: 15px; color: #55606a; line-height: 1.6; max-width: 760px; }
+
+  #tm-{{ section.id }} .tm-feat { max-width: 1140px; margin: 0 auto; padding: 20px 18px; display: grid; grid-template-columns: 1fr; gap: 0; }
+  #tm-{{ section.id }} .tm-feat__media { position: relative; border-radius: 16px 16px 0 0; overflow: hidden; aspect-ratio: 16/10; background: #1c2b2a; }
+  #tm-{{ section.id }} .tm-feat__media video, #tm-{{ section.id }} .tm-feat__media img { width: 100%; height: 100%; object-fit: cover; }
+  #tm-{{ section.id }} .tm-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,.9); color: var(--tm-acc); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  #tm-{{ section.id }} .tm-feat__panel { background: #e6f5f4; padding: 24px; border-radius: 0 0 16px 16px; }
+  #tm-{{ section.id }} .tm-feat__name { color: var(--tm-acc-dark); font-size: 17px; margin: 0 0 10px; }
+  #tm-{{ section.id }} .tm-feat__quote { color: #3d4a49; font-size: 14.5px; line-height: 1.6; }
+
+  #tm-{{ section.id }} .tm-wall { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  #tm-{{ section.id }} .tm-vid { aspect-ratio: 9/16; border-radius: 12px; overflow: hidden; background: #e9ecef; }
+  #tm-{{ section.id }} .tm-vid video { width: 100%; height: 100%; object-fit: cover; }
+
+  #tm-{{ section.id }} .tm-faq { border-radius: 14px; overflow: hidden; border: 1px solid #e4e9e8; }
+  #tm-{{ section.id }} .tm-faq__head { background: linear-gradient(120deg, var(--tm-acc), var(--tm-acc-dark)); color: #fff; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 17px; padding: 16px 20px; }
+  #tm-{{ section.id }} .tm-faq__item { border-top: 1px solid #e4e9e8; }
+  #tm-{{ section.id }} .tm-faq__item summary { list-style: none; cursor: pointer; padding: 15px 20px; font-size: 15px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  #tm-{{ section.id }} .tm-faq__item summary::-webkit-details-marker { display: none; }
+  #tm-{{ section.id }} .tm-faq__ico { color: var(--tm-acc); transition: transform .2s; }
+  #tm-{{ section.id }} .tm-faq__item[open] .tm-faq__ico { transform: rotate(180deg); }
+  #tm-{{ section.id }} .tm-faq__body { padding: 0 20px 18px; font-size: 14px; color: #55606a; line-height: 1.6; }
+
+  #tm-{{ section.id }} .tm-btn { display: inline-flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 15px; border: 0; border-radius: 10px; cursor: pointer; text-decoration: none; padding: 14px 26px; }
+  #tm-{{ section.id }} .tm-btn--dark { background: var(--tm-ink); color: #fff; }
+  #tm-{{ section.id }} .tm-cta { background: linear-gradient(120deg, var(--tm-acc), var(--tm-acc-dark)); color: #fff; }
+  #tm-{{ section.id }} .tm-cta__inner { max-width: 1140px; margin: 0 auto; padding: 40px 18px; display: grid; grid-template-columns: 1fr; gap: 20px; align-items: center; }
+  #tm-{{ section.id }} .tm-cta__sub { font-size: 16px; opacity: .95; line-height: 1.5; margin: 0 0 10px; }
+  #tm-{{ section.id }} .tm-cta__big { font-size: 18px; font-weight: 700; margin: 0 0 20px; }
+  #tm-{{ section.id }} .tm-cta__btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  #tm-{{ section.id }} .tm-cta__media { border-radius: 16px; overflow: hidden; }
+  #tm-{{ section.id }} .tm-statwrap { text-align: center; padding: 28px 18px 4px; }
+  #tm-{{ section.id }} .tm-stat { display: inline-block; background: #e6f5f4; color: var(--tm-acc-dark); font-weight: 600; font-size: 15px; padding: 8px 20px; border-radius: 30px; }
+
+  #tm-{{ section.id }} .tm-foot { max-width: 1140px; margin: 0 auto; padding: 24px 18px 44px; }
+  #tm-{{ section.id }} .tm-foot__title { font-size: clamp(19px, 4vw, 24px); margin: 0 0 12px; }
+  #tm-{{ section.id }} .tm-foot__text { font-size: 15px; color: #55606a; line-height: 1.6; max-width: 820px; }
+  #tm-{{ section.id }} .tm-foot__link { display: inline-block; margin-top: 10px; color: var(--tm-acc); font-weight: 700; text-decoration: none; }
+
+  @media (min-width: 750px) {
+    #tm-{{ section.id }} .tm-feat { grid-template-columns: 1.4fr 1fr; }
+    #tm-{{ section.id }} .tm-feat__media { border-radius: 16px 0 0 16px; }
+    #tm-{{ section.id }} .tm-feat__panel { border-radius: 0 16px 16px 0; display: flex; flex-direction: column; justify-content: center; }
+    #tm-{{ section.id }} .tm-wall { grid-template-columns: repeat(5, 1fr); }
+    #tm-{{ section.id }} .tm-cta__inner { grid-template-columns: 1.1fr 1fr; padding: 52px 18px; }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Clinique — Témoignages",
+  "tag": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Produit (liens boutons)" },
+    { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
+    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0b7a78" },
+    { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
+    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "HISTOIRES ÉMOUVANTES" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Expériences avec Clinique Essabar" },
+    { "type": "text", "id": "subtitle", "label": "Sous-titre", "default": "Interviews clients" },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Notre produit change des vies. Certains clients ont accepté de partager leur histoire et leur expérience en interview.</p>" },
+    { "type": "checkbox", "id": "feat_enable", "label": "Afficher l'interview vedette", "default": true },
+    { "type": "video", "id": "feat_video", "label": "Vidéo interview (Shopify)" },
+    { "type": "text", "id": "feat_video_url", "label": "OU URL vidéo .mp4" },
+    { "type": "image_picker", "id": "feat_poster", "label": "Miniature vidéo" },
+    { "type": "text", "id": "feat_name", "label": "Nom", "default": "Gérard S." },
+    { "type": "richtext", "id": "feat_quote", "label": "Témoignage", "default": "<p>Les facettes ont changé la vie de M. Gérard. Dans cette interview, il raconte son histoire — un moment vraiment touchant.</p>" },
+    { "type": "text", "id": "wall_eyebrow", "label": "Étiquette mur vidéos", "default": "RÉSEAUX SOCIAUX" },
+    { "type": "text", "id": "wall_title", "label": "Titre mur vidéos", "default": "Les avis clients en vidéo" },
+    { "type": "text", "id": "wall_sub", "label": "Sous-titre mur vidéos", "default": "Des vidéos d'avis envoyées par nos clients. Rien de plus authentique et sincère." },
+    { "type": "text", "id": "faq_title", "label": "Titre FAQ", "default": "Questions sur les expériences" },
+    { "type": "checkbox", "id": "cta_enable", "label": "Afficher la bande CTA", "default": true },
+    { "type": "textarea", "id": "cta_text", "label": "Texte CTA", "default": "La méthode d'empreinte la plus simple au monde — tutoriel vidéo et assistance dédiée." },
+    { "type": "text", "id": "cta_big", "label": "Phrase forte CTA", "default": "Votre nouveau sourire vous attend 😁😍" },
+    { "type": "text", "id": "cta_btn1", "label": "Bouton 1", "default": "Commander mes facettes" },
+    { "type": "text", "id": "cta_btn2", "label": "Bouton 2", "default": "Centre d'aide" },
+    { "type": "url", "id": "cta_btn2_link", "label": "Lien bouton 2" },
+    { "type": "image_picker", "id": "cta_image", "label": "Image CTA (packaging)" },
+    { "type": "text", "id": "stat_line", "label": "Ligne stat", "default": "Plus de 55 000 personnes sourient déjà avec Clinique Essabar." },
+    { "type": "text", "id": "foot_title", "label": "Titre bas de page", "default": "Des expériences pleines d'émotion" },
+    { "type": "richtext", "id": "foot_text", "label": "Texte bas de page", "default": "<p>Nos clients adorent partager leur expérience, car le changement provoque des émotions profondes. Leurs histoires nous inspirent chaque jour.</p>" },
+    { "type": "text", "id": "foot_link_label", "label": "Lien bas de page (texte)", "default": "En savoir plus" },
+    { "type": "url", "id": "foot_link", "label": "Lien bas de page" }
+  ],
+  "blocks": [
+    {
+      "type": "vid",
+      "name": "Vidéo client",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Vidéo (Shopify)" },
+        { "type": "text", "id": "video_url", "label": "OU URL vidéo .mp4" },
+        { "type": "image_picker", "id": "poster", "label": "Miniature" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Comment se passe la prise d'empreinte ?" },
+        { "type": "richtext", "id": "answer", "label": "Réponse", "default": "<p>Vous recevez un kit complet avec un tutoriel vidéo, puis vous nous renvoyez votre empreinte (frais offerts).</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Clinique — Témoignages",
+      "blocks": [
+        { "type": "vid" }, { "type": "vid" }, { "type": "vid" }, { "type": "vid" }, { "type": "vid" },
+        { "type": "faq", "settings": { "question": "Comment obtenez-vous mon empreinte ?", "answer": "<p>Vous recevez un kit d'empreinte à utiliser chez vous, avec un tutoriel vidéo. C'est simple et guidé.</p>" } },
+        { "type": "faq", "settings": { "question": "Comment les facettes tiennent-elles ?", "answer": "<p>Elles se clipsent sur vos dents et tiennent parfaitement, sans colle.</p>" } },
+        { "type": "faq", "settings": { "question": "Pour qui les facettes conviennent-elles ?", "answer": "<p>Pour la plupart des sourires. En cas de doute, notre équipe vous conseille.</p>" } },
+        { "type": "faq", "settings": { "question": "Y a-t-il une garantie ?", "answer": "<p>Oui, satisfait ou remboursé 30 jours.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

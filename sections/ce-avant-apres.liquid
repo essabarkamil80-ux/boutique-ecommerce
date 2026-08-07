@@ -1,0 +1,200 @@
+{% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
+{%- comment -%} Clinique Essabar — Avant / Après (reference DTC structure, own code + placeholders) {%- endcomment -%}
+{%- assign prod = section.settings.product | default: product -%}
+{%- if prod != blank -%}{%- assign purl = prod.url -%}{%- else -%}{%- assign purl = '/collections/all' -%}{%- endif -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<section id="ba-{{ section.id }}" class="ba" style="--ba-acc: {{ section.settings.color_accent }}; --ba-acc-dark: {{ section.settings.color_accent_dark }}; --ba-ink: {{ section.settings.color_ink }};">
+
+  {%- comment -%} ===== HEADER ===== {%- endcomment -%}
+  <div class="ba-head">
+    {%- if section.settings.eyebrow != blank -%}<span class="ba-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    <h1 class="ba-title">{{ section.settings.title }}</h1>
+    {%- if section.settings.intro != blank -%}<div class="ba-intro">{{ section.settings.intro }}</div>{%- endif -%}
+    {%- if section.settings.highlight != blank -%}<p class="ba-highlight">{{ section.settings.highlight }}</p>{%- endif -%}
+    {%- if section.settings.subtitle != blank -%}<p class="ba-sub">{{ section.settings.subtitle }}</p>{%- endif -%}
+  </div>
+
+  {%- comment -%} ===== GRID OF BEFORE/AFTER SLIDERS ===== {%- endcomment -%}
+  {%- assign pairs = section.blocks | where: 'type', 'pair' -%}
+  {%- if pairs.size > 0 -%}
+  <div class="ba-grid">
+    {%- for block in pairs -%}
+      <div class="ba-item" {{ block.shopify_attributes }}>
+        <div class="ba-compare" data-compare>
+          <div class="ba-compare__after">
+            {%- if block.settings.after_image != blank -%}
+              <img src="{{ block.settings.after_image | image_url: width: 700 }}" alt="Après" loading="lazy">
+            {%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'ba-ph' }}{%- endif -%}
+            <span class="ba-tag ba-tag--r">Après</span>
+          </div>
+          <div class="ba-compare__before" data-before>
+            {%- if block.settings.before_image != blank -%}
+              <img src="{{ block.settings.before_image | image_url: width: 700 }}" alt="Avant" loading="lazy">
+            {%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ba-ph' }}{%- endif -%}
+            <span class="ba-tag ba-tag--l">Avant</span>
+          </div>
+          <div class="ba-compare__handle" data-handle><span></span></div>
+          <input type="range" min="0" max="100" value="50" class="ba-compare__range" aria-label="Comparateur avant après">
+        </div>
+        {%- if block.settings.label != blank -%}<span class="ba-label">{{ block.settings.label }}</span>{%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== TEAL CTA BAND ===== {%- endcomment -%}
+  {%- if section.settings.cta_enable -%}
+  <div class="ba-cta">
+    <div class="ba-cta__inner">
+      <div class="ba-cta__txt">
+        <h2 class="ba-cta__title">{{ section.settings.cta_title }}</h2>
+        <p class="ba-cta__sub">{{ section.settings.cta_text }}</p>
+        <div class="ba-cta__btns">
+          <a href="{{ purl }}" class="ba-btn ba-btn--dark">{{ section.settings.cta_btn1 }}</a>
+          {%- if section.settings.cta_btn2 != blank -%}<a href="{{ section.settings.cta_btn2_link | default: '/pages/contact' }}" class="ba-btn ba-btn--dark">{{ section.settings.cta_btn2 }}</a>{%- endif -%}
+        </div>
+      </div>
+      <div class="ba-cta__media">
+        {%- if section.settings.cta_image != blank -%}<img src="{{ section.settings.cta_image | image_url: width: 900 }}" alt="" loading="lazy">{%- else -%}{{ 'product-1' | placeholder_svg_tag: 'ba-ph' }}{%- endif -%}
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== BOTTOM TEXT ===== {%- endcomment -%}
+  {%- if section.settings.foot_title != blank -%}
+  <div class="ba-foot">
+    <h2 class="ba-foot__title">{{ section.settings.foot_title }}</h2>
+    {%- if section.settings.foot_text != blank -%}<div class="ba-foot__text">{{ section.settings.foot_text }}</div>{%- endif -%}
+    {%- if section.settings.foot_link_label != blank -%}<a href="{{ section.settings.foot_link | default: purl }}" class="ba-foot__link">{{ section.settings.foot_link_label }} →</a>{%- endif -%}
+  </div>
+  {%- endif -%}
+
+</section>
+
+{%- style -%}
+  #ba-{{ section.id }}.ba { background: #fff; color: var(--ba-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+  #ba-{{ section.id }} * { box-sizing: border-box; }
+  #ba-{{ section.id }} h1, #ba-{{ section.id }} h2 { font-family: 'Manrope', sans-serif; font-weight: 800; letter-spacing: -.02em; }
+  #ba-{{ section.id }} img { max-width: 100%; display: block; }
+  #ba-{{ section.id }} .ba-ph, #ba-{{ section.id }} .ba-ph svg { width: 100%; height: 100%; object-fit: cover; }
+
+  #ba-{{ section.id }} .ba-head { max-width: 1140px; margin: 0 auto; padding: 40px 18px 8px; }
+  #ba-{{ section.id }} .ba-eyebrow { display: inline-block; background: #e6f5f4; color: var(--ba-acc); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 12px; border-radius: 6px; margin-bottom: 14px; }
+  #ba-{{ section.id }} .ba-title { font-size: clamp(24px, 5vw, 34px); line-height: 1.12; margin: 0 0 14px; }
+  #ba-{{ section.id }} .ba-intro { font-size: 15px; color: #55606a; line-height: 1.6; max-width: 760px; }
+  #ba-{{ section.id }} .ba-highlight { font-weight: 700; color: var(--ba-ink); margin: 14px 0 4px; }
+  #ba-{{ section.id }} .ba-sub { font-size: 15px; color: #55606a; margin: 0; max-width: 760px; }
+
+  #ba-{{ section.id }} .ba-grid { max-width: 1140px; margin: 0 auto; padding: 26px 18px 8px; display: grid; grid-template-columns: 1fr; gap: 26px 20px; }
+  #ba-{{ section.id }} .ba-item { display: flex; flex-direction: column; align-items: center; }
+  #ba-{{ section.id }} .ba-compare { position: relative; width: 100%; aspect-ratio: 1/1; border-radius: 14px; overflow: hidden; background: #e9ecef; user-select: none; touch-action: none; }
+  #ba-{{ section.id }} .ba-compare__after, #ba-{{ section.id }} .ba-compare__before { position: absolute; inset: 0; }
+  #ba-{{ section.id }} .ba-compare__after img, #ba-{{ section.id }} .ba-compare__before img { width: 100%; height: 100%; object-fit: cover; }
+  #ba-{{ section.id }} .ba-compare__before { width: 50%; overflow: hidden; border-right: 2px solid #fff; }
+  #ba-{{ section.id }} .ba-compare__before img { width: 100vw; max-width: none; height: 100%; }
+  #ba-{{ section.id }} .ba-tag { position: absolute; top: 10px; font-size: 11px; font-weight: 700; color: #fff; background: rgba(20,32,31,.6); padding: 3px 8px; border-radius: 5px; }
+  #ba-{{ section.id }} .ba-tag--l { left: 10px; }
+  #ba-{{ section.id }} .ba-tag--r { right: 10px; }
+  #ba-{{ section.id }} .ba-compare__handle { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #fff; transform: translateX(-1px); pointer-events: none; }
+  #ba-{{ section.id }} .ba-compare__handle span { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 38px; height: 38px; border-radius: 50%; background: var(--ba-acc); box-shadow: 0 2px 10px rgba(0,0,0,.3); display: flex; align-items: center; justify-content: center; }
+  #ba-{{ section.id }} .ba-compare__handle span::before { content: "‹ ›"; color: #fff; font-size: 15px; font-weight: 700; letter-spacing: -1px; }
+  #ba-{{ section.id }} .ba-compare__range { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+  #ba-{{ section.id }} .ba-label { display: inline-block; margin-top: 12px; background: #e6f5f4; color: var(--ba-acc-dark); font-weight: 600; font-size: 14px; padding: 5px 16px; border-radius: 8px; }
+
+  #ba-{{ section.id }} .ba-btn { display: inline-flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 15px; border: 0; border-radius: 10px; cursor: pointer; text-decoration: none; padding: 14px 26px; transition: .15s; }
+  #ba-{{ section.id }} .ba-btn--dark { background: var(--ba-ink); color: #fff; }
+  #ba-{{ section.id }} .ba-btn--dark:hover { transform: translateY(-1px); opacity: .92; }
+
+  #ba-{{ section.id }} .ba-cta { background: linear-gradient(120deg, var(--ba-acc), var(--ba-acc-dark)); color: #fff; margin-top: 40px; }
+  #ba-{{ section.id }} .ba-cta__inner { max-width: 1140px; margin: 0 auto; padding: 40px 18px; display: grid; grid-template-columns: 1fr; gap: 20px; align-items: center; }
+  #ba-{{ section.id }} .ba-cta__title { font-size: clamp(21px, 4.5vw, 28px); color: #fff; margin: 0 0 12px; line-height: 1.2; }
+  #ba-{{ section.id }} .ba-cta__sub { font-size: 15px; opacity: .94; line-height: 1.55; margin: 0 0 20px; }
+  #ba-{{ section.id }} .ba-cta__btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  #ba-{{ section.id }} .ba-cta__media { border-radius: 16px; overflow: hidden; }
+
+  #ba-{{ section.id }} .ba-foot { max-width: 1140px; margin: 0 auto; padding: 40px 18px; }
+  #ba-{{ section.id }} .ba-foot__title { font-size: clamp(19px, 4vw, 24px); margin: 0 0 12px; }
+  #ba-{{ section.id }} .ba-foot__text { font-size: 15px; color: #55606a; line-height: 1.6; max-width: 820px; }
+  #ba-{{ section.id }} .ba-foot__link { display: inline-block; margin-top: 10px; color: var(--ba-acc); font-weight: 700; text-decoration: none; }
+
+  @media (min-width: 750px) {
+    #ba-{{ section.id }} .ba-grid { grid-template-columns: repeat(3, 1fr); }
+    #ba-{{ section.id }} .ba-cta__inner { grid-template-columns: 1.1fr 1fr; padding: 52px 18px; }
+  }
+{%- endstyle -%}
+
+<script>
+  (function(){
+    var root = document.getElementById('ba-{{ section.id }}');
+    if (!root) return;
+    root.querySelectorAll('[data-compare]').forEach(function(c){
+      var before = c.querySelector('[data-before]');
+      var handle = c.querySelector('[data-handle]');
+      var range = c.querySelector('.ba-compare__range');
+      function set(v){ before.style.width = v + '%'; handle.style.left = v + '%'; }
+      range.addEventListener('input', function(){ set(range.value); });
+      set(50);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Clinique — Avant/Après",
+  "tag": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Produit (liens boutons)" },
+    { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
+    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0b7a78" },
+    { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
+    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "AVANT | APRÈS" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "L'effet « avant / après »" },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>De nombreux clients nous envoient leurs photos avant/après dès réception de leurs facettes. Nous en avons sélectionné quelques-unes en Blanc naturel et Hollywood pour montrer ce qui est possible.</p>" },
+    { "type": "text", "id": "highlight", "label": "Phrase en gras", "default": "Des résultats bluffants !" },
+    { "type": "text", "id": "subtitle", "label": "Sous-titre", "default": "Découvrez le pouvoir transformateur des facettes grâce à ces photos avant/après." },
+    { "type": "checkbox", "id": "cta_enable", "label": "Afficher la bande CTA", "default": true },
+    { "type": "text", "id": "cta_title", "label": "Titre CTA", "default": "Faites le premier pas vers votre nouveau sourire !" },
+    { "type": "textarea", "id": "cta_text", "label": "Texte CTA", "default": "Commandez votre kit d'empreinte ou prenez rendez-vous pour un conseil gratuit." },
+    { "type": "text", "id": "cta_btn1", "label": "Bouton 1", "default": "Découvrir les facettes" },
+    { "type": "text", "id": "cta_btn2", "label": "Bouton 2", "default": "Centre d'aide" },
+    { "type": "url", "id": "cta_btn2_link", "label": "Lien bouton 2" },
+    { "type": "image_picker", "id": "cta_image", "label": "Image CTA (packaging)" },
+    { "type": "text", "id": "foot_title", "label": "Titre bas de page", "default": "L'avant / après des facettes" },
+    { "type": "richtext", "id": "foot_text", "label": "Texte bas de page", "default": "<p>Comme le montrent ces photos, les dents jouent un rôle essentiel dans notre apparence. Des dents droites et blanches rendent le visage plus harmonieux et soutiennent un sourire attirant.</p>" },
+    { "type": "text", "id": "foot_link_label", "label": "Lien bas de page (texte)", "default": "En savoir plus" },
+    { "type": "url", "id": "foot_link", "label": "Lien bas de page" }
+  ],
+  "blocks": [
+    {
+      "type": "pair",
+      "name": "Comparateur avant/après",
+      "settings": [
+        { "type": "image_picker", "id": "before_image", "label": "Image AVANT" },
+        { "type": "image_picker", "id": "after_image", "label": "Image APRÈS" },
+        { "type": "text", "id": "label", "label": "Étiquette (teinte)", "default": "Blanc naturel" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Clinique — Avant/Après",
+      "blocks": [
+        { "type": "pair", "settings": { "label": "Blanc naturel" } },
+        { "type": "pair", "settings": { "label": "Blanc naturel" } },
+        { "type": "pair", "settings": { "label": "Hollywood" } },
+        { "type": "pair", "settings": { "label": "Hollywood" } },
+        { "type": "pair", "settings": { "label": "Blanc naturel" } },
+        { "type": "pair", "settings": { "label": "Blanc naturel" } },
+        { "type": "pair", "settings": { "label": "Hollywood" } },
+        { "type": "pair", "settings": { "label": "Hollywood" } },
+        { "type": "pair", "settings": { "label": "Hollywood" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

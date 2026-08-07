@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "main": {
+      "type": "ce-avant-apres",
+      "blocks": {
+        "p1": { "type": "pair", "settings": { "label": "Blanc naturel" } },
+        "p2": { "type": "pair", "settings": { "label": "Blanc naturel" } },
+        "p3": { "type": "pair", "settings": { "label": "Hollywood" } },
+        "p4": { "type": "pair", "settings": { "label": "Hollywood" } },
+        "p5": { "type": "pair", "settings": { "label": "Blanc naturel" } },
+        "p6": { "type": "pair", "settings": { "label": "Blanc naturel" } },
+        "p7": { "type": "pair", "settings": { "label": "Hollywood" } },
+        "p8": { "type": "pair", "settings": { "label": "Hollywood" } },
+        "p9": { "type": "pair", "settings": { "label": "Hollywood" } }
+      },
+      "block_order": ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

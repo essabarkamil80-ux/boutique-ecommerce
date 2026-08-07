@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "main": {
+      "type": "ce-temoignages",
+      "blocks": {
+        "v1": { "type": "vid", "settings": {} },
+        "v2": { "type": "vid", "settings": {} },
+        "v3": { "type": "vid", "settings": {} },
+        "v4": { "type": "vid", "settings": {} },
+        "v5": { "type": "vid", "settings": {} },
+        "f1": { "type": "faq", "settings": { "question": "Comment obtenez-vous mon empreinte ?", "answer": "<p>Vous recevez un kit d'empreinte à utiliser chez vous, avec un tutoriel vidéo. C'est simple et guidé, et notre support WhatsApp répond à vos questions.</p>" } },
+        "f2": { "type": "faq", "settings": { "question": "Comment les facettes tiennent-elles ?", "answer": "<p>Elles se clipsent sur vos dents et tiennent parfaitement, sans colle ni douleur.</p>" } },
+        "f3": { "type": "faq", "settings": { "question": "Pour qui les facettes conviennent-elles ?", "answer": "<p>Pour la plupart des sourires. En cas de doute, notre équipe vous conseille avant la commande.</p>" } },
+        "f4": { "type": "faq", "settings": { "question": "Y a-t-il une garantie ?", "answer": "<p>Oui — vous êtes couvert par notre garantie satisfait ou remboursé 30 jours.</p>" } }
+      },
+      "block_order": ["v1", "v2", "v3", "v4", "v5", "f1", "f2", "f3", "f4"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

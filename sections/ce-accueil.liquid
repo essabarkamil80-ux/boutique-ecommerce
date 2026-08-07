@@ -9,7 +9,7 @@
 
 <section id="ch-{{ section.id }}" class="ch" style="--ch-acc: {{ section.settings.color_accent }}; --ch-acc-dark: {{ section.settings.color_accent_dark }}; --ch-ink: {{ section.settings.color_ink }};">
 
-  {%- comment -%} ===== 1. HERO (video/image with overlaid text — veneera style) ===== {%- endcomment -%}
+  {%- comment -%} ===== 1. HERO (media on top, title below — veneera style) ===== {%- endcomment -%}
   <div class="ch-hero">
     <div class="ch-hero__media">
       {%- if section.settings.hero_video_url != blank -%}
@@ -23,10 +23,9 @@
       {%- else -%}
         {{ 'lifestyle-1' | placeholder_svg_tag: 'ch-ph' }}
       {%- endif -%}
-      <div class="ch-hero__overlay"></div>
     </div>
     <div class="ch-hero__txt">
-      {%- if section.settings.hero_badge != blank -%}<span class="ch-hero__badge">{{ section.settings.hero_badge }}</span>{%- endif -%}
+      {%- if section.settings.hero_badge != blank -%}<span class="ch-eyebrow">{{ section.settings.hero_badge }}</span>{%- endif -%}
       <h1 class="ch-hero__title">{{ section.settings.hero_title }}</h1>
       <p class="ch-hero__sub">{{ section.settings.hero_sub }}</p>
       {%- if section.settings.hero_cta != blank -%}<a href="{{ purl }}" class="ch-btn ch-hero__btn">{{ section.settings.hero_cta }}</a>{%- endif -%}
@@ -193,17 +192,16 @@
   #ch-{{ section.id }} .ch-btn--sm { padding: 10px 20px; font-size: 13.5px; }
   #ch-{{ section.id }} .ch-btn--white { background: #fff; color: var(--ch-acc); }
 
-  /* Hero — overlaid text over video/image */
-  #ch-{{ section.id }} .ch-hero { position: relative; }
-  #ch-{{ section.id }} .ch-hero__media { position: relative; width: 100%; aspect-ratio: 16/13; background: #0b7a78; overflow: hidden; }
+  /* Hero — media on top, title centered below (veneera) */
+  #ch-{{ section.id }} .ch-hero { padding: 18px 18px 0; max-width: 1140px; margin: 0 auto; }
+  #ch-{{ section.id }} .ch-hero__media { width: 100%; aspect-ratio: 21/10; background: #e9ecef; overflow: hidden; border-radius: 18px; }
   #ch-{{ section.id }} .ch-hero__media img, #ch-{{ section.id }} .ch-hero__media video { width: 100%; height: 100%; object-fit: cover; }
-  #ch-{{ section.id }} .ch-hero__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,40,39,.25) 0%, rgba(6,40,39,.55) 100%); }
-  #ch-{{ section.id }} .ch-hero__txt { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px 20px; max-width: 760px; margin: 0 auto; left: 0; right: 0; color: #fff; }
-  #ch-{{ section.id }} .ch-hero__badge { display: inline-block; background: rgba(255,255,255,.16); backdrop-filter: blur(4px); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 14px; border-radius: 40px; margin-bottom: 16px; }
-  #ch-{{ section.id }} .ch-hero__title { font-size: clamp(28px, 6.5vw, 46px); line-height: 1.08; margin: 0 0 14px; color: #fff; text-shadow: 0 2px 20px rgba(0,0,0,.25); }
-  #ch-{{ section.id }} .ch-hero__sub { font-size: clamp(15px, 2.2vw, 18px); color: rgba(255,255,255,.94); line-height: 1.5; margin: 0 0 22px; max-width: 560px; text-shadow: 0 1px 12px rgba(0,0,0,.3); }
-  #ch-{{ section.id }} .ch-hero__btn { padding: 15px 34px; font-size: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.2); }
-  @media (max-width: 749px) { #ch-{{ section.id }} .ch-hero__media { aspect-ratio: 3/4; max-height: 88vh; } }
+  #ch-{{ section.id }} .ch-hero__txt { text-align: center; padding: 28px 18px 8px; max-width: 720px; margin: 0 auto; }
+  #ch-{{ section.id }} .ch-hero__txt .ch-eyebrow { margin-bottom: 10px; }
+  #ch-{{ section.id }} .ch-hero__title { font-size: clamp(26px, 5.5vw, 40px); line-height: 1.12; margin: 0 0 12px; }
+  #ch-{{ section.id }} .ch-hero__sub { font-size: clamp(15px, 2vw, 17px); color: #55606a; line-height: 1.5; margin: 0 0 18px; }
+  #ch-{{ section.id }} .ch-hero__btn { padding: 14px 30px; }
+  @media (max-width: 749px) { #ch-{{ section.id }} .ch-hero__media { aspect-ratio: 4/5; } }
 
   /* Cards */
   #ch-{{ section.id }} .ch-cards { display: grid; grid-template-columns: 1fr; gap: 16px; }

@@ -23,6 +23,26 @@
       "block_order": ["text", "button"],
       "settings": { "color_scheme": "scheme-1", "full_width": false }
     },
+    "shades": {
+      "type": "multicolumn",
+      "blocks": {
+        "s1": { "type": "column", "settings": { "title": "Ivoire", "text": "<p>Teinte A3 — naturelle et chaleureuse.</p>", "link_label": "Choisir cette teinte", "link": "/collections/all" } },
+        "s2": { "type": "column", "settings": { "title": "Blanc naturel", "text": "<p>Teinte A1 — l'équilibre parfait.</p>", "link_label": "Choisir cette teinte", "link": "/collections/all" } },
+        "s3": { "type": "column", "settings": { "title": "Hollywood", "text": "<p>Teinte BL2 — blancheur éclatante.</p>", "link_label": "Choisir cette teinte", "link": "/collections/all" } }
+      },
+      "block_order": ["s1", "s2", "s3"],
+      "settings": {
+        "title": "Trois teintes, un sourire sur-mesure",
+        "image_width": "full",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "none",
+        "button_label": "",
+        "color_scheme": "scheme-1",
+        "columns_mobile": "1"
+      }
+    },
     "steps": {
       "type": "multicolumn",
       "blocks": {
@@ -83,6 +103,27 @@
         "columns_mobile": "2"
       }
     },
+    "reviews": {
+      "type": "multicolumn",
+      "blocks": {
+        "r1": { "type": "column", "settings": { "title": "★★★★★ — Sarah M.", "text": "<p>« Je n'osais plus sourire. En 2 minutes je pose mes facettes et le résultat est incroyable. »</p>" } },
+        "r2": { "type": "column", "settings": { "title": "★★★★★ — Julien R.", "text": "<p>« Le kit d'empreinte est super simple et le rendu est bluffant. Je recommande à 100%. »</p>" } },
+        "r3": { "type": "column", "settings": { "title": "★★★★★ — Amélie D.", "text": "<p>« Après des années à cacher mes dents, je souris enfin sur les photos. »</p>" } },
+        "r4": { "type": "column", "settings": { "title": "★★★★★ — Karim B.", "text": "<p>« La teinte Blanc naturel est parfaite, ni trop ni trop peu. Très confortable. »</p>" } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4"],
+      "settings": {
+        "title": "Plus de 55 000 sourires transformés",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 4,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_label": "",
+        "color_scheme": "scheme-1",
+        "columns_mobile": "1"
+      }
+    },
     "kit_band": {
       "type": "rich-text",
       "blocks": {
@@ -123,5 +164,5 @@
       "settings": { "color_scheme": "scheme-1", "full_width": true }
     }
   },
-  "order": ["hero_video", "cta_discover", "steps", "why", "features", "kit_band", "faq", "newsletter"]
+  "order": ["hero_video", "cta_discover", "shades", "steps", "why", "features", "reviews", "kit_band", "faq", "newsletter"]
 }

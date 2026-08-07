@@ -1,168 +1,324 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "hero_video": {
-      "type": "video",
-      "blocks": {},
-      "settings": {
-        "heading": "Retrouvez un sourire éclatant",
-        "heading_size": "h0",
-        "description": "Facettes dentaires amovibles premium, sur-mesure, sans dentiste. Disponibles en trois teintes.",
-        "enable_video_looping": true,
-        "full_width": true,
-        "color_scheme": "scheme-1",
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
-    "cta_discover": {
-      "type": "rich-text",
+    "hero": {
+      "type": "image-banner",
       "blocks": {
-        "text": { "type": "text", "settings": { "text": "<p>Un sourire éclatant, sans dentiste et sans douleur — clipsé en quelques secondes.</p>" } },
-        "button": { "type": "button", "settings": { "button_label": "Découvrir les facettes", "button_link": "/collections/all", "button_style_secondary": false } }
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Retrouvez un sourire éclatant",
+            "heading_size": "h0"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "Facettes dentaires amovibles premium, sur-mesure, sans dentiste et sans douleur.",
+            "text_style": "body"
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Découvrir les facettes",
+            "button_link_1": "/collections/all",
+            "button_style_secondary_1": false,
+            "button_label_2": "Button label",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
       },
-      "block_order": ["text", "button"],
-      "settings": { "color_scheme": "scheme-1", "full_width": false }
-    },
-    "shades": {
-      "type": "multicolumn",
-      "blocks": {
-        "s1": { "type": "column", "settings": { "title": "Ivoire", "text": "<p>Teinte A3 — naturelle et chaleureuse.</p>", "link_label": "Choisir cette teinte", "link": "/collections/all" } },
-        "s2": { "type": "column", "settings": { "title": "Blanc naturel", "text": "<p>Teinte A1 — l'équilibre parfait.</p>", "link_label": "Choisir cette teinte", "link": "/collections/all" } },
-        "s3": { "type": "column", "settings": { "title": "Hollywood", "text": "<p>Teinte BL2 — blancheur éclatante.</p>", "link_label": "Choisir cette teinte", "link": "/collections/all" } }
-      },
-      "block_order": ["s1", "s2", "s3"],
+      "block_order": [
+        "heading",
+        "text",
+        "buttons"
+      ],
       "settings": {
-        "title": "Trois teintes, un sourire sur-mesure",
-        "image_width": "full",
-        "image_ratio": "square",
-        "columns_desktop": 3,
-        "column_alignment": "center",
-        "background_style": "none",
-        "button_label": "",
+        "image_overlay_opacity": 20,
+        "image_height": "large",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": true,
         "color_scheme": "scheme-1",
-        "columns_mobile": "1"
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
       }
     },
     "steps": {
       "type": "multicolumn",
       "blocks": {
-        "c1": { "type": "column", "settings": { "title": "1. Commandez votre kit", "text": "<p>Recevez à la maison votre kit d'empreinte premium avec un guide pas-à-pas.</p>" } },
-        "c2": { "type": "column", "settings": { "title": "2. Prenez l'empreinte", "text": "<p>En quelques minutes, sans dentiste, puis renvoyez-la (frais offerts).</p>" } },
-        "c3": { "type": "column", "settings": { "title": "3. Recevez vos facettes", "text": "<p>Fabriquées sur-mesure et livrées directement chez vous.</p>" } }
+        "c1": {
+          "type": "column",
+          "settings": {
+            "title": "1. Commandez votre kit",
+            "text": "<p>Recevez à la maison votre kit d'empreinte premium avec un guide pas-à-pas.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "c2": {
+          "type": "column",
+          "settings": {
+            "title": "2. Prenez l'empreinte",
+            "text": "<p>En quelques minutes, sans dentiste, puis renvoyez-la (frais offerts).</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "c3": {
+          "type": "column",
+          "settings": {
+            "title": "3. Recevez vos facettes",
+            "text": "<p>Fabriquées sur-mesure et livrées directement chez vous.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["c1", "c2", "c3"],
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
       "settings": {
-        "title": "Comment ça fonctionne",
+        "title": "Comment ça marche",
+        "heading_size": "h1",
         "image_width": "full",
         "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
         "columns_desktop": 3,
         "column_alignment": "center",
         "background_style": "primary",
-        "button_label": "",
         "color_scheme": "scheme-1",
-        "columns_mobile": "1"
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "why": {
       "type": "image-with-text",
       "blocks": {
-        "heading": { "type": "heading", "settings": { "heading": "Une innovation pour un sourire naturel", "heading_size": "h1" } },
-        "text": { "type": "text", "settings": { "text": "<p>Nos facettes se clipsent en quelques secondes, offrent un rendu naturel et un confort optimal au quotidien. Sur-mesure, réutilisables, sans BPA.</p>", "text_style": "body" } },
-        "button": { "type": "button", "settings": { "button_label": "Voir le produit", "button_link": "/collections/all" } }
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Une innovation pour un sourire naturel",
+            "heading_size": "h1"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Nos facettes se clipsent en quelques secondes, offrent un rendu naturel et un confort optimal au quotidien. Sur-mesure, réutilisables, sans BPA.</p>",
+            "text_style": "body"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "Voir le produit",
+            "button_link": "/collections/all",
+            "button_style_secondary": false
+          }
+        }
       },
-      "block_order": ["heading", "text", "button"],
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
       "settings": {
         "height": "adapt",
         "desktop_image_width": "medium",
         "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
         "desktop_content_position": "middle",
         "desktop_content_alignment": "left",
-        "content_layout": "no-overlap",
+        "mobile_content_alignment": "center",
+        "section_color_scheme": "",
         "color_scheme": "scheme-1",
-        "mobile_content_alignment": "center"
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "features": {
       "type": "multicolumn",
       "blocks": {
-        "f1": { "type": "column", "settings": { "title": "✨ Rendu naturel", "text": "<p>Un sourire lumineux, discret et bluffant de réalisme.</p>" } },
-        "f2": { "type": "column", "settings": { "title": "🦷 Sur-mesure", "text": "<p>Fabriquées à partir de votre propre empreinte.</p>" } },
-        "f3": { "type": "column", "settings": { "title": "🛡️ Garantie 30 jours", "text": "<p>Satisfait ou remboursé, sans risque.</p>" } },
-        "f4": { "type": "column", "settings": { "title": "🚚 Livraison offerte", "text": "<p>Expédition rapide et suivie, partout.</p>" } }
+        "f1": {
+          "type": "column",
+          "settings": {
+            "title": "✨ Rendu naturel",
+            "text": "<p>Un sourire lumineux, discret et bluffant de réalisme.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "f2": {
+          "type": "column",
+          "settings": {
+            "title": "🦷 Sur-mesure",
+            "text": "<p>Fabriquées à partir de votre propre empreinte.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "f3": {
+          "type": "column",
+          "settings": {
+            "title": "🛡️ Garantie 30 jours",
+            "text": "<p>Satisfait ou remboursé, sans risque.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "f4": {
+          "type": "column",
+          "settings": {
+            "title": "🚚 Livraison offerte",
+            "text": "<p>Expédition rapide et suivie, partout.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["f1", "f2", "f3", "f4"],
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
       "settings": {
         "title": "Pourquoi nous choisir",
+        "heading_size": "h1",
         "image_width": "full",
         "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
         "columns_desktop": 4,
         "column_alignment": "center",
         "background_style": "none",
-        "button_label": "",
         "color_scheme": "scheme-1",
-        "columns_mobile": "2"
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
       }
-    },
-    "reviews": {
-      "type": "multicolumn",
-      "blocks": {
-        "r1": { "type": "column", "settings": { "title": "★★★★★ — Sarah M.", "text": "<p>« Je n'osais plus sourire. En 2 minutes je pose mes facettes et le résultat est incroyable. »</p>" } },
-        "r2": { "type": "column", "settings": { "title": "★★★★★ — Julien R.", "text": "<p>« Le kit d'empreinte est super simple et le rendu est bluffant. Je recommande à 100%. »</p>" } },
-        "r3": { "type": "column", "settings": { "title": "★★★★★ — Amélie D.", "text": "<p>« Après des années à cacher mes dents, je souris enfin sur les photos. »</p>" } },
-        "r4": { "type": "column", "settings": { "title": "★★★★★ — Karim B.", "text": "<p>« La teinte Blanc naturel est parfaite, ni trop ni trop peu. Très confortable. »</p>" } }
-      },
-      "block_order": ["r1", "r2", "r3", "r4"],
-      "settings": {
-        "title": "Plus de 55 000 sourires transformés",
-        "image_width": "full",
-        "image_ratio": "adapt",
-        "columns_desktop": 4,
-        "column_alignment": "center",
-        "background_style": "primary",
-        "button_label": "",
-        "color_scheme": "scheme-1",
-        "columns_mobile": "1"
-      }
-    },
-    "kit_band": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": { "type": "heading", "settings": { "heading": "Votre kit d'empreinte pour la maison", "heading_size": "h1" } },
-        "text": { "type": "text", "settings": { "text": "<p>La méthode d'empreinte la plus simple au monde — tutoriel vidéo et assistance dédiée inclus.</p>" } },
-        "button": { "type": "button", "settings": { "button_label": "Commander maintenant", "button_link": "/collections/all", "button_style_secondary": false } }
-      },
-      "block_order": ["heading", "text", "button"],
-      "settings": { "color_scheme": "scheme-3", "full_width": true }
     },
     "faq": {
       "type": "collapsible-content",
       "blocks": {
-        "q1": { "type": "collapsible_row", "settings": { "heading": "Combien de temps durent les facettes ?", "row_content": "<p>Avec un entretien soigné, elles durent longtemps et se réutilisent au quotidien.</p>" } },
-        "q2": { "type": "collapsible_row", "settings": { "heading": "Est-ce que ça abîme mes dents ?", "row_content": "<p>Non, nos facettes sont amovibles et non invasives.</p>" } },
-        "q3": { "type": "collapsible_row", "settings": { "heading": "Comment se passe la prise d'empreinte ?", "row_content": "<p>Vous recevez un kit complet avec un guide pas-à-pas, puis vous nous renvoyez votre empreinte (frais offerts).</p>" } },
-        "q4": { "type": "collapsible_row", "settings": { "heading": "Et si je ne suis pas satisfait ?", "row_content": "<p>Vous êtes couvert par notre garantie satisfait ou remboursé 30 jours.</p>" } }
+        "q1": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Combien de temps durent les facettes ?",
+            "icon": "check_mark",
+            "row_content": "<p>Avec un entretien soigné, elles durent longtemps et se réutilisent au quotidien.</p>",
+            "page": ""
+          }
+        },
+        "q2": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Est-ce que ça abîme mes dents ?",
+            "icon": "check_mark",
+            "row_content": "<p>Non, nos facettes sont amovibles et non invasives.</p>",
+            "page": ""
+          }
+        },
+        "q3": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Comment se passe la prise d'empreinte ?",
+            "icon": "check_mark",
+            "row_content": "<p>Vous recevez un kit complet avec un guide pas-à-pas, puis vous nous renvoyez votre empreinte (frais offerts).</p>",
+            "page": ""
+          }
+        },
+        "q4": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Et si je ne suis pas satisfait ?",
+            "icon": "check_mark",
+            "row_content": "<p>Vous êtes couvert par notre garantie satisfait ou remboursé 30 jours.</p>",
+            "page": ""
+          }
+        }
       },
-      "block_order": ["q1", "q2", "q3", "q4"],
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
       "settings": {
         "caption": "",
         "heading": "Questions fréquentes",
+        "heading_size": "h1",
         "heading_alignment": "center",
         "layout": "row",
-        "color_scheme": "scheme-1",
         "container_color_scheme": "scheme-2",
-        "open_first_collapsible_row": false
+        "color_scheme": "scheme-1",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "newsletter": {
       "type": "newsletter",
       "blocks": {
-        "heading": { "type": "heading", "settings": { "heading": "Recevez votre guide offert" } },
-        "paragraph": { "type": "paragraph", "settings": { "paragraph": "<p>Inscrivez-vous et recevez nos conseils pour un sourire éclatant.</p>" } },
-        "form": { "type": "email_form", "settings": {} }
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Recevez votre guide offert",
+            "heading_size": "h1"
+          }
+        },
+        "paragraph": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Be the first to know about new collections and exclusive offers.</p>"
+          }
+        },
+        "form": {
+          "type": "email_form",
+          "settings": {}
+        }
       },
-      "block_order": ["heading", "paragraph", "form"],
-      "settings": { "color_scheme": "scheme-1", "full_width": true }
+      "block_order": [
+        "heading",
+        "paragraph",
+        "form"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
     }
   },
-  "order": ["hero_video", "cta_discover", "shades", "steps", "why", "features", "reviews", "kit_band", "faq", "newsletter"]
+  "order": [
+    "hero",
+    "steps",
+    "why",
+    "features",
+    "faq",
+    "newsletter"
+  ]
 }

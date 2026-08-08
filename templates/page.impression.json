@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "ce-impression",
+      "blocks": {
+        "a1": { "type": "acc", "settings": { "question": "À noter", "answer": "<p>Suivez la vidéo étape par étape et prenez votre temps pour un résultat net.</p>" } },
+        "a2": { "type": "acc", "settings": { "question": "Contenu du kit d'empreinte", "answer": "<p>Le kit contient les porte-empreintes, la pâte, et une notice illustrée.</p>" } },
+        "t1": { "type": "tuto", "settings": { "title": "Empreinte mâchoire supérieure", "badge": "TUTORIEL VIDÉO" } },
+        "t2": { "type": "tuto", "settings": { "title": "Empreinte mâchoire inférieure", "badge": "TUTORIEL VIDÉO" } }
+      },
+      "block_order": ["a1", "a2", "t1", "t2"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

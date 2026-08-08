@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "ce-instructions",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

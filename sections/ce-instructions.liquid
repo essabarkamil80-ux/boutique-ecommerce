@@ -1,0 +1,121 @@
+{% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
+{%- comment -%} Clinique Essabar — Instructions d'utilisation (own code + placeholders) {%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<section id="ins-{{ section.id }}" class="ins" style="--ins-acc: {{ section.settings.color_accent }}; --ins-acc-dark: {{ section.settings.color_accent_dark }}; --ins-ink: {{ section.settings.color_ink }};">
+
+  <div class="ins-head">
+    {%- if section.settings.eyebrow != blank -%}<span class="ins-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    <h1 class="ins-title">{{ section.settings.title }}</h1>
+    {%- if section.settings.intro != blank -%}<div class="ins-intro">{{ section.settings.intro }}</div>{%- endif -%}
+    {%- if section.settings.body != blank -%}<div class="ins-body">{{ section.settings.body }}</div>{%- endif -%}
+  </div>
+
+  {%- comment -%} ===== VIDEO HERO ===== {%- endcomment -%}
+  {%- if section.settings.video_enable -%}
+  <div class="ins-videowrap">
+    <div class="ins-video">
+      {%- if section.settings.video_url != blank -%}
+        <video controls playsinline {% if section.settings.video_poster != blank %}poster="{{ section.settings.video_poster | image_url: width: 1200 }}"{% endif %}>
+          <source src="{{ section.settings.video_url }}" type="video/mp4">
+        </video>
+      {%- elsif section.settings.video != blank -%}
+        {{ section.settings.video | video_tag: image_size: '1200x', controls: true }}
+      {%- else -%}
+        <div class="ins-video__ph">
+          <span class="ins-play">▶</span>
+          {%- if section.settings.video_badge != blank -%}<span class="ins-video__badge">{{ section.settings.video_badge }}</span>{%- endif -%}
+          {%- if section.settings.video_caption != blank -%}<span class="ins-video__cap">{{ section.settings.video_caption }}</span>{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== TWO INFO CARDS ===== {%- endcomment -%}
+  {%- if section.settings.note_title != blank or section.settings.rec_title != blank -%}
+  <div class="ins-cards">
+    {%- if section.settings.note_title != blank -%}
+    <div class="ins-card">
+      <h3 class="ins-card__title">{{ section.settings.note_title }}</h3>
+      {%- if section.settings.note_text != blank -%}<div class="ins-card__text">{{ section.settings.note_text }}</div>{%- endif -%}
+    </div>
+    {%- endif -%}
+    {%- if section.settings.rec_title != blank -%}
+    <div class="ins-card">
+      <h3 class="ins-card__title">{{ section.settings.rec_title }}</h3>
+      {%- if section.settings.rec_text != blank -%}<div class="ins-card__text">{{ section.settings.rec_text }}</div>{%- endif -%}
+    </div>
+    {%- endif -%}
+  </div>
+  {%- endif -%}
+
+</section>
+
+{%- style -%}
+  #ins-{{ section.id }}.ins { background: #fff; color: var(--ins-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+  #ins-{{ section.id }} * { box-sizing: border-box; }
+  #ins-{{ section.id }} h1, #ins-{{ section.id }} h2, #ins-{{ section.id }} h3 { font-family: 'Manrope', sans-serif; font-weight: 800; letter-spacing: -.02em; }
+  #ins-{{ section.id }} img, #ins-{{ section.id }} video { max-width: 100%; display: block; }
+
+  #ins-{{ section.id }} .ins-head { max-width: 900px; margin: 0 auto; padding: 44px 18px 8px; }
+  #ins-{{ section.id }} .ins-eyebrow { display: inline-block; background: #e6f5f4; color: var(--ins-acc); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 12px; border-radius: 6px; margin-bottom: 14px; }
+  #ins-{{ section.id }} .ins-title { font-size: clamp(26px, 5vw, 38px); line-height: 1.1; margin: 0 0 16px; }
+  #ins-{{ section.id }} .ins-intro { font-size: 16px; color: #55606a; line-height: 1.65; }
+  #ins-{{ section.id }} .ins-body { font-size: 15px; color: #55606a; line-height: 1.65; margin-top: 8px; }
+  #ins-{{ section.id }} .ins-body h3, #ins-{{ section.id }} .ins-body strong { color: var(--ins-ink); }
+  #ins-{{ section.id }} .ins-body p { margin: 14px 0 6px; }
+
+  #ins-{{ section.id }} .ins-videowrap { max-width: 900px; margin: 0 auto; padding: 20px 18px; }
+  #ins-{{ section.id }} .ins-video { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 16/10; background: linear-gradient(120deg, #f4e9c8, #bfe3d6 45%, var(--ins-acc)); }
+  #ins-{{ section.id }} .ins-video video { width: 100%; height: 100%; object-fit: cover; }
+  #ins-{{ section.id }} .ins-video__ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  #ins-{{ section.id }} .ins-play { width: 62px; height: 62px; border-radius: 50%; background: rgba(255,255,255,.92); color: var(--ins-acc-dark); display: flex; align-items: center; justify-content: center; font-size: 22px; padding-left: 4px; box-shadow: 0 8px 24px -8px rgba(0,0,0,.35); }
+  #ins-{{ section.id }} .ins-video__badge { margin-top: 22px; background: rgba(255,255,255,.75); color: var(--ins-ink); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 12px; border-radius: 6px; }
+  #ins-{{ section.id }} .ins-video__cap { margin-top: 12px; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(22px, 4vw, 34px); color: #fff; text-shadow: 0 2px 12px rgba(20,32,31,.25); }
+
+  #ins-{{ section.id }} .ins-cards { max-width: 900px; margin: 0 auto; padding: 12px 18px 52px; display: grid; grid-template-columns: 1fr; gap: 18px; }
+  #ins-{{ section.id }} .ins-card { background: #f5f8f8; border: 1px solid #e6ecec; border-radius: 16px; padding: 26px; }
+  #ins-{{ section.id }} .ins-card__title { font-size: 19px; margin: 0 0 12px; }
+  #ins-{{ section.id }} .ins-card__text { font-size: 14.5px; color: #55606a; line-height: 1.7; }
+  #ins-{{ section.id }} .ins-card__text p { margin: 0 0 10px; }
+
+  @media (min-width: 750px) {
+    #ins-{{ section.id }} .ins-cards { grid-template-columns: 1fr 1fr; }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Clinique — Instructions",
+  "tag": "section",
+  "settings": [
+    { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
+    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0b7a78" },
+    { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
+    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "INSTRUCTIONS D'UTILISATION" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Comment utiliser vos facettes" },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Dans cette vidéo, vous apprendrez à utiliser et à entretenir correctement vos facettes pour profiter de votre nouveau sourire le plus longtemps possible.</p>" },
+    { "type": "richtext", "id": "body", "label": "Explication", "default": "<p><strong>Explication rapide du fonctionnement</strong></p><p>La facette se place simplement sur vos propres dents — sans colle ni fixation. Pour l'insérer, placez-vous devant un miroir.</p><p><strong>Mâchoire supérieure :</strong></p><p>Poussez la facette du bas vers le haut sur vos dents, sans la plier. Soyez délicat les premières fois, le temps de prendre le coup de main.</p><p><strong>Mâchoire inférieure :</strong></p><p>Faites glisser la facette du haut vers le bas sur vos dents.</p>" },
+    { "type": "header", "content": "Vidéo" },
+    { "type": "checkbox", "id": "video_enable", "label": "Afficher la vidéo", "default": true },
+    { "type": "video", "id": "video", "label": "Vidéo (Shopify)" },
+    { "type": "text", "id": "video_url", "label": "OU URL vidéo .mp4" },
+    { "type": "image_picker", "id": "video_poster", "label": "Miniature vidéo" },
+    { "type": "text", "id": "video_badge", "label": "Badge vidéo", "default": "INSTRUCTIONS D'UTILISATION" },
+    { "type": "text", "id": "video_caption", "label": "Légende vidéo", "default": "Les facettes expliquées simplement" },
+    { "type": "header", "content": "Carte gauche (À noter)" },
+    { "type": "text", "id": "note_title", "label": "Titre", "default": "À noter" },
+    { "type": "richtext", "id": "note_text", "label": "Texte", "default": "<p>Pour un rendu le plus naturel possible, la facette est fabriquée avec une épaisseur de seulement 0,3 mm à 0,5 mm. Manipulez-la donc avec soin.</p><p>❌ Ne la pliez pas&nbsp;!<br>❌ Ne la faites pas tomber&nbsp;!<br>❌ Ne la nettoyez pas avec une brosse.</p>" },
+    { "type": "header", "content": "Carte droite (Recommandations)" },
+    { "type": "text", "id": "rec_title", "label": "Titre", "default": "Recommandations" },
+    { "type": "richtext", "id": "rec_text", "label": "Texte", "default": "<p>Pour une durabilité maximale et pour protéger vos gencives&nbsp;:</p><p>✅ Ne mangez que des aliments mous avec la facette.<br>✅ Retirez régulièrement la facette et entretenez vos vraies dents.<br>✅ Pour la nettoyer, rincez délicatement à l'eau.</p>" }
+  ],
+  "presets": [
+    { "name": "Clinique — Instructions" }
+  ]
+}
+{% endschema %}

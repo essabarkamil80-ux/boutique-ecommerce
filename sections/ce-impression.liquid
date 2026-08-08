@@ -1,0 +1,194 @@
+{% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
+{%- comment -%} Clinique Essabar — Prise d'empreinte (own code + placeholders) {%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<section id="imp-{{ section.id }}" class="imp" style="--imp-acc: {{ section.settings.color_accent }}; --imp-acc-dark: {{ section.settings.color_accent_dark }}; --imp-ink: {{ section.settings.color_ink }};">
+
+  <div class="imp-head">
+    {%- if section.settings.eyebrow != blank -%}<span class="imp-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    <h1 class="imp-title">{{ section.settings.title }}</h1>
+    {%- if section.settings.intro != blank -%}<div class="imp-intro">{{ section.settings.intro }}</div>{%- endif -%}
+  </div>
+
+  {%- comment -%} ===== IMPORTANT INFORMATION BAND ===== {%- endcomment -%}
+  {%- assign accs = section.blocks | where: 'type', 'acc' -%}
+  {%- if section.settings.band_title != blank or accs.size > 0 or section.settings.addr_title != blank -%}
+  <div class="imp-band">
+    {%- if section.settings.band_title != blank -%}<div class="imp-band__bar">{{ section.settings.band_title }}</div>{%- endif -%}
+    <div class="imp-band__body">
+      <div class="imp-acc">
+        {%- if section.settings.return_label != blank -%}
+          <a class="imp-acc__return" href="{{ section.settings.return_link | default: '/collections/all' }}">{{ section.settings.return_label }} <span>→</span></a>
+        {%- endif -%}
+        {%- for block in accs -%}
+          <details class="imp-acc__item" {{ block.shopify_attributes }}>
+            <summary>{{ block.settings.question }}<span class="imp-acc__ico">↓</span></summary>
+            <div class="imp-acc__body">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+      {%- if section.settings.addr_title != blank -%}
+      <div class="imp-addr">
+        <p class="imp-addr__h">{{ section.settings.addr_title }}</p>
+        {%- if section.settings.addr_text != blank -%}<div class="imp-addr__body">{{ section.settings.addr_text }}</div>{%- endif -%}
+        {%- if section.settings.addr_note != blank -%}<p class="imp-addr__note">{{ section.settings.addr_note }}</p>{%- endif -%}
+      </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== VIDEO TUTORIALS ===== {%- endcomment -%}
+  {%- assign tutos = section.blocks | where: 'type', 'tuto' -%}
+  {%- if tutos.size > 0 -%}
+  <div class="imp-tutos">
+    {%- for block in tutos -%}
+      <div class="imp-tuto" {{ block.shopify_attributes }}>
+        {%- if block.settings.video_url != blank -%}
+          <video controls playsinline {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 1000 }}"{% endif %}>
+            <source src="{{ block.settings.video_url }}" type="video/mp4">
+          </video>
+        {%- elsif block.settings.video != blank -%}
+          {{ block.settings.video | video_tag: image_size: '1000x', controls: true }}
+        {%- else -%}
+          <div class="imp-tuto__ph">
+            <span class="imp-play">▶</span>
+            {%- if block.settings.badge != blank -%}<span class="imp-tuto__badge">{{ block.settings.badge }}</span>{%- endif -%}
+            {%- if block.settings.title != blank -%}<span class="imp-tuto__cap">{{ block.settings.title }}</span>{%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== IMPORTANT SECTION ===== {%- endcomment -%}
+  {%- if section.settings.imp_title != blank -%}
+  <div class="imp-imp">
+    <div class="imp-imp__media">
+      {%- if section.settings.imp_image != blank -%}
+        {{ section.settings.imp_image | image_url: width: 700 | image_tag: alt: section.settings.imp_title, loading: 'lazy' }}
+      {%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'imp-ph' }}{%- endif -%}
+    </div>
+    <div class="imp-imp__txt">
+      <h2 class="imp-imp__title">{{ section.settings.imp_title }}</h2>
+      {%- if section.settings.imp_text != blank -%}<div class="imp-imp__body">{{ section.settings.imp_text }}</div>{%- endif -%}
+      {%- if section.settings.imp_contact != blank -%}<p class="imp-imp__contact">{{ section.settings.imp_contact }}</p>{%- endif -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+</section>
+
+{%- style -%}
+  #imp-{{ section.id }}.imp { background: #fff; color: var(--imp-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+  #imp-{{ section.id }} * { box-sizing: border-box; }
+  #imp-{{ section.id }} h1, #imp-{{ section.id }} h2, #imp-{{ section.id }} h3 { font-family: 'Manrope', sans-serif; font-weight: 800; letter-spacing: -.02em; }
+  #imp-{{ section.id }} img, #imp-{{ section.id }} video { max-width: 100%; display: block; }
+  #imp-{{ section.id }} .imp-ph, #imp-{{ section.id }} .imp-ph svg { width: 100%; height: 100%; object-fit: cover; }
+
+  #imp-{{ section.id }} .imp-head { max-width: 900px; margin: 0 auto; padding: 44px 18px 8px; }
+  #imp-{{ section.id }} .imp-eyebrow { display: inline-block; background: #e6f5f4; color: var(--imp-acc); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 12px; border-radius: 6px; margin-bottom: 14px; }
+  #imp-{{ section.id }} .imp-title { font-size: clamp(26px, 5vw, 38px); line-height: 1.1; margin: 0 0 16px; }
+  #imp-{{ section.id }} .imp-intro { font-size: 15px; color: #55606a; line-height: 1.65; }
+  #imp-{{ section.id }} .imp-intro p { margin: 0 0 10px; }
+
+  #imp-{{ section.id }} .imp-band { max-width: 900px; margin: 20px auto; padding: 0 18px; }
+  #imp-{{ section.id }} .imp-band__bar { background: linear-gradient(120deg, var(--imp-acc), var(--imp-acc-dark)); color: #fff; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 18px; padding: 16px 22px; border-radius: 14px 14px 0 0; }
+  #imp-{{ section.id }} .imp-band__body { border: 1px solid #e6ecec; border-top: 0; border-radius: 0 0 14px 14px; padding: 20px; display: grid; grid-template-columns: 1fr; gap: 18px; }
+  #imp-{{ section.id }} .imp-acc__return { display: flex; justify-content: space-between; align-items: center; background: var(--imp-acc-dark); color: #fff; text-decoration: none; font-weight: 700; padding: 13px 18px; border-radius: 10px; margin-bottom: 10px; }
+  #imp-{{ section.id }} .imp-acc__item { border: 1px solid #e6ecec; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+  #imp-{{ section.id }} .imp-acc__item summary { list-style: none; cursor: pointer; padding: 13px 18px; font-weight: 600; font-size: 15px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  #imp-{{ section.id }} .imp-acc__item summary::-webkit-details-marker { display: none; }
+  #imp-{{ section.id }} .imp-acc__ico { color: var(--imp-acc); transition: transform .2s; }
+  #imp-{{ section.id }} .imp-acc__item[open] .imp-acc__ico { transform: rotate(180deg); }
+  #imp-{{ section.id }} .imp-acc__body { padding: 0 18px 16px; font-size: 14px; color: #55606a; line-height: 1.6; }
+  #imp-{{ section.id }} .imp-addr { background: #f5f8f8; border: 1px solid #e6ecec; border-radius: 12px; padding: 20px; }
+  #imp-{{ section.id }} .imp-addr__h { font-weight: 600; margin: 0 0 12px; color: var(--imp-ink); }
+  #imp-{{ section.id }} .imp-addr__body { font-size: 15px; line-height: 1.6; color: var(--imp-ink); font-weight: 700; }
+  #imp-{{ section.id }} .imp-addr__note { font-size: 13.5px; color: #6a747c; margin: 12px 0 0; font-weight: 400; }
+
+  #imp-{{ section.id }} .imp-tutos { max-width: 900px; margin: 0 auto; padding: 12px 18px; display: grid; gap: 18px; }
+  #imp-{{ section.id }} .imp-tuto { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 16/10; background: linear-gradient(120deg, #f4e9c8, #bfe3d6 45%, var(--imp-acc)); }
+  #imp-{{ section.id }} .imp-tuto video { width: 100%; height: 100%; object-fit: cover; }
+  #imp-{{ section.id }} .imp-tuto__ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  #imp-{{ section.id }} .imp-play { width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.92); color: var(--imp-acc-dark); display: flex; align-items: center; justify-content: center; font-size: 20px; padding-left: 4px; box-shadow: 0 8px 24px -8px rgba(0,0,0,.35); }
+  #imp-{{ section.id }} .imp-tuto__badge { margin-top: 20px; background: rgba(255,255,255,.75); color: var(--imp-ink); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 12px; border-radius: 6px; }
+  #imp-{{ section.id }} .imp-tuto__cap { margin-top: 12px; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(20px, 3.5vw, 30px); color: #fff; text-shadow: 0 2px 12px rgba(20,32,31,.25); }
+
+  #imp-{{ section.id }} .imp-imp { max-width: 900px; margin: 0 auto; padding: 28px 18px 52px; display: grid; grid-template-columns: 1fr; gap: 22px; align-items: center; }
+  #imp-{{ section.id }} .imp-imp__media { border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: #eef2f2; }
+  #imp-{{ section.id }} .imp-imp__media img { width: 100%; height: 100%; object-fit: cover; }
+  #imp-{{ section.id }} .imp-imp__title { font-size: clamp(22px, 4vw, 30px); margin: 0 0 12px; }
+  #imp-{{ section.id }} .imp-imp__body { font-size: 15px; color: #3d4a49; line-height: 1.65; font-weight: 600; }
+  #imp-{{ section.id }} .imp-imp__body p { margin: 0 0 8px; }
+  #imp-{{ section.id }} .imp-imp__contact { font-size: 16px; font-weight: 700; color: var(--imp-acc-dark); margin: 10px 0 0; }
+
+  @media (min-width: 750px) {
+    #imp-{{ section.id }} .imp-band__body { grid-template-columns: 1fr 1.1fr; }
+    #imp-{{ section.id }} .imp-imp { grid-template-columns: 1fr 1fr; }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Clinique — Empreinte",
+  "tag": "section",
+  "settings": [
+    { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
+    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0b7a78" },
+    { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
+    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "TUTORIEL" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Prise d'empreinte pour vos facettes" },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Nous avons développé une procédure simplifiée pour que vous puissiez prendre votre propre empreinte dentaire à la maison. C'est plus facile et bien plus confortable que chez le dentiste.</p><p>Prenez le temps de regarder la vidéo — une fois <strong>avant de commencer</strong> et une nouvelle fois pendant la prise d'empreinte.</p>" },
+    { "type": "header", "content": "Bande « Informations importantes »" },
+    { "type": "text", "id": "band_title", "label": "Titre de la bande", "default": "Informations importantes" },
+    { "type": "text", "id": "return_label", "label": "Bouton retour (texte)", "default": "Retour" },
+    { "type": "url", "id": "return_link", "label": "Bouton retour (lien)" },
+    { "type": "header", "content": "Adresse d'envoi" },
+    { "type": "text", "id": "addr_title", "label": "Titre", "default": "Envoyez vos empreintes à l'adresse suivante :" },
+    { "type": "richtext", "id": "addr_text", "label": "Adresse", "default": "<p>Clinique Essabar<br>Frohnhofweg 15<br>50858 Cologne<br>Allemagne</p>" },
+    { "type": "text", "id": "addr_note", "label": "Note", "default": "Nous recommandons un envoi en suivi." },
+    { "type": "header", "content": "Bloc IMPORTANT (bas de page)" },
+    { "type": "image_picker", "id": "imp_image", "label": "Image" },
+    { "type": "text", "id": "imp_title", "label": "Titre", "default": "IMPORTANT" },
+    { "type": "richtext", "id": "imp_text", "label": "Texte", "default": "<p>Envoyez une photo de votre empreinte au support Clinique Essabar pour une première vérification :</p>" },
+    { "type": "text", "id": "imp_contact", "label": "Contact", "default": "WhatsApp : +49 221 828 290 36" }
+  ],
+  "blocks": [
+    {
+      "type": "acc",
+      "name": "Accordéon",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Titre", "default": "À noter" },
+        { "type": "richtext", "id": "answer", "label": "Contenu", "default": "<p>Prenez votre temps et suivez bien la vidéo étape par étape.</p>" }
+      ]
+    },
+    {
+      "type": "tuto",
+      "name": "Tutoriel vidéo",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titre", "default": "Empreinte mâchoire supérieure" },
+        { "type": "text", "id": "badge", "label": "Badge", "default": "TUTORIEL VIDÉO" },
+        { "type": "video", "id": "video", "label": "Vidéo (Shopify)" },
+        { "type": "text", "id": "video_url", "label": "OU URL vidéo .mp4" },
+        { "type": "image_picker", "id": "poster", "label": "Miniature" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Clinique — Empreinte",
+      "blocks": [
+        { "type": "acc", "settings": { "question": "À noter", "answer": "<p>Suivez la vidéo étape par étape et prenez votre temps pour un résultat net.</p>" } },
+        { "type": "acc", "settings": { "question": "Contenu du kit d'empreinte", "answer": "<p>Le kit contient les porte-empreintes, la pâte, et une notice illustrée.</p>" } },
+        { "type": "tuto", "settings": { "title": "Empreinte mâchoire supérieure" } },
+        { "type": "tuto", "settings": { "title": "Empreinte mâchoire inférieure" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

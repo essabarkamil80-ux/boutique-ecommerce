@@ -70,8 +70,24 @@
             "label": "Expériences",
             "heading": "Découvrir",
             "card1_title": "Avant / Après",
+            "card1_link": "/pages/avant-apres",
             "card2_title": "Témoignages",
-            "card3_title": "Guide d'utilisation"
+            "card2_link": "/pages/temoignages",
+            "card3_title": "Guide d'utilisation",
+            "card3_link": "/pages/instruction-teeth-impression"
+          }
+        },
+        "mega_help": {
+          "type": "mega_images",
+          "settings": {
+            "label": "Aide & Infos",
+            "heading": "Besoin d'aide ?",
+            "card1_title": "Instructions d'utilisation",
+            "card1_link": "/pages/instructions-to-use",
+            "card2_title": "Prise d'empreinte",
+            "card2_link": "/pages/instruction-teeth-impression",
+            "card3_title": "Centre d'aide",
+            "card3_link": "/pages/help-center"
           }
         },
         "link_contact": {
@@ -86,6 +102,7 @@
         "link_home",
         "mega_prod",
         "mega_exp",
+        "mega_help",
         "link_contact"
       ],
       "settings": {

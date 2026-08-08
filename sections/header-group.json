@@ -50,18 +50,21 @@
           "type": "mega_product",
           "settings": {
             "label": "Facette Dentaire",
-            "link": "/collections/all",
+            "link": "/products/custom-dental-veneers",
             "heading": "Choisissez votre teinte",
             "cta_text": "Voir le produit",
             "sw1_name": "Ivoire",
             "sw1_code": "A3",
             "sw1_color": "#efe4cf",
+            "sw1_link": "/products/custom-dental-veneers",
             "sw2_name": "Blanc naturel",
             "sw2_code": "A1",
             "sw2_color": "#f5f0e6",
+            "sw2_link": "/products/custom-dental-veneers",
             "sw3_name": "Hollywood",
             "sw3_code": "BL2",
-            "sw3_color": "#ffffff"
+            "sw3_color": "#ffffff",
+            "sw3_link": "/products/custom-dental-veneers"
           }
         },
         "mega_exp": {
@@ -89,21 +92,13 @@
             "card3_title": "Centre d'aide",
             "card3_link": "/pages/help-center"
           }
-        },
-        "link_contact": {
-          "type": "link",
-          "settings": {
-            "label": "Contact",
-            "link": "/pages/contact"
-          }
         }
       },
       "block_order": [
         "link_home",
         "mega_prod",
         "mega_exp",
-        "mega_help",
-        "link_contact"
+        "mega_help"
       ],
       "settings": {
         "logo_height": 34,

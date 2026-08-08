@@ -27,6 +27,15 @@
       ],
       "settings": {
         "show_countdown": false,
+        "cd_message": "Livraison offerte · Satisfait ou remboursé 30 jours",
+        "cd_subtext": "Limited-time offer",
+        "cd_show_timer": true,
+        "cd_hours": "12",
+        "cd_lh": "Hrs",
+        "cd_lm": "Mins",
+        "cd_ls": "Secs",
+        "cd_bg": "#0e7a5f",
+        "cd_fg": "#ffffff",
         "auto_rotate": false,
         "change_slides_speed": 5,
         "color_scheme": "scheme-3",
@@ -71,6 +80,7 @@
           "type": "mega_images",
           "settings": {
             "label": "Expériences",
+            "link": "",
             "heading": "Découvrir",
             "card1_title": "Avant / Après",
             "card1_link": "/pages/avant-apres",
@@ -84,6 +94,7 @@
           "type": "mega_images",
           "settings": {
             "label": "Aide & Infos",
+            "link": "",
             "heading": "Besoin d'aide ?",
             "card1_title": "Instructions d'utilisation",
             "card1_link": "/pages/instructions-to-use",
@@ -101,7 +112,8 @@
         "mega_help"
       ],
       "settings": {
-        "logo_height": 34,
+        "logo": "shopify://shop_images/449d2d67-dc6f-4f38-8b96-9a110ef78a02.png",
+        "logo_height": 70,
         "accent": "#12a3a0",
         "show_search": true,
         "show_account": true

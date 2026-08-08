@@ -1,4 +1,3 @@
-{%- comment -%} re-sync marker {%- endcomment -%}
 {% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
 {%- comment -%}
   Clinique Essabar — product landing reproducing the reference DTC structure (veneera-style).
@@ -58,10 +57,6 @@
         {%- if prod != blank -%}
           {%- if prod.compare_at_price > prod.price -%}<span class="ce-price__was">{{ prod.compare_at_price | money }}</span>{%- endif -%}
           <span class="ce-price__now">{{ prod.price | money }}</span>
-          {%- if prod.compare_at_price > prod.price -%}
-            {%- assign ce_disc = prod.compare_at_price | minus: prod.price | times: 100 | divided_by: prod.compare_at_price -%}
-            <span class="ce-price__save">-{{ ce_disc }}%</span>
-          {%- endif -%}
         {%- else -%}
           <span class="ce-price__now">{{ section.settings.fallback_price }}</span>
         {%- endif -%}
@@ -110,23 +105,6 @@
           <span>🚚 Livraison offerte</span>
           <span>🛡️ Garantie 30 jours</span>
         </div>
-
-        {%- if section.settings.buy_accordions != blank -%}
-          <div class="ce-acc">
-            {%- assign acc_rows = section.settings.buy_accordions | newline_to_br | split: '<br />' -%}
-            {%- for row in acc_rows -%}
-              {%- assign rt = row | strip -%}{%- if rt == blank -%}{%- continue -%}{%- endif -%}
-              {%- assign parts = rt | split: '|' -%}
-              {%- assign a_title = parts[0] | strip -%}
-              {%- assign a_body = parts[1] | strip -%}
-              <details class="ce-acc__item">
-                <summary>{{ a_title }}<span class="ce-acc__ico">+</span></summary>
-                {%- if a_body != blank -%}<div class="ce-acc__body">{{ a_body }}</div>{%- endif -%}
-              </details>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-
         <div class="ce-pay">
           <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17.5" text-anchor="middle" font-family="Arial" font-size="11" font-style="italic" font-weight="800" fill="#1434CB">VISA</text></svg>
           <svg viewBox="0 0 40 26"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><circle cx="16.5" cy="13" r="7" fill="#eb001b"/><circle cx="23.5" cy="13" r="7" fill="#f79e1b"/></svg>
@@ -274,10 +252,10 @@
         <article class="ce-rev" {{ block.shopify_attributes }}>
           {%- if block.settings.image != blank -%}<div class="ce-rev__img"><img src="{{ block.settings.image | image_url: width: 500 }}" alt="" loading="lazy"></div>{%- endif -%}
           <div class="ce-rev__body">
-            <div class="ce-rev__top"><span class="ce-stars ce-stars--sm">★★★★★</span><span class="ce-rev__v">✓ Achat vérifié</span></div>
+            <div class="ce-rev__top"><span class="ce-stars ce-stars--sm">★★★★★</span><span class="ce-rev__v">✓ Vérifié</span></div>
             {%- if block.settings.title != blank -%}<h3 class="ce-rev__title">{{ block.settings.title }}</h3>{%- endif -%}
             <p class="ce-rev__text">{{ block.settings.text }}</p>
-            <div class="ce-rev__auth">{{ block.settings.author }}{%- if block.settings.date != blank -%} <span class="ce-rev__date">· {{ block.settings.date }}</span>{%- endif -%}</div>
+            <div class="ce-rev__auth">— {{ block.settings.author }}</div>
           </div>
         </article>
       {%- endfor -%}
@@ -300,16 +278,6 @@
         {%- if section.settings.wa_image != blank -%}<img src="{{ section.settings.wa_image | image_url: width: 700 }}" alt="" loading="lazy">{%- else -%}{{ 'product-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}
       </div>
     </div>
-  </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ SEO TEXT BLOCK ============ {%- endcomment -%}
-  {%- if section.settings.seo_enable -%}
-  <div class="ce-band ce-band--tint">
-    <details class="ce-seo">
-      <summary>En savoir plus sur nos facettes<span class="ce-seo__ico">+</span></summary>
-      <div class="ce-seo__body ce-rte">{{ section.settings.seo_text }}</div>
-    </details>
   </div>
   {%- endif -%}
 
@@ -459,7 +427,6 @@
   #ce-{{ section.id }} .ce-rev__title { font-size: 15px; margin: 0 0 5px; }
   #ce-{{ section.id }} .ce-rev__text { font-size: 13.5px; color: #4a545c; line-height: 1.55; margin: 0 0 10px; }
   #ce-{{ section.id }} .ce-rev__auth { font-size: 12.5px; font-weight: 600; color: #6a747c; }
-  #ce-{{ section.id }} .ce-rev__date { font-weight: 500; color: #9aa4ac; }
 
   /* WhatsApp / support CTA */
   #ce-{{ section.id }} .ce-wa { background: linear-gradient(135deg, var(--ce-acc), var(--ce-acc-dark)); color: #fff; }
@@ -475,23 +442,6 @@
   #ce-{{ section.id }} .ce-sticky__name { font-size: 12px; color: #6a747c; }
   #ce-{{ section.id }} .ce-sticky__price { font-size: 17px; font-weight: 800; color: var(--ce-acc); }
   #ce-{{ section.id }} .ce-sticky .ce-btn { flex: 1; padding: 14px; }
-
-  /* Buy-box accordions */
-  #ce-{{ section.id }} .ce-acc { margin-top: 18px; border-top: 1px solid var(--ce-line); }
-  #ce-{{ section.id }} .ce-acc__item { border-bottom: 1px solid var(--ce-line); }
-  #ce-{{ section.id }} .ce-acc__item summary { list-style: none; cursor: pointer; padding: 13px 2px; font-size: 14px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-  #ce-{{ section.id }} .ce-acc__item summary::-webkit-details-marker { display: none; }
-  #ce-{{ section.id }} .ce-acc__ico { color: var(--ce-acc); font-size: 18px; transition: transform .2s; flex: 0 0 auto; }
-  #ce-{{ section.id }} .ce-acc__item[open] .ce-acc__ico { transform: rotate(45deg); }
-  #ce-{{ section.id }} .ce-acc__body { padding: 0 2px 13px; font-size: 13.5px; color: #55606a; line-height: 1.55; }
-
-  /* SEO block */
-  #ce-{{ section.id }} .ce-seo { max-width: 820px; margin: 0 auto; }
-  #ce-{{ section.id }} .ce-seo summary { list-style: none; cursor: pointer; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 18px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-  #ce-{{ section.id }} .ce-seo summary::-webkit-details-marker { display: none; }
-  #ce-{{ section.id }} .ce-seo__ico { color: var(--ce-acc); font-size: 22px; transition: transform .2s; }
-  #ce-{{ section.id }} .ce-seo[open] .ce-seo__ico { transform: rotate(45deg); }
-  #ce-{{ section.id }} .ce-seo__body { margin-top: 14px; }
 
   @media (min-width: 750px) {
     #ce-{{ section.id }} .ce-hero { grid-template-columns: 1.05fr 1fr; gap: 40px; padding: 36px 18px 20px; align-items: start; }
@@ -624,8 +574,8 @@
   "settings": [
     { "type": "product", "id": "product", "label": "Produit" },
     { "type": "header", "content": "Couleurs" },
-    { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
-    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0b7a78" },
+    { "type": "color", "id": "color_accent", "label": "Accent", "default": "#15776a" },
+    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0f5b51" },
     { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
     { "type": "header", "content": "Hero / Fiche produit" },
     { "type": "text", "id": "brand_name", "label": "Nom de marque", "default": "Clinique Essabar" },
@@ -637,7 +587,6 @@
     { "type": "text", "id": "fallback_price", "label": "Prix (si aucun produit)", "default": "215,99 $" },
     { "type": "text", "id": "steps_title", "label": "Titre des étapes", "default": "Quatre étapes simples" },
     { "type": "text", "id": "cta_add", "label": "Bouton principal", "default": "Ajouter au panier" },
-    { "type": "textarea", "id": "buy_accordions", "label": "Accordéons fiche (Titre | Contenu, un par ligne)", "default": "Détails du produit | Facettes amovibles premium, fabriquées sur-mesure à partir de votre empreinte.\nUtilisation | Se clipsent en quelques secondes, sans colle ni douleur.\nMatériau & entretien | Résine premium sans BPA. Nettoyage à l'eau tiède." },
     { "type": "header", "content": "Section Innovation" },
     { "type": "checkbox", "id": "innov_enable", "label": "Afficher", "default": true },
     { "type": "image_picker", "id": "innov_image", "label": "Image" },
@@ -669,9 +618,6 @@
     { "type": "textarea", "id": "wa_sub", "label": "Texte", "default": "Un tutoriel vidéo et une assistance dédiée vous accompagnent à chaque étape. Votre nouveau sourire vous attend 😁" },
     { "type": "text", "id": "wa_cta1", "label": "Bouton 1", "default": "Commander maintenant" },
     { "type": "image_picker", "id": "wa_image", "label": "Image" },
-    { "type": "header", "content": "Bloc SEO (bas de page)" },
-    { "type": "checkbox", "id": "seo_enable", "label": "Afficher", "default": true },
-    { "type": "richtext", "id": "seo_text", "label": "Texte SEO", "default": "<p>Nos facettes dentaires amovibles offrent une alternative esthétique premium, sans dentiste et sans douleur. Fabriquées sur-mesure à partir de votre empreinte, elles se clipsent en quelques secondes pour un sourire naturel et lumineux, réutilisable au quotidien.</p>" },
     { "type": "header", "content": "Barre mobile" },
     { "type": "text", "id": "sticky_name", "label": "Nom", "default": "Facettes Premium" }
   ],
@@ -680,7 +626,7 @@
     { "type": "shade", "name": "Teinte", "settings": [ { "type": "image_picker", "id": "image", "label": "Image" }, { "type": "text", "id": "name", "label": "Nom", "default": "Blanc naturel" }, { "type": "text", "id": "code", "label": "Référence", "default": "A1" } ] },
     { "type": "ugc", "name": "Vidéo client", "settings": [ { "type": "video", "id": "video", "label": "Vidéo" }, { "type": "text", "id": "video_url", "label": "OU URL .mp4" }, { "type": "image_picker", "id": "poster", "label": "Miniature" } ] },
     { "type": "ba_photo", "name": "Photo avant/après", "settings": [ { "type": "image_picker", "id": "image", "label": "Image" } ] },
-    { "type": "review", "name": "Avis", "settings": [ { "type": "image_picker", "id": "image", "label": "Photo" }, { "type": "text", "id": "title", "label": "Titre", "default": "Bluffant de réalisme" }, { "type": "textarea", "id": "text", "label": "Avis", "default": "Résultat incroyable, personne ne voit la différence." }, { "type": "text", "id": "author", "label": "Auteur", "default": "Sarah M." }, { "type": "text", "id": "date", "label": "Date", "default": "" } ] },
+    { "type": "review", "name": "Avis", "settings": [ { "type": "image_picker", "id": "image", "label": "Photo" }, { "type": "text", "id": "title", "label": "Titre", "default": "Bluffant de réalisme" }, { "type": "textarea", "id": "text", "label": "Avis", "default": "Résultat incroyable, personne ne voit la différence." }, { "type": "text", "id": "author", "label": "Auteur", "default": "Sarah M." } ] },
     { "type": "faq", "name": "FAQ", "settings": [ { "type": "text", "id": "question", "label": "Question", "default": "Est-ce que ça abîme mes dents ?" }, { "type": "richtext", "id": "answer", "label": "Réponse", "default": "<p>Non, nos facettes sont amovibles et non invasives.</p>" } ] }
   ],
   "presets": [

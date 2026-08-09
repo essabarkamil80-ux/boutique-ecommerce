@@ -7,7 +7,6 @@
 
 <footer id="cef-{{ section.id }}" class="cef" style="--cef-acc: {{ section.settings.accent }}; --cef-acc-dark: {{ section.settings.accent_dark }}; --cef-ink: {{ section.settings.color_ink }};">
 
-  {%- comment -%} ===== NEWSLETTER BAND ===== {%- endcomment -%}
   {%- if section.settings.nl_enable -%}
   <div class="cef-nl">
     <div class="cef-nl__inner">
@@ -30,7 +29,6 @@
   </div>
   {%- endif -%}
 
-  {%- comment -%} ===== LOGO + QUICK LINKS ===== {%- endcomment -%}
   <div class="cef-top">
     <a href="{{ routes.root_url }}" class="cef-logo">
       {%- if section.settings.logo != blank -%}
@@ -40,39 +38,40 @@
       {%- endif -%}
     </a>
     <div class="cef-quick">
-      {%- for i in (1..3) -%}
-        {%- assign ql = 'q' | append: i | append: '_label' -%}
-        {%- assign qh = 'q' | append: i | append: '_link' -%}
-        {%- if section.settings[ql] != blank -%}
-          <a href="{{ section.settings[qh] | default: '#' }}" class="cef-quick__item">{{ section.settings[ql] }}</a>
-        {%- endif -%}
-      {%- endfor -%}
+      {%- if section.settings.q1_label != blank -%}<a href="{{ section.settings.q1_link | default: '/pages/help-center' }}" class="cef-quick__item">{{ section.settings.q1_label }}</a>{%- endif -%}
+      {%- if section.settings.q2_label != blank -%}<a href="{{ section.settings.q2_link | default: '/pages/contact' }}" class="cef-quick__item">{{ section.settings.q2_label }}</a>{%- endif -%}
+      {%- if section.settings.q3_label != blank -%}<a href="{{ section.settings.q3_link | default: '/pages/contact' }}" class="cef-quick__item">{{ section.settings.q3_label }}</a>{%- endif -%}
     </div>
   </div>
 
   <div class="cef-divider"></div>
 
-  {%- comment -%} ===== COLUMNS ===== {%- endcomment -%}
   <div class="cef-cols">
-    {%- for c in (1..3) -%}
-      {%- assign ct = 'c' | append: c | append: '_title' -%}
-      {%- if section.settings[ct] != blank -%}
-        <div class="cef-col">
-          <h3 class="cef-col__title">{{ section.settings[ct] }}</h3>
-          <ul>
-            {%- for l in (1..5) -%}
-              {%- assign ll = 'c' | append: c | append: '_l' | append: l | append: '_label' -%}
-              {%- assign lh = 'c' | append: c | append: '_l' | append: l | append: '_link' -%}
-              {%- if section.settings[ll] != blank -%}
-                <li><a href="{{ section.settings[lh] | default: '#' }}">{{ section.settings[ll] }}</a></li>
-              {%- endif -%}
-            {%- endfor -%}
-          </ul>
-        </div>
-      {%- endif -%}
-    {%- endfor -%}
-
-    {%- comment -%} Social column {%- endcomment -%}
+    <div class="cef-col">
+      <h3 class="cef-col__title">{{ section.settings.c1_title }}</h3>
+      <ul>
+        {%- if section.settings.c1_l1 != blank -%}<li><a href="{{ section.settings.c1_l1_link | default: '/products/custom-dental-veneers' }}">{{ section.settings.c1_l1 }}</a></li>{%- endif -%}
+        {%- if section.settings.c1_l2 != blank -%}<li><a href="{{ section.settings.c1_l2_link | default: '/collections/all' }}">{{ section.settings.c1_l2 }}</a></li>{%- endif -%}
+        {%- if section.settings.c1_l3 != blank -%}<li><a href="{{ section.settings.c1_l3_link | default: '/pages/instruction-teeth-impression' }}">{{ section.settings.c1_l3 }}</a></li>{%- endif -%}
+      </ul>
+    </div>
+    <div class="cef-col">
+      <h3 class="cef-col__title">{{ section.settings.c2_title }}</h3>
+      <ul>
+        {%- if section.settings.c2_l1 != blank -%}<li><a href="{{ section.settings.c2_l1_link | default: '/pages/avant-apres' }}">{{ section.settings.c2_l1 }}</a></li>{%- endif -%}
+        {%- if section.settings.c2_l2 != blank -%}<li><a href="{{ section.settings.c2_l2_link | default: '/pages/temoignages' }}">{{ section.settings.c2_l2 }}</a></li>{%- endif -%}
+        {%- if section.settings.c2_l3 != blank -%}<li><a href="{{ section.settings.c2_l3_link | default: '/pages/instruction-teeth-impression' }}">{{ section.settings.c2_l3 }}</a></li>{%- endif -%}
+      </ul>
+    </div>
+    <div class="cef-col">
+      <h3 class="cef-col__title">{{ section.settings.c3_title }}</h3>
+      <ul>
+        {%- if section.settings.c3_l1 != blank -%}<li><a href="{{ section.settings.c3_l1_link | default: '/pages/instructions-to-use' }}">{{ section.settings.c3_l1 }}</a></li>{%- endif -%}
+        {%- if section.settings.c3_l2 != blank -%}<li><a href="{{ section.settings.c3_l2_link | default: '/pages/instruction-teeth-impression' }}">{{ section.settings.c3_l2 }}</a></li>{%- endif -%}
+        {%- if section.settings.c3_l3 != blank -%}<li><a href="{{ section.settings.c3_l3_link | default: '/pages/help-center' }}">{{ section.settings.c3_l3 }}</a></li>{%- endif -%}
+        {%- if section.settings.c3_l4 != blank -%}<li><a href="{{ section.settings.c3_l4_link | default: '/pages/contact' }}">{{ section.settings.c3_l4 }}</a></li>{%- endif -%}
+      </ul>
+    </div>
     {%- if section.settings.soc_instagram != blank or section.settings.soc_tiktok != blank or section.settings.soc_facebook != blank or section.settings.soc_youtube != blank -%}
     <div class="cef-col">
       <h3 class="cef-col__title">{{ section.settings.social_title }}</h3>
@@ -86,7 +85,6 @@
     {%- endif -%}
   </div>
 
-  {%- comment -%} ===== PAYMENT ===== {%- endcomment -%}
   {%- if section.settings.pay_enable -%}
   <div class="cef-pay">
     <svg viewBox="0 0 40 26" role="img" aria-label="Visa"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17.4" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-style="italic" font-weight="700" fill="#1434CB" letter-spacing="-.4">VISA</text></svg>
@@ -100,15 +98,14 @@
   </div>
   {%- endif -%}
 
-  {%- comment -%} ===== BOTTOM BAR ===== {%- endcomment -%}
   <div class="cef-bottom">
-    <span class="cef-copy">{{ section.settings.copyright | default: '© ' | append: shop.name }}</span>
+    <span class="cef-copy">{{ section.settings.copyright }}</span>
     <div class="cef-legal">
-      {%- for i in (1..5) -%}
-        {%- assign ll = 'lg' | append: i | append: '_label' -%}
-        {%- assign lh = 'lg' | append: i | append: '_link' -%}
-        {%- if section.settings[ll] != blank -%}<a href="{{ section.settings[lh] | default: '#' }}">{{ section.settings[ll] }}</a>{%- endif -%}
-      {%- endfor -%}
+      {%- if section.settings.lg1_label != blank -%}<a href="{{ section.settings.lg1_link | default: '/policies/terms-of-service' }}">{{ section.settings.lg1_label }}</a>{%- endif -%}
+      {%- if section.settings.lg2_label != blank -%}<a href="{{ section.settings.lg2_link | default: '/policies/refund-policy' }}">{{ section.settings.lg2_label }}</a>{%- endif -%}
+      {%- if section.settings.lg3_label != blank -%}<a href="{{ section.settings.lg3_link | default: '/policies/shipping-policy' }}">{{ section.settings.lg3_label }}</a>{%- endif -%}
+      {%- if section.settings.lg4_label != blank -%}<a href="{{ section.settings.lg4_link | default: '/policies/privacy-policy' }}">{{ section.settings.lg4_label }}</a>{%- endif -%}
+      {%- if section.settings.lg5_label != blank -%}<a href="{{ section.settings.lg5_link | default: '/pages/contact' }}">{{ section.settings.lg5_label }}</a>{%- endif -%}
     </div>
   </div>
 
@@ -180,48 +177,38 @@
     { "type": "image_picker", "id": "logo", "label": "Logo" },
     { "type": "text", "id": "brand_name", "label": "Nom (si pas de logo)", "default": "Clinique Essabar" },
     { "type": "text", "id": "q1_label", "label": "Lien rapide 1", "default": "Aide & FAQ" },
-    { "type": "url", "id": "q1_link", "label": "Lien 1", "default": "/pages/help-center" },
+    { "type": "url", "id": "q1_link", "label": "URL 1 (option)" },
     { "type": "text", "id": "q2_label", "label": "Lien rapide 2", "default": "Garantie" },
-    { "type": "url", "id": "q2_link", "label": "Lien 2", "default": "/pages/contact" },
+    { "type": "url", "id": "q2_link", "label": "URL 2 (option)" },
     { "type": "text", "id": "q3_label", "label": "Lien rapide 3", "default": "Consultation" },
-    { "type": "url", "id": "q3_link", "label": "Lien 3", "default": "/pages/contact" },
+    { "type": "url", "id": "q3_link", "label": "URL 3 (option)" },
     { "type": "header", "content": "Colonne 1 — Produits" },
     { "type": "text", "id": "c1_title", "label": "Titre", "default": "Produits" },
-    { "type": "text", "id": "c1_l1_label", "label": "Lien 1", "default": "Facette Dentaire" },
-    { "type": "url", "id": "c1_l1_link", "label": "URL 1", "default": "/products/custom-dental-veneers" },
-    { "type": "text", "id": "c1_l2_label", "label": "Lien 2", "default": "Tous les produits" },
-    { "type": "url", "id": "c1_l2_link", "label": "URL 2", "default": "/collections/all" },
-    { "type": "text", "id": "c1_l3_label", "label": "Lien 3", "default": "Kit d'empreinte" },
-    { "type": "url", "id": "c1_l3_link", "label": "URL 3", "default": "/pages/instruction-teeth-impression" },
-    { "type": "text", "id": "c1_l4_label", "label": "Lien 4" },
-    { "type": "url", "id": "c1_l4_link", "label": "URL 4" },
-    { "type": "text", "id": "c1_l5_label", "label": "Lien 5" },
-    { "type": "url", "id": "c1_l5_link", "label": "URL 5" },
+    { "type": "text", "id": "c1_l1", "label": "Lien 1", "default": "Facette Dentaire" },
+    { "type": "url", "id": "c1_l1_link", "label": "URL 1 (option)" },
+    { "type": "text", "id": "c1_l2", "label": "Lien 2", "default": "Tous les produits" },
+    { "type": "url", "id": "c1_l2_link", "label": "URL 2 (option)" },
+    { "type": "text", "id": "c1_l3", "label": "Lien 3", "default": "Kit d'empreinte" },
+    { "type": "url", "id": "c1_l3_link", "label": "URL 3 (option)" },
     { "type": "header", "content": "Colonne 2 — Expériences" },
     { "type": "text", "id": "c2_title", "label": "Titre", "default": "Expériences" },
-    { "type": "text", "id": "c2_l1_label", "label": "Lien 1", "default": "Avant / Après" },
-    { "type": "url", "id": "c2_l1_link", "label": "URL 1", "default": "/pages/avant-apres" },
-    { "type": "text", "id": "c2_l2_label", "label": "Lien 2", "default": "Témoignages" },
-    { "type": "url", "id": "c2_l2_link", "label": "URL 2", "default": "/pages/temoignages" },
-    { "type": "text", "id": "c2_l3_label", "label": "Lien 3", "default": "Guide d'utilisation" },
-    { "type": "url", "id": "c2_l3_link", "label": "URL 3", "default": "/pages/instruction-teeth-impression" },
-    { "type": "text", "id": "c2_l4_label", "label": "Lien 4" },
-    { "type": "url", "id": "c2_l4_link", "label": "URL 4" },
-    { "type": "text", "id": "c2_l5_label", "label": "Lien 5" },
-    { "type": "url", "id": "c2_l5_link", "label": "URL 5" },
+    { "type": "text", "id": "c2_l1", "label": "Lien 1", "default": "Avant / Après" },
+    { "type": "url", "id": "c2_l1_link", "label": "URL 1 (option)" },
+    { "type": "text", "id": "c2_l2", "label": "Lien 2", "default": "Témoignages" },
+    { "type": "url", "id": "c2_l2_link", "label": "URL 2 (option)" },
+    { "type": "text", "id": "c2_l3", "label": "Lien 3", "default": "Guide d'utilisation" },
+    { "type": "url", "id": "c2_l3_link", "label": "URL 3 (option)" },
     { "type": "header", "content": "Colonne 3 — Aide & Infos" },
     { "type": "text", "id": "c3_title", "label": "Titre", "default": "Aide & Infos" },
-    { "type": "text", "id": "c3_l1_label", "label": "Lien 1", "default": "Instructions d'utilisation" },
-    { "type": "url", "id": "c3_l1_link", "label": "URL 1", "default": "/pages/instructions-to-use" },
-    { "type": "text", "id": "c3_l2_label", "label": "Lien 2", "default": "Prise d'empreinte" },
-    { "type": "url", "id": "c3_l2_link", "label": "URL 2", "default": "/pages/instruction-teeth-impression" },
-    { "type": "text", "id": "c3_l3_label", "label": "Lien 3", "default": "Centre d'aide" },
-    { "type": "url", "id": "c3_l3_link", "label": "URL 3", "default": "/pages/help-center" },
-    { "type": "text", "id": "c3_l4_label", "label": "Lien 4", "default": "Contact" },
-    { "type": "url", "id": "c3_l4_link", "label": "URL 4", "default": "/pages/contact" },
-    { "type": "text", "id": "c3_l5_label", "label": "Lien 5" },
-    { "type": "url", "id": "c3_l5_link", "label": "URL 5" },
-    { "type": "header", "content": "Réseaux sociaux" },
+    { "type": "text", "id": "c3_l1", "label": "Lien 1", "default": "Instructions d'utilisation" },
+    { "type": "url", "id": "c3_l1_link", "label": "URL 1 (option)" },
+    { "type": "text", "id": "c3_l2", "label": "Lien 2", "default": "Prise d'empreinte" },
+    { "type": "url", "id": "c3_l2_link", "label": "URL 2 (option)" },
+    { "type": "text", "id": "c3_l3", "label": "Lien 3", "default": "Centre d'aide" },
+    { "type": "url", "id": "c3_l3_link", "label": "URL 3 (option)" },
+    { "type": "text", "id": "c3_l4", "label": "Lien 4", "default": "Contact" },
+    { "type": "url", "id": "c3_l4_link", "label": "URL 4 (option)" },
+    { "type": "header", "content": "Réseaux sociaux (collez vos liens)" },
     { "type": "text", "id": "social_title", "label": "Titre", "default": "Réseaux" },
     { "type": "url", "id": "soc_instagram", "label": "Instagram" },
     { "type": "url", "id": "soc_tiktok", "label": "TikTok" },
@@ -232,15 +219,15 @@
     { "type": "header", "content": "Bas de page (mentions légales)" },
     { "type": "text", "id": "copyright", "label": "Copyright", "default": "© 2026 Clinique Essabar" },
     { "type": "text", "id": "lg1_label", "label": "Lien légal 1", "default": "Conditions générales" },
-    { "type": "url", "id": "lg1_link", "label": "URL 1", "default": "/policies/terms-of-service" },
+    { "type": "url", "id": "lg1_link", "label": "URL 1 (option)" },
     { "type": "text", "id": "lg2_label", "label": "Lien légal 2", "default": "Remboursement" },
-    { "type": "url", "id": "lg2_link", "label": "URL 2", "default": "/policies/refund-policy" },
+    { "type": "url", "id": "lg2_link", "label": "URL 2 (option)" },
     { "type": "text", "id": "lg3_label", "label": "Lien légal 3", "default": "Livraison" },
-    { "type": "url", "id": "lg3_link", "label": "URL 3", "default": "/policies/shipping-policy" },
+    { "type": "url", "id": "lg3_link", "label": "URL 3 (option)" },
     { "type": "text", "id": "lg4_label", "label": "Lien légal 4", "default": "Confidentialité" },
-    { "type": "url", "id": "lg4_link", "label": "URL 4", "default": "/policies/privacy-policy" },
+    { "type": "url", "id": "lg4_link", "label": "URL 4 (option)" },
     { "type": "text", "id": "lg5_label", "label": "Lien légal 5", "default": "Contact" },
-    { "type": "url", "id": "lg5_link", "label": "URL 5", "default": "/pages/contact" }
+    { "type": "url", "id": "lg5_link", "label": "URL 5 (option)" }
   ]
 }
 {% endschema %}

@@ -1,0 +1,246 @@
+{% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
+{%- comment -%} Clinique Essabar — footer (own code, reference DTC layout) {%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<footer id="cef-{{ section.id }}" class="cef" style="--cef-acc: {{ section.settings.accent }}; --cef-acc-dark: {{ section.settings.accent_dark }}; --cef-ink: {{ section.settings.color_ink }};">
+
+  {%- comment -%} ===== NEWSLETTER BAND ===== {%- endcomment -%}
+  {%- if section.settings.nl_enable -%}
+  <div class="cef-nl">
+    <div class="cef-nl__inner">
+      <div class="cef-nl__txt">
+        <h2 class="cef-nl__title">{{ section.settings.nl_title }}</h2>
+        {%- if section.settings.nl_text != blank -%}<p class="cef-nl__sub">{{ section.settings.nl_text }}</p>{%- endif -%}
+      </div>
+      <div class="cef-nl__form">
+        {%- form 'customer' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="cef-nl__row">
+            <input type="email" name="contact[email]" placeholder="{{ section.settings.nl_placeholder }}" aria-label="Email" required>
+            <button type="submit" class="cef-nl__btn">{{ section.settings.nl_button }}</button>
+          </div>
+          {%- if form.posted_successfully? -%}<p class="cef-nl__ok">Merci, vous êtes inscrit·e !</p>{%- endif -%}
+        {%- endform -%}
+        {%- if section.settings.nl_note != blank -%}<p class="cef-nl__note">{{ section.settings.nl_note }}</p>{%- endif -%}
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== LOGO + QUICK LINKS ===== {%- endcomment -%}
+  <div class="cef-top">
+    <a href="{{ routes.root_url }}" class="cef-logo">
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 420 }}" alt="{{ section.settings.brand_name | default: shop.name | escape }}" loading="lazy">
+      {%- else -%}
+        <span class="cef-logo__txt">{{ section.settings.brand_name | default: shop.name }}</span>
+      {%- endif -%}
+    </a>
+    <div class="cef-quick">
+      {%- for i in (1..3) -%}
+        {%- assign ql = 'q' | append: i | append: '_label' -%}
+        {%- assign qh = 'q' | append: i | append: '_link' -%}
+        {%- if section.settings[ql] != blank -%}
+          <a href="{{ section.settings[qh] | default: '#' }}" class="cef-quick__item">{{ section.settings[ql] }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <div class="cef-divider"></div>
+
+  {%- comment -%} ===== COLUMNS ===== {%- endcomment -%}
+  <div class="cef-cols">
+    {%- for c in (1..3) -%}
+      {%- assign ct = 'c' | append: c | append: '_title' -%}
+      {%- if section.settings[ct] != blank -%}
+        <div class="cef-col">
+          <h3 class="cef-col__title">{{ section.settings[ct] }}</h3>
+          <ul>
+            {%- for l in (1..5) -%}
+              {%- assign ll = 'c' | append: c | append: '_l' | append: l | append: '_label' -%}
+              {%- assign lh = 'c' | append: c | append: '_l' | append: l | append: '_link' -%}
+              {%- if section.settings[ll] != blank -%}
+                <li><a href="{{ section.settings[lh] | default: '#' }}">{{ section.settings[ll] }}</a></li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%} Social column {%- endcomment -%}
+    {%- if section.settings.soc_instagram != blank or section.settings.soc_tiktok != blank or section.settings.soc_facebook != blank or section.settings.soc_youtube != blank -%}
+    <div class="cef-col">
+      <h3 class="cef-col__title">{{ section.settings.social_title }}</h3>
+      <ul class="cef-social">
+        {%- if section.settings.soc_instagram != blank -%}<li><a href="{{ section.settings.soc_instagram }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a></li>{%- endif -%}
+        {%- if section.settings.soc_tiktok != blank -%}<li><a href="{{ section.settings.soc_tiktok }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2 1.6 3.6 3.5 3.9v2.4c-1.3.1-2.5-.3-3.5-1v5.9c0 3-2.2 5.3-5.2 5.3S6 19.2 6 16.3c0-2.7 2-5 4.8-5.2v2.5c-1.3.2-2.3 1.2-2.3 2.7 0 1.5 1.1 2.6 2.6 2.6s2.6-1.1 2.6-2.9V3z"/></svg>TikTok</a></li>{%- endif -%}
+        {%- if section.settings.soc_facebook != blank -%}<li><a href="{{ section.settings.soc_facebook }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h2.5l.5-3H14V4.5c0-.9.3-1.5 1.6-1.5H17V.3C16.7.3 15.6.2 14.4.2 11.9.2 10.3 1.7 10.3 4.4V6H8v3h2.3v9H14z"/></svg>Facebook</a></li>{%- endif -%}
+        {%- if section.settings.soc_youtube != blank -%}<li><a href="{{ section.settings.soc_youtube }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.5c-.3-1-1-1.7-2-2C19 5 12 5 12 5s-7 0-9 .5c-1 .3-1.7 1-2 2C.5 9.4.5 12 .5 12s0 2.6.5 4.5c.3 1 1 1.7 2 2 2 .5 9 .5 9 .5s7 0 9-.5c1-.3 1.7-1 2-2 .5-1.9.5-4.5.5-4.5s0-2.6-.5-4.5zM9.7 15.3V8.7l5.8 3.3z"/></svg>YouTube</a></li>{%- endif -%}
+      </ul>
+    </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} ===== PAYMENT ===== {%- endcomment -%}
+  {%- if section.settings.pay_enable -%}
+  <div class="cef-pay">
+    <svg viewBox="0 0 40 26" role="img" aria-label="Visa"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17.4" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-style="italic" font-weight="700" fill="#1434CB" letter-spacing="-.4">VISA</text></svg>
+    <svg viewBox="0 0 40 26" role="img" aria-label="Mastercard"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><circle cx="16.6" cy="13" r="6.4" fill="#EB001B"/><circle cx="23.4" cy="13" r="6.4" fill="#F79E1B"/><path d="M20 8.1a6.4 6.4 0 0 1 0 9.8 6.4 6.4 0 0 1 0-9.8z" fill="#FF5F00"/></svg>
+    <svg viewBox="0 0 40 26" role="img" aria-label="American Express"><rect width="40" height="26" rx="4" fill="#1F72CD"/><text x="20" y="16.2" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.3" font-weight="800" fill="#fff" letter-spacing=".2">AMEX</text></svg>
+    <svg viewBox="0 0 40 26" role="img" aria-label="PayPal"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17" text-anchor="middle" font-family="Arial,sans-serif" font-size="9.5" font-style="italic" font-weight="800"><tspan fill="#003087">Pay</tspan><tspan fill="#0079C1">Pal</tspan></text></svg>
+    <svg viewBox="0 0 40 26" role="img" aria-label="Apple Pay"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><path d="M14.7 9.9c-.28.33-.73.59-1.18.55-.06-.45.16-.93.42-1.23.28-.34.77-.58 1.17-.6.05.47-.13.94-.41 1.28zm.4.64c-.65-.04-1.2.37-1.51.37-.31 0-.79-.35-1.3-.34-.67.01-1.29.39-1.63 1-.7 1.2-.18 2.98.5 3.96.33.48.73 1.02 1.25 1 .5-.02.69-.32 1.29-.32.6 0 .78.32 1.3.31.54-.01.88-.49 1.21-.97.38-.55.54-1.09.55-1.12-.01-.01-1.05-.41-1.06-1.6-.01-1 .81-1.48.85-1.51-.47-.69-1.19-.77-1.45-.79z" fill="#000"/><text x="26.5" y="16.6" text-anchor="middle" font-family="Arial,sans-serif" font-size="8.5" font-weight="600" fill="#000">Pay</text></svg>
+    <svg viewBox="0 0 40 26" role="img" aria-label="Google Pay"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="15.5" y="16.6" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#4285F4">G</text><text x="26" y="16.6" text-anchor="middle" font-family="Arial,sans-serif" font-size="8.5" font-weight="600" fill="#5F6368">Pay</text></svg>
+    <svg viewBox="0 0 40 26" role="img" aria-label="Klarna"><rect width="40" height="26" rx="4" fill="#FFB3C7"/><text x="20" y="17" text-anchor="middle" font-family="Arial,sans-serif" font-size="8.5" font-weight="800" fill="#0A0B09" letter-spacing=".2">Klarna.</text></svg>
+    <svg viewBox="0 0 40 26" role="img" aria-label="Shop Pay"><rect width="40" height="26" rx="4" fill="#5A31F4"/><text x="20" y="16.8" text-anchor="middle" font-family="Arial,sans-serif" font-size="9.5" font-weight="800" fill="#fff" letter-spacing=".3">shop</text></svg>
+  </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== BOTTOM BAR ===== {%- endcomment -%}
+  <div class="cef-bottom">
+    <span class="cef-copy">{{ section.settings.copyright | default: '© ' | append: shop.name }}</span>
+    <div class="cef-legal">
+      {%- for i in (1..5) -%}
+        {%- assign ll = 'lg' | append: i | append: '_label' -%}
+        {%- assign lh = 'lg' | append: i | append: '_link' -%}
+        {%- if section.settings[ll] != blank -%}<a href="{{ section.settings[lh] | default: '#' }}">{{ section.settings[ll] }}</a>{%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+</footer>
+
+{%- style -%}
+  #cef-{{ section.id }}.cef { background: #fff; color: var(--cef-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; padding-bottom: 24px; }
+  #cef-{{ section.id }} * { box-sizing: border-box; }
+  #cef-{{ section.id }} a { color: inherit; text-decoration: none; }
+  #cef-{{ section.id }} h2, #cef-{{ section.id }} h3 { font-family: 'Manrope', sans-serif; }
+
+  #cef-{{ section.id }} .cef-nl { max-width: 1180px; margin: 0 auto 34px; padding: 0 20px; }
+  #cef-{{ section.id }} .cef-nl__inner { background: linear-gradient(120deg, #f4e9c8, #bfe3d6 55%, var(--cef-acc)); border-radius: 20px; padding: 34px 32px; display: grid; grid-template-columns: 1fr; gap: 20px; align-items: center; }
+  #cef-{{ section.id }} .cef-nl__title { font-weight: 800; font-size: clamp(22px, 3vw, 30px); color: var(--cef-ink); margin: 0 0 8px; }
+  #cef-{{ section.id }} .cef-nl__sub { font-size: 15.5px; color: #2e3b3a; line-height: 1.5; margin: 0; max-width: 460px; }
+  #cef-{{ section.id }} .cef-nl__row { display: flex; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px -14px rgba(0,0,0,.3); }
+  #cef-{{ section.id }} .cef-nl__row input { flex: 1; border: 0; padding: 16px 18px; font-size: 15px; outline: none; background: transparent; color: var(--cef-ink); }
+  #cef-{{ section.id }} .cef-nl__btn { border: 0; background: var(--cef-ink); color: #fff; font-family: 'Manrope', sans-serif; font-weight: 800; padding: 0 24px; cursor: pointer; font-size: 15px; }
+  #cef-{{ section.id }} .cef-nl__note { font-size: 12.5px; color: #2e3b3a; margin: 10px 2px 0; }
+  #cef-{{ section.id }} .cef-nl__ok { font-size: 13px; color: var(--cef-acc-dark); margin: 8px 2px 0; font-weight: 700; }
+
+  #cef-{{ section.id }} .cef-top { max-width: 1180px; margin: 0 auto; padding: 8px 20px 0; display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: space-between; }
+  #cef-{{ section.id }} .cef-logo img { height: 40px; width: auto; display: block; }
+  #cef-{{ section.id }} .cef-logo__txt { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 24px; color: var(--cef-acc-dark); }
+  #cef-{{ section.id }} .cef-quick { display: flex; flex-wrap: wrap; gap: 24px; }
+  #cef-{{ section.id }} .cef-quick__item { font-weight: 600; font-size: 14.5px; color: var(--cef-acc-dark); }
+  #cef-{{ section.id }} .cef-quick__item:hover { color: var(--cef-acc); }
+
+  #cef-{{ section.id }} .cef-divider { max-width: 1180px; margin: 22px auto; height: 1px; background: #e8ecec; }
+
+  #cef-{{ section.id }} .cef-cols { max-width: 1180px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 20px; }
+  #cef-{{ section.id }} .cef-col__title { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cef-ink); margin: 0 0 14px; }
+  #cef-{{ section.id }} .cef-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  #cef-{{ section.id }} .cef-col a { font-size: 14.5px; color: #55606a; }
+  #cef-{{ section.id }} .cef-col a:hover { color: var(--cef-acc); }
+  #cef-{{ section.id }} .cef-social a { display: inline-flex; align-items: center; gap: 9px; }
+  #cef-{{ section.id }} .cef-social svg { width: 18px; height: 18px; }
+
+  #cef-{{ section.id }} .cef-pay { max-width: 1180px; margin: 34px auto 0; padding: 0 20px; display: flex; flex-wrap: wrap; gap: 7px; }
+  #cef-{{ section.id }} .cef-pay svg { width: 40px; height: 26px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+
+  #cef-{{ section.id }} .cef-bottom { max-width: 1180px; margin: 26px auto 0; padding: 20px 20px 0; border-top: 1px solid #e8ecec; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; }
+  #cef-{{ section.id }} .cef-copy { font-size: 13px; color: #8a949c; }
+  #cef-{{ section.id }} .cef-legal { display: flex; flex-wrap: wrap; gap: 22px; }
+  #cef-{{ section.id }} .cef-legal a { font-size: 13px; color: #55606a; }
+  #cef-{{ section.id }} .cef-legal a:hover { color: var(--cef-acc); }
+
+  @media (min-width: 750px) {
+    #cef-{{ section.id }} .cef-nl__inner { grid-template-columns: 1.1fr 1fr; padding: 40px; }
+    #cef-{{ section.id }} .cef-cols { grid-template-columns: repeat(4, 1fr); gap: 28px; }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Footer Clinique",
+  "settings": [
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#12a3a0" },
+    { "type": "color", "id": "accent_dark", "label": "Accent foncé", "default": "#0b7a78" },
+    { "type": "color", "id": "color_ink", "label": "Texte", "default": "#14201f" },
+    { "type": "header", "content": "Bandeau newsletter" },
+    { "type": "checkbox", "id": "nl_enable", "label": "Afficher", "default": true },
+    { "type": "text", "id": "nl_title", "label": "Titre", "default": "Offres exclusives" },
+    { "type": "textarea", "id": "nl_text", "label": "Texte", "default": "Restez informé·e et profitez d'offres et de promotions réservées." },
+    { "type": "text", "id": "nl_placeholder", "label": "Placeholder email", "default": "Votre adresse email" },
+    { "type": "text", "id": "nl_button", "label": "Bouton", "default": "OK" },
+    { "type": "text", "id": "nl_note", "label": "Note", "default": "Inscrivez-vous à la newsletter Clinique Essabar." },
+    { "type": "header", "content": "Logo + liens rapides" },
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "text", "id": "brand_name", "label": "Nom (si pas de logo)", "default": "Clinique Essabar" },
+    { "type": "text", "id": "q1_label", "label": "Lien rapide 1", "default": "Aide & FAQ" },
+    { "type": "url", "id": "q1_link", "label": "Lien 1", "default": "/pages/help-center" },
+    { "type": "text", "id": "q2_label", "label": "Lien rapide 2", "default": "Garantie" },
+    { "type": "url", "id": "q2_link", "label": "Lien 2", "default": "/pages/contact" },
+    { "type": "text", "id": "q3_label", "label": "Lien rapide 3", "default": "Consultation" },
+    { "type": "url", "id": "q3_link", "label": "Lien 3", "default": "/pages/contact" },
+    { "type": "header", "content": "Colonne 1 — Produits" },
+    { "type": "text", "id": "c1_title", "label": "Titre", "default": "Produits" },
+    { "type": "text", "id": "c1_l1_label", "label": "Lien 1", "default": "Facette Dentaire" },
+    { "type": "url", "id": "c1_l1_link", "label": "URL 1", "default": "/products/custom-dental-veneers" },
+    { "type": "text", "id": "c1_l2_label", "label": "Lien 2", "default": "Tous les produits" },
+    { "type": "url", "id": "c1_l2_link", "label": "URL 2", "default": "/collections/all" },
+    { "type": "text", "id": "c1_l3_label", "label": "Lien 3", "default": "Kit d'empreinte" },
+    { "type": "url", "id": "c1_l3_link", "label": "URL 3", "default": "/pages/instruction-teeth-impression" },
+    { "type": "text", "id": "c1_l4_label", "label": "Lien 4" },
+    { "type": "url", "id": "c1_l4_link", "label": "URL 4" },
+    { "type": "text", "id": "c1_l5_label", "label": "Lien 5" },
+    { "type": "url", "id": "c1_l5_link", "label": "URL 5" },
+    { "type": "header", "content": "Colonne 2 — Expériences" },
+    { "type": "text", "id": "c2_title", "label": "Titre", "default": "Expériences" },
+    { "type": "text", "id": "c2_l1_label", "label": "Lien 1", "default": "Avant / Après" },
+    { "type": "url", "id": "c2_l1_link", "label": "URL 1", "default": "/pages/avant-apres" },
+    { "type": "text", "id": "c2_l2_label", "label": "Lien 2", "default": "Témoignages" },
+    { "type": "url", "id": "c2_l2_link", "label": "URL 2", "default": "/pages/temoignages" },
+    { "type": "text", "id": "c2_l3_label", "label": "Lien 3", "default": "Guide d'utilisation" },
+    { "type": "url", "id": "c2_l3_link", "label": "URL 3", "default": "/pages/instruction-teeth-impression" },
+    { "type": "text", "id": "c2_l4_label", "label": "Lien 4" },
+    { "type": "url", "id": "c2_l4_link", "label": "URL 4" },
+    { "type": "text", "id": "c2_l5_label", "label": "Lien 5" },
+    { "type": "url", "id": "c2_l5_link", "label": "URL 5" },
+    { "type": "header", "content": "Colonne 3 — Aide & Infos" },
+    { "type": "text", "id": "c3_title", "label": "Titre", "default": "Aide & Infos" },
+    { "type": "text", "id": "c3_l1_label", "label": "Lien 1", "default": "Instructions d'utilisation" },
+    { "type": "url", "id": "c3_l1_link", "label": "URL 1", "default": "/pages/instructions-to-use" },
+    { "type": "text", "id": "c3_l2_label", "label": "Lien 2", "default": "Prise d'empreinte" },
+    { "type": "url", "id": "c3_l2_link", "label": "URL 2", "default": "/pages/instruction-teeth-impression" },
+    { "type": "text", "id": "c3_l3_label", "label": "Lien 3", "default": "Centre d'aide" },
+    { "type": "url", "id": "c3_l3_link", "label": "URL 3", "default": "/pages/help-center" },
+    { "type": "text", "id": "c3_l4_label", "label": "Lien 4", "default": "Contact" },
+    { "type": "url", "id": "c3_l4_link", "label": "URL 4", "default": "/pages/contact" },
+    { "type": "text", "id": "c3_l5_label", "label": "Lien 5" },
+    { "type": "url", "id": "c3_l5_link", "label": "URL 5" },
+    { "type": "header", "content": "Réseaux sociaux" },
+    { "type": "text", "id": "social_title", "label": "Titre", "default": "Réseaux" },
+    { "type": "url", "id": "soc_instagram", "label": "Instagram" },
+    { "type": "url", "id": "soc_tiktok", "label": "TikTok" },
+    { "type": "url", "id": "soc_facebook", "label": "Facebook" },
+    { "type": "url", "id": "soc_youtube", "label": "YouTube" },
+    { "type": "header", "content": "Paiement" },
+    { "type": "checkbox", "id": "pay_enable", "label": "Afficher les moyens de paiement", "default": true },
+    { "type": "header", "content": "Bas de page (mentions légales)" },
+    { "type": "text", "id": "copyright", "label": "Copyright", "default": "© 2026 Clinique Essabar" },
+    { "type": "text", "id": "lg1_label", "label": "Lien légal 1", "default": "Conditions générales" },
+    { "type": "url", "id": "lg1_link", "label": "URL 1", "default": "/policies/terms-of-service" },
+    { "type": "text", "id": "lg2_label", "label": "Lien légal 2", "default": "Remboursement" },
+    { "type": "url", "id": "lg2_link", "label": "URL 2", "default": "/policies/refund-policy" },
+    { "type": "text", "id": "lg3_label", "label": "Lien légal 3", "default": "Livraison" },
+    { "type": "url", "id": "lg3_link", "label": "URL 3", "default": "/policies/shipping-policy" },
+    { "type": "text", "id": "lg4_label", "label": "Lien légal 4", "default": "Confidentialité" },
+    { "type": "url", "id": "lg4_link", "label": "URL 4", "default": "/policies/privacy-policy" },
+    { "type": "text", "id": "lg5_label", "label": "Lien légal 5", "default": "Contact" },
+    { "type": "url", "id": "lg5_link", "label": "URL 5", "default": "/pages/contact" }
+  ]
+}
+{% endschema %}

@@ -76,7 +76,7 @@
       {%- endif -%}
 
       <div class="ce-rating">
-        <span class="ce-stars">★★★★★</span>
+        <span class="ce-stars" role="img" aria-label="{{ section.settings.rating }}"><span class="ce-stars__bg">★★★★★</span><span class="ce-stars__fill" style="width: {{ section.settings.rating_value | default: 4.7 | times: 20 }}%">★★★★★</span></span>
         <span class="ce-rating__txt">{{ section.settings.rating }} · {{ section.settings.review_count }}</span>
       </div>
 
@@ -311,7 +311,7 @@
   {%- if reviews.size > 0 -%}
   <div class="ce-band">
     <h2 class="ce-h2">{{ section.settings.reviews_title }}</h2>
-    <div class="ce-tp"><span class="ce-stars">★★★★★</span><span class="ce-tp__txt">Noté 4,9/5 par nos clients</span></div>
+    <div class="ce-tp"><span class="ce-stars"><span class="ce-stars__bg">★★★★★</span><span class="ce-stars__fill" style="width: {{ section.settings.rating_value | default: 4.7 | times: 20 }}%">★★★★★</span></span><span class="ce-tp__txt">Noté {{ section.settings.rating }} par nos clients</span></div>
     <div class="ce-wall">
       {%- for block in reviews -%}
         <article class="ce-rev" {{ block.shopify_attributes }}>
@@ -384,7 +384,9 @@
   #ce-{{ section.id }} .ce-price__was { font-size: 17px; color: #9aa4ac; text-decoration: line-through; }
   #ce-{{ section.id }} .ce-price__save { font-size: 12px; font-weight: 700; color: #fff; background: #e0555a; padding: 3px 9px; border-radius: 5px; }
   #ce-{{ section.id }} .ce-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
-  #ce-{{ section.id }} .ce-stars { color: #f5a623; letter-spacing: 1px; font-size: 15px; }
+  #ce-{{ section.id }} .ce-stars { position: relative; display: inline-block; font-size: 15px; letter-spacing: 1px; line-height: 1; white-space: nowrap; color: #d8dee0; }
+  #ce-{{ section.id }} .ce-stars__bg { color: #d8dee0; }
+  #ce-{{ section.id }} .ce-stars__fill { position: absolute; left: 0; top: 0; overflow: hidden; white-space: nowrap; color: #f5a623; }
   #ce-{{ section.id }} .ce-stars--sm { font-size: 12px; }
   #ce-{{ section.id }} .ce-rating__txt { font-size: 12.5px; color: #6a747c; }
 
@@ -718,7 +720,8 @@
     { "type": "text", "id": "hero_badge", "label": "Badge", "default": "Nouveau" },
     { "type": "text", "id": "hero_title", "label": "Titre", "default": "Facettes Dentaires Amovibles Premium" },
     { "type": "textarea", "id": "hero_sub", "label": "Sous-titre", "default": "Facettes dentaires amovibles, personnalisées et sur-mesure pour vos dents." },
-    { "type": "text", "id": "rating", "label": "Note", "default": "4,7/5" },
+    { "type": "text", "id": "rating", "label": "Note (texte)", "default": "4,7/5" },
+    { "type": "range", "id": "rating_value", "min": 0, "max": 5, "step": 0.1, "unit": "★", "label": "Note (étoiles remplies)", "default": 4.7 },
     { "type": "text", "id": "review_count", "label": "Avis", "default": "2 400+ avis" },
     { "type": "text", "id": "fallback_price", "label": "Prix (si aucun produit)", "default": "215,99 $" },
     { "type": "text", "id": "steps_title", "label": "Titre des étapes", "default": "Quatre étapes simples" },

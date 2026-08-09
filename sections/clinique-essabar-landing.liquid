@@ -172,18 +172,7 @@
   </div>
   {%- endif -%}
 
-  {%- comment -%} ============ 3. PRODUCTION EXPRESS (upsell) ============ {%- endcomment -%}
-  {%- if section.settings.express_enable -%}
-  <div class="ce-band ce-band--tight">
-    <div class="ce-express">
-      <div class="ce-express__txt">
-        <span class="ce-express__title">{{ section.settings.express_title }}</span>
-        <span class="ce-express__sub">{{ section.settings.express_sub }}</span>
-      </div>
-      <button type="button" class="ce-btn ce-btn--dark" data-addcart>Ajouter</button>
-    </div>
-  </div>
-  {%- endif -%}
+  {%- comment -%} ============ 3. (Production express retirée) ============ {%- endcomment -%}
 
   {%- comment -%} ============ 4. AVANT / PENDANT / APRÈS (tabs) ============ {%- endcomment -%}
   {%- if section.settings.tabs_enable -%}
@@ -193,21 +182,18 @@
       {%- if section.settings.helps_title != blank -%}<span class="ce-helps__tag">{{ section.settings.helps_title }}</span>{%- endif -%}
     </div>
     <div class="ce-helps__grid">
-      <figure class="ce-helps__cell">
-        <div class="ce-helps__img">{%- if section.settings.tab1_image != blank -%}<img src="{{ section.settings.tab1_image | image_url: width: 600 }}" alt="{{ section.settings.helps_label1 | escape }}" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
-        <figcaption>{{ section.settings.helps_label1 }}</figcaption>
-      </figure>
-      <figure class="ce-helps__cell ce-helps__cell--mid">
-        <div class="ce-helps__img">
-          {%- if section.settings.tab2_image != blank -%}<img src="{{ section.settings.tab2_image | image_url: width: 600 }}" alt="{{ section.settings.helps_label2 | escape }}" loading="lazy">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}
-          {%- if settings.logo != blank -%}<span class="ce-helps__badge"><img src="{{ settings.logo | image_url: width: 220 }}" alt="{{ shop.name | escape }}"></span>{%- endif -%}
-        </div>
-        <figcaption>{{ section.settings.helps_label2 }}</figcaption>
-      </figure>
-      <figure class="ce-helps__cell">
-        <div class="ce-helps__img">{%- if section.settings.tab3_image != blank -%}<img src="{{ section.settings.tab3_image | image_url: width: 600 }}" alt="{{ section.settings.helps_label3 | escape }}" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
-        <figcaption>{{ section.settings.helps_label3 }}</figcaption>
-      </figure>
+      <div class="ce-helps__cell">
+        <span class="ce-helps__label">{{ section.settings.helps_label1 }}</span>
+        <div class="ce-helps__img">{%- if section.settings.tab1_image != blank -%}<img src="{{ section.settings.tab1_image | image_url: width: 700 }}" alt="{{ section.settings.helps_label1 | escape }}" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
+      </div>
+      <div class="ce-helps__cell">
+        <span class="ce-helps__label">{{ section.settings.helps_label2 }}</span>
+        <div class="ce-helps__img">{%- if section.settings.tab2_image != blank -%}<img src="{{ section.settings.tab2_image | image_url: width: 700 }}" alt="{{ section.settings.helps_label2 | escape }}" loading="lazy">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
+      </div>
+      <div class="ce-helps__cell">
+        <span class="ce-helps__label">{{ section.settings.helps_label3 }}</span>
+        <div class="ce-helps__img">{%- if section.settings.tab3_image != blank -%}<img src="{{ section.settings.tab3_image | image_url: width: 700 }}" alt="{{ section.settings.helps_label3 | escape }}" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
+      </div>
     </div>
   </div>
   {%- endif -%}
@@ -216,8 +202,11 @@
   {%- assign ugcs = section.blocks | where: 'type', 'ugc' -%}
   {%- if ugcs.size > 0 -%}
   <div class="ce-band">
-    <h2 class="ce-h2">{{ section.settings.ugc_title }}</h2>
-    <p class="ce-sub">{{ section.settings.ugc_sub }}</p>
+    <div class="ce-ugc__head">
+      {%- if section.settings.ugc_badge != blank -%}<span class="ce-ugc__badge">{{ section.settings.ugc_badge }}</span>{%- endif -%}
+      <h2 class="ce-ugc__title">{{ section.settings.ugc_title }}</h2>
+      {%- if section.settings.ugc_sub != blank -%}<p class="ce-ugc__sub">{{ section.settings.ugc_sub }}</p>{%- endif -%}
+    </div>
     <div class="ce-ugc">
       {%- for block in ugcs -%}
         <div class="ce-ugc__item" data-vid {{ block.shopify_attributes }}>
@@ -242,16 +231,39 @@
   {%- assign faqs = section.blocks | where: 'type', 'faq' -%}
   {%- if faqs.size > 0 -%}
   <div class="ce-band ce-band--tint">
-    <div class="ce-faqhead">{{ section.settings.faq_title }}</div>
-    <div class="ce-faq">
-      {%- for block in faqs -%}
-        <details class="ce-faq__item"{% if forloop.first %} open{% endif %} {{ block.shopify_attributes }}>
-          <summary>{{ block.settings.question }}<span class="ce-faq__ico">+</span></summary>
-          <div class="ce-faq__ans">{{ block.settings.answer }}</div>
-        </details>
-      {%- endfor -%}
+    <div class="ce-faq2">
+      <div class="ce-faq2__head">{{ section.settings.faq_title }}</div>
+      <div class="ce-faq2__body" data-faq>
+        <div class="ce-faq2__list">
+          {%- for block in faqs -%}
+            <button type="button" class="ce-faq2__q{% if forloop.first %} is-active{% endif %}" data-faq-q="{{ forloop.index0 }}" {{ block.shopify_attributes }}>{{ block.settings.question }}<span class="ce-faq2__qico">{% if forloop.first %}&rarr;{% else %}&darr;{% endif %}</span></button>
+          {%- endfor -%}
+        </div>
+        <div class="ce-faq2__panes">
+          {%- for block in faqs -%}
+            <div class="ce-faq2__a{% if forloop.first %} is-active{% endif %}" data-faq-a="{{ forloop.index0 }}">{{ block.settings.answer }}</div>
+          {%- endfor -%}
+        </div>
+      </div>
     </div>
   </div>
+  <script>
+    (function(){
+      var wrap = document.querySelector('#ce-{{ section.id }} [data-faq]');
+      if (!wrap) return;
+      var qs = wrap.querySelectorAll('[data-faq-q]');
+      qs.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var i = btn.getAttribute('data-faq-q');
+          qs.forEach(function(b){ b.classList.remove('is-active'); var ic = b.querySelector('.ce-faq2__qico'); if (ic) ic.innerHTML = '&darr;'; });
+          wrap.querySelectorAll('[data-faq-a]').forEach(function(a){ a.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          var ic = btn.querySelector('.ce-faq2__qico'); if (ic) ic.innerHTML = '&rarr;';
+          var pane = wrap.querySelector('[data-faq-a="' + i + '"]'); if (pane) pane.classList.add('is-active');
+        });
+      });
+    })();
+  </script>
   {%- endif -%}
 
   {%- comment -%} ============ 7. COMPARAISON RÉELLE (shades) ============ {%- endcomment -%}
@@ -420,19 +432,16 @@
   /* Buy box card (Veneera-style) */
   #ce-{{ section.id }} .ce-card { border: 1px solid var(--ce-line); border-radius: 16px; padding: 20px; background: #fff; box-shadow: 0 14px 34px -22px rgba(20,32,31,.22); }
 
-  /* Helps — avant / pose / après */
-  #ce-{{ section.id }} .ce-helps__head { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-bottom: 20px; text-align: center; }
-  #ce-{{ section.id }} .ce-helps__logo { height: 30px; width: auto; }
-  #ce-{{ section.id }} .ce-helps__brand { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 22px; color: var(--ce-ink); }
-  #ce-{{ section.id }} .ce-helps__tag { font-size: 13px; color: #6a747c; }
-  #ce-{{ section.id }} .ce-helps__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 820px; margin: 0 auto; }
+  /* Helps — avant / snap-on / après (Veneera-style) */
+  #ce-{{ section.id }} .ce-helps__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; margin-bottom: 26px; }
+  #ce-{{ section.id }} .ce-helps__logo { height: 34px; width: auto; }
+  #ce-{{ section.id }} .ce-helps__brand { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 26px; color: var(--ce-acc-dark); }
+  #ce-{{ section.id }} .ce-helps__tag { font-size: 21px; color: var(--ce-ink); font-weight: 500; }
+  #ce-{{ section.id }} .ce-helps__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1040px; margin: 0 auto; }
   #ce-{{ section.id }} .ce-helps__cell { margin: 0; text-align: center; }
-  #ce-{{ section.id }} .ce-helps__img { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/5; background: var(--ce-tint); }
+  #ce-{{ section.id }} .ce-helps__label { display: inline-block; background: #e6f5f4; color: var(--ce-acc-dark); font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 20px; border-radius: 10px; margin-bottom: 14px; }
+  #ce-{{ section.id }} .ce-helps__img { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/3; background: var(--ce-tint); }
   #ce-{{ section.id }} .ce-helps__img img, #ce-{{ section.id }} .ce-helps__img svg { width: 100%; height: 100%; object-fit: cover; display: block; }
-  #ce-{{ section.id }} .ce-helps__cell figcaption { margin-top: 8px; font-size: 12px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--ce-acc-dark); }
-  #ce-{{ section.id }} .ce-helps__cell--mid .ce-helps__img { outline: 3px solid var(--ce-acc); outline-offset: 2px; }
-  #ce-{{ section.id }} .ce-helps__badge { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); background: rgba(255,255,255,.94); border-radius: 8px; padding: 4px 9px; box-shadow: 0 3px 10px rgba(0,0,0,.15); }
-  #ce-{{ section.id }} .ce-helps__badge img { height: 16px; width: auto; display: block; }
 
   /* Mobile refinements */
   @media (max-width: 749px) {
@@ -442,9 +451,10 @@
     #ce-{{ section.id }} .ce-card { padding: 15px; }
     #ce-{{ section.id }} .ce-helps__grid { gap: 8px; }
     #ce-{{ section.id }} .ce-helps__img { border-radius: 10px; }
-    #ce-{{ section.id }} .ce-helps__cell figcaption { font-size: 10px; margin-top: 6px; }
-    #ce-{{ section.id }} .ce-helps__badge { padding: 3px 6px; bottom: 5px; }
-    #ce-{{ section.id }} .ce-helps__badge img { height: 12px; }
+    #ce-{{ section.id }} .ce-helps__label { font-size: 9.5px; padding: 5px 10px; margin-bottom: 8px; letter-spacing: .5px; }
+    #ce-{{ section.id }} .ce-helps__head { gap: 8px; margin-bottom: 18px; }
+    #ce-{{ section.id }} .ce-helps__logo { height: 26px; }
+    #ce-{{ section.id }} .ce-helps__tag { font-size: 16px; }
   }
 
   /* Tax note */
@@ -488,6 +498,10 @@
   #ce-{{ section.id }} .ce-tabpane img { width: 100%; height: 100%; object-fit: cover; }
 
   /* UGC */
+  #ce-{{ section.id }} .ce-ugc__head { max-width: 1180px; margin: 0 auto 18px; padding: 0 18px; }
+  #ce-{{ section.id }} .ce-ugc__badge { display: inline-block; background: linear-gradient(90deg, #8b5cf6, #ec4899); color: #fff; font-family: 'Manrope', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 6px 12px; border-radius: 8px; margin-bottom: 12px; }
+  #ce-{{ section.id }} .ce-ugc__title { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(22px, 4vw, 32px); color: var(--ce-ink); margin: 0 0 6px; line-height: 1.12; }
+  #ce-{{ section.id }} .ce-ugc__sub { font-size: 15px; color: #55606a; margin: 0; }
   #ce-{{ section.id }} .ce-ugc { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
   #ce-{{ section.id }} .ce-ugc__item { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 9/16; background: #e9ecef; cursor: pointer; }
   #ce-{{ section.id }} .ce-ugc__vid { width: 100%; height: 100%; object-fit: cover; }
@@ -495,6 +509,20 @@
   #ce-{{ section.id }} .ce-ugc__item.is-playing .ce-ugc__play { display: none; }
 
   /* FAQ */
+  #ce-{{ section.id }} .ce-faq2 { max-width: 1100px; margin: 0 auto; }
+  #ce-{{ section.id }} .ce-faq2__head { background: linear-gradient(120deg, var(--ce-acc), var(--ce-acc-dark)); color: #fff; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(20px, 3vw, 28px); padding: 22px 26px; border-radius: 14px; }
+  #ce-{{ section.id }} .ce-faq2__body { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 16px; }
+  #ce-{{ section.id }} .ce-faq2__list { display: flex; flex-direction: column; gap: 10px; }
+  #ce-{{ section.id }} .ce-faq2__q { text-align: left; background: #fff; border: 1px solid var(--ce-line); border-radius: 12px; padding: 16px 18px; font-family: inherit; font-weight: 600; font-size: 15px; color: var(--ce-ink); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; transition: .15s; }
+  #ce-{{ section.id }} .ce-faq2__q:hover { border-color: var(--ce-acc); }
+  #ce-{{ section.id }} .ce-faq2__q.is-active { background: var(--ce-acc); color: #fff; border-color: var(--ce-acc); }
+  #ce-{{ section.id }} .ce-faq2__qico { flex: 0 0 auto; font-weight: 800; }
+  #ce-{{ section.id }} .ce-faq2__panes { background: #fff; border: 1px solid var(--ce-line); border-radius: 14px; padding: 24px; }
+  #ce-{{ section.id }} .ce-faq2__a { display: none; font-size: 15px; color: #3d474f; line-height: 1.65; }
+  #ce-{{ section.id }} .ce-faq2__a.is-active { display: block; }
+  #ce-{{ section.id }} .ce-faq2__a p { margin: 0 0 10px; }
+  @media (min-width: 750px) { #ce-{{ section.id }} .ce-faq2__body { grid-template-columns: 0.85fr 1.15fr; align-items: start; } }
+
   #ce-{{ section.id }} .ce-faqhead { background: var(--ce-acc); color: #fff; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 17px; padding: 14px 20px; border-radius: 12px 12px 0 0; max-width: 760px; margin: 0 auto; }
   #ce-{{ section.id }} .ce-faq { max-width: 760px; margin: 0 auto; background: #fff; border-radius: 0 0 12px 12px; border: 1px solid var(--ce-line); border-top: 0; }
   #ce-{{ section.id }} .ce-faq__item { border-bottom: 1px solid var(--ce-line); }
@@ -725,8 +753,9 @@
     { "type": "text", "id": "helps_label2", "label": "Légende 2 (milieu, gif)", "default": "Pose" },
     { "type": "text", "id": "helps_label3", "label": "Légende 3", "default": "Après" },
     { "type": "header", "content": "Vidéos clients" },
-    { "type": "text", "id": "ugc_title", "label": "Titre", "default": "Le sourire de nos clients" },
-    { "type": "text", "id": "ugc_sub", "label": "Sous-titre", "default": "Des expériences réelles, filmées par nos clients." },
+    { "type": "text", "id": "ugc_badge", "label": "Badge", "default": "SOCIAL MEDIA TAGS" },
+    { "type": "text", "id": "ugc_title", "label": "Titre", "default": "Les selfies de nos clients avec Clinique Essabar" },
+    { "type": "text", "id": "ugc_sub", "label": "Sous-titre", "default": "Des expériences réelles, de vraies personnes." },
     { "type": "header", "content": "FAQ" },
     { "type": "text", "id": "faq_title", "label": "Titre", "default": "Questions fréquentes" },
     { "type": "header", "content": "Comparaison des teintes" },

@@ -80,13 +80,16 @@
         <span class="ce-rating__txt">{{ section.settings.rating }} · {{ section.settings.review_count }}</span>
       </div>
 
-      {%- assign press = section.blocks | where: 'type', 'press' -%}
-      {%- if press.size > 0 -%}
+      {%- if section.settings.press_enable -%}
       <div class="ce-press">
         {%- if section.settings.press_title != blank -%}<span class="ce-press__label">{{ section.settings.press_title }}</span>{%- endif -%}
         <div class="ce-press__logos">
-          {%- for block in press -%}
-            <span class="ce-press__logo" {{ block.shopify_attributes }}>{%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 240 }}" alt="{{ block.settings.name | escape }}" loading="lazy">{%- else -%}<span class="ce-press__name">{{ block.settings.name }}</span>{%- endif -%}</span>
+          {%- for i in (1..4) -%}
+            {%- assign pn = 'press' | append: i | append: '_name' -%}
+            {%- assign pi = 'press' | append: i | append: '_image' -%}
+            {%- if section.settings[pi] != blank or section.settings[pn] != blank -%}
+              <span class="ce-press__logo">{%- if section.settings[pi] != blank -%}<img src="{{ section.settings[pi] | image_url: width: 260 }}" alt="{{ section.settings[pn] | escape }}" loading="lazy">{%- else -%}<span class="ce-press__name">{{ section.settings[pn] }}</span>{%- endif -%}</span>
+            {%- endif -%}
           {%- endfor -%}
         </div>
       </div>
@@ -178,7 +181,9 @@
   {%- if section.settings.tabs_enable -%}
   <div class="ce-band">
     <div class="ce-helps__head">
-      {%- if settings.logo != blank -%}<img class="ce-helps__logo" src="{{ settings.logo | image_url: width: 320 }}" alt="{{ shop.name | escape }}">{%- else -%}<span class="ce-helps__brand">{{ section.settings.brand_name }}</span>{%- endif -%}
+      {%- if section.settings.helps_logo != blank -%}<img class="ce-helps__logo" src="{{ section.settings.helps_logo | image_url: width: 500 }}" alt="{{ shop.name | escape }}">
+      {%- elsif settings.logo != blank -%}<img class="ce-helps__logo" src="{{ settings.logo | image_url: width: 500 }}" alt="{{ shop.name | escape }}">
+      {%- else -%}<span class="ce-helps__brand">{{ section.settings.brand_name }}</span>{%- endif -%}
       {%- if section.settings.helps_title != blank -%}<span class="ce-helps__tag">{{ section.settings.helps_title }}</span>{%- endif -%}
     </div>
     <div class="ce-helps__grid">
@@ -416,9 +421,9 @@
   #ce-{{ section.id }} .ce-band--tight { padding: 10px 18px 32px; }
   #ce-{{ section.id }} .ce-band--tint { max-width: 100%; background: var(--ce-tint); }
   #ce-{{ section.id }} .ce-band--tint > * { max-width: 1100px; margin-left: auto; margin-right: auto; }
-  #ce-{{ section.id }} .ce-h2 { font-size: clamp(22px, 5vw, 30px); line-height: 1.15; text-align: center; margin: 0 0 8px; }
+  #ce-{{ section.id }} .ce-h2 { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(24px, 4vw, 34px); line-height: 1.12; letter-spacing: -.02em; color: var(--ce-ink); text-align: left; margin: 0 0 8px; }
   #ce-{{ section.id }} .ce-h2--left { text-align: left; }
-  #ce-{{ section.id }} .ce-sub { text-align: center; color: #6a747c; font-size: 15px; line-height: 1.5; max-width: 560px; margin: 0 auto 24px; }
+  #ce-{{ section.id }} .ce-sub { text-align: left; color: #55606a; font-size: 15px; line-height: 1.5; max-width: 640px; margin: 0 0 24px; }
   #ce-{{ section.id }} .ce-tag { display: block; text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--ce-acc); margin-bottom: 6px; }
   #ce-{{ section.id }} .ce-brandline { text-align: center; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 20px; color: var(--ce-acc); margin-bottom: 18px; }
   #ce-{{ section.id }} .ce-rte { color: #4a545c; font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
@@ -470,8 +475,8 @@
   #ce-{{ section.id }} .ce-press { margin: 0 0 16px; }
   #ce-{{ section.id }} .ce-press__label { display: block; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: #9aa4ac; font-weight: 700; margin-bottom: 9px; }
   #ce-{{ section.id }} .ce-press__logos { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
-  #ce-{{ section.id }} .ce-press__logo img { height: 22px; width: auto; opacity: .7; filter: grayscale(1); }
-  #ce-{{ section.id }} .ce-press__name { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 15px; color: #9aa4ac; }
+  #ce-{{ section.id }} .ce-press__logo img { height: 26px; width: auto; }
+  #ce-{{ section.id }} .ce-press__name { font-family: Georgia, 'Times New Roman', serif; font-weight: 700; font-size: 17px; color: #2a2f33; letter-spacing: -.2px; }
   /* Product specs accordion */
   #ce-{{ section.id }} .ce-specs { margin: 18px 0 0; border-top: 1px solid var(--ce-line); }
   #ce-{{ section.id }} .ce-spec { border-bottom: 1px solid var(--ce-line); }
@@ -713,7 +718,7 @@
     { "type": "text", "id": "hero_badge", "label": "Badge", "default": "Nouveau" },
     { "type": "text", "id": "hero_title", "label": "Titre", "default": "Facettes Dentaires Amovibles Premium" },
     { "type": "textarea", "id": "hero_sub", "label": "Sous-titre", "default": "Facettes dentaires amovibles, personnalisées et sur-mesure pour vos dents." },
-    { "type": "text", "id": "rating", "label": "Note", "default": "4,9/5" },
+    { "type": "text", "id": "rating", "label": "Note", "default": "4,7/5" },
     { "type": "text", "id": "review_count", "label": "Avis", "default": "2 400+ avis" },
     { "type": "text", "id": "fallback_price", "label": "Prix (si aucun produit)", "default": "215,99 $" },
     { "type": "text", "id": "steps_title", "label": "Titre des étapes", "default": "Quatre étapes simples" },
@@ -725,7 +730,16 @@
     { "type": "text", "id": "offer_sub", "label": "Sous-titre", "default": "Choisissez « Haut & Bas » : les facettes du bas sont incluses gratuitement." },
     { "type": "text", "id": "tax_note", "label": "Note taxes", "default": "Taxes incluses. Livraison calculée au paiement." },
     { "type": "header", "content": "Presse (Ils parlent de nous)" },
+    { "type": "checkbox", "id": "press_enable", "label": "Afficher", "default": true },
     { "type": "text", "id": "press_title", "label": "Titre", "default": "Ils parlent de nous" },
+    { "type": "image_picker", "id": "press1_image", "label": "Logo 1 (déposez votre fichier)" },
+    { "type": "text", "id": "press1_name", "label": "Nom 1 (si pas de logo)", "default": "Women's Health" },
+    { "type": "image_picker", "id": "press2_image", "label": "Logo 2 (déposez votre fichier)" },
+    { "type": "text", "id": "press2_name", "label": "Nom 2 (si pas de logo)", "default": "Cosmopolitan" },
+    { "type": "image_picker", "id": "press3_image", "label": "Logo 3" },
+    { "type": "text", "id": "press3_name", "label": "Nom 3 (si pas de logo)" },
+    { "type": "image_picker", "id": "press4_image", "label": "Logo 4" },
+    { "type": "text", "id": "press4_name", "label": "Nom 4 (si pas de logo)" },
     { "type": "header", "content": "Infos produit (Livraison / Matière / Certificat)" },
     { "type": "checkbox", "id": "info_enable", "label": "Afficher", "default": true },
     { "type": "text", "id": "spec1_title", "label": "Titre 1", "default": "Délais de livraison" },
@@ -743,7 +757,8 @@
     { "type": "checkbox", "id": "express_enable", "label": "Afficher", "default": false },
     { "type": "text", "id": "express_title", "label": "Titre", "default": "Production express — 20 $" },
     { "type": "text", "id": "express_sub", "label": "Sous-titre", "default": "Recevez vos facettes en priorité, plus rapidement." },
-    { "type": "header", "content": "Onglets Avant / Pendant / Après" },
+    { "type": "header", "content": "Avant / Après (3 images)" },
+    { "type": "image_picker", "id": "helps_logo", "label": "Votre logo (au-dessus des images)" },
     { "type": "checkbox", "id": "tabs_enable", "label": "Afficher", "default": true },
     { "type": "image_picker", "id": "tab1_image", "label": "Image Avant" },
     { "type": "image_picker", "id": "tab2_image", "label": "Image Pendant" },

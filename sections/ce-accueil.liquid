@@ -40,6 +40,7 @@
       {%- for block in cards -%}
         <a class="ch-card" href="{{ purl }}" {{ block.shopify_attributes }}>
           {%- if block.settings.badge != blank -%}<span class="ch-card__badge">{{ block.settings.badge }}</span>{%- endif -%}
+          {%- if block.settings.award != blank -%}<span class="ch-card__award"><img src="{{ block.settings.award | image_url: width: 120 }}" alt="" loading="lazy"></span>{%- endif -%}
           <div class="ch-card__media">
             {%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.name | escape }}" loading="lazy">{%- else -%}{{ 'product-2' | placeholder_svg_tag: 'ch-ph' }}{%- endif -%}
           </div>
@@ -49,7 +50,8 @@
             {%- if block.settings.compare != blank -%}<span class="ch-card__was">{{ block.settings.compare }}</span>{%- endif -%}
             <span class="ch-card__now">{{ block.settings.price }}</span>
           </div>
-          <span class="ch-btn ch-btn--sm">{{ section.settings.card_cta }}</span>
+          {%- if section.settings.card_taxes != blank -%}<div class="ch-card__taxes">{{ section.settings.card_taxes }}</div>{%- endif -%}
+          <span class="ch-btn ch-btn--dark ch-btn--sm ch-card__cta">{{ section.settings.card_cta }}</span>
         </a>
       {%- endfor -%}
     </div>
@@ -80,18 +82,19 @@
   </div>
   {%- endif -%}
 
-  {%- comment -%} ===== 4. FEATURES ICONS ===== {%- endcomment -%}
-  {%- assign feats = section.blocks | where: 'type', 'feature' -%}
-  {%- if feats.size > 0 -%}
+  {%- comment -%} ===== 4. FACTS ICONS (line-art, veneera style) ===== {%- endcomment -%}
+  {%- if section.settings.feat_enable -%}
   <div class="ch-band ch-band--tight">
     <div class="ch-brandline">{{ section.settings.feat_label }}</div>
-    <div class="ch-feats">
-      {%- for block in feats -%}
-        <div class="ch-feat" {{ block.shopify_attributes }}>
-          <span class="ch-feat__ico">{{ block.settings.icon }}</span>
-          {%- if block.settings.label != blank -%}<span class="ch-feat__lbl">{{ block.settings.label }}</span>{%- endif -%}
-        </div>
-      {%- endfor -%}
+    <div class="ch-facts">
+      <span class="ch-fact" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2c-2.4 0-3.3 1.1-4.8 1.1S4.3 3.6 4.3 6c0 2.9 1 4.8 1.5 8.2.4 2.4.8 5.3 2.2 5.3 1.2 0 1.4-2.9 2-4.8.3-1 .8-1.5 2-1.5s1.7.5 2 1.5c.6 1.9.8 4.8 2 4.8 1.4 0 1.8-2.9 2.2-5.3.5-3.4 1.5-5.3 1.5-8.2 0-2.4-1.4-1.7-2.9-1.7S14.4 3.2 12 3.2Z"/></svg></span>
+      <span class="ch-fact" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.3L19.5 10l-5.6 1.7L12 17l-1.9-5.3L4.5 10l5.6-1.7L12 3Z"/><path d="M18 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2Z"/></svg></span>
+      <span class="ch-fact" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9.5h.01M15 9.5h.01"/></svg></span>
+      <span class="ch-fact" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3Z"/><path d="M9 12l2 2 4-4"/></svg></span>
+      <span class="ch-fact" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2s6 6.3 6 10.3A6 6 0 0 1 6 13.5C6 9.5 12 3.2 12 3.2Z"/></svg></span>
+      <span class="ch-fact" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-8 6-13.2 14-13.2 0 8-5 14-13 14"/><path d="M5.5 18.5c3-4.2 6.2-6.5 10.5-8.3"/></svg></span>
+      <span class="ch-fact" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="3.4"/><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6"/></svg></span>
+      <span class="ch-fact" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2"/></svg></span>
     </div>
   </div>
   {%- endif -%}
@@ -115,6 +118,45 @@
       </div>
     </div>
   </div>
+  {%- endif -%}
+
+  {%- comment -%} ===== 5b. FAQ (même design que la page produit) ===== {%- endcomment -%}
+  {%- assign faqs = section.blocks | where: 'type', 'faq' -%}
+  {%- if faqs.size > 0 -%}
+  <div class="ch-band ch-band--tint">
+    <div class="ch-faq2">
+      <div class="ch-faq2__head">{{ section.settings.faq_title }}</div>
+      <div class="ch-faq2__body" data-faq>
+        <div class="ch-faq2__list">
+          {%- for block in faqs -%}
+            <button type="button" class="ch-faq2__q{% if forloop.first %} is-active{% endif %}" data-faq-q="{{ forloop.index0 }}" {{ block.shopify_attributes }}>{{ block.settings.question }}<span class="ch-faq2__qico">{% if forloop.first %}&rarr;{% else %}&darr;{% endif %}</span></button>
+          {%- endfor -%}
+        </div>
+        <div class="ch-faq2__panes">
+          {%- for block in faqs -%}
+            <div class="ch-faq2__a{% if forloop.first %} is-active{% endif %}" data-faq-a="{{ forloop.index0 }}">{{ block.settings.answer }}</div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      var wrap = document.querySelector('#ch-{{ section.id }} [data-faq]');
+      if (!wrap) return;
+      var qs = wrap.querySelectorAll('[data-faq-q]');
+      qs.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var i = btn.getAttribute('data-faq-q');
+          qs.forEach(function(b){ b.classList.remove('is-active'); var ic = b.querySelector('.ch-faq2__qico'); if (ic) ic.innerHTML = '&darr;'; });
+          wrap.querySelectorAll('[data-faq-a]').forEach(function(a){ a.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          var ic = btn.querySelector('.ch-faq2__qico'); if (ic) ic.innerHTML = '&rarr;';
+          var pane = wrap.querySelector('[data-faq-a="' + i + '"]'); if (pane) pane.classList.add('is-active');
+        });
+      });
+    })();
+  </script>
   {%- endif -%}
 
   {%- comment -%} ===== 6. STATS BAND ===== {%- endcomment -%}
@@ -191,6 +233,8 @@
   #ch-{{ section.id }} .ch-btn:hover { background: var(--ch-acc-dark); transform: translateY(-1px); }
   #ch-{{ section.id }} .ch-btn--sm { padding: 10px 20px; font-size: 13.5px; }
   #ch-{{ section.id }} .ch-btn--white { background: #fff; color: var(--ch-acc); }
+  #ch-{{ section.id }} .ch-btn--dark { background: var(--ch-ink); color: #fff; }
+  #ch-{{ section.id }} .ch-btn--dark:hover { background: #000; }
 
   /* Hero — media on top, title centered below (veneera) */
   #ch-{{ section.id }} .ch-hero { padding: 18px 18px 0; max-width: 1140px; margin: 0 auto; }
@@ -215,22 +259,40 @@
   #ch-{{ section.id }} .ch-card__price { display: flex; gap: 8px; align-items: baseline; margin: 10px 0 14px; }
   #ch-{{ section.id }} .ch-card__was { color: #9aa4ac; text-decoration: line-through; font-size: 14px; }
   #ch-{{ section.id }} .ch-card__now { font-weight: 800; font-size: 18px; color: var(--ch-acc); }
+  #ch-{{ section.id }} .ch-card__award { position: absolute; top: 12px; right: 12px; width: 46px; }
+  #ch-{{ section.id }} .ch-card__award img { width: 100%; height: auto; }
+  #ch-{{ section.id }} .ch-card__price { margin: 10px 0 4px; }
+  #ch-{{ section.id }} .ch-card__taxes { font-size: 11px; color: #9aa4ac; margin: 0 0 14px; }
+  #ch-{{ section.id }} .ch-card__cta { width: 100%; }
 
-  /* How it works */
-  #ch-{{ section.id }} .ch-how { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: center; }
-  #ch-{{ section.id }} .ch-how__media { border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: #e9ecef; }
+  /* FAQ (identique à la page produit) */
+  #ch-{{ section.id }} .ch-faq2 { max-width: 1100px; margin: 0 auto; }
+  #ch-{{ section.id }} .ch-faq2__head { background: linear-gradient(120deg, var(--ch-acc), var(--ch-acc-dark)); color: #fff; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(20px, 3vw, 28px); padding: 22px 26px; border-radius: 14px; }
+  #ch-{{ section.id }} .ch-faq2__body { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 16px; }
+  #ch-{{ section.id }} .ch-faq2__list { display: flex; flex-direction: column; gap: 10px; }
+  #ch-{{ section.id }} .ch-faq2__q { text-align: left; background: #fff; border: 1px solid #e4e9e8; border-radius: 12px; padding: 16px 18px; font-family: inherit; font-weight: 600; font-size: 15px; color: var(--ch-ink); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; transition: .15s; }
+  #ch-{{ section.id }} .ch-faq2__q:hover { border-color: var(--ch-acc); }
+  #ch-{{ section.id }} .ch-faq2__q.is-active { background: var(--ch-acc); color: #fff; border-color: var(--ch-acc); }
+  #ch-{{ section.id }} .ch-faq2__qico { flex: 0 0 auto; font-weight: 800; }
+  #ch-{{ section.id }} .ch-faq2__panes { background: #fff; border: 1px solid #e4e9e8; border-radius: 14px; padding: 24px; }
+  #ch-{{ section.id }} .ch-faq2__a { display: none; font-size: 15px; color: #3d474f; line-height: 1.65; }
+  #ch-{{ section.id }} .ch-faq2__a.is-active { display: block; }
+  #ch-{{ section.id }} .ch-faq2__a p { margin: 0 0 10px; }
+
+  /* How it works — big media with step cards overlapping the bottom (veneera) */
+  #ch-{{ section.id }} .ch-how { position: relative; }
+  #ch-{{ section.id }} .ch-how__media { border-radius: 18px; overflow: hidden; aspect-ratio: 4/5; background: #e9ecef; }
   #ch-{{ section.id }} .ch-how__media img { width: 100%; height: 100%; object-fit: cover; }
-  #ch-{{ section.id }} .ch-how__steps { display: grid; gap: 14px; }
-  #ch-{{ section.id }} .ch-step { background: #fff; border: 1px solid #e4e9e8; border-radius: 12px; padding: 16px 18px; }
-  #ch-{{ section.id }} .ch-step__tag { display: inline-block; background: var(--ch-ink); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 5px; margin-bottom: 8px; }
+  #ch-{{ section.id }} .ch-how__steps { display: grid; gap: 12px; margin: -34px 12px 0; position: relative; z-index: 2; }
+  #ch-{{ section.id }} .ch-step { background: #fff; border: 1px solid #eaeeed; border-radius: 14px; padding: 18px 20px; box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+  #ch-{{ section.id }} .ch-step__tag { display: inline-block; background: var(--ch-acc); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .3px; padding: 4px 11px; border-radius: 6px; margin-bottom: 9px; }
   #ch-{{ section.id }} .ch-step h3 { font-size: 16px; margin: 0 0 5px; }
   #ch-{{ section.id }} .ch-step p { font-size: 13.5px; color: #6a747c; line-height: 1.5; margin: 0; }
 
-  /* Features */
-  #ch-{{ section.id }} .ch-feats { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px 26px; }
-  #ch-{{ section.id }} .ch-feat { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 80px; }
-  #ch-{{ section.id }} .ch-feat__ico { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--ch-acc); color: var(--ch-acc); display: flex; align-items: center; justify-content: center; font-size: 24px; }
-  #ch-{{ section.id }} .ch-feat__lbl { font-size: 11px; color: #6a747c; text-align: center; line-height: 1.2; }
+  /* Facts — line-art icon row (veneera) */
+  #ch-{{ section.id }} .ch-facts { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 18px 22px; }
+  #ch-{{ section.id }} .ch-fact { color: var(--ch-acc); flex: 0 0 auto; }
+  #ch-{{ section.id }} .ch-fact svg { width: 42px; height: 42px; display: block; }
 
   /* Why */
   #ch-{{ section.id }} .ch-why { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: start; }
@@ -270,8 +332,12 @@
   @media (min-width: 750px) {
     #ch-{{ section.id }} .ch-hero__media { aspect-ratio: 21/9; }
     #ch-{{ section.id }} .ch-cards { grid-template-columns: repeat(3, 1fr); gap: 22px; }
-    #ch-{{ section.id }} .ch-how { grid-template-columns: 1.1fr 1fr; gap: 40px; }
+    #ch-{{ section.id }} .ch-how__media { aspect-ratio: 16/7; }
+    #ch-{{ section.id }} .ch-how__steps { grid-template-columns: repeat(3, 1fr); gap: 18px; margin: -70px 28px 0; }
+    #ch-{{ section.id }} .ch-facts { gap: 22px 40px; }
+    #ch-{{ section.id }} .ch-fact svg { width: 48px; height: 48px; }
     #ch-{{ section.id }} .ch-why { grid-template-columns: 1fr 1fr; gap: 40px; }
+    #ch-{{ section.id }} .ch-faq2__body { grid-template-columns: 0.85fr 1.15fr; align-items: start; }
     #ch-{{ section.id }} .ch-kit__inner { grid-template-columns: 1.2fr 1fr; padding: 52px 18px; }
     #ch-{{ section.id }} .ch-social { grid-template-columns: repeat(4, 1fr); gap: 16px; }
   }
@@ -352,6 +418,12 @@
     },
     {
       "type": "text",
+      "id": "card_taxes",
+      "label": "Mention taxes (cartes)",
+      "default": "Taxes incluses. Hors frais de livraison."
+    },
+    {
+      "type": "text",
       "id": "steps_eyebrow",
       "label": "Étiquette",
       "default": "Simple & rapide"
@@ -374,10 +446,22 @@
       "label": "Image lifestyle"
     },
     {
+      "type": "checkbox",
+      "id": "feat_enable",
+      "label": "Afficher les icônes (facts)",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "feat_label",
-      "label": "Titre",
-      "default": "Nos atouts"
+      "label": "Titre (facts)",
+      "default": "Clinique Essabar facts"
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "Titre FAQ",
+      "default": "Questions fréquentes"
     },
     {
       "type": "text",
@@ -466,6 +550,11 @@
           "label": "Image"
         },
         {
+          "type": "image_picker",
+          "id": "award",
+          "label": "Médaille / badge (coin haut-droit, optionnel)"
+        },
+        {
           "type": "text",
           "id": "badge",
           "label": "Badge"
@@ -545,6 +634,24 @@
           "id": "text",
           "label": "Texte",
           "default": "Fabriquées avec un matériau haut de gamme pour un rendu naturel et durable."
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "Question FAQ",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Votre question ici ?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Réponse",
+          "default": "<p>Votre réponse ici.</p>"
         }
       ]
     },
@@ -682,6 +789,27 @@
           "settings": {
             "title": "Simple & rapide",
             "text": "Tout se fait à domicile, sans dentiste ni rendez-vous."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Les facettes sont-elles amovibles ?",
+            "answer": "<p>Oui, nos facettes se posent et se retirent en quelques secondes, sans colle ni dentiste.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Combien de temps pour les recevoir ?",
+            "answer": "<p>Après réception de votre empreinte, vos facettes sont fabriquées sur-mesure et expédiées sous quelques jours.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Puis-je manger avec ?",
+            "answer": "<p>Elles sont conçues pour un usage cosmétique. Nous recommandons de les retirer pour manger afin de préserver leur éclat.</p>"
           }
         },
         {

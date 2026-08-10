@@ -346,6 +346,22 @@
   </div>
   {%- endif -%}
 
+  {%- comment -%} ============ 11. DESCRIPTION LONGUE (SEO) ============ {%- endcomment -%}
+  {%- if section.settings.about_enable -%}
+  <div class="ce-band ce-about">
+    {%- if section.settings.about_title != blank -%}<h2 class="ce-h2">{{ section.settings.about_title }}</h2>{%- endif -%}
+    {%- if section.settings.about_intro != blank -%}<div class="ce-about__p">{{ section.settings.about_intro }}</div>{%- endif -%}
+    {%- for i in (1..4) -%}
+      {%- assign ht = 'about_h' | append: i -%}
+      {%- assign bt = 'about_t' | append: i -%}
+      {%- if section.settings[ht] != blank -%}
+        <h3 class="ce-about__h">{{ section.settings[ht] }}</h3>
+        {%- if section.settings[bt] != blank -%}<div class="ce-about__p">{{ section.settings[bt] }}</div>{%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+
   {%- comment -%} ============ STICKY MOBILE BAR ============ {%- endcomment -%}
   <div class="ce-sticky" data-sticky hidden>
     <div class="ce-sticky__info">
@@ -567,7 +583,12 @@
   #ce-{{ section.id }} .ce-rev__auth { font-size: 12.5px; font-weight: 600; color: #6a747c; }
 
   /* WhatsApp / support CTA */
-  #ce-{{ section.id }} .ce-wa { background: linear-gradient(135deg, var(--ce-acc), var(--ce-acc-dark)); color: #fff; }
+  #ce-{{ section.id }} .ce-about { max-width: 900px; }
+  #ce-{{ section.id }} .ce-about__h { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(18px, 3vw, 23px); color: var(--ce-ink); margin: 24px 0 8px; }
+  #ce-{{ section.id }} .ce-about__p { font-size: 15px; color: #55606a; line-height: 1.65; }
+  #ce-{{ section.id }} .ce-about__p p { margin: 0 0 10px; }
+
+  #ce-{{ section.id }} .ce-wa { background: linear-gradient(120deg, #10a09b 0%, #34b3a8 48%, #cfe9de 100%); color: #fff; }
   #ce-{{ section.id }} .ce-wa__inner { max-width: 1100px; margin: 0 auto; padding: 40px 18px; display: grid; grid-template-columns: 1fr; gap: 22px; align-items: center; }
   #ce-{{ section.id }} .ce-wa__title { font-size: clamp(22px, 5vw, 30px); line-height: 1.2; margin: 0 0 10px; color: #fff; }
   #ce-{{ section.id }} .ce-wa__sub { font-size: 15px; opacity: .92; line-height: 1.5; margin: 0 0 20px; }
@@ -788,6 +809,18 @@
     { "type": "textarea", "id": "wa_sub", "label": "Texte", "default": "Un tutoriel vidéo et une assistance dédiée vous accompagnent à chaque étape. Votre nouveau sourire vous attend 😁" },
     { "type": "text", "id": "wa_cta1", "label": "Bouton 1", "default": "Commander maintenant" },
     { "type": "image_picker", "id": "wa_image", "label": "Image" },
+    { "type": "header", "content": "Description longue (SEO, au-dessus du footer)" },
+    { "type": "checkbox", "id": "about_enable", "label": "Afficher", "default": true },
+    { "type": "text", "id": "about_title", "label": "Titre", "default": "Les facettes dentaires Clinique Essabar" },
+    { "type": "richtext", "id": "about_intro", "label": "Introduction", "default": "<p>Un sourire éclatant, simplement et rapidement. Nos facettes amovibles offrent flexibilité et confort, fabriquées sur-mesure à partir de votre empreinte, sans passer par le dentiste.</p>" },
+    { "type": "text", "id": "about_h1", "label": "Sous-titre 1", "default": "Offrez-vous un sourire parfait" },
+    { "type": "richtext", "id": "about_t1", "label": "Texte 1", "default": "<p>Dents manquantes, espaces ou teinte terne ? Nos facettes corrigent les imperfections de vos dents naturelles pour un sourire harmonieux, quand vous le souhaitez.</p>" },
+    { "type": "text", "id": "about_h2", "label": "Sous-titre 2", "default": "Simple et rapide" },
+    { "type": "richtext", "id": "about_t2", "label": "Texte 2", "default": "<p>Aucune visite chez le dentiste. Vous réalisez votre empreinte à la maison, nous fabriquons vos facettes et vous les recevez par courrier. Il ne reste qu'à les poser.</p>" },
+    { "type": "text", "id": "about_h3", "label": "Sous-titre 3", "default": "L'alternative douce" },
+    { "type": "richtext", "id": "about_t3", "label": "Texte 3", "default": "<p>Les facettes se posent et se retirent à tout moment, sans abîmer l'émail ni blanchir vos dents. Vos dents restent saines et protégées.</p>" },
+    { "type": "text", "id": "about_h4", "label": "Sous-titre 4", "default": "Qualité au juste prix" },
+    { "type": "richtext", "id": "about_t4", "label": "Texte 4", "default": "<p>Grâce à une fabrication soignée et des matériaux de qualité, profitez d'un rendu premium à un prix accessible.</p>" },
     { "type": "header", "content": "Barre mobile" },
     { "type": "text", "id": "sticky_name", "label": "Nom", "default": "Facettes Premium" }
   ],

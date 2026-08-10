@@ -276,7 +276,7 @@
   <div class="ce-band ce-cmp">
     {%- if section.settings.shades_title != blank -%}<h2 class="ce-h2 ce-cmp__h">{{ section.settings.shades_title }}</h2>{%- endif -%}
     <div class="ce-cmp__top">
-      <span class="ce-cmp__flag">{%- if section.settings.made_in_flag != blank -%}<img src="{{ section.settings.made_in_flag | image_url: width: 80 }}" alt="">{%- else -%}<span class="ce-cmp__emoji">🇰🇷</span>{%- endif -%}{{ section.settings.made_in_label }}</span>
+      <span class="ce-cmp__flag">{%- if section.settings.made_in_flag != blank -%}<img src="{{ section.settings.made_in_flag | image_url: width: 80 }}" alt="">{%- else -%}<svg class="ce-cmp__krflag" viewBox="0 0 36 24" role="img" aria-label="Corée du Sud" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="24" fill="#fff"/><g transform="translate(18,12) rotate(-123.69)"><path fill="#CD2E3A" d="M0,-6 a6,6 0 0,1 0,12 a3,3 0 0,1 0,-6 a3,3 0 0,0 0,-6"/><path fill="#0047A0" d="M0,-6 a6,6 0 0,0 0,12 a3,3 0 0,0 0,-6 a3,3 0 0,1 0,-6"/></g><g fill="#000"><g transform="translate(7,5) rotate(33.69)"><rect x="-3.5" y="-2.05" width="7" height="0.9"/><rect x="-3.5" y="-0.45" width="7" height="0.9"/><rect x="-3.5" y="1.15" width="7" height="0.9"/></g><g transform="translate(29,5) rotate(-33.69)"><rect x="-3.5" y="-2.05" width="2.8" height="0.9"/><rect x="0.7" y="-2.05" width="2.8" height="0.9"/><rect x="-3.5" y="-0.45" width="7" height="0.9"/><rect x="-3.5" y="1.15" width="2.8" height="0.9"/><rect x="0.7" y="1.15" width="2.8" height="0.9"/></g><g transform="translate(7,19) rotate(-33.69)"><rect x="-3.5" y="-2.05" width="7" height="0.9"/><rect x="-3.5" y="-0.45" width="2.8" height="0.9"/><rect x="0.7" y="-0.45" width="2.8" height="0.9"/><rect x="-3.5" y="1.15" width="7" height="0.9"/></g><g transform="translate(29,19) rotate(33.69)"><rect x="-3.5" y="-2.05" width="2.8" height="0.9"/><rect x="0.7" y="-2.05" width="2.8" height="0.9"/><rect x="-3.5" y="-0.45" width="2.8" height="0.9"/><rect x="0.7" y="-0.45" width="2.8" height="0.9"/><rect x="-3.5" y="1.15" width="2.8" height="0.9"/><rect x="0.7" y="1.15" width="2.8" height="0.9"/></g></g></svg>{%- endif -%}{{ section.settings.made_in_label }}</span>
       <div class="ce-cmp__toggle">
         <span class="ce-cmp__lbl is-on" data-cmp-lbl="variant">{{ section.settings.var_label }}</span>
         <button type="button" class="ce-cmp__sw" role="switch" aria-checked="false" data-cmp-sw aria-label="Comparer variante et couleur"><span class="ce-cmp__knob"></span></button>
@@ -285,16 +285,16 @@
     </div>
     <div class="ce-cmp__grid" data-cmp-grid>
       {%- for i in (1..3) -%}
-        {%- assign jl = 'jaw' | append: i | append: '_label' -%}
-        {%- assign jv = 'jaw' | append: i | append: '_variant' -%}
-        {%- assign jc = 'jaw' | append: i | append: '_color' -%}
-        {%- if section.settings[jl] != blank -%}
+        {%- assign sl = 'shade' | append: i | append: '_label' -%}
+        {%- assign sv = 'shade' | append: i | append: '_variant' -%}
+        {%- assign sc = 'shade' | append: i | append: '_color' -%}
+        {%- if section.settings[sl] != blank -%}
           <figure class="ce-cmp__card">
             <div class="ce-cmp__media">
-              <div class="ce-cmp__img ce-cmp__img--variant">{%- if section.settings[jv] != blank -%}<img src="{{ section.settings[jv] | image_url: width: 640 }}" alt="{{ section.settings[jl] | escape }}" loading="lazy">{%- else -%}{{ 'product-2' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
-              <div class="ce-cmp__img ce-cmp__img--color">{%- if section.settings[jc] != blank -%}<img src="{{ section.settings[jc] | image_url: width: 640 }}" alt="{{ section.settings[jl] | escape }} — en bouche" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
+              <div class="ce-cmp__img ce-cmp__img--variant">{%- if section.settings[sv] != blank -%}<img src="{{ section.settings[sv] | image_url: width: 640 }}" alt="{{ section.settings[sl] | escape }} — prothèse" loading="lazy">{%- else -%}{{ 'product-2' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
+              <div class="ce-cmp__img ce-cmp__img--color">{%- if section.settings[sc] != blank -%}<img src="{{ section.settings[sc] | image_url: width: 640 }}" alt="{{ section.settings[sl] | escape }} — en bouche" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}</div>
             </div>
-            <figcaption>{{ section.settings[jl] }}</figcaption>
+            <figcaption>{{ section.settings[sl] }}</figcaption>
           </figure>
         {%- endif -%}
       {%- endfor -%}
@@ -589,8 +589,8 @@
   #ce-{{ section.id }} .ce-cmp__h { text-align: center; }
   #ce-{{ section.id }} .ce-cmp__top { display: flex; flex-direction: column; align-items: center; gap: 16px; margin: 0 0 24px; }
   #ce-{{ section.id }} .ce-cmp__flag { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: var(--ce-ink); background: var(--ce-tint); border: 1px solid var(--ce-line); border-radius: 999px; padding: 6px 14px; }
-  #ce-{{ section.id }} .ce-cmp__flag img { width: 22px; height: auto; border-radius: 3px; display: block; }
-  #ce-{{ section.id }} .ce-cmp__emoji { font-size: 18px; line-height: 1; }
+  #ce-{{ section.id }} .ce-cmp__flag img { width: 24px; height: auto; border-radius: 3px; display: block; }
+  #ce-{{ section.id }} .ce-cmp__krflag { width: 24px; height: 16px; border-radius: 3px; display: block; box-shadow: 0 0 0 1px rgba(0,0,0,.06); }
   #ce-{{ section.id }} .ce-cmp__toggle { display: inline-flex; align-items: center; gap: 12px; }
   #ce-{{ section.id }} .ce-cmp__lbl { font-size: 14px; font-weight: 700; color: #9aa4ac; transition: color .2s ease; cursor: default; }
   #ce-{{ section.id }} .ce-cmp__lbl.is-on { color: var(--ce-acc); }
@@ -842,19 +842,19 @@
     { "type": "header", "content": "Comparateur Variante / Couleur" },
     { "type": "checkbox", "id": "cmp_enable", "label": "Afficher", "default": true },
     { "type": "text", "id": "shades_title", "label": "Titre", "default": "Comparez la teinte en situation réelle" },
-    { "type": "image_picker", "id": "made_in_flag", "label": "Drapeau (fabrication)" },
-    { "type": "text", "id": "made_in_label", "label": "Mention fabrication", "default": "Fabriqué en Corée du Sud" },
-    { "type": "text", "id": "var_label", "label": "Libellé bascule 1", "default": "Variante" },
-    { "type": "text", "id": "col_label", "label": "Libellé bascule 2", "default": "Couleur" },
-    { "type": "text", "id": "jaw1_label", "label": "Carte 1 — libellé", "default": "Mâchoire du haut" },
-    { "type": "image_picker", "id": "jaw1_variant", "label": "Carte 1 — image variante" },
-    { "type": "image_picker", "id": "jaw1_color", "label": "Carte 1 — image en bouche" },
-    { "type": "text", "id": "jaw2_label", "label": "Carte 2 — libellé", "default": "Mâchoire du bas" },
-    { "type": "image_picker", "id": "jaw2_variant", "label": "Carte 2 — image variante" },
-    { "type": "image_picker", "id": "jaw2_color", "label": "Carte 2 — image en bouche" },
-    { "type": "text", "id": "jaw3_label", "label": "Carte 3 — libellé", "default": "Haut & bas" },
-    { "type": "image_picker", "id": "jaw3_variant", "label": "Carte 3 — image variante" },
-    { "type": "image_picker", "id": "jaw3_color", "label": "Carte 3 — image en bouche" },
+    { "type": "image_picker", "id": "made_in_flag", "label": "Drapeau (optionnel, sinon Corée du Sud)" },
+    { "type": "text", "id": "made_in_label", "label": "Mention fabrication", "default": "Made in South Korea" },
+    { "type": "text", "id": "var_label", "label": "Libellé bascule 1 (prothèse seule)", "default": "Variante" },
+    { "type": "text", "id": "col_label", "label": "Libellé bascule 2 (en bouche)", "default": "Couleur" },
+    { "type": "text", "id": "shade1_label", "label": "Teinte 1 — nom", "default": "Blanc naturel" },
+    { "type": "image_picker", "id": "shade1_variant", "label": "Teinte 1 — prothèse seule" },
+    { "type": "image_picker", "id": "shade1_color", "label": "Teinte 1 — en bouche" },
+    { "type": "text", "id": "shade2_label", "label": "Teinte 2 — nom", "default": "Ivoire" },
+    { "type": "image_picker", "id": "shade2_variant", "label": "Teinte 2 — prothèse seule" },
+    { "type": "image_picker", "id": "shade2_color", "label": "Teinte 2 — en bouche" },
+    { "type": "text", "id": "shade3_label", "label": "Teinte 3 — nom", "default": "Hollywood" },
+    { "type": "image_picker", "id": "shade3_variant", "label": "Teinte 3 — prothèse seule" },
+    { "type": "image_picker", "id": "shade3_color", "label": "Teinte 3 — en bouche" },
     { "type": "header", "content": "Avant / Après (photos)" },
     { "type": "text", "id": "ba_title", "label": "Titre", "default": "Avant / Après" },
     { "type": "header", "content": "Avis" },

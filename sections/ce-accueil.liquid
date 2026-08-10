@@ -213,7 +213,7 @@
 </section>
 
 {%- style -%}
-  #ch-{{ section.id }}.ch { background: #fff; color: var(--ch-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; }
+  #ch-{{ section.id }}.ch { --ch-mint: #e6f1ed; --ch-tint: #eef5f2; background: #fff; color: var(--ch-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; }
   #ch-{{ section.id }} * { box-sizing: border-box; }
   #ch-{{ section.id }} h1, #ch-{{ section.id }} h2, #ch-{{ section.id }} h3 { font-family: 'Manrope', sans-serif; font-weight: 800; letter-spacing: -.02em; }
   #ch-{{ section.id }} img { max-width: 100%; display: block; }
@@ -221,7 +221,7 @@
 
   #ch-{{ section.id }} .ch-band { max-width: 1140px; margin: 0 auto; padding: 48px 18px; }
   #ch-{{ section.id }} .ch-band--tight { padding: 20px 18px 34px; }
-  #ch-{{ section.id }} .ch-band--tint { max-width: 100%; background: #f2f5f4; }
+  #ch-{{ section.id }} .ch-band--tint { max-width: 100%; background: var(--ch-tint); }
   #ch-{{ section.id }} .ch-band--tint > * { max-width: 1140px; margin-left: auto; margin-right: auto; }
   #ch-{{ section.id }} .ch-h2 { font-size: clamp(23px, 5vw, 32px); text-align: center; margin: 0 0 8px; line-height: 1.15; }
   #ch-{{ section.id }} .ch-sub { text-align: center; color: #6a747c; font-size: 15px; max-width: 620px; margin: 0 auto 26px; line-height: 1.55; }
@@ -247,23 +247,23 @@
   #ch-{{ section.id }} .ch-hero__btn { padding: 14px 30px; }
   @media (max-width: 749px) { #ch-{{ section.id }} .ch-hero__media { aspect-ratio: 4/5; } }
 
-  /* Cards */
-  #ch-{{ section.id }} .ch-cards { display: grid; grid-template-columns: 1fr; gap: 16px; }
-  #ch-{{ section.id }} .ch-card { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px 16px; border: 1px solid #e4e9e8; border-radius: 16px; background: #fff; text-decoration: none; color: var(--ch-ink); transition: .15s; }
-  #ch-{{ section.id }} .ch-card:hover { box-shadow: 0 12px 30px rgba(0,0,0,.08); transform: translateY(-2px); }
-  #ch-{{ section.id }} .ch-card__badge { position: absolute; top: 12px; left: 12px; background: var(--ch-acc); color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 4px 9px; border-radius: 5px; }
-  #ch-{{ section.id }} .ch-card__media { width: 100%; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: #f2f5f4; margin-bottom: 14px; }
-  #ch-{{ section.id }} .ch-card__media img { width: 100%; height: 100%; object-fit: cover; }
-  #ch-{{ section.id }} .ch-card__name { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 17px; }
-  #ch-{{ section.id }} .ch-card__sub { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #9aa4ac; margin-top: 3px; }
-  #ch-{{ section.id }} .ch-card__price { display: flex; gap: 8px; align-items: baseline; margin: 10px 0 14px; }
-  #ch-{{ section.id }} .ch-card__was { color: #9aa4ac; text-decoration: line-through; font-size: 14px; }
-  #ch-{{ section.id }} .ch-card__now { font-weight: 800; font-size: 18px; color: var(--ch-acc); }
-  #ch-{{ section.id }} .ch-card__award { position: absolute; top: 12px; right: 12px; width: 46px; }
+  /* Cards — veneera style: mint card, centered badge pill, navy text, dark button */
+  #ch-{{ section.id }} .ch-cards { display: grid; grid-template-columns: 1fr; gap: 22px; }
+  #ch-{{ section.id }} .ch-card { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 30px 22px 24px; border: 1px solid #d7e7e1; border-radius: 18px; background: var(--ch-mint); text-decoration: none; color: var(--ch-ink); transition: .18s; }
+  #ch-{{ section.id }} .ch-card:hover { box-shadow: 0 16px 36px rgba(18,41,58,.12); transform: translateY(-3px); }
+  #ch-{{ section.id }} .ch-card__badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, var(--ch-acc-dark), var(--ch-acc)); color: #fff; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; padding: 7px 20px; border-radius: 9px; white-space: nowrap; box-shadow: 0 6px 16px rgba(18,41,58,.18); }
+  #ch-{{ section.id }} .ch-card__award { position: absolute; top: 16px; right: 16px; width: 56px; z-index: 2; }
   #ch-{{ section.id }} .ch-card__award img { width: 100%; height: auto; }
-  #ch-{{ section.id }} .ch-card__price { margin: 10px 0 4px; }
-  #ch-{{ section.id }} .ch-card__taxes { font-size: 11px; color: #9aa4ac; margin: 0 0 14px; }
-  #ch-{{ section.id }} .ch-card__cta { width: 100%; }
+  #ch-{{ section.id }} .ch-card__media { width: 100%; aspect-ratio: 16/10; overflow: hidden; background: transparent; margin: 22px 0 16px; display: flex; align-items: center; justify-content: center; }
+  #ch-{{ section.id }} .ch-card__media img { width: 100%; height: 100%; object-fit: contain; }
+  #ch-{{ section.id }} .ch-card__media .ch-ph, #ch-{{ section.id }} .ch-card__media .ch-ph svg { object-fit: contain; }
+  #ch-{{ section.id }} .ch-card__name { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 24px; color: var(--ch-ink); }
+  #ch-{{ section.id }} .ch-card__sub { font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ch-ink); opacity: .78; margin-top: 7px; font-weight: 600; }
+  #ch-{{ section.id }} .ch-card__price { display: flex; gap: 10px; align-items: baseline; justify-content: center; margin: 16px 0 6px; }
+  #ch-{{ section.id }} .ch-card__was { color: #8a97a0; text-decoration: line-through; font-size: 16px; }
+  #ch-{{ section.id }} .ch-card__now { font-weight: 800; font-size: 21px; color: var(--ch-ink); }
+  #ch-{{ section.id }} .ch-card__taxes { font-size: 12.5px; color: #7c8891; margin: 0 0 18px; }
+  #ch-{{ section.id }} .ch-card__cta { width: 100%; padding: 14px; border-radius: 10px; }
 
   /* FAQ (identique à la page produit) */
   #ch-{{ section.id }} .ch-faq2 { max-width: 1100px; margin: 0 auto; }
@@ -356,20 +356,20 @@
     {
       "type": "color",
       "id": "color_accent",
-      "label": "Accent",
-      "default": "#12a3a0"
+      "label": "Accent (teal Veneera)",
+      "default": "#15776a"
     },
     {
       "type": "color",
       "id": "color_accent_dark",
       "label": "Accent foncé",
-      "default": "#0b7a78"
+      "default": "#0f5b51"
     },
     {
       "type": "color",
       "id": "color_ink",
-      "label": "Texte",
-      "default": "#15242b"
+      "label": "Texte (bleu foncé)",
+      "default": "#12293a"
     },
     {
       "type": "image_picker",

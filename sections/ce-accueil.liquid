@@ -38,7 +38,7 @@
   <div class="ch-band">
     <div class="ch-cards">
       {%- for block in cards -%}
-        <a class="ch-card" href="{{ purl }}" {{ block.shopify_attributes }}>
+        <a class="ch-card" href="{% if block.settings.link != blank %}{{ block.settings.link }}{% else %}{{ purl }}{% endif %}" {{ block.shopify_attributes }}>
           {%- if block.settings.badge != blank -%}<span class="ch-card__badge">{{ block.settings.badge }}</span>{%- endif -%}
           {%- if block.settings.award != blank -%}<span class="ch-card__award"><img src="{{ block.settings.award | image_url: width: 120 }}" alt="" loading="lazy"></span>{%- endif -%}
           <div class="ch-card__media">
@@ -553,6 +553,11 @@
           "type": "image_picker",
           "id": "award",
           "label": "Médaille / badge (coin haut-droit, optionnel)"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien (variante, optionnel)"
         },
         {
           "type": "text",

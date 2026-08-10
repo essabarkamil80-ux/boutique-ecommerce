@@ -44,6 +44,7 @@
             <div class="ce-gallery__slide" data-slide="1">{{ 'product-2' | placeholder_svg_tag: 'ce-ph' }}</div>
             <div class="ce-gallery__slide" data-slide="2">{{ 'product-3' | placeholder_svg_tag: 'ce-ph' }}</div>
           {%- endif -%}
+          <div class="ce-gallery__slide ce-gallery__slide--variant" data-variant-slide hidden><img data-variant-img src="" alt="" width="900" height="900" loading="lazy"></div>
         </div>
       </div>
     </div>
@@ -113,6 +114,9 @@
           <input type="hidden" data-variant-input value="{{ prod.selected_or_first_available_variant.id }}">
         {%- elsif prod != blank -%}
           <input type="hidden" data-variant-input value="{{ prod.selected_or_first_available_variant.id }}">
+        {%- endif -%}
+        {%- if prod != blank -%}
+        <script type="application/json" data-vdata>{"{%- for v in prod.variants -%}{{ v.id }}":{"p":{{ v.price | money | json }},"c":{% if v.compare_at_price and v.compare_at_price > v.price %}{{ v.compare_at_price | money | json }}{% else %}null{% endif %},"a":{{ v.available | json }},"img":{% if v.featured_image %}{{ v.featured_image | image_url: width: 1100 | json }}{% else %}null{% endif %}}{%- unless forloop.last -%},"{%- endunless -%}{%- endfor -%}}</script>
         {%- endif -%}
 
         {%- comment -%} 4 simple steps (inside the buy box, like the reference) {%- endcomment -%}
@@ -663,9 +667,12 @@
     if (!root) return;
 
     var slides = root.querySelectorAll('[data-slide]');
+    var vSlide = root.querySelector('[data-variant-slide]');
+    var vImg = root.querySelector('[data-variant-img]');
     root.querySelectorAll('[data-thumb]').forEach(function (t) {
       t.addEventListener('click', function () {
         var i = t.getAttribute('data-thumb');
+        if (vSlide) { vSlide.classList.remove('is-active'); vSlide.hidden = true; }
         slides.forEach(function (s) { s.classList.toggle('is-active', s.getAttribute('data-slide') === i); });
         root.querySelectorAll('[data-thumb]').forEach(function (x) { x.classList.toggle('is-active', x === t); });
       });
@@ -685,7 +692,32 @@
     var input = root.querySelector('[data-variant-input]');
     var variants = [];
     if (opts) { try { variants = JSON.parse(opts.getAttribute('data-variants')); } catch (e) {} }
-    function resolve() {
+    var vdataEl = root.querySelector('[data-vdata]');
+    var vdata = {};
+    if (vdataEl) { try { vdata = JSON.parse(vdataEl.textContent); } catch (e) {} }
+    var priceNow = root.querySelector('.ce-price__now');
+    var pricerow = root.querySelector('.ce-pricerow');
+    function applyVariant(match, updateUrl) {
+      if (!match) return;
+      if (input) input.value = match.id;
+      if (updateUrl) { try { var u = new URL(window.location.href); u.searchParams.set('variant', match.id); history.replaceState({}, '', u.toString()); } catch (e) {} }
+      var d = vdata[match.id];
+      if (d) {
+        if (priceNow && d.p) priceNow.textContent = d.p;
+        if (pricerow) {
+          var was = pricerow.querySelector('.ce-price__was');
+          if (d.c) {
+            if (!was && priceNow) { was = document.createElement('span'); was.className = 'ce-price__was'; pricerow.insertBefore(was, priceNow); }
+            if (was) { was.textContent = d.c; was.style.display = ''; }
+          } else if (was) { was.style.display = 'none'; }
+        }
+        if (vSlide && vImg) {
+          if (d.img) { vImg.src = d.img; vImg.alt = match.name || ''; slides.forEach(function (s) { s.classList.remove('is-active'); }); vSlide.hidden = false; vSlide.classList.add('is-active'); }
+          else { vSlide.hidden = true; vSlide.classList.remove('is-active'); if (!root.querySelector('[data-slide].is-active')) { var s0 = root.querySelector('[data-slide="0"]'); if (s0) s0.classList.add('is-active'); } }
+        }
+      }
+    }
+    function resolve(updateUrl) {
       if (!opts || !variants.length) return;
       var sel = [];
       root.querySelectorAll('[data-opt-pos]').forEach(function (g) {
@@ -696,17 +728,17 @@
         if (lbl && active) lbl.textContent = active.getAttribute('data-value');
       });
       var match = variants.filter(function (v) { return v.options.every(function (o, i) { return o === sel[i]; }); })[0];
-      if (match && input) input.value = match.id;
+      applyVariant(match, updateUrl);
     }
     root.querySelectorAll('[data-opt-value]').forEach(function (b) {
       b.addEventListener('click', function () {
         var g = b.closest('[data-opt-pos]');
         g.querySelectorAll('[data-opt-value]').forEach(function (x) { x.classList.remove('is-active'); });
         b.classList.add('is-active');
-        resolve();
+        resolve(true);
       });
     });
-    resolve();
+    resolve(false);
 
     function track(id, qty, res) {
       try {

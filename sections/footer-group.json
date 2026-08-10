@@ -52,7 +52,10 @@
     },
     "footer": {
       "type": "ce-footer",
-      "settings": {}
+      "settings": {
+        "nl_enable": true,
+        "pay_enable": true
+      }
     }
   },
   "order": [

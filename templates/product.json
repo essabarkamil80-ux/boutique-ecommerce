@@ -148,6 +148,7 @@
         "review-1": {
           "type": "review",
           "settings": {
+            "image": "shopify://shop_images/temoiganges_5.jpg",
             "title": "Bluffant de réalisme",
             "text": "Je n'osais plus sourire. En 2 minutes je pose mes facettes et le résultat est incroyable.",
             "author": "Sarah M."
@@ -156,6 +157,7 @@
         "review-2": {
           "type": "review",
           "settings": {
+            "image": "shopify://shop_images/temoiganage3.jpg",
             "title": "Enfin confiant",
             "text": "Le kit d'empreinte est super simple et le rendu est bluffant. Je recommande à 100%.",
             "author": "Julien R."
@@ -164,6 +166,7 @@
         "review-3": {
           "type": "review",
           "settings": {
+            "image": "shopify://shop_images/remoigange1S.jpg",
             "title": "Ça a changé ma vie",
             "text": "Après des années à cacher mes dents, je souris enfin sur les photos.",
             "author": "Amélie D."
@@ -172,6 +175,7 @@
         "review-4": {
           "type": "review",
           "settings": {
+            "image": "shopify://shop_images/BErfi3CQp.jpg",
             "title": "Très naturel",
             "text": "La teinte Blanc naturel est parfaite, ni trop ni trop peu.",
             "author": "Karim B."
@@ -180,6 +184,7 @@
         "review-5": {
           "type": "review",
           "settings": {
+            "image": "shopify://shop_images/Screenshot_2026-08-11_15.42.48.png",
             "title": "Confortable",
             "text": "On les oublie une fois posées. Vraiment confortables.",
             "author": "Emma L."
@@ -188,6 +193,7 @@
         "review-6": {
           "type": "review",
           "settings": {
+            "image": "shopify://shop_images/jYNKb9WVZ.jpg",
             "title": "Livraison rapide",
             "text": "Kit reçu vite, facettes conformes. Service au top.",
             "author": "Thomas P."

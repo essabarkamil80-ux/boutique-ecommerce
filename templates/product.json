@@ -245,8 +245,8 @@
         "cta_add": "Ajouter au panier",
         "offer_enable": true,
         "offer_badge": "-50%",
-        "offer_title": "1 mâchoire achetée = la 2ᵉ OFFERTE",
-        "offer_sub": "Choisissez « Haut & Bas » : les facettes du bas sont incluses gratuitement.",
+        "offer_title": "La mâchoire du bas OFFERTE",
+        "offer_sub": "Choisissez « Haut & Bas » : vous ne payez que le haut, le bas est inclus gratuitement.",
         "tax_note": "Taxes incluses. Livraison calculée au paiement.",
         "press_enable": true,
         "press_title": "Ils parlent de nous",
@@ -316,7 +316,8 @@
         "about_t3": "<p>Les facettes se posent et se retirent à tout moment, sans abîmer l'émail ni blanchir vos dents. Vos dents restent saines et protégées.</p>",
         "about_h4": "Qualité au juste prix",
         "about_t4": "<p>Grâce à une fabrication soignée et des matériaux de qualité, profitez d'un rendu premium à un prix accessible.</p>",
-        "sticky_name": "Facettes Premium"
+        "sticky_name": "Facettes Premium",
+        "offer_eyebrow": "Offre exclusive"
       }
     }
   },

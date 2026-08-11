@@ -422,8 +422,8 @@
   #ce-{{ section.id }} .ce-gallery__thumb { width: 76px; height: 76px; border-radius: 12px; overflow: hidden; border: 2px solid var(--ce-line); background: var(--ce-tint); cursor: pointer; padding: 0; flex: 0 0 auto; transition: .12s; }
   #ce-{{ section.id }} .ce-gallery__thumb.is-active { border-color: var(--ce-acc); box-shadow: 0 0 0 2px color-mix(in srgb, var(--ce-acc) 25%, transparent); }
   #ce-{{ section.id }} .ce-gallery__thumb img, #ce-{{ section.id }} .ce-gallery__thumb .ce-ph, #ce-{{ section.id }} .ce-gallery__thumb .ce-ph svg { width: 100%; height: 100%; object-fit: cover; }
-  #ce-{{ section.id }} .ce-gallery__main { position: relative; border-radius: var(--r); overflow: hidden; background: var(--ce-tint); aspect-ratio: 1/1; }
-  #ce-{{ section.id }} .ce-gallery__slide { position: absolute; inset: 0; opacity: 0; transition: opacity .25s; display: flex; align-items: center; justify-content: center; padding: 6%; }
+  #ce-{{ section.id }} .ce-gallery__main { position: relative; overflow: hidden; background: transparent; aspect-ratio: 1/1; }
+  #ce-{{ section.id }} .ce-gallery__slide { position: absolute; inset: 0; opacity: 0; transition: opacity .25s; display: flex; align-items: center; justify-content: center; }
   #ce-{{ section.id }} .ce-gallery__slide.is-active { opacity: 1; }
   #ce-{{ section.id }} .ce-gallery__slide img, #ce-{{ section.id }} .ce-gallery__slide .ce-ph, #ce-{{ section.id }} .ce-gallery__slide .ce-ph svg { width: 100%; height: 100%; object-fit: contain; }
 

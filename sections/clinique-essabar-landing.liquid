@@ -136,7 +136,7 @@
           <div class="ce-steps-mini">
             <span class="ce-steps-mini__title">{{ section.settings.steps_title }}</span>
             <ol>
-              {%- for block in steps -%}<li {{ block.shopify_attributes }}><span>{{ forloop.index }}</span>{{ block.settings.title }}</li>{%- endfor -%}
+              {%- for block in steps -%}<li {{ block.shopify_attributes }}><span class="ce-steps-mini__num">{{ forloop.index }}</span><span class="ce-steps-mini__body"><b>{{ block.settings.title }}</b>{%- if block.settings.text != blank -%}<span class="ce-steps-mini__note">{{ block.settings.text }}</span>{%- endif -%}</span></li>{%- endfor -%}
             </ol>
           </div>
         {%- endif -%}
@@ -464,8 +464,11 @@
   #ce-{{ section.id }} .ce-steps-mini { background: var(--ce-tint); border-radius: 12px; padding: 14px 16px; margin: 6px 0 16px; }
   #ce-{{ section.id }} .ce-steps-mini__title { display: block; font-weight: 800; font-family: 'Manrope', sans-serif; font-size: 14px; margin-bottom: 10px; }
   #ce-{{ section.id }} .ce-steps-mini ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
-  #ce-{{ section.id }} .ce-steps-mini li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #3d474f; line-height: 1.35; }
-  #ce-{{ section.id }} .ce-steps-mini li span { flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%; background: var(--ce-acc); color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  #ce-{{ section.id }} .ce-steps-mini li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #3d474f; line-height: 1.35; }
+  #ce-{{ section.id }} .ce-steps-mini__num { flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%; background: var(--ce-acc); color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  #ce-{{ section.id }} .ce-steps-mini__body { display: flex; flex-direction: column; }
+  #ce-{{ section.id }} .ce-steps-mini__body b { font-weight: 700; }
+  #ce-{{ section.id }} .ce-steps-mini__note { font-size: 12px; color: #6a747c; line-height: 1.4; margin-top: 2px; }
 
   /* Buttons */
   #ce-{{ section.id }} .ce-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 15px; border: 0; border-radius: 10px; cursor: pointer; transition: transform .12s, background .15s; text-decoration: none; padding: 15px 26px; }
@@ -949,7 +952,7 @@
     { "type": "text", "id": "sticky_name", "label": "Nom", "default": "Facettes Premium" }
   ],
   "blocks": [
-    { "type": "step", "name": "Étape", "settings": [ { "type": "text", "id": "title", "label": "Texte", "default": "Recevez votre kit d'empreinte" } ] },
+    { "type": "step", "name": "Étape", "settings": [ { "type": "text", "id": "title", "label": "Titre", "default": "Recevez votre kit d'empreinte" }, { "type": "textarea", "id": "text", "label": "Texte (optionnel)" } ] },
     { "type": "shade", "name": "Teinte", "settings": [ { "type": "image_picker", "id": "image", "label": "Image" }, { "type": "text", "id": "name", "label": "Nom", "default": "Blanc naturel" }, { "type": "text", "id": "code", "label": "Référence", "default": "A1" } ] },
     { "type": "ugc", "name": "Vidéo client", "settings": [ { "type": "video", "id": "video", "label": "Vidéo" }, { "type": "text", "id": "video_url", "label": "OU URL .mp4" }, { "type": "image_picker", "id": "poster", "label": "Miniature" } ] },
     { "type": "ba_photo", "name": "Photo avant/après", "settings": [ { "type": "image_picker", "id": "image", "label": "Image avant/après" }, { "type": "text", "id": "caption", "label": "Légende (optionnel)" } ] },

@@ -21,7 +21,8 @@
         "step-2": {
           "type": "step",
           "settings": {
-            "title": "Prenez l'empreinte de votre sourire"
+            "title": "Envoyez-nous votre empreinte",
+            "text": "Une fois votre empreinte réalisée à l'aide de notre tutoriel, envoyez-la à nos spécialistes. Ils l'utilisent pour concevoir vos facettes sur mesure, adaptées à votre dentition."
           }
         },
         "step-3": {
@@ -65,28 +66,28 @@
           "type": "faq",
           "settings": {
             "question": "Combien de temps durent les facettes ?",
-            "answer": "<p>Avec un entretien soigné, elles durent longtemps et se réutilisent au quotidien.</p>"
+            "answer": "<p>La durée de vie de vos facettes dépend directement de leur entretien et de la façon dont vous les utilisez au quotidien. Avec des soins réguliers et attentifs, elles vous accompagnent durablement.</p><p>Pour les préserver au mieux :</p><ul><li>Nettoyez-les régulièrement avec une brosse à dents souple et de l'eau tiède (évitez l'eau chaude).</li><li>Manipulez-les avec précaution lors de la pose et du retrait.</li><li>Rangez-les dans leur étui après chaque utilisation.</li></ul><p>Un entretien soigné est la clé pour conserver leur éclat et leur confort le plus longtemps possible.</p>"
           }
         },
         "faq-2": {
           "type": "faq",
           "settings": {
             "question": "Combien de dents couvrent-elles ?",
-            "answer": "<p>Elles couvrent les dents visibles du sourire, sur le haut et/ou le bas selon le modèle choisi.</p>"
+            "answer": "<p>Vos facettes sont conçues pour couvrir l'ensemble de l'arcade dentaire sélectionnée, et non quelques dents isolées : vous obtenez ainsi un sourire harmonieux et uniforme.</p><p>Vous choisissez l'arcade supérieure, inférieure, ou les deux selon l'offre. Chaque pièce est fabriquée <strong>sur mesure</strong> à partir de vos propres empreintes, pour un ajustement parfaitement adapté à votre dentition.</p>"
           }
         },
         "faq-3": {
           "type": "faq",
           "settings": {
             "question": "Comment se passe la prise d'empreinte ?",
-            "answer": "<p>Vous recevez un kit complet avec un guide pas-à-pas, puis vous nous renvoyez votre empreinte (frais offerts).</p>"
+            "answer": "<p>C'est simple et entièrement réalisable chez vous, en quelques minutes et sans dentiste. Vous êtes guidé pas à pas grâce à notre tutoriel détaillé.</p><p>Vous retrouvez ce tutoriel dans la rubrique <strong>« Aide &amp; Infos » &rsaquo; « Prise d'empreinte »</strong> du site.</p><p>Une fois vos empreintes réalisées, il vous suffit de nous les renvoyer : nos spécialistes les utilisent pour concevoir vos facettes sur mesure, adaptées à votre sourire.</p>"
           }
         },
         "faq-4": {
           "type": "faq",
           "settings": {
             "question": "Et si je ne suis pas satisfait ?",
-            "answer": "<p>Vous êtes couvert par notre garantie satisfait ou remboursé 30 jours.</p>"
+            "answer": "<p>Votre satisfaction est notre priorité. Vous bénéficiez de notre garantie <strong>« satisfait ou remboursé » de 30 jours</strong>.</p><p>Si vos facettes ne vous conviennent pas ou que vous n'êtes pas pleinement satisfait de votre achat, vous pouvez demander un remboursement dans le cadre des conditions de cette garantie.</p><p>Notre équipe reste à votre écoute à chaque étape pour vous accompagner et trouver la meilleure solution.</p>"
           }
         },
         "shade-1": {

@@ -67,12 +67,23 @@
 
       {%- if section.settings.offer_enable -%}
       <div class="ce-offer">
-        <span class="ce-offer__ico">🎁</span>
-        <div class="ce-offer__txt">
-          <span class="ce-offer__title">{{ section.settings.offer_title }}</span>
-          {%- if section.settings.offer_sub != blank -%}<span class="ce-offer__sub">{{ section.settings.offer_sub }}</span>{%- endif -%}
+        <div class="ce-offer__top">
+          <span class="ce-offer__eyebrow">🎁 {{ section.settings.offer_eyebrow | default: 'Offre exclusive' }}</span>
+          {%- if section.settings.offer_badge != blank -%}<span class="ce-offer__save">{{ section.settings.offer_badge }}</span>{%- endif -%}
         </div>
-        {%- if section.settings.offer_badge != blank -%}<span class="ce-offer__badge">{{ section.settings.offer_badge }}</span>{%- endif -%}
+        {%- if section.settings.offer_title != blank -%}<div class="ce-offer__head">{{ section.settings.offer_title }}</div>{%- endif -%}
+        <div class="ce-offer__viz">
+          <div class="ce-offer__jaw">
+            <span class="ce-offer__jaw-ico">🦷</span>
+            <span class="ce-offer__jaw-txt"><b>Haut</b><span class="ce-offer__jaw-state">Acheté</span></span>
+          </div>
+          <span class="ce-offer__plus">+</span>
+          <div class="ce-offer__jaw ce-offer__jaw--free">
+            <span class="ce-offer__jaw-ico">🦷</span>
+            <span class="ce-offer__jaw-txt"><b>Bas</b><span class="ce-offer__jaw-state ce-offer__jaw-state--free">🎁 Offert</span></span>
+          </div>
+        </div>
+        {%- if section.settings.offer_sub != blank -%}<div class="ce-offer__note">{{ section.settings.offer_sub }}</div>{%- endif -%}
       </div>
       {%- endif -%}
 
@@ -422,7 +433,7 @@
   #ce-{{ section.id }} .ce-gallery__thumb { width: 76px; height: 76px; border-radius: 12px; overflow: hidden; border: 2px solid var(--ce-line); background: var(--ce-tint); cursor: pointer; padding: 0; flex: 0 0 auto; transition: .12s; }
   #ce-{{ section.id }} .ce-gallery__thumb.is-active { border-color: var(--ce-acc); box-shadow: 0 0 0 2px color-mix(in srgb, var(--ce-acc) 25%, transparent); }
   #ce-{{ section.id }} .ce-gallery__thumb img, #ce-{{ section.id }} .ce-gallery__thumb .ce-ph, #ce-{{ section.id }} .ce-gallery__thumb .ce-ph svg { width: 100%; height: 100%; object-fit: cover; }
-  #ce-{{ section.id }} .ce-gallery__main { position: relative; overflow: hidden; background: transparent; aspect-ratio: 1/1; }
+  #ce-{{ section.id }} .ce-gallery__main { position: relative; overflow: hidden; background: transparent; aspect-ratio: 1/1; border-radius: 16px; }
   #ce-{{ section.id }} .ce-gallery__slide { position: absolute; inset: 0; opacity: 0; transition: opacity .25s; display: flex; align-items: center; justify-content: center; }
   #ce-{{ section.id }} .ce-gallery__slide.is-active { opacity: 1; }
   #ce-{{ section.id }} .ce-gallery__slide img, #ce-{{ section.id }} .ce-gallery__slide .ce-ph, #ce-{{ section.id }} .ce-gallery__slide .ce-ph svg { width: 100%; height: 100%; object-fit: contain; }
@@ -503,8 +514,15 @@
 
   /* Mobile refinements */
   @media (max-width: 749px) {
-    #ce-{{ section.id }} .ce-gallery__thumb { width: 66px; height: 66px; }
+    #ce-{{ section.id }} .ce-hero { padding: 14px 14px 0; gap: 16px; }
+    #ce-{{ section.id }} .ce-gallery { gap: 12px; }
+    #ce-{{ section.id }} .ce-gallery__main { border-radius: 14px; }
+    #ce-{{ section.id }} .ce-gallery__thumbs { flex-wrap: wrap; overflow-x: visible; gap: 8px; }
+    #ce-{{ section.id }} .ce-gallery__thumb { width: 58px; height: 58px; border-radius: 10px; }
     #ce-{{ section.id }} .ce-card { padding: 15px; }
+    #ce-{{ section.id }} .ce-offer__head { font-size: 17px; }
+    #ce-{{ section.id }} .ce-offer__jaw { padding: 8px 9px; gap: 7px; }
+    #ce-{{ section.id }} .ce-offer__jaw-ico { font-size: 19px; }
     #ce-{{ section.id }} .ce-helps__grid { gap: 8px; }
     #ce-{{ section.id }} .ce-helps__img { border-radius: 10px; }
     #ce-{{ section.id }} .ce-helps__label { font-size: 9.5px; padding: 5px 10px; margin-bottom: 8px; letter-spacing: .5px; }
@@ -516,12 +534,22 @@
   /* Tax note */
   #ce-{{ section.id }} .ce-taxnote { font-size: 12px; color: #8a949c; margin: 0 0 12px; }
   /* Offer banner */
-  #ce-{{ section.id }} .ce-offer { display: flex; align-items: center; gap: 12px; background: linear-gradient(120deg, var(--ce-acc), var(--ce-acc-dark)); color: #fff; border-radius: 14px; padding: 13px 16px; margin: 2px 0 16px; box-shadow: 0 12px 26px -14px rgba(15,91,81,.7); }
-  #ce-{{ section.id }} .ce-offer__ico { font-size: 26px; line-height: 1; flex-shrink: 0; }
-  #ce-{{ section.id }} .ce-offer__txt { display: flex; flex-direction: column; }
-  #ce-{{ section.id }} .ce-offer__title { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 15px; line-height: 1.2; }
-  #ce-{{ section.id }} .ce-offer__sub { font-size: 12.5px; opacity: .95; margin-top: 3px; line-height: 1.35; }
-  #ce-{{ section.id }} .ce-offer__badge { margin-left: auto; background: #fff; color: var(--ce-acc-dark); font-weight: 800; font-size: 12px; letter-spacing: .3px; padding: 6px 11px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
+  #ce-{{ section.id }} .ce-offer { background: linear-gradient(135deg, var(--ce-acc-dark) 0%, var(--ce-acc) 100%); color: #fff; border-radius: 16px; padding: 15px 16px; margin: 4px 0 18px; box-shadow: 0 14px 30px -16px rgba(15,91,81,.75); }
+  #ce-{{ section.id }} .ce-offer__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 9px; }
+  #ce-{{ section.id }} .ce-offer__eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 1.3px; text-transform: uppercase; opacity: .96; }
+  #ce-{{ section.id }} .ce-offer__save { background: #fff; color: var(--ce-acc-dark); font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 13px; padding: 5px 12px; border-radius: 999px; flex-shrink: 0; box-shadow: 0 3px 10px rgba(0,0,0,.16); }
+  #ce-{{ section.id }} .ce-offer__head { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(16px, 2.4vw, 20px); line-height: 1.18; margin-bottom: 12px; }
+  #ce-{{ section.id }} .ce-offer__viz { display: flex; align-items: stretch; gap: 8px; }
+  #ce-{{ section.id }} .ce-offer__jaw { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 9px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.24); border-radius: 12px; padding: 9px 11px; }
+  #ce-{{ section.id }} .ce-offer__jaw--free { background: #fff; border-color: #fff; }
+  #ce-{{ section.id }} .ce-offer__jaw-ico { font-size: 21px; line-height: 1; flex-shrink: 0; }
+  #ce-{{ section.id }} .ce-offer__jaw-txt { display: flex; flex-direction: column; line-height: 1.1; min-width: 0; }
+  #ce-{{ section.id }} .ce-offer__jaw-txt b { font-size: 13.5px; font-weight: 800; }
+  #ce-{{ section.id }} .ce-offer__jaw-state { font-size: 11.5px; opacity: .9; margin-top: 2px; white-space: nowrap; }
+  #ce-{{ section.id }} .ce-offer__jaw--free .ce-offer__jaw-txt b { color: var(--ce-ink); }
+  #ce-{{ section.id }} .ce-offer__jaw-state--free { color: var(--ce-acc-dark); font-weight: 800; opacity: 1; }
+  #ce-{{ section.id }} .ce-offer__plus { align-self: center; font-weight: 800; font-size: 18px; opacity: .92; flex-shrink: 0; }
+  #ce-{{ section.id }} .ce-offer__note { font-size: 11.5px; opacity: .93; line-height: 1.35; margin-top: 10px; }
   /* Press strip */
   #ce-{{ section.id }} .ce-press { margin: 0 0 16px; }
   #ce-{{ section.id }} .ce-press__label { display: block; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: #9aa4ac; font-weight: 700; margin-bottom: 9px; }
@@ -828,9 +856,10 @@
     { "type": "text", "id": "cta_add", "label": "Bouton principal", "default": "Ajouter au panier" },
     { "type": "header", "content": "Offre (mise en avant)" },
     { "type": "checkbox", "id": "offer_enable", "label": "Afficher l'offre", "default": true },
+    { "type": "text", "id": "offer_eyebrow", "label": "Étiquette offre", "default": "Offre exclusive" },
     { "type": "text", "id": "offer_badge", "label": "Badge", "default": "-50%" },
-    { "type": "text", "id": "offer_title", "label": "Titre de l'offre", "default": "1 mâchoire achetée = la 2ᵉ OFFERTE" },
-    { "type": "text", "id": "offer_sub", "label": "Sous-titre", "default": "Choisissez « Haut & Bas » : les facettes du bas sont incluses gratuitement." },
+    { "type": "text", "id": "offer_title", "label": "Titre de l'offre", "default": "La mâchoire du bas OFFERTE" },
+    { "type": "text", "id": "offer_sub", "label": "Sous-titre", "default": "Choisissez « Haut & Bas » : vous ne payez que le haut, le bas est inclus gratuitement." },
     { "type": "text", "id": "tax_note", "label": "Note taxes", "default": "Taxes incluses. Livraison calculée au paiement." },
     { "type": "header", "content": "Presse (Ils parlent de nous)" },
     { "type": "checkbox", "id": "press_enable", "label": "Afficher", "default": true },

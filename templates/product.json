@@ -145,12 +145,6 @@
             "caption": ""
           }
         },
-        "ba-6": {
-          "type": "ba_photo",
-          "settings": {
-            "caption": ""
-          }
-        },
         "review-1": {
           "type": "review",
           "settings": {
@@ -221,7 +215,6 @@
         "ba-3",
         "ba-4",
         "ba-5",
-        "ba-6",
         "review-1",
         "review-2",
         "review-3",

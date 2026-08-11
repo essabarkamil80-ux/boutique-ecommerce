@@ -39,6 +39,7 @@
         "ugc-1": {
           "type": "ugc",
           "settings": {
+            "video": "shopify://files/videos/organic 17.mp4",
             "video_url": ""
           }
         },

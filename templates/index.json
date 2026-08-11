@@ -168,10 +168,11 @@
         "social-4"
       ],
       "settings": {
-        "product": "",
+        "product": "custom-dental-veneers",
         "color_accent": "#15776a",
         "color_accent_dark": "#0f5b51",
         "color_ink": "#12293a",
+        "hero_image": "shopify://shop_images/Gemini_Generated_Image_yww7cryww7cryww7.png",
         "hero_video_url": "https://cdn.shopify.com/videos/c/o/v/f60e129a8f10414a9460bd58c9834931.mov",
         "hero_badge": "Dispositif cosmétique premium",
         "hero_title": "Retrouvez un sourire éclatant",
@@ -187,7 +188,7 @@
         "faq_title": "Questions fréquentes",
         "why_title": "Pourquoi Clinique Essabar ?",
         "stats_enable": true,
-        "stats_lines": "55 000+ | clients satisfaits\nAbordable | alternative à 2000 $\nRapide | en 8 jours",
+        "stats_lines": "",
         "kit_enable": true,
         "kit_title": "Votre kit d'empreinte pour la maison",
         "kit_text": "La méthode d'empreinte la plus simple au monde — avec tutoriel vidéo et assistance dédiée. Commandez dès maintenant.",

@@ -323,17 +323,19 @@
   </script>
   {%- endif -%}
 
-  {%- comment -%} ============ 8. AVANT / APRÈS (photo grid) ============ {%- endcomment -%}
+  {%- comment -%} ============ 8. AVANT / APRÈS (cartes façon Veneera) ============ {%- endcomment -%}
   {%- assign bas = section.blocks | where: 'type', 'ba_photo' -%}
   {%- if bas.size > 0 -%}
   <div class="ce-band ce-band--tint">
-    <span class="ce-tag">Résultats</span>
+    {%- if section.settings.ba_eyebrow != blank -%}<span class="ce-tag">{{ section.settings.ba_eyebrow }}</span>{%- endif -%}
     <h2 class="ce-h2">{{ section.settings.ba_title }}</h2>
-    <div class="ce-bagrid">
+    {%- if section.settings.ba_sub != blank -%}<p class="ce-basub">{{ section.settings.ba_sub }}</p>{%- endif -%}
+    <div class="ce-barow">
       {%- for block in bas -%}
-        <div class="ce-bacell" {{ block.shopify_attributes }}>
-          {%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 400 }}" alt="" loading="lazy">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}
-        </div>
+        <figure class="ce-bacard" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 700 }}" alt="{{ block.settings.caption | escape }}" loading="lazy">{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'ce-ph' }}{%- endif -%}
+          {%- if block.settings.caption != blank -%}<figcaption>{{ block.settings.caption }}</figcaption>{%- endif -%}
+        </figure>
       {%- endfor -%}
     </div>
   </div>
@@ -612,9 +614,12 @@
   #ce-{{ section.id }} .ce-cmp__card figcaption { text-align: center; margin-top: 10px; font-size: 14.5px; font-weight: 700; color: var(--ce-ink); }
 
   /* Before/After grid */
-  #ce-{{ section.id }} .ce-bagrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  #ce-{{ section.id }} .ce-bacell { border-radius: 10px; overflow: hidden; aspect-ratio: 1/1; background: var(--ce-tint); }
-  #ce-{{ section.id }} .ce-bacell img { width: 100%; height: 100%; object-fit: cover; }
+  #ce-{{ section.id }} .ce-basub { text-align: center; color: #55606a; font-size: 15px; margin: -6px 0 22px; }
+  #ce-{{ section.id }} .ce-barow { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  #ce-{{ section.id }} .ce-barow::-webkit-scrollbar { display: none; }
+  #ce-{{ section.id }} .ce-bacard { flex: 0 0 76%; max-width: 320px; margin: 0; border-radius: 16px; overflow: hidden; aspect-ratio: 3/4; background: var(--ce-tint); scroll-snap-align: center; position: relative; }
+  #ce-{{ section.id }} .ce-bacard img, #ce-{{ section.id }} .ce-bacard .ce-ph, #ce-{{ section.id }} .ce-bacard .ce-ph svg { width: 100%; height: 100%; object-fit: cover; }
+  #ce-{{ section.id }} .ce-bacard figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 12px; font-size: 12.5px; font-weight: 600; color: #fff; background: linear-gradient(transparent, rgba(0,0,0,.55)); }
 
   /* Reviews wall */
   #ce-{{ section.id }} .ce-tp { display: flex; align-items: center; justify-content: center; gap: 8px; margin: -14px 0 24px; font-size: 13px; color: #6a747c; }
@@ -654,7 +659,8 @@
     #ce-{{ section.id }} .ce-innov { grid-template-columns: 1fr 1fr; gap: 40px; }
     #ce-{{ section.id }} .ce-ugc { grid-template-columns: repeat(4, 1fr); gap: 14px; }
     #ce-{{ section.id }} .ce-cmp__grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    #ce-{{ section.id }} .ce-bagrid { grid-template-columns: repeat(6, 1fr); gap: 12px; }
+    #ce-{{ section.id }} .ce-barow { overflow: visible; }
+    #ce-{{ section.id }} .ce-bacard { flex: 1 1 0; min-width: 0; max-width: none; }
     #ce-{{ section.id }} .ce-wall { columns: 3; }
     #ce-{{ section.id }} .ce-wa__inner { grid-template-columns: 1.2fr 1fr; padding: 52px 18px; }
     #ce-{{ section.id }} .ce-sticky { display: none; }
@@ -888,7 +894,9 @@
     { "type": "image_picker", "id": "shade3_variant", "label": "Teinte 3 — prothèse seule" },
     { "type": "image_picker", "id": "shade3_color", "label": "Teinte 3 — en bouche" },
     { "type": "header", "content": "Avant / Après (photos)" },
+    { "type": "text", "id": "ba_eyebrow", "label": "Étiquette", "default": "Résultats" },
     { "type": "text", "id": "ba_title", "label": "Titre", "default": "Avant / Après" },
+    { "type": "text", "id": "ba_sub", "label": "Sous-titre", "default": "Un nouveau sourire avec Clinique Essabar" },
     { "type": "header", "content": "Avis" },
     { "type": "text", "id": "reviews_title", "label": "Titre", "default": "Plus de 55 000 sourires déjà transformés" },
     { "type": "header", "content": "Bandeau support / WhatsApp" },
@@ -916,7 +924,7 @@
     { "type": "step", "name": "Étape", "settings": [ { "type": "text", "id": "title", "label": "Texte", "default": "Recevez votre kit d'empreinte" } ] },
     { "type": "shade", "name": "Teinte", "settings": [ { "type": "image_picker", "id": "image", "label": "Image" }, { "type": "text", "id": "name", "label": "Nom", "default": "Blanc naturel" }, { "type": "text", "id": "code", "label": "Référence", "default": "A1" } ] },
     { "type": "ugc", "name": "Vidéo client", "settings": [ { "type": "video", "id": "video", "label": "Vidéo" }, { "type": "text", "id": "video_url", "label": "OU URL .mp4" }, { "type": "image_picker", "id": "poster", "label": "Miniature" } ] },
-    { "type": "ba_photo", "name": "Photo avant/après", "settings": [ { "type": "image_picker", "id": "image", "label": "Image" } ] },
+    { "type": "ba_photo", "name": "Photo avant/après", "settings": [ { "type": "image_picker", "id": "image", "label": "Image avant/après" }, { "type": "text", "id": "caption", "label": "Légende (optionnel)" } ] },
     { "type": "review", "name": "Avis", "settings": [ { "type": "image_picker", "id": "image", "label": "Photo" }, { "type": "text", "id": "title", "label": "Titre", "default": "Bluffant de réalisme" }, { "type": "textarea", "id": "text", "label": "Avis", "default": "Résultat incroyable, personne ne voit la différence." }, { "type": "text", "id": "author", "label": "Auteur", "default": "Sarah M." } ] },
     { "type": "faq", "name": "FAQ", "settings": [ { "type": "text", "id": "question", "label": "Question", "default": "Est-ce que ça abîme mes dents ?" }, { "type": "richtext", "id": "answer", "label": "Réponse", "default": "<p>Non, nos facettes sont amovibles et non invasives.</p>" } ] },
     { "type": "press", "name": "Logo presse", "settings": [ { "type": "image_picker", "id": "image", "label": "Logo" }, { "type": "text", "id": "name", "label": "Nom (si pas de logo)", "default": "Presse" } ] }

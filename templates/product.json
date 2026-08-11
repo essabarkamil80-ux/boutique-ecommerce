@@ -134,6 +134,7 @@
         "ba-4": {
           "type": "ba_photo",
           "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_11_aout_2026_02_14_10.png",
             "caption": ""
           }
         },

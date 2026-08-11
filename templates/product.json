@@ -111,27 +111,40 @@
         },
         "ba-1": {
           "type": "ba_photo",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/F_BA_Together_Female_0014_1x1_85659da2-c284-4cd5-86d0-34bb92a9d1d6.webp",
+            "caption": ""
+          }
         },
         "ba-2": {
           "type": "ba_photo",
-          "settings": {}
+          "settings": {
+            "caption": ""
+          }
         },
         "ba-3": {
           "type": "ba_photo",
-          "settings": {}
+          "settings": {
+            "caption": ""
+          }
         },
         "ba-4": {
           "type": "ba_photo",
-          "settings": {}
+          "settings": {
+            "caption": ""
+          }
         },
         "ba-5": {
           "type": "ba_photo",
-          "settings": {}
+          "settings": {
+            "caption": ""
+          }
         },
         "ba-6": {
           "type": "ba_photo",
-          "settings": {}
+          "settings": {
+            "caption": ""
+          }
         },
         "review-1": {
           "type": "review",
@@ -270,7 +283,9 @@
         "shade1_label": "Blanc naturel",
         "shade2_label": "Ivoire",
         "shade3_label": "Hollywood",
+        "ba_eyebrow": "Résultats",
         "ba_title": "Avant / Après",
+        "ba_sub": "Un nouveau sourire avec Clinique Essabar",
         "reviews_title": "Plus de 55 000 sourires déjà transformés",
         "wa_enable": true,
         "wa_title": "La prise d'empreinte la plus simple au monde",

@@ -119,12 +119,14 @@
         "ba-2": {
           "type": "ba_photo",
           "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_11_aout_2026_02_03_32.png",
             "caption": ""
           }
         },
         "ba-3": {
           "type": "ba_photo",
           "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_11_aout_2026_02_09_10.png",
             "caption": ""
           }
         },

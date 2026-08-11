@@ -12,41 +12,193 @@
     "home": {
       "type": "ce-accueil",
       "blocks": {
-        "card-1": { "type": "card", "settings": { "badge": "Ivoire", "name": "Facettes Premium", "subtitle": "Teinte A3", "price": "299,00 €", "link": "/products/custom-dental-veneers?variant=52072623669569" } },
-        "card-2": { "type": "card", "settings": { "badge": "Blanc naturel", "name": "Facettes Premium", "subtitle": "Teinte A1", "price": "299,00 €", "link": "/products/custom-dental-veneers?variant=52072623702337" } },
-        "card-3": { "type": "card", "settings": { "badge": "Hollywood", "name": "Facettes Premium", "subtitle": "Teinte BL2", "price": "299,00 €", "link": "/products/custom-dental-veneers?variant=52072623735105" } },
-        "step-1": { "type": "step", "settings": { "title": "Commandez votre kit", "text": "Recevez à la maison votre kit d'empreinte premium avec un guide pas-à-pas." } },
-        "step-2": { "type": "step", "settings": { "title": "Prenez votre empreinte", "text": "En quelques minutes, sans dentiste, puis renvoyez-la (frais offerts)." } },
-        "step-3": { "type": "step", "settings": { "title": "Recevez vos facettes", "text": "Fabriquées sur-mesure et livrées directement chez vous." } },
-        "why-1": { "type": "why", "settings": { "title": "Sur-mesure & qualité", "text": "Fabriquées à partir de votre empreinte, avec un matériau premium pour un rendu naturel." } },
-        "why-2": { "type": "why", "settings": { "title": "Innovant & précis", "text": "Une technologie qui épouse parfaitement vos dents pour un confort optimal." } },
-        "why-3": { "type": "why", "settings": { "title": "Testé & approuvé", "text": "Des milliers de clients ont retrouvé le sourire avec Clinique Essabar." } },
-        "why-4": { "type": "why", "settings": { "title": "Simple & rapide", "text": "Tout se fait à domicile, sans dentiste ni rendez-vous." } },
-        "faq-1": { "type": "faq", "settings": { "question": "Les facettes sont-elles amovibles ?", "answer": "<p>Oui, nos facettes se posent et se retirent en quelques secondes, sans colle ni dentiste.</p>" } },
-        "faq-2": { "type": "faq", "settings": { "question": "Combien de temps pour les recevoir ?", "answer": "<p>Après réception de votre empreinte, vos facettes sont fabriquées sur-mesure et expédiées sous quelques jours.</p>" } },
-        "faq-3": { "type": "faq", "settings": { "question": "Puis-je manger avec ?", "answer": "<p>Elles sont conçues pour un usage cosmétique. Nous recommandons de les retirer pour manger afin de préserver leur éclat.</p>" } },
-        "faq-4": { "type": "faq", "settings": { "question": "Y a-t-il une garantie ?", "answer": "<p>Oui, vous bénéficiez d'une garantie satisfait ou remboursé de 30 jours.</p>" } },
-        "social-1": { "type": "social", "settings": {} },
-        "social-2": { "type": "social", "settings": {} },
-        "social-3": { "type": "social", "settings": {} },
-        "social-4": { "type": "social", "settings": {} }
+        "card-1": {
+          "type": "card",
+          "settings": {
+            "link": "/products/custom-dental-veneers?variant=52072623669569",
+            "badge": "Ivoire",
+            "name": "Facettes Premium",
+            "subtitle": "Teinte A3",
+            "price": "299,00 €",
+            "compare": ""
+          }
+        },
+        "card-2": {
+          "type": "card",
+          "settings": {
+            "link": "/products/custom-dental-veneers?variant=52072623702337",
+            "badge": "Blanc naturel",
+            "name": "Facettes Premium",
+            "subtitle": "Teinte A1",
+            "price": "299,00 €",
+            "compare": ""
+          }
+        },
+        "card-3": {
+          "type": "card",
+          "settings": {
+            "link": "/products/custom-dental-veneers?variant=52072623735105",
+            "badge": "Hollywood",
+            "name": "Facettes Premium",
+            "subtitle": "Teinte BL2",
+            "price": "299,00 €",
+            "compare": ""
+          }
+        },
+        "step-1": {
+          "type": "step",
+          "settings": {
+            "title": "Commandez votre kit",
+            "text": "Recevez à la maison votre kit d'empreinte premium avec un guide pas-à-pas."
+          }
+        },
+        "step-2": {
+          "type": "step",
+          "settings": {
+            "title": "Prenez votre empreinte",
+            "text": "En quelques minutes, sans dentiste, puis renvoyez-la (frais offerts)."
+          }
+        },
+        "step-3": {
+          "type": "step",
+          "settings": {
+            "title": "Recevez vos facettes",
+            "text": "Fabriquées sur-mesure et livrées directement chez vous."
+          }
+        },
+        "why-1": {
+          "type": "why",
+          "settings": {
+            "title": "Sur-mesure & qualité",
+            "text": "Fabriquées à partir de votre empreinte, avec un matériau premium pour un rendu naturel."
+          }
+        },
+        "why-2": {
+          "type": "why",
+          "settings": {
+            "title": "Innovant & précis",
+            "text": "Une technologie qui épouse parfaitement vos dents pour un confort optimal."
+          }
+        },
+        "why-3": {
+          "type": "why",
+          "settings": {
+            "title": "Testé & approuvé",
+            "text": "Des milliers de clients ont retrouvé le sourire avec Clinique Essabar."
+          }
+        },
+        "why-4": {
+          "type": "why",
+          "settings": {
+            "title": "Simple & rapide",
+            "text": "Tout se fait à domicile, sans dentiste ni rendez-vous."
+          }
+        },
+        "faq-1": {
+          "type": "faq",
+          "settings": {
+            "question": "Les facettes sont-elles amovibles ?",
+            "answer": "<p>Oui, nos facettes se posent et se retirent en quelques secondes, sans colle ni dentiste.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "faq",
+          "settings": {
+            "question": "Combien de temps pour les recevoir ?",
+            "answer": "<p>Après réception de votre empreinte, vos facettes sont fabriquées sur-mesure et expédiées sous quelques jours.</p>"
+          }
+        },
+        "faq-3": {
+          "type": "faq",
+          "settings": {
+            "question": "Puis-je manger avec ?",
+            "answer": "<p>Elles sont conçues pour un usage cosmétique. Nous recommandons de les retirer pour manger afin de préserver leur éclat.</p>"
+          }
+        },
+        "faq-4": {
+          "type": "faq",
+          "settings": {
+            "question": "Y a-t-il une garantie ?",
+            "answer": "<p>Oui, vous bénéficiez d'une garantie satisfait ou remboursé de 30 jours.</p>"
+          }
+        },
+        "social-1": {
+          "type": "social",
+          "settings": {
+            "link": ""
+          }
+        },
+        "social-2": {
+          "type": "social",
+          "settings": {
+            "link": ""
+          }
+        },
+        "social-3": {
+          "type": "social",
+          "settings": {
+            "link": ""
+          }
+        },
+        "social-4": {
+          "type": "social",
+          "settings": {
+            "link": ""
+          }
+        }
       },
       "block_order": [
-        "card-1", "card-2", "card-3",
-        "step-1", "step-2", "step-3",
-        "why-1", "why-2", "why-3", "why-4",
-        "faq-1", "faq-2", "faq-3", "faq-4",
-        "social-1", "social-2", "social-3", "social-4"
+        "card-1",
+        "card-2",
+        "card-3",
+        "step-1",
+        "step-2",
+        "step-3",
+        "why-1",
+        "why-2",
+        "why-3",
+        "why-4",
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "social-1",
+        "social-2",
+        "social-3",
+        "social-4"
       ],
       "settings": {
-        "hero_title": "Retrouvez un sourire éclatant",
-        "hero_sub": "Facettes dentaires amovibles premium, sur-mesure, sans dentiste. Disponibles en trois teintes.",
-        "hero_badge": "Dispositif cosmétique premium",
-        "hero_cta": "Découvrir les facettes",
+        "product": "",
         "color_accent": "#15776a",
-        "color_accent_dark": "#0f5b51"
+        "color_accent_dark": "#0f5b51",
+        "color_ink": "#12293a",
+        "hero_video_url": "https://cdn.shopify.com/videos/c/o/v/f60e129a8f10414a9460bd58c9834931.mov",
+        "hero_badge": "Dispositif cosmétique premium",
+        "hero_title": "Retrouvez un sourire éclatant",
+        "hero_cta": "Découvrir les facettes",
+        "hero_sub": "Facettes dentaires amovibles premium, sur-mesure, sans dentiste. Disponibles en trois teintes.",
+        "card_cta": "Vers le produit",
+        "card_taxes": "Taxes incluses. Hors frais de livraison.",
+        "steps_eyebrow": "Simple & rapide",
+        "steps_title": "Comment ça fonctionne",
+        "steps_sub": "Votre nouveau sourire en seulement 3 étapes.",
+        "feat_enable": true,
+        "feat_label": "Clinique Essabar facts",
+        "faq_title": "Questions fréquentes",
+        "why_title": "Pourquoi Clinique Essabar ?",
+        "stats_enable": true,
+        "stats_lines": "55 000+ | clients satisfaits\nAbordable | alternative à 2000 $\nRapide | en 8 jours",
+        "kit_enable": true,
+        "kit_title": "Votre kit d'empreinte pour la maison",
+        "kit_text": "La méthode d'empreinte la plus simple au monde — avec tutoriel vidéo et assistance dédiée. Commandez dès maintenant.",
+        "kit_cta": "Commander maintenant",
+        "social_eyebrow": "Communauté",
+        "social_title": "Réseaux sociaux",
+        "social_sub": "Rejoignez la communauté et partagez votre sourire."
       }
     }
   },
-  "order": ["home"]
+  "order": [
+    "home"
+  ]
 }

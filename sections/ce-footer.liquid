@@ -96,6 +96,25 @@
   </div>
   {%- endif -%}
 
+  {%- if section.settings.loc_enable and localization.available_countries.size > 1 -%}
+  <div class="cef-locrow">
+    {%- form 'localization', class: 'cef-loc' -%}
+      <label class="cef-loc__lbl" for="cef-country-{{ section.id }}">{{ section.settings.loc_label | default: 'Pays / devise' }}</label>
+      <div class="cef-loc__wrap">
+        <select id="cef-country-{{ section.id }}" name="country_code" class="cef-loc__sel" onchange="this.form.submit()">
+          {%- for country in localization.available_countries -%}
+            <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>{{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})</option>
+          {%- endfor -%}
+        </select>
+        <svg class="cef-loc__chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      {%- if localization.available_languages.size > 1 -%}
+        <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+  {%- endif -%}
+
   <div class="cef-bottom">
     <span class="cef-copy">{{ section.settings.copyright }}</span>
     <div class="cef-legal">
@@ -151,6 +170,14 @@
   #cef-{{ section.id }} .cef-legal { display: flex; flex-wrap: wrap; gap: 22px; }
   #cef-{{ section.id }} .cef-legal a { font-size: 13px; color: #55606a; }
   #cef-{{ section.id }} .cef-legal a:hover { color: var(--cef-acc); }
+
+  #cef-{{ section.id }} .cef-locrow { max-width: 1180px; margin: 30px auto 0; padding: 0 20px; }
+  #cef-{{ section.id }} .cef-loc { display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  #cef-{{ section.id }} .cef-loc__lbl { font-size: 13px; color: #55606a; }
+  #cef-{{ section.id }} .cef-loc__wrap { position: relative; display: inline-flex; align-items: center; }
+  #cef-{{ section.id }} .cef-loc__sel { font-family: inherit; font-size: 13px; color: #14201f; background: #fff; border: 1px solid #d8dede; border-radius: 9px; padding: 9px 34px 9px 13px; cursor: pointer; -webkit-appearance: none; appearance: none; max-width: 260px; }
+  #cef-{{ section.id }} .cef-loc__sel:hover { border-color: var(--cef-acc); }
+  #cef-{{ section.id }} .cef-loc__chev { position: absolute; right: 12px; width: 12px; height: 12px; color: #55606a; pointer-events: none; }
 
   @media (min-width: 750px) {
     #cef-{{ section.id }} .cef-nl__inner { grid-template-columns: 1.1fr 1fr; padding: 40px; }
@@ -215,6 +242,9 @@
     { "type": "url", "id": "soc_youtube", "label": "YouTube" },
     { "type": "header", "content": "Paiement" },
     { "type": "checkbox", "id": "pay_enable", "label": "Afficher les moyens de paiement", "default": true },
+    { "type": "header", "content": "Sélecteur pays / devise" },
+    { "type": "checkbox", "id": "loc_enable", "label": "Afficher le sélecteur pays / devise", "default": true },
+    { "type": "text", "id": "loc_label", "label": "Libellé", "default": "Pays / devise" },
     { "type": "header", "content": "Bas de page (mentions légales)" },
     { "type": "text", "id": "copyright", "label": "Copyright", "default": "© 2026 Clinique Essabar" },
     { "type": "text", "id": "lg1_label", "label": "Lien légal 1", "default": "Conditions générales" },

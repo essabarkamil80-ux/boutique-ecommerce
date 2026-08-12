@@ -118,8 +118,8 @@
         "faq-4": {
           "type": "faq",
           "settings": {
-            "question": "Y a-t-il une garantie ?",
-            "answer": "<p>Oui, vous bénéficiez d'une garantie satisfait ou remboursé de 30 jours.</p>"
+            "question": "Et si je ne suis pas satisfait ?",
+            "answer": "<p>Votre satisfaction est notre priorité. Vous bénéficiez de notre garantie <strong>« satisfait ou remboursé » de 30 jours</strong>.</p><p>Si vos facettes ne vous conviennent pas ou que vous n'êtes pas pleinement satisfait de votre achat, vous pouvez demander un remboursement dans le cadre des conditions de cette garantie.</p><p>Notre équipe reste à votre écoute à chaque étape pour vous accompagner et trouver la meilleure solution.</p>"
           }
         },
         "social-1": {

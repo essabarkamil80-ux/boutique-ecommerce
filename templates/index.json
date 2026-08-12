@@ -85,7 +85,7 @@
           "type": "faq",
           "settings": {
             "question": "Comment se passe la prise d'empreinte ?",
-            "answer": "<p>Vos facettes sont conçues pour couvrir l'ensemble de l'arcade dentaire sélectionnée, et non quelques dents isolées : vous obtenez ainsi un sourire harmonieux et uniforme.</p><p>Vous choisissez l'arcade supérieure, inférieure, ou les deux selon l'offre. Chaque pièce est fabriquée <strong>sur mesure</strong> à partir de vos propres empreintes, pour un ajustement parfaitement adapté à votre dentition.</p>"
+            "answer": "<p>C'est simple et entièrement réalisable chez vous, en quelques minutes et sans dentiste. Vous êtes guidé pas à pas grâce à notre tutoriel détaillé.</p><p>Vous retrouvez ce tutoriel dans la rubrique <strong>« Aide &amp; Infos » &rsaquo; « Prise d'empreinte »</strong> du site.</p><p>Une fois vos empreintes réalisées, il vous suffit de nous les renvoyer : nos spécialistes les utilisent pour concevoir vos facettes sur mesure, adaptées à votre sourire.</p>"
           }
         },
         "faq-4": {
@@ -149,10 +149,10 @@
         "faq_title": "Questions fréquentes",
         "why_title": "Pourquoi Clinique Essabar ?",
         "stats_enable": true,
-        "stats_lines": "",
+        "stats_lines": "55 000+ | clients satisfaits\nMeilleur prix | moins de 200 €\nRapide | livré en 8 jours",
         "kit_enable": true,
         "kit_title": "Votre kit d'empreinte pour la maison",
-        "kit_text": "La méthode d'empreinte la plus simple au monde — avec tutoriel vidéo et assistance dédiée. Commandez dès maintenant.",
+        "kit_text": "Réalisez facilement votre empreinte dentaire depuis chez vous grâce à notre kit complet. Simple, pratique et conçu pour vous accompagner à chaque étape.",
         "kit_cta": "Commander maintenant",
         "kit_image": "shopify://shop_images/22f4c9cd-2c64-492f-8a5f-b13d1bba175c.png",
         "social_eyebrow": "Communauté",

@@ -114,7 +114,8 @@
         {%- endfor -%}
       </div>
       <div class="ch-why__media">
-        {%- if section.settings.why_image != blank -%}<img src="{{ section.settings.why_image | image_url: width: 900 }}" alt="" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ch-ph' }}{%- endif -%}
+        {%- assign why_img = section.settings.why_image | default: section.settings.stats_image -%}
+        {%- if why_img != blank -%}<img src="{{ why_img | image_url: width: 1000 }}" alt="" loading="lazy" width="1000" height="750">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ch-ph' }}{%- endif -%}
       </div>
     </div>
   </div>
@@ -194,26 +195,51 @@
   </div>
   {%- endif -%}
 
-  {%- comment -%} ===== 8. SOCIAL ===== {%- endcomment -%}
-  {%- assign socials = section.blocks | where: 'type', 'social' -%}
-  {%- if socials.size > 0 -%}
+  {%- comment -%} ===== 8. VIDÉOS CLIENTS (4 vidéos — même section que la page produit) ===== {%- endcomment -%}
+  {%- assign ugcs = section.blocks | where: 'type', 'ugc' -%}
+  {%- if ugcs.size > 0 -%}
   <div class="ch-band">
-    <span class="ch-eyebrow ch-eyebrow--center">{{ section.settings.social_eyebrow }}</span>
-    <h2 class="ch-h2">{{ section.settings.social_title }}</h2>
-    <p class="ch-sub">{{ section.settings.social_sub }}</p>
-    <div class="ch-social">
-      {%- for block in socials -%}
-        {%- if block.settings.link != blank -%}<a class="ch-social__item" href="{{ block.settings.link }}" target="_blank" rel="noopener" {{ block.shopify_attributes }}>{%- else -%}<div class="ch-social__item" {{ block.shopify_attributes }}>{%- endif -%}
-          {%- if block.settings.image != blank -%}<img src="{{ block.settings.image | image_url: width: 500 }}" alt="" loading="lazy">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ch-ph' }}{%- endif -%}
-        {%- if block.settings.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+    <div class="ch-ugc__head">
+      {%- if section.settings.ugc_badge != blank -%}<span class="ch-ugc__badge">{{ section.settings.ugc_badge }}</span>{%- endif -%}
+      <h2 class="ch-ugc__title">{{ section.settings.ugc_title }}</h2>
+      {%- if section.settings.ugc_sub != blank -%}<p class="ch-ugc__sub">{{ section.settings.ugc_sub }}</p>{%- endif -%}
+    </div>
+    <div class="ch-ugc">
+      {%- for block in ugcs -%}
+        <div class="ch-ugc__item" data-vid {{ block.shopify_attributes }}>
+          {%- if block.settings.video != blank -%}
+            <video class="ch-ugc__vid" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 500 }}"{% endif %} preload="none" loop muted playsinline disablepictureinpicture>
+              {%- for s in block.settings.video.sources -%}<source src="{{ s.url }}" type="{{ s.mime_type }}">{%- endfor -%}
+            </video>
+            <button type="button" class="ch-ugc__play" data-vid-play aria-label="Lire">&#9658;</button>
+          {%- elsif block.settings.video_url != blank -%}
+            <video class="ch-ugc__vid" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 500 }}"{% endif %} preload="none" loop muted playsinline disablepictureinpicture>
+              <source src="{{ block.settings.video_url }}" type="video/mp4">
+            </video>
+            <button type="button" class="ch-ugc__play" data-vid-play aria-label="Lire">&#9658;</button>
+          {%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ch-ph' }}{%- endif -%}
+        </div>
       {%- endfor -%}
     </div>
   </div>
+  <script>
+    (function () {
+      var root = document.getElementById('ch-{{ section.id }}');
+      if (!root) return;
+      root.querySelectorAll('[data-vid]').forEach(function (wrap) {
+        var v = wrap.querySelector('video'); if (!v) return;
+        function play() { v.muted = true; v.preload = 'auto'; var p = v.play(); if (p && p.catch) p.catch(function () {}); wrap.classList.add('is-playing'); }
+        function pause() { v.pause(); wrap.classList.remove('is-playing'); }
+        wrap.addEventListener('click', function () { if (v.paused) play(); else pause(); });
+        if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (e) { e.isIntersecting ? play() : pause(); }); }, { threshold: 0.6 }).observe(wrap);
+      });
+    })();
+  </script>
   {%- endif -%}
 </section>
 
 {%- style -%}
-  #ch-{{ section.id }}.ch { --ch-mint: #e6f1ed; --ch-tint: #eef5f2; background: #fff; color: var(--ch-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; }
+  #ch-{{ section.id }}.ch { --ch-mint: #e8f1f8; --ch-cardline: #d6e3f0; --ch-tint: #eef5f2; background: #fff; color: var(--ch-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; }
   #ch-{{ section.id }} * { box-sizing: border-box; }
   #ch-{{ section.id }} h1, #ch-{{ section.id }} h2, #ch-{{ section.id }} h3 { font-family: 'Manrope', sans-serif; font-weight: 800; letter-spacing: -.02em; }
   #ch-{{ section.id }} img { max-width: 100%; display: block; }
@@ -238,8 +264,8 @@
 
   /* Hero — media on top, title centered below (veneera) */
   #ch-{{ section.id }} .ch-hero { padding: 18px 18px 0; max-width: 1140px; margin: 0 auto; }
-  #ch-{{ section.id }} .ch-hero__media { width: 100%; aspect-ratio: 21/10; background: #e9ecef; overflow: hidden; border-radius: 18px; }
-  #ch-{{ section.id }} .ch-hero__media img, #ch-{{ section.id }} .ch-hero__media video { width: 100%; height: 100%; object-fit: cover; }
+  #ch-{{ section.id }} .ch-hero__media { width: 100%; aspect-ratio: 16/10; background: #e9ecef; overflow: hidden; border-radius: 18px; }
+  #ch-{{ section.id }} .ch-hero__media img, #ch-{{ section.id }} .ch-hero__media video { width: 100%; height: 100%; object-fit: cover; object-position: center; }
   #ch-{{ section.id }} .ch-hero__txt { text-align: center; padding: 28px 18px 8px; max-width: 720px; margin: 0 auto; }
   #ch-{{ section.id }} .ch-hero__txt .ch-eyebrow { margin-bottom: 10px; }
   #ch-{{ section.id }} .ch-hero__title { font-size: clamp(26px, 5.5vw, 40px); line-height: 1.12; margin: 0 0 12px; }
@@ -249,14 +275,14 @@
 
   /* Cards — veneera style: mint card, centered badge pill, navy text, dark button */
   #ch-{{ section.id }} .ch-cards { display: grid; grid-template-columns: 1fr; gap: 22px; }
-  #ch-{{ section.id }} .ch-card { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 30px 22px 24px; border: 1px solid #d7e7e1; border-radius: 18px; background: var(--ch-mint); text-decoration: none; color: var(--ch-ink); transition: .18s; }
+  #ch-{{ section.id }} .ch-card { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 26px 16px 22px; border: 1px solid var(--ch-cardline); border-radius: 18px; background: var(--ch-mint); text-decoration: none; color: var(--ch-ink); transition: .18s; }
   #ch-{{ section.id }} .ch-card:hover { box-shadow: 0 16px 36px rgba(18,41,58,.12); transform: translateY(-3px); }
   #ch-{{ section.id }} .ch-card__badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, var(--ch-acc-dark), var(--ch-acc)); color: #fff; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; padding: 7px 20px; border-radius: 9px; white-space: nowrap; box-shadow: 0 6px 16px rgba(18,41,58,.18); }
   #ch-{{ section.id }} .ch-card__award { position: absolute; top: 16px; right: 16px; width: 56px; z-index: 2; }
   #ch-{{ section.id }} .ch-card__award img { width: 100%; height: auto; }
-  #ch-{{ section.id }} .ch-card__media { width: 100%; aspect-ratio: 16/10; overflow: hidden; background: transparent; margin: 22px 0 16px; display: flex; align-items: center; justify-content: center; }
-  #ch-{{ section.id }} .ch-card__media img { width: 100%; height: 100%; object-fit: contain; }
-  #ch-{{ section.id }} .ch-card__media .ch-ph, #ch-{{ section.id }} .ch-card__media .ch-ph svg { object-fit: contain; }
+  #ch-{{ section.id }} .ch-card__media { width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 12px; background: transparent; margin: 8px 0 14px; display: flex; align-items: center; justify-content: center; }
+  #ch-{{ section.id }} .ch-card__media img { width: 100%; height: 100%; object-fit: cover; }
+  #ch-{{ section.id }} .ch-card__media .ch-ph, #ch-{{ section.id }} .ch-card__media .ch-ph svg { width: 100%; height: 100%; object-fit: contain; }
   #ch-{{ section.id }} .ch-card__name { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 24px; color: var(--ch-ink); }
   #ch-{{ section.id }} .ch-card__sub { font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ch-ink); opacity: .78; margin-top: 7px; font-weight: 600; }
   #ch-{{ section.id }} .ch-card__price { display: flex; gap: 10px; align-items: baseline; justify-content: center; margin: 16px 0 6px; }
@@ -325,12 +351,19 @@
   #ch-{{ section.id }} .ch-kit__media { border-radius: 16px; overflow: hidden; }
 
   /* Social */
-  #ch-{{ section.id }} .ch-social { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  #ch-{{ section.id }} .ch-social__item { display: block; border-radius: 14px; overflow: hidden; aspect-ratio: 1/1; background: #e9ecef; }
-  #ch-{{ section.id }} .ch-social__item img { width: 100%; height: 100%; object-fit: cover; }
+  #ch-{{ section.id }} .ch-ugc__head { text-align: center; max-width: 720px; margin: 0 auto 18px; }
+  #ch-{{ section.id }} .ch-ugc__badge { display: inline-block; background: linear-gradient(90deg, #8b5cf6, #ec4899); color: #fff; font-family: 'Manrope', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 6px 12px; border-radius: 8px; margin-bottom: 12px; }
+  #ch-{{ section.id }} .ch-ugc__title { font-size: clamp(23px, 5vw, 32px); margin: 0 0 8px; line-height: 1.15; }
+  #ch-{{ section.id }} .ch-ugc__sub { color: #6a747c; font-size: 15px; margin: 0; }
+  #ch-{{ section.id }} .ch-ugc { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  #ch-{{ section.id }} .ch-ugc__item { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 9/16; background: #e9ecef; cursor: pointer; }
+  #ch-{{ section.id }} .ch-ugc__vid { width: 100%; height: 100%; object-fit: cover; }
+  #ch-{{ section.id }} .ch-ugc__item .ch-ph, #ch-{{ section.id }} .ch-ugc__item .ch-ph svg { width: 100%; height: 100%; object-fit: cover; }
+  #ch-{{ section.id }} .ch-ugc__play { position: absolute; inset: 0; margin: auto; width: 50px; height: 50px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); color: var(--ch-ink); font-size: 15px; padding-left: 3px; cursor: pointer; }
+  #ch-{{ section.id }} .ch-ugc__item.is-playing .ch-ugc__play { display: none; }
 
   @media (min-width: 750px) {
-    #ch-{{ section.id }} .ch-hero__media { aspect-ratio: 21/9; }
+    #ch-{{ section.id }} .ch-hero__media { aspect-ratio: 16/9; }
     #ch-{{ section.id }} .ch-cards { grid-template-columns: repeat(3, 1fr); gap: 22px; }
     #ch-{{ section.id }} .ch-how__media { aspect-ratio: 16/7; }
     #ch-{{ section.id }} .ch-how__steps { grid-template-columns: repeat(3, 1fr); gap: 18px; margin: -70px 28px 0; }
@@ -339,7 +372,7 @@
     #ch-{{ section.id }} .ch-why { grid-template-columns: 1fr 1fr; gap: 40px; }
     #ch-{{ section.id }} .ch-faq2__body { grid-template-columns: 0.85fr 1.15fr; align-items: start; }
     #ch-{{ section.id }} .ch-kit__inner { grid-template-columns: 1.2fr 1fr; padding: 52px 18px; }
-    #ch-{{ section.id }} .ch-social { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    #ch-{{ section.id }} .ch-ugc { grid-template-columns: repeat(4, 1fr); gap: 14px; }
   }
 {%- endstyle -%}
 
@@ -537,6 +570,24 @@
       "id": "social_sub",
       "label": "Sous-titre",
       "default": "Rejoignez la communauté et partagez votre sourire."
+    },
+    {
+      "type": "text",
+      "id": "ugc_badge",
+      "label": "Badge (vidéos)",
+      "default": "SOCIAL MEDIA TAGS"
+    },
+    {
+      "type": "text",
+      "id": "ugc_title",
+      "label": "Titre (vidéos)",
+      "default": "Les selfies de nos clients avec Clinique Essabar"
+    },
+    {
+      "type": "text",
+      "id": "ugc_sub",
+      "label": "Sous-titre (vidéos)",
+      "default": "Des expériences réelles, de vraies personnes."
     }
   ],
   "blocks": [
@@ -673,6 +724,27 @@
           "type": "url",
           "id": "link",
           "label": "Lien"
+        }
+      ]
+    },
+    {
+      "type": "ugc",
+      "name": "Vidéo client",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Vidéo"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "OU URL .mp4"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster",
+          "label": "Miniature"
         }
       ]
     }
@@ -818,19 +890,19 @@
           }
         },
         {
-          "type": "social",
+          "type": "ugc",
           "settings": {}
         },
         {
-          "type": "social",
+          "type": "ugc",
           "settings": {}
         },
         {
-          "type": "social",
+          "type": "ugc",
           "settings": {}
         },
         {
-          "type": "social",
+          "type": "ugc",
           "settings": {}
         }
       ]

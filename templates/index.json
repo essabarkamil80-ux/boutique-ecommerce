@@ -96,28 +96,20 @@
           }
         },
         "social-1": {
-          "type": "social",
-          "settings": {
-            "link": ""
-          }
+          "type": "ugc",
+          "settings": {}
         },
         "social-2": {
-          "type": "social",
-          "settings": {
-            "link": ""
-          }
+          "type": "ugc",
+          "settings": {}
         },
         "social-3": {
-          "type": "social",
-          "settings": {
-            "link": ""
-          }
+          "type": "ugc",
+          "settings": {}
         },
         "social-4": {
-          "type": "social",
-          "settings": {
-            "link": ""
-          }
+          "type": "ugc",
+          "settings": {}
         }
       },
       "block_order": [

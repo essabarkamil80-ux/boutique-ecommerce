@@ -97,22 +97,22 @@
         "faq-1": {
           "type": "faq",
           "settings": {
-            "question": "Les facettes sont-elles amovibles ?",
-            "answer": "<p>Oui, nos facettes se posent et se retirent en quelques secondes, sans colle ni dentiste.</p>"
+            "question": "Combien de temps durent les facettes ?",
+            "answer": "<p>La durée de vie de vos facettes dépend directement de leur entretien et de la façon dont vous les utilisez au quotidien. Avec des soins réguliers et attentifs, elles vous accompagnent durablement.</p><p>Pour les préserver au mieux :</p><ul><li>Nettoyez-les régulièrement avec une brosse à dents souple et de l'eau tiède (évitez l'eau chaude).</li><li>Manipulez-les avec précaution lors de la pose et du retrait.</li><li>Rangez-les dans leur étui après chaque utilisation.</li></ul><p>Un entretien soigné est la clé pour conserver leur éclat et leur confort le plus longtemps possible.</p>"
           }
         },
         "faq-2": {
           "type": "faq",
           "settings": {
-            "question": "Combien de temps pour les recevoir ?",
-            "answer": "<p>Après réception de votre empreinte, vos facettes sont fabriquées sur-mesure et expédiées sous quelques jours.</p>"
+            "question": "Combien de dents couvrent-elles ?",
+            "answer": "<p>Vos facettes sont conçues pour couvrir l'ensemble de l'arcade dentaire sélectionnée, et non quelques dents isolées : vous obtenez ainsi un sourire harmonieux et uniforme.</p><p>Vous choisissez l'arcade supérieure, inférieure, ou les deux selon l'offre. Chaque pièce est fabriquée <strong>sur mesure</strong> à partir de vos propres empreintes, pour un ajustement parfaitement adapté à votre dentition.</p>"
           }
         },
         "faq-3": {
           "type": "faq",
           "settings": {
-            "question": "Puis-je manger avec ?",
-            "answer": "<p>Elles sont conçues pour un usage cosmétique. Nous recommandons de les retirer pour manger afin de préserver leur éclat.</p>"
+            "question": "Comment se passe la prise d'empreinte ?",
+            "answer": "<p>Vos facettes sont conçues pour couvrir l'ensemble de l'arcade dentaire sélectionnée, et non quelques dents isolées : vous obtenez ainsi un sourire harmonieux et uniforme.</p><p>Vous choisissez l'arcade supérieure, inférieure, ou les deux selon l'offre. Chaque pièce est fabriquée <strong>sur mesure</strong> à partir de vos propres empreintes, pour un ajustement parfaitement adapté à votre dentition.</p>"
           }
         },
         "faq-4": {

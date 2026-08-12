@@ -27,6 +27,7 @@
         "card-2": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_174uai174uai174u.png",
             "link": "/products/custom-dental-veneers?variant=52072623702337",
             "badge": "Blanc naturel",
             "name": "Facettes Premium",
@@ -38,6 +39,7 @@
         "card-3": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_ud1ry8ud1ry8ud1r.png",
             "link": "/products/custom-dental-veneers?variant=52072623735105",
             "badge": "Hollywood",
             "name": "Facettes Premium",

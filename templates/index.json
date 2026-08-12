@@ -66,34 +66,6 @@
             "text": "Une fois vos empreintes réceptionnées et vérifiées, Clinic Essabar prépare soigneusement vos facettes avant de les expédier directement à votre domicile."
           }
         },
-        "why-1": {
-          "type": "why",
-          "settings": {
-            "title": "Sur-mesure & qualité",
-            "text": "Fabriquées à partir de votre empreinte, avec un matériau premium pour un rendu naturel."
-          }
-        },
-        "why-2": {
-          "type": "why",
-          "settings": {
-            "title": "Innovant & précis",
-            "text": "Une technologie qui épouse parfaitement vos dents pour un confort optimal."
-          }
-        },
-        "why-3": {
-          "type": "why",
-          "settings": {
-            "title": "Testé & approuvé",
-            "text": "Des milliers de clients ont retrouvé le sourire avec Clinique Essabar."
-          }
-        },
-        "why-4": {
-          "type": "why",
-          "settings": {
-            "title": "Simple & rapide",
-            "text": "Tout se fait à domicile, sans dentiste ni rendez-vous."
-          }
-        },
         "faq-1": {
           "type": "faq",
           "settings": {
@@ -154,10 +126,6 @@
         "step-1",
         "step-2",
         "step-3",
-        "why-1",
-        "why-2",
-        "why-3",
-        "why-4",
         "faq-1",
         "faq-2",
         "faq-3",

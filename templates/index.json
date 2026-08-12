@@ -100,25 +100,25 @@
         "social-1": {
           "type": "ugc",
           "settings": {
-            "video_url": ""
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/4c2239cac20542f3b45cc2ef49a3e14a.mp4"
           }
         },
         "social-2": {
           "type": "ugc",
           "settings": {
-            "video_url": ""
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/7ac6d358dab94a6a873852ae298cf913.mov"
           }
         },
         "social-3": {
           "type": "ugc",
           "settings": {
-            "video_url": ""
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/2436501802674ef78d739d9bbd0a2d6b.mov"
           }
         },
         "social-4": {
           "type": "ugc",
           "settings": {
-            "video_url": ""
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/54e1ff90f28544e68346bc994647ecfd.mov"
           }
         }
       },
@@ -160,7 +160,7 @@
         "faq_title": "Questions fréquentes",
         "why_title": "Pourquoi Clinique Essabar ?",
         "stats_enable": true,
-        "stats_lines": "55 000+ | clients satisfaits\nMeilleur prix | moins de 200 €\nRapide | livré en 8 jours",
+        "stats_lines": "",
         "kit_enable": true,
         "kit_title": "Votre kit d'empreinte pour la maison",
         "kit_text": "Réalisez facilement votre empreinte dentaire depuis chez vous grâce à notre kit complet. Simple, pratique et conçu pour vous accompagner à chaque étape.",

@@ -15,7 +15,7 @@
         "card-1": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/Gemini_Generated_Image_8hru8y8hru8y8hru.png",
+            "image": "shopify://shop_images/Gemini_Generated_Image_174uai174uai174u.png",
             "link": "/products/custom-dental-veneers?variant=52072623669569",
             "badge": "Ivoire",
             "name": "Facettes Premium",
@@ -97,19 +97,27 @@
         },
         "social-1": {
           "type": "ugc",
-          "settings": {}
+          "settings": {
+            "video_url": ""
+          }
         },
         "social-2": {
           "type": "ugc",
-          "settings": {}
+          "settings": {
+            "video_url": ""
+          }
         },
         "social-3": {
           "type": "ugc",
-          "settings": {}
+          "settings": {
+            "video_url": ""
+          }
         },
         "social-4": {
           "type": "ugc",
-          "settings": {}
+          "settings": {
+            "video_url": ""
+          }
         }
       },
       "block_order": [
@@ -140,6 +148,7 @@
         "hero_sub": "Facettes dentaires amovibles premium, sur-mesure, sans dentiste. Disponibles en trois teintes.",
         "card_cta": "Vers le produit",
         "card_taxes": "Taxes incluses. Hors frais de livraison.",
+        "card_bg": "#a8cee0",
         "steps_eyebrow": "Simple & rapide",
         "steps_title": "Comment ça fonctionne",
         "steps_sub": "Votre nouveau sourire en seulement 3 étapes.",
@@ -157,7 +166,10 @@
         "kit_image": "shopify://shop_images/22f4c9cd-2c64-492f-8a5f-b13d1bba175c.png",
         "social_eyebrow": "Communauté",
         "social_title": "Réseaux sociaux",
-        "social_sub": "Rejoignez la communauté et partagez votre sourire."
+        "social_sub": "Rejoignez la communauté et partagez votre sourire.",
+        "ugc_badge": "SOCIAL MEDIA TAGS",
+        "ugc_title": "Les selfies de nos clients avec Clinique Essabar",
+        "ugc_sub": "Des expériences réelles, de vraies personnes."
       }
     }
   },

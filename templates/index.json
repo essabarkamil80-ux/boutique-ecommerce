@@ -15,6 +15,7 @@
         "card-1": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_8hru8y8hru8y8hru.png",
             "link": "/products/custom-dental-veneers?variant=52072623669569",
             "badge": "Ivoire",
             "name": "Facettes Premium",

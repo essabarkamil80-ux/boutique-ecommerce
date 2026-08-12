@@ -47,8 +47,19 @@
           <div class="ch-card__name">{{ block.settings.name }}</div>
           {%- if block.settings.subtitle != blank -%}<div class="ch-card__sub">{{ block.settings.subtitle }}</div>{%- endif -%}
           <div class="ch-card__price">
-            {%- if block.settings.compare != blank -%}<span class="ch-card__was">{{ block.settings.compare }}</span>{%- endif -%}
-            <span class="ch-card__now">{{ block.settings.price }}</span>
+            {%- assign cvar = null -%}
+            {%- if prod != blank and block.settings.link contains 'variant=' -%}
+              {%- assign vid = block.settings.link | split: 'variant=' | last | split: '&' | first | plus: 0 -%}
+              {%- assign cvar = prod.variants | where: 'id', vid | first -%}
+            {%- endif -%}
+            {%- if cvar == null and prod != blank -%}{%- assign cvar = prod.selected_or_first_available_variant -%}{%- endif -%}
+            {%- if cvar != null -%}
+              {%- if cvar.compare_at_price > cvar.price -%}<span class="ch-card__was">{{ cvar.compare_at_price | money }}</span>{%- endif -%}
+              <span class="ch-card__now">{{ cvar.price | money }}</span>
+            {%- else -%}
+              {%- if block.settings.compare != blank -%}<span class="ch-card__was">{{ block.settings.compare }}</span>{%- endif -%}
+              <span class="ch-card__now">{{ block.settings.price }}</span>
+            {%- endif -%}
           </div>
           {%- if section.settings.card_taxes != blank -%}<div class="ch-card__taxes">{{ section.settings.card_taxes }}</div>{%- endif -%}
           <span class="ch-btn ch-btn--dark ch-btn--sm ch-card__cta">{{ section.settings.card_cta }}</span>

@@ -21,8 +21,8 @@
         "step-2": {
           "type": "step",
           "settings": {
-            "title": "Envoyez-nous votre empreinte",
-            "text": "Une fois votre empreinte réalisée à l'aide de notre tutoriel, envoyez-la à nos spécialistes. Ils l'utilisent pour concevoir vos facettes sur mesure, adaptées à votre dentition."
+            "title": "Réalisez votre empreinte dentaire et renvoyez-la.",
+            "text": ""
           }
         },
         "step-3": {
@@ -246,8 +246,8 @@
         "cta_add": "Ajouter au panier",
         "offer_enable": true,
         "offer_badge": "-50%",
-        "offer_title": "La mâchoire du bas OFFERTE",
-        "offer_sub": "Choisissez « Haut & Bas » : vous ne payez que le haut, le bas est inclus gratuitement.",
+        "offer_title": "Votre 2ᵉ arcade OFFERTE",
+        "offer_sub": "Choisissez votre arcade supérieure : l'arcade inférieure vous est offerte.",
         "tax_note": "Taxes incluses. Livraison calculée au paiement.",
         "press_enable": true,
         "press_title": "Ils parlent de nous",

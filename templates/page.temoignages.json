@@ -8,10 +8,10 @@
         "v3": { "type": "vid", "settings": {} },
         "v4": { "type": "vid", "settings": {} },
         "v5": { "type": "vid", "settings": {} },
-        "f1": { "type": "faq", "settings": { "question": "Comment obtenez-vous mon empreinte ?", "answer": "<p>Vous recevez un kit d'empreinte à utiliser chez vous, avec un tutoriel vidéo. C'est simple et guidé, et notre support WhatsApp répond à vos questions.</p>" } },
-        "f2": { "type": "faq", "settings": { "question": "Comment les facettes tiennent-elles ?", "answer": "<p>Elles se clipsent sur vos dents et tiennent parfaitement, sans colle ni douleur.</p>" } },
-        "f3": { "type": "faq", "settings": { "question": "Pour qui les facettes conviennent-elles ?", "answer": "<p>Pour la plupart des sourires. En cas de doute, notre équipe vous conseille avant la commande.</p>" } },
-        "f4": { "type": "faq", "settings": { "question": "Y a-t-il une garantie ?", "answer": "<p>Oui — vous êtes couvert par notre garantie satisfait ou remboursé 30 jours.</p>" } }
+        "f1": { "type": "faq", "settings": { "question": "How do you get my impression?", "answer": "<p>You receive an impression kit to use at home, with a video tutorial. It's simple and guided, and our WhatsApp support is on hand to answer your questions.</p>" } },
+        "f2": { "type": "faq", "settings": { "question": "How do the veneers stay in place?", "answer": "<p>They clip onto your teeth and hold securely, with no glue.</p>" } },
+        "f3": { "type": "faq", "settings": { "question": "Who are the veneers suitable for?", "answer": "<p>For most smiles. If you're unsure, our team is happy to advise you before you order.</p>" } },
+        "f4": { "type": "faq", "settings": { "question": "Is there a guarantee?", "answer": "<p>Yes — you're covered by our 30-Day Satisfaction Guarantee.</p>" } }
       },
       "block_order": ["v1", "v2", "v3", "v4", "v5", "f1", "f2", "f3", "f4"],
       "settings": {}

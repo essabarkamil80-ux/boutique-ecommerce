@@ -3,10 +3,10 @@
     "main": {
       "type": "ce-impression",
       "blocks": {
-        "a1": { "type": "acc", "settings": { "question": "À noter", "answer": "<p>Suivez la vidéo étape par étape et prenez votre temps pour un résultat net.</p>" } },
-        "a2": { "type": "acc", "settings": { "question": "Contenu du kit d'empreinte", "answer": "<p>Le kit contient les porte-empreintes, la pâte, et une notice illustrée.</p>" } },
-        "t1": { "type": "tuto", "settings": { "title": "Empreinte mâchoire supérieure", "badge": "TUTORIEL VIDÉO" } },
-        "t2": { "type": "tuto", "settings": { "title": "Empreinte mâchoire inférieure", "badge": "TUTORIEL VIDÉO" } }
+        "a1": { "type": "acc", "settings": { "question": "Good to know", "answer": "<p>Follow the video step by step and take your time for a clean result.</p>" } },
+        "a2": { "type": "acc", "settings": { "question": "What's in the impression kit", "answer": "<p>The kit contains the impression trays, the putty, and an illustrated guide.</p>" } },
+        "t1": { "type": "tuto", "settings": { "title": "Upper jaw impression", "badge": "VIDEO TUTORIAL" } },
+        "t2": { "type": "tuto", "settings": { "title": "Lower jaw impression", "badge": "VIDEO TUTORIAL" } }
       },
       "block_order": ["a1", "a2", "t1", "t2"],
       "settings": {}

@@ -1,5 +1,5 @@
 {% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
-{%- comment -%} Clinique Essabar — Témoignages / Expériences (reference DTC structure, own code + placeholders) {%- endcomment -%}
+{%- comment -%} Clinic Essabar — Témoignages / Expériences (reference DTC structure, own code + placeholders) {%- endcomment -%}
 {%- assign prod = section.settings.product | default: product -%}
 {%- if prod != blank -%}{%- assign purl = prod.url -%}{%- else -%}{%- assign purl = '/collections/all' -%}{%- endif -%}
 
@@ -177,47 +177,47 @@
 
 {% schema %}
 {
-  "name": "Clinique — Témoignages",
+  "name": "Clinic — Testimonials",
   "tag": "section",
   "settings": [
     { "type": "product", "id": "product", "label": "Produit (liens boutons)" },
     { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
-    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0b7a78" },
+    { "type": "color", "id": "color_accent_dark", "label": "Dark accent", "default": "#0b7a78" },
     { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
-    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "HISTOIRES ÉMOUVANTES" },
-    { "type": "text", "id": "title", "label": "Titre", "default": "Expériences avec Clinique Essabar" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "MOVING STORIES" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Experiences with Clinic Essabar" },
     { "type": "text", "id": "subtitle", "label": "Sous-titre", "default": "Interviews clients" },
-    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Notre produit change des vies. Certains clients ont accepté de partager leur histoire et leur expérience en interview.</p>" },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Our product changes lives. Some customers have kindly agreed to share their story and experience in an interview.</p>" },
     { "type": "checkbox", "id": "feat_enable", "label": "Afficher l'interview vedette", "default": true },
-    { "type": "video", "id": "feat_video", "label": "Vidéo interview (Shopify)" },
-    { "type": "text", "id": "feat_video_url", "label": "OU URL vidéo .mp4" },
-    { "type": "image_picker", "id": "feat_poster", "label": "Miniature vidéo" },
-    { "type": "text", "id": "feat_name", "label": "Nom", "default": "Gérard S." },
-    { "type": "richtext", "id": "feat_quote", "label": "Témoignage", "default": "<p>Les facettes ont changé la vie de M. Gérard. Dans cette interview, il raconte son histoire — un moment vraiment touchant.</p>" },
-    { "type": "text", "id": "wall_eyebrow", "label": "Étiquette mur vidéos", "default": "RÉSEAUX SOCIAUX" },
-    { "type": "text", "id": "wall_title", "label": "Titre mur vidéos", "default": "Les avis clients en vidéo" },
-    { "type": "text", "id": "wall_sub", "label": "Sous-titre mur vidéos", "default": "Des vidéos d'avis envoyées par nos clients. Rien de plus authentique et sincère." },
-    { "type": "text", "id": "faq_title", "label": "Titre FAQ", "default": "Questions sur les expériences" },
-    { "type": "checkbox", "id": "cta_enable", "label": "Afficher la bande CTA", "default": true },
-    { "type": "textarea", "id": "cta_text", "label": "Texte CTA", "default": "La méthode d'empreinte la plus simple au monde — tutoriel vidéo et assistance dédiée." },
-    { "type": "text", "id": "cta_big", "label": "Phrase forte CTA", "default": "Votre nouveau sourire vous attend 😁😍" },
-    { "type": "text", "id": "cta_btn1", "label": "Bouton 1", "default": "Commander mes facettes" },
-    { "type": "text", "id": "cta_btn2", "label": "Bouton 2", "default": "Centre d'aide" },
-    { "type": "url", "id": "cta_btn2_link", "label": "Lien bouton 2" },
+    { "type": "video", "id": "feat_video", "label": "Interview video (Shopify)" },
+    { "type": "text", "id": "feat_video_url", "label": "OR .mp4 video URL" },
+    { "type": "image_picker", "id": "feat_poster", "label": "Video thumbnail" },
+    { "type": "text", "id": "feat_name", "label": "Name", "default": "Gerard S." },
+    { "type": "richtext", "id": "feat_quote", "label": "Testimonial", "default": "<p>The veneers changed Gerard's life. In this interview he shares his story — a truly moving moment.</p>" },
+    { "type": "text", "id": "wall_eyebrow", "label": "Video wall eyebrow", "default": "SOCIAL MEDIA" },
+    { "type": "text", "id": "wall_title", "label": "Video wall title", "default": "Customer reviews on video" },
+    { "type": "text", "id": "wall_sub", "label": "Video wall subtitle", "default": "Review videos sent in by our customers. Nothing more authentic and genuine." },
+    { "type": "text", "id": "faq_title", "label": "FAQ title", "default": "Questions about experiences" },
+    { "type": "checkbox", "id": "cta_enable", "label": "Show CTA band", "default": true },
+    { "type": "textarea", "id": "cta_text", "label": "CTA text", "default": "The easiest impression method in the world — video tutorial and dedicated support." },
+    { "type": "text", "id": "cta_big", "label": "CTA highlight", "default": "Your new smile is waiting 😁😍" },
+    { "type": "text", "id": "cta_btn1", "label": "Button 1", "default": "Order my veneers" },
+    { "type": "text", "id": "cta_btn2", "label": "Button 2", "default": "Help center" },
+    { "type": "url", "id": "cta_btn2_link", "label": "Button 2 link" },
     { "type": "image_picker", "id": "cta_image", "label": "Image CTA (packaging)" },
-    { "type": "text", "id": "stat_line", "label": "Ligne stat", "default": "Plus de 55 000 personnes sourient déjà avec Clinique Essabar." },
-    { "type": "text", "id": "foot_title", "label": "Titre bas de page", "default": "Des expériences pleines d'émotion" },
-    { "type": "richtext", "id": "foot_text", "label": "Texte bas de page", "default": "<p>Nos clients adorent partager leur expérience, car le changement provoque des émotions profondes. Leurs histoires nous inspirent chaque jour.</p>" },
+    { "type": "text", "id": "stat_line", "label": "Stat line", "default": "7,400+ customers already smile with Clinic Essabar." },
+    { "type": "text", "id": "foot_title", "label": "Footer title", "default": "Experiences full of emotion" },
+    { "type": "richtext", "id": "foot_text", "label": "Footer text", "default": "<p>Our customers love sharing their experience, because the change stirs deep emotions. Their stories inspire us every day.</p>" },
     { "type": "text", "id": "foot_link_label", "label": "Lien bas de page (texte)", "default": "En savoir plus" },
     { "type": "url", "id": "foot_link", "label": "Lien bas de page" }
   ],
   "blocks": [
     {
       "type": "vid",
-      "name": "Vidéo client",
+      "name": "Customer video",
       "settings": [
-        { "type": "video", "id": "video", "label": "Vidéo (Shopify)" },
-        { "type": "text", "id": "video_url", "label": "OU URL vidéo .mp4" },
+        { "type": "video", "id": "video", "label": "Video (Shopify)" },
+        { "type": "text", "id": "video_url", "label": "OR .mp4 video URL" },
         { "type": "image_picker", "id": "poster", "label": "Miniature" }
       ]
     },
@@ -226,19 +226,19 @@
       "name": "Question",
       "settings": [
         { "type": "text", "id": "question", "label": "Question", "default": "Comment se passe la prise d'empreinte ?" },
-        { "type": "richtext", "id": "answer", "label": "Réponse", "default": "<p>Vous recevez un kit complet avec un tutoriel vidéo, puis vous nous renvoyez votre empreinte (frais offerts).</p>" }
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>You receive a complete kit with a video tutorial, then send your impression back to us.</p>" }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Clinique — Témoignages",
+      "name": "Clinic — Testimonials",
       "blocks": [
         { "type": "vid" }, { "type": "vid" }, { "type": "vid" }, { "type": "vid" }, { "type": "vid" },
-        { "type": "faq", "settings": { "question": "Comment obtenez-vous mon empreinte ?", "answer": "<p>Vous recevez un kit d'empreinte à utiliser chez vous, avec un tutoriel vidéo. C'est simple et guidé.</p>" } },
+        { "type": "faq", "settings": { "question": "How do you get my impression?", "answer": "<p>You receive an impression kit to use at home, with a video tutorial. It's simple and guided.</p>" } },
         { "type": "faq", "settings": { "question": "Comment les facettes tiennent-elles ?", "answer": "<p>Elles se clipsent sur vos dents et tiennent parfaitement, sans colle.</p>" } },
-        { "type": "faq", "settings": { "question": "Pour qui les facettes conviennent-elles ?", "answer": "<p>Pour la plupart des sourires. En cas de doute, notre équipe vous conseille.</p>" } },
-        { "type": "faq", "settings": { "question": "Y a-t-il une garantie ?", "answer": "<p>Oui, satisfait ou remboursé 30 jours.</p>" } }
+        { "type": "faq", "settings": { "question": "Who are the veneers suitable for?", "answer": "<p>For most smiles. If you're unsure, our team is happy to advise you.</p>" } },
+        { "type": "faq", "settings": { "question": "Is there a guarantee?", "answer": "<p>Yes — you're covered by our 30-Day Satisfaction Guarantee.</p>" } }
       ]
     }
   ]

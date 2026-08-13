@@ -1,5 +1,5 @@
 {% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
-{%- comment -%} Clinique Essabar — Prise d'empreinte (own code + placeholders) {%- endcomment -%}
+{%- comment -%} Clinic Essabar — Prise d'empreinte (own code + placeholders) {%- endcomment -%}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -139,42 +139,42 @@
   "tag": "section",
   "settings": [
     { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
-    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0b7a78" },
-    { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
-    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "TUTORIEL" },
-    { "type": "text", "id": "title", "label": "Titre", "default": "Prise d'empreinte pour vos facettes" },
-    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Nous avons développé une procédure simplifiée pour que vous puissiez prendre votre propre empreinte dentaire à la maison. C'est plus facile et bien plus confortable que chez le dentiste.</p><p>Prenez le temps de regarder la vidéo — une fois <strong>avant de commencer</strong> et une nouvelle fois pendant la prise d'empreinte.</p>" },
-    { "type": "header", "content": "Bande « Informations importantes »" },
-    { "type": "text", "id": "band_title", "label": "Titre de la bande", "default": "Informations importantes" },
-    { "type": "text", "id": "return_label", "label": "Bouton retour (texte)", "default": "Retour" },
+    { "type": "color", "id": "color_accent_dark", "label": "Dark accent", "default": "#0b7a78" },
+    { "type": "color", "id": "color_ink", "label": "Text", "default": "#15242b" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "TUTORIAL" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Taking the impression for your veneers" },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>We've developed a simplified procedure so you can take your own dental impression at home. It's easier and far more comfortable than at the dentist.</p><p>Take the time to watch the video — once <strong>before you start</strong>, and again while taking the impression.</p>" },
+    { "type": "header", "content": "\"Important information\" band" },
+    { "type": "text", "id": "band_title", "label": "Band title", "default": "Important information" },
+    { "type": "text", "id": "return_label", "label": "Back button (text)", "default": "Back" },
     { "type": "url", "id": "return_link", "label": "Bouton retour (lien)" },
-    { "type": "header", "content": "Adresse d'envoi" },
-    { "type": "text", "id": "addr_title", "label": "Titre", "default": "Envoyez vos empreintes à l'adresse suivante :" },
-    { "type": "richtext", "id": "addr_text", "label": "Adresse", "default": "<p>Clinique Essabar<br>Frohnhofweg 15<br>50858 Cologne<br>Allemagne</p>" },
-    { "type": "text", "id": "addr_note", "label": "Note", "default": "Nous recommandons un envoi en suivi." },
-    { "type": "header", "content": "Bloc IMPORTANT (bas de page)" },
+    { "type": "header", "content": "Shipping address" },
+    { "type": "text", "id": "addr_title", "label": "Title", "default": "Send your impressions to the following address:" },
+    { "type": "richtext", "id": "addr_text", "label": "Address", "default": "<p>Clinic Essabar<br>Frohnhofweg 15<br>50858 Cologne<br>Germany</p>" },
+    { "type": "text", "id": "addr_note", "label": "Note", "default": "We recommend sending it with tracking." },
+    { "type": "header", "content": "IMPORTANT block (footer)" },
     { "type": "image_picker", "id": "imp_image", "label": "Image" },
-    { "type": "text", "id": "imp_title", "label": "Titre", "default": "IMPORTANT" },
-    { "type": "richtext", "id": "imp_text", "label": "Texte", "default": "<p>Envoyez une photo de votre empreinte au support Clinique Essabar pour une première vérification :</p>" },
+    { "type": "text", "id": "imp_title", "label": "Title", "default": "IMPORTANT" },
+    { "type": "richtext", "id": "imp_text", "label": "Text", "default": "<p>Send a photo of your impression to Clinic Essabar support for a first check:</p>" },
     { "type": "text", "id": "imp_contact", "label": "Contact", "default": "WhatsApp : +49 221 828 290 36" }
   ],
   "blocks": [
     {
       "type": "acc",
-      "name": "Accordéon",
+      "name": "Accordion",
       "settings": [
-        { "type": "text", "id": "question", "label": "Titre", "default": "À noter" },
-        { "type": "richtext", "id": "answer", "label": "Contenu", "default": "<p>Prenez votre temps et suivez bien la vidéo étape par étape.</p>" }
+        { "type": "text", "id": "question", "label": "Title", "default": "Good to know" },
+        { "type": "richtext", "id": "answer", "label": "Content", "default": "<p>Take your time and follow the video step by step.</p>" }
       ]
     },
     {
       "type": "tuto",
-      "name": "Tutoriel vidéo",
+      "name": "Video tutorial",
       "settings": [
-        { "type": "text", "id": "title", "label": "Titre", "default": "Empreinte mâchoire supérieure" },
-        { "type": "text", "id": "badge", "label": "Badge", "default": "TUTORIEL VIDÉO" },
-        { "type": "video", "id": "video", "label": "Vidéo (Shopify)" },
-        { "type": "text", "id": "video_url", "label": "OU URL vidéo .mp4" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Upper jaw impression" },
+        { "type": "text", "id": "badge", "label": "Badge", "default": "VIDEO TUTORIAL" },
+        { "type": "video", "id": "video", "label": "Video (Shopify)" },
+        { "type": "text", "id": "video_url", "label": "OR .mp4 video URL" },
         { "type": "image_picker", "id": "poster", "label": "Miniature" }
       ]
     }
@@ -183,10 +183,10 @@
     {
       "name": "Clinique — Empreinte",
       "blocks": [
-        { "type": "acc", "settings": { "question": "À noter", "answer": "<p>Suivez la vidéo étape par étape et prenez votre temps pour un résultat net.</p>" } },
-        { "type": "acc", "settings": { "question": "Contenu du kit d'empreinte", "answer": "<p>Le kit contient les porte-empreintes, la pâte, et une notice illustrée.</p>" } },
-        { "type": "tuto", "settings": { "title": "Empreinte mâchoire supérieure" } },
-        { "type": "tuto", "settings": { "title": "Empreinte mâchoire inférieure" } }
+        { "type": "acc", "settings": { "question": "Good to know", "answer": "<p>Follow the video step by step and take your time for a clean result.</p>" } },
+        { "type": "acc", "settings": { "question": "What's in the impression kit", "answer": "<p>The kit contains the impression trays, the putty, and an illustrated guide.</p>" } },
+        { "type": "tuto", "settings": { "title": "Upper jaw impression" } },
+        { "type": "tuto", "settings": { "title": "Lower jaw impression" } }
       ]
     }
   ]

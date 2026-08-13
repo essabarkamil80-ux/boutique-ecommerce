@@ -1,5 +1,5 @@
 {% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
-{%- comment -%} Clinique Essabar — Avant / Après (reference DTC structure, own code + placeholders) {%- endcomment -%}
+{%- comment -%} Clinic Essabar — Avant / Après (reference DTC structure, own code + placeholders) {%- endcomment -%}
 {%- assign prod = section.settings.product | default: product -%}
 {%- if prod != blank -%}{%- assign purl = prod.url -%}{%- else -%}{%- assign purl = '/collections/all' -%}{%- endif -%}
 
@@ -27,18 +27,18 @@
         <div class="ba-compare" data-compare>
           <div class="ba-compare__after">
             {%- if block.settings.after_image != blank -%}
-              <img src="{{ block.settings.after_image | image_url: width: 700 }}" alt="Après" loading="lazy">
+              <img src="{{ block.settings.after_image | image_url: width: 700 }}" alt="After" loading="lazy">
             {%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'ba-ph' }}{%- endif -%}
-            <span class="ba-tag ba-tag--r">Après</span>
+            <span class="ba-tag ba-tag--r">After</span>
           </div>
           <div class="ba-compare__before" data-before>
             {%- if block.settings.before_image != blank -%}
-              <img src="{{ block.settings.before_image | image_url: width: 700 }}" alt="Avant" loading="lazy">
+              <img src="{{ block.settings.before_image | image_url: width: 700 }}" alt="Before" loading="lazy">
             {%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'ba-ph' }}{%- endif -%}
-            <span class="ba-tag ba-tag--l">Avant</span>
+            <span class="ba-tag ba-tag--l">Before</span>
           </div>
           <div class="ba-compare__handle" data-handle><span></span></div>
-          <input type="range" min="0" max="100" value="50" class="ba-compare__range" aria-label="Comparateur avant après">
+          <input type="range" min="0" max="100" value="50" class="ba-compare__range" aria-label="Before / after comparison">
         </div>
         {%- if block.settings.label != blank -%}<span class="ba-label">{{ block.settings.label }}</span>{%- endif -%}
       </div>
@@ -145,44 +145,44 @@
 
 {% schema %}
 {
-  "name": "Clinique — Avant/Après",
+  "name": "Clinic — Before/After",
   "tag": "section",
   "settings": [
     { "type": "product", "id": "product", "label": "Produit (liens boutons)" },
     { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
-    { "type": "color", "id": "color_accent_dark", "label": "Accent foncé", "default": "#0b7a78" },
-    { "type": "color", "id": "color_ink", "label": "Texte", "default": "#15242b" },
-    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "AVANT | APRÈS" },
-    { "type": "text", "id": "title", "label": "Titre", "default": "L'effet « avant / après »" },
-    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>De nombreux clients nous envoient leurs photos avant/après dès réception de leurs facettes. Nous en avons sélectionné quelques-unes en Blanc naturel et Hollywood pour montrer ce qui est possible.</p>" },
-    { "type": "text", "id": "highlight", "label": "Phrase en gras", "default": "Des résultats bluffants !" },
-    { "type": "text", "id": "subtitle", "label": "Sous-titre", "default": "Découvrez le pouvoir transformateur des facettes grâce à ces photos avant/après." },
+    { "type": "color", "id": "color_accent_dark", "label": "Dark accent", "default": "#0b7a78" },
+    { "type": "color", "id": "color_ink", "label": "Text", "default": "#15242b" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "BEFORE | AFTER" },
+    { "type": "text", "id": "title", "label": "Title", "default": "The before / after effect" },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Many customers send us their before/after photos as soon as they receive their veneers. We've selected a few in Natural white and Hollywood to show what's possible.</p>" },
+    { "type": "text", "id": "highlight", "label": "Bold sentence", "default": "Stunning results!" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Discover the transformative power of veneers through these before/after photos." },
     { "type": "checkbox", "id": "cta_enable", "label": "Afficher la bande CTA", "default": true },
-    { "type": "text", "id": "cta_title", "label": "Titre CTA", "default": "Faites le premier pas vers votre nouveau sourire !" },
-    { "type": "textarea", "id": "cta_text", "label": "Texte CTA", "default": "Commandez votre kit d'empreinte ou prenez rendez-vous pour un conseil gratuit." },
-    { "type": "text", "id": "cta_btn1", "label": "Bouton 1", "default": "Découvrir les facettes" },
-    { "type": "text", "id": "cta_btn2", "label": "Bouton 2", "default": "Centre d'aide" },
-    { "type": "url", "id": "cta_btn2_link", "label": "Lien bouton 2" },
-    { "type": "image_picker", "id": "cta_image", "label": "Image CTA (packaging)" },
-    { "type": "text", "id": "foot_title", "label": "Titre bas de page", "default": "L'avant / après des facettes" },
-    { "type": "richtext", "id": "foot_text", "label": "Texte bas de page", "default": "<p>Comme le montrent ces photos, les dents jouent un rôle essentiel dans notre apparence. Des dents droites et blanches rendent le visage plus harmonieux et soutiennent un sourire attirant.</p>" },
+    { "type": "text", "id": "cta_title", "label": "CTA title", "default": "Take the first step toward your new smile!" },
+    { "type": "textarea", "id": "cta_text", "label": "CTA text", "default": "Order your impression kit or get in touch for free advice." },
+    { "type": "text", "id": "cta_btn1", "label": "Button 1", "default": "Discover the veneers" },
+    { "type": "text", "id": "cta_btn2", "label": "Button 2", "default": "Help center" },
+    { "type": "url", "id": "cta_btn2_link", "label": "Button 2 link" },
+    { "type": "image_picker", "id": "cta_image", "label": "CTA image (packaging)" },
+    { "type": "text", "id": "foot_title", "label": "Footer title", "default": "The before / after of veneers" },
+    { "type": "richtext", "id": "foot_text", "label": "Footer text", "default": "<p>As these photos show, your teeth play a key role in your appearance. Straight, white teeth make the face more harmonious and support an attractive smile.</p>" },
     { "type": "text", "id": "foot_link_label", "label": "Lien bas de page (texte)", "default": "En savoir plus" },
     { "type": "url", "id": "foot_link", "label": "Lien bas de page" }
   ],
   "blocks": [
     {
       "type": "pair",
-      "name": "Comparateur avant/après",
+      "name": "Before/after comparison",
       "settings": [
-        { "type": "image_picker", "id": "before_image", "label": "Image AVANT" },
-        { "type": "image_picker", "id": "after_image", "label": "Image APRÈS" },
-        { "type": "text", "id": "label", "label": "Étiquette (teinte)", "default": "Blanc naturel" }
+        { "type": "image_picker", "id": "before_image", "label": "BEFORE image" },
+        { "type": "image_picker", "id": "after_image", "label": "AFTER image" },
+        { "type": "text", "id": "label", "label": "Label (shade)", "default": "Natural white" }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Clinique — Avant/Après",
+      "name": "Clinic — Before/After",
       "blocks": [
         { "type": "pair", "settings": { "label": "Blanc naturel" } },
         { "type": "pair", "settings": { "label": "Blanc naturel" } },

@@ -1,5 +1,5 @@
 {% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
-{%- comment -%} Clinique Essabar — homepage (reference DTC structure, own code + placeholders) {%- endcomment -%}
+{%- comment -%} Clinic Essabar — homepage (reference DTC structure, own code + placeholders) {%- endcomment -%}
 {%- assign prod = section.settings.product | default: product -%}
 {%- if prod != blank -%}{%- assign purl = prod.url -%}{%- else -%}{%- assign purl = '/collections/all' -%}{%- endif -%}
 
@@ -398,13 +398,13 @@
 
 {% schema %}
 {
-  "name": "Clinique Essabar Home",
+  "name": "Clinic Essabar Home",
   "tag": "section",
   "settings": [
     {
       "type": "product",
       "id": "product",
-      "label": "Produit (liens des cartes)"
+      "label": "Product (card links)"
     },
     {
       "type": "color",
@@ -415,53 +415,53 @@
     {
       "type": "color",
       "id": "color_accent_dark",
-      "label": "Accent foncé",
+      "label": "Dark accent",
       "default": "#0f5b51"
     },
     {
       "type": "color",
       "id": "color_ink",
-      "label": "Texte (bleu foncé)",
+      "label": "Text (dark blue)",
       "default": "#12293a"
     },
     {
       "type": "image_picker",
       "id": "hero_image",
-      "label": "Image (ou poster vidéo)"
+      "label": "Image (or video poster)"
     },
     {
       "type": "video",
       "id": "hero_video",
-      "label": "Vidéo (hébergée Shopify)"
+      "label": "Video (hosted on Shopify)"
     },
     {
       "type": "text",
       "id": "hero_video_url",
-      "label": "OU URL vidéo .mp4 (optionnel)"
+      "label": "OR .mp4 video URL (optional)"
     },
     {
       "type": "text",
       "id": "hero_badge",
       "label": "Badge (au-dessus du titre)",
-      "default": "Dispositif cosmétique premium"
+      "default": "Premium cosmetic device"
     },
     {
       "type": "text",
       "id": "hero_title",
-      "label": "Titre",
-      "default": "Retrouvez un sourire éclatant"
+      "label": "Title",
+      "default": "Rediscover a radiant smile"
     },
     {
       "type": "text",
       "id": "hero_cta",
       "label": "Bouton hero",
-      "default": "Découvrir les facettes"
+      "default": "Discover the veneers"
     },
     {
       "type": "textarea",
       "id": "hero_sub",
-      "label": "Sous-titre",
-      "default": "Personnalisées et adaptées à vos dents. Sans dentiste. Disponibles en trois teintes."
+      "label": "Subtitle",
+      "default": "Custom-made to fit your teeth. No dentist. Available in three shades."
     },
     {
       "type": "text",
@@ -484,49 +484,49 @@
     {
       "type": "text",
       "id": "steps_eyebrow",
-      "label": "Étiquette",
+      "label": "Eyebrow",
       "default": "Simple & rapide"
     },
     {
       "type": "text",
       "id": "steps_title",
-      "label": "Titre",
-      "default": "Comment ça fonctionne"
+      "label": "Title",
+      "default": "How it works"
     },
     {
       "type": "text",
       "id": "steps_sub",
-      "label": "Sous-titre",
-      "default": "Votre nouveau sourire en seulement 3 étapes."
+      "label": "Subtitle",
+      "default": "Your new smile in just 3 simple steps."
     },
     {
       "type": "image_picker",
       "id": "steps_image",
-      "label": "Image lifestyle"
+      "label": "Lifestyle image"
     },
     {
       "type": "checkbox",
       "id": "feat_enable",
-      "label": "Afficher les icônes (facts)",
+      "label": "Show icons (facts)",
       "default": true
     },
     {
       "type": "text",
       "id": "feat_label",
-      "label": "Titre (facts)",
-      "default": "Clinique Essabar facts"
+      "label": "Title (facts)",
+      "default": "Clinic Essabar facts"
     },
     {
       "type": "text",
       "id": "faq_title",
-      "label": "Titre FAQ",
-      "default": "Questions fréquentes"
+      "label": "FAQ title",
+      "default": "Frequently asked questions"
     },
     {
       "type": "text",
       "id": "why_title",
-      "label": "Titre du panneau",
-      "default": "Pourquoi Clinique Essabar ?"
+      "label": "Panel title",
+      "default": "Why Clinic Essabar?"
     },
     {
       "type": "image_picker",
@@ -536,42 +536,42 @@
     {
       "type": "checkbox",
       "id": "stats_enable",
-      "label": "Afficher",
+      "label": "Show",
       "default": true
     },
     {
       "type": "image_picker",
       "id": "stats_image",
-      "label": "Image (section stats)"
+      "label": "Image (stats section)"
     },
     {
       "type": "image_picker",
       "id": "stats_badge",
-      "label": "Badge qualité (coin haut-gauche, optionnel)"
+      "label": "Quality badge (top-left corner, optional)"
     },
     {
       "type": "textarea",
       "id": "stats_lines",
       "label": "Stats (Gros | petit, une par ligne)",
-      "default": "55 000+ | clients satisfaits\nAbordable | alternative à 2000 $\nRapide | en 8 jours"
+      "default": "7,400+ | satisfied customers\n4.7/5 | average rating\n30 days | satisfaction guarantee"
     },
     {
       "type": "checkbox",
       "id": "kit_enable",
-      "label": "Afficher",
+      "label": "Show",
       "default": true
     },
     {
       "type": "text",
       "id": "kit_title",
-      "label": "Titre",
-      "default": "Votre kit d'empreinte pour la maison"
+      "label": "Title",
+      "default": "Your at-home impression kit"
     },
     {
       "type": "textarea",
       "id": "kit_text",
-      "label": "Texte",
-      "default": "La méthode d'empreinte la plus simple au monde — avec tutoriel vidéo et assistance dédiée. Commandez dès maintenant."
+      "label": "Text",
+      "default": "The easiest impression method in the world — with a video tutorial and dedicated support. Order now."
     },
     {
       "type": "text",
@@ -587,38 +587,38 @@
     {
       "type": "text",
       "id": "social_eyebrow",
-      "label": "Étiquette",
-      "default": "Communauté"
+      "label": "Eyebrow",
+      "default": "Community"
     },
     {
       "type": "text",
       "id": "social_title",
-      "label": "Titre",
-      "default": "Réseaux sociaux"
+      "label": "Title",
+      "default": "Follow us"
     },
     {
       "type": "text",
       "id": "social_sub",
-      "label": "Sous-titre",
-      "default": "Rejoignez la communauté et partagez votre sourire."
+      "label": "Subtitle",
+      "default": "Join the community and share your smile."
     },
     {
       "type": "text",
       "id": "ugc_badge",
-      "label": "Badge (vidéos)",
+      "label": "Badge (videos)",
       "default": "SOCIAL MEDIA TAGS"
     },
     {
       "type": "text",
       "id": "ugc_title",
-      "label": "Titre (vidéos)",
-      "default": "Les selfies de nos clients avec Clinique Essabar"
+      "label": "Title (videos)",
+      "default": "Our customers' selfies with Clinic Essabar"
     },
     {
       "type": "text",
       "id": "ugc_sub",
-      "label": "Sous-titre (vidéos)",
-      "default": "Des expériences réelles, de vraies personnes."
+      "label": "Subtitle (videos)",
+      "default": "Real experiences, real people."
     }
   ],
   "blocks": [
@@ -634,7 +634,7 @@
         {
           "type": "image_picker",
           "id": "award",
-          "label": "Médaille / badge (coin haut-droit, optionnel)"
+          "label": "Medal / badge (top-right corner, optional)"
         },
         {
           "type": "url",
@@ -649,54 +649,54 @@
         {
           "type": "text",
           "id": "name",
-          "label": "Nom",
+          "label": "Name",
           "default": "Facettes Premium"
         },
         {
           "type": "text",
           "id": "subtitle",
-          "label": "Sous-titre",
+          "label": "Subtitle",
           "default": "Sur-mesure"
         },
         {
           "type": "text",
           "id": "price",
-          "label": "Prix",
+          "label": "Price",
           "default": "129,90 €"
         },
         {
           "type": "text",
           "id": "compare",
-          "label": "Prix barré"
+          "label": "Compare-at price"
         }
       ]
     },
     {
       "type": "step",
-      "name": "Étape",
+      "name": "Step",
       "settings": [
         {
           "type": "text",
           "id": "title",
-          "label": "Titre",
+          "label": "Title",
           "default": "Commandez en ligne"
         },
         {
           "type": "textarea",
           "id": "text",
-          "label": "Texte",
-          "default": "Recevez votre kit d'empreinte premium avec un guide simple."
+          "label": "Text",
+          "default": "Receive your premium impression kit with a simple guide."
         }
       ]
     },
     {
       "type": "feature",
-      "name": "Icône atout",
+      "name": "Feature icon",
       "settings": [
         {
           "type": "text",
           "id": "icon",
-          "label": "Icône (emoji)",
+          "label": "Icon (emoji)",
           "default": "✨"
         },
         {
@@ -708,19 +708,19 @@
     },
     {
       "type": "why",
-      "name": "Ligne (Pourquoi)",
+      "name": "Row (Why)",
       "settings": [
         {
           "type": "text",
           "id": "title",
-          "label": "Titre",
-          "default": "Qualité premium"
+          "label": "Title",
+          "default": "Premium quality"
         },
         {
           "type": "textarea",
           "id": "text",
-          "label": "Texte",
-          "default": "Fabriquées avec un matériau haut de gamme pour un rendu naturel et durable."
+          "label": "Text",
+          "default": "Made with premium material for a natural, long-lasting result."
         }
       ]
     },
@@ -737,8 +737,8 @@
         {
           "type": "richtext",
           "id": "answer",
-          "label": "Réponse",
-          "default": "<p>Votre réponse ici.</p>"
+          "label": "Answer",
+          "default": "<p>Your answer here.</p>"
         }
       ]
     },
@@ -760,12 +760,12 @@
     },
     {
       "type": "ugc",
-      "name": "Vidéo client",
+      "name": "Customer video",
       "settings": [
         {
           "type": "video",
           "id": "video",
-          "label": "Vidéo"
+          "label": "Video"
         },
         {
           "type": "text",
@@ -782,57 +782,57 @@
   ],
   "presets": [
     {
-      "name": "Clinique Essabar Home",
+      "name": "Clinic Essabar Home",
       "blocks": [
         {
           "type": "card",
           "settings": {
-            "badge": "Ivoire",
-            "name": "Facettes Premium",
-            "subtitle": "Sur-mesure",
-            "price": "129,90 €",
-            "compare": "199,90 €"
+            "badge": "Ivory",
+            "name": "Premium Veneers",
+            "subtitle": "Custom-made",
+            "price": "",
+            "compare": ""
           }
         },
         {
           "type": "card",
           "settings": {
-            "badge": "Blanc naturel",
-            "name": "Facettes Premium",
-            "subtitle": "Sur-mesure",
-            "price": "129,90 €",
-            "compare": "199,90 €"
+            "badge": "Natural white",
+            "name": "Premium Veneers",
+            "subtitle": "Custom-made",
+            "price": "",
+            "compare": ""
           }
         },
         {
           "type": "card",
           "settings": {
             "badge": "Hollywood",
-            "name": "Facettes Premium",
-            "subtitle": "Sur-mesure",
-            "price": "129,90 €",
-            "compare": "199,90 €"
+            "name": "Premium Veneers",
+            "subtitle": "Custom-made",
+            "price": "",
+            "compare": ""
           }
         },
         {
           "type": "step",
           "settings": {
-            "title": "Commandez en ligne",
-            "text": "Recevez votre kit d'empreinte premium avec un guide pas-à-pas."
+            "title": "Order online",
+            "text": "Receive your premium impression kit with a step-by-step guide."
           }
         },
         {
           "type": "step",
           "settings": {
-            "title": "Prenez votre empreinte",
-            "text": "En quelques minutes, à la maison, puis renvoyez-la (frais offerts)."
+            "title": "Take your impression",
+            "text": "In just a few minutes, at home, then send it back (shipping included)."
           }
         },
         {
           "type": "step",
           "settings": {
-            "title": "Recevez vos facettes",
-            "text": "Fabriquées sur-mesure et expédiées chez vous."
+            "title": "Receive your veneers",
+            "text": "Custom-made and shipped to your door."
           }
         },
         {
@@ -874,50 +874,50 @@
         {
           "type": "why",
           "settings": {
-            "title": "Sur-mesure & qualité",
-            "text": "Fabriquées à partir de votre empreinte, avec un matériau premium pour un rendu naturel."
+            "title": "Custom-made & quality",
+            "text": "Made from your own impression, with premium material for a natural look."
           }
         },
         {
           "type": "why",
           "settings": {
-            "title": "Innovant & précis",
-            "text": "Une technologie qui épouse parfaitement vos dents pour un confort optimal."
+            "title": "Innovative & precise",
+            "text": "A technology that fits your teeth perfectly for optimal comfort."
           }
         },
         {
           "type": "why",
           "settings": {
-            "title": "Testé & approuvé",
-            "text": "Des milliers de clients ont retrouvé le sourire avec Clinique Essabar."
+            "title": "Tried & trusted",
+            "text": "Thousands of customers have rediscovered their smile with Clinic Essabar."
           }
         },
         {
           "type": "why",
           "settings": {
-            "title": "Simple & rapide",
-            "text": "Tout se fait à domicile, sans dentiste ni rendez-vous."
+            "title": "Simple & fast",
+            "text": "Everything is done at home, with no dentist and no appointment."
           }
         },
         {
           "type": "faq",
           "settings": {
-            "question": "Les facettes sont-elles amovibles ?",
-            "answer": "<p>Oui, nos facettes se posent et se retirent en quelques secondes, sans colle ni dentiste.</p>"
+            "question": "Are the veneers removable?",
+            "answer": "<p>Yes, our veneers clip on and off in seconds, with no glue and no dentist.</p>"
           }
         },
         {
           "type": "faq",
           "settings": {
-            "question": "Combien de temps pour les recevoir ?",
-            "answer": "<p>Après réception de votre empreinte, vos facettes sont fabriquées sur-mesure et expédiées sous quelques jours.</p>"
+            "question": "How long until I receive them?",
+            "answer": "<p>Once we receive your impression, your veneers are custom-made and shipped within up to 10 days in total.</p>"
           }
         },
         {
           "type": "faq",
           "settings": {
-            "question": "Puis-je manger avec ?",
-            "answer": "<p>Elles sont conçues pour un usage cosmétique. Nous recommandons de les retirer pour manger afin de préserver leur éclat.</p>"
+            "question": "Can I eat with them?",
+            "answer": "<p>They are designed for cosmetic use. We recommend removing them to eat in order to preserve their shine.</p>"
           }
         },
         {

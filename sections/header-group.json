@@ -17,7 +17,7 @@
         "announcement_niGYQY": {
           "type": "announcement",
           "settings": {
-            "text": "Livraison offerte · Satisfait ou remboursé 30 jours · Paiement sécurisé",
+            "text": "Free shipping · 30-day satisfaction guarantee · Secure payment",
             "link": ""
           }
         }
@@ -27,7 +27,7 @@
       ],
       "settings": {
         "show_countdown": false,
-        "cd_message": "Livraison offerte · Satisfait ou remboursé 30 jours",
+        "cd_message": "Free shipping · 30-day satisfaction guarantee",
         "cd_subtext": "Limited-time offer",
         "cd_show_timer": true,
         "cd_hours": "12",
@@ -51,22 +51,22 @@
         "link_home": {
           "type": "link",
           "settings": {
-            "label": "Accueil",
+            "label": "Home",
             "link": "/"
           }
         },
         "mega_prod": {
           "type": "mega_product",
           "settings": {
-            "label": "Facette Dentaire",
+            "label": "Dental Veneers",
             "link": "/products/custom-dental-veneers",
-            "heading": "Choisissez votre teinte",
-            "cta_text": "Voir le produit",
-            "sw1_name": "Ivoire",
+            "heading": "Choose your shade",
+            "cta_text": "View product",
+            "sw1_name": "Ivory",
             "sw1_code": "A3",
             "sw1_color": "#efe4cf",
             "sw1_link": "/products/custom-dental-veneers?variant=52072623669569",
-            "sw2_name": "Blanc naturel",
+            "sw2_name": "Natural white",
             "sw2_code": "A1",
             "sw2_color": "#f5f0e6",
             "sw2_link": "/products/custom-dental-veneers?variant=52072623702337",
@@ -79,28 +79,28 @@
         "mega_exp": {
           "type": "mega_images",
           "settings": {
-            "label": "Expériences",
+            "label": "Experiences",
             "link": "",
-            "heading": "Découvrir",
-            "card1_title": "Avant / Après",
+            "heading": "Discover",
+            "card1_title": "Before / After",
             "card1_link": "/pages/avant-apres",
-            "card2_title": "Témoignages",
+            "card2_title": "Testimonials",
             "card2_link": "/pages/temoignages",
-            "card3_title": "Guide d'utilisation",
+            "card3_title": "How-to guide",
             "card3_link": "/pages/instruction-teeth-impression"
           }
         },
         "mega_help": {
           "type": "mega_images",
           "settings": {
-            "label": "Aide & Infos",
+            "label": "Help & Info",
             "link": "",
-            "heading": "Besoin d'aide ?",
-            "card1_title": "Instructions d'utilisation",
+            "heading": "Need help?",
+            "card1_title": "How to use",
             "card1_link": "/pages/instructions-to-use",
-            "card2_title": "Prise d'empreinte",
+            "card2_title": "Taking your impression",
             "card2_link": "/pages/instruction-teeth-impression",
-            "card3_title": "Centre d'aide",
+            "card3_title": "Help center",
             "card3_link": "/pages/help-center"
           }
         }

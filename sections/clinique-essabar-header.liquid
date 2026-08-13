@@ -92,17 +92,17 @@
 
             {%- when 'link' -%}
               <div class="ceh-navitem" {{ block.shopify_attributes }}>
-                <a class="ceh-navlink" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | default: 'Lien' }}</a>
+                <a class="ceh-navlink" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | default: 'Link' }}</a>
               </div>
 
             {%- when 'mega_product' -%}
               <div class="ceh-navitem" {{ block.shopify_attributes }}>
                 <a class="ceh-navlink" href="{{ block.settings.link | default: '#' }}">
-                  {{ block.settings.label | default: 'Facette Dentaire' }}
+                  {{ block.settings.label | default: 'Dental Veneers' }}
                   <svg class="ceh-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                 </a>
                 <div class="ceh-mega">
-                  <p class="ceh-mega-h">{{ block.settings.heading | default: 'Choisissez votre teinte' }}</p>
+                  <p class="ceh-mega-h">{{ block.settings.heading | default: 'Choose your shade' }}</p>
                   <div class="ceh-swatches">
                     {%- for i in (1..3) -%}
                       {%- assign kname = 'sw' | append: i | append: '_name' -%}
@@ -135,11 +135,11 @@
             {%- when 'mega_images' -%}
               <div class="ceh-navitem" {{ block.shopify_attributes }}>
                 <a class="ceh-navlink" href="{{ block.settings.link | default: '#' }}">
-                  {{ block.settings.label | default: 'Expériences' }}
+                  {{ block.settings.label | default: 'Experiences' }}
                   <svg class="ceh-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                 </a>
                 <div class="ceh-mega">
-                  <p class="ceh-mega-h">{{ block.settings.heading | default: 'Découvrir' }}</p>
+                  <p class="ceh-mega-h">{{ block.settings.heading | default: 'Discover' }}</p>
                   <div class="ceh-cards">
                     {%- for i in (1..3) -%}
                       {%- assign ktitle = 'card' | append: i | append: '_title' -%}
@@ -167,16 +167,16 @@
 
       <div class="ceh-icons">
         {%- if section.settings.show_search -%}
-          <a class="ceh-ic" href="{{ routes.search_url }}" aria-label="Recherche">
+          <a class="ceh-ic" href="{{ routes.search_url }}" aria-label="Search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </a>
         {%- endif -%}
         {%- if section.settings.show_account -%}
-          <a class="ceh-ic" href="{% if shop.customer_accounts_enabled %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="Compte">
+          <a class="ceh-ic" href="{% if shop.customer_accounts_enabled %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="Account">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </a>
         {%- endif -%}
-        <button class="ceh-ic" type="button" aria-label="Panier" data-ceh-cart>
+        <button class="ceh-ic" type="button" aria-label="Cart" data-ceh-cart>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
           <span class="ceh-count" id="ceh-count-{{ ns }}"{% if cart.item_count == 0 %} style="display:none"{% endif %}>{{ cart.item_count }}</span>
         </button>
@@ -188,14 +188,14 @@
   <!-- Mobile drawer -->
   <div class="ceh-scrim" data-ceh-scrim></div>
   <div class="ceh-mobile" data-ceh-panel>
-    <button class="ceh-m-close" type="button" aria-label="Fermer" data-ceh-close>&times;</button>
+    <button class="ceh-m-close" type="button" aria-label="Close" data-ceh-close>&times;</button>
     <div style="clear:both"></div>
     {%- for block in section.blocks -%}
       {%- case block.type -%}
         {%- when 'link' -%}
           <a class="ceh-m-link" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label }}</a>
         {%- when 'mega_product' -%}
-          <a class="ceh-m-link" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | default: 'Facette Dentaire' }}</a>
+          <a class="ceh-m-link" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | default: 'Dental Veneers' }}</a>
           <div class="ceh-m-swatches">
             {%- for i in (1..3) -%}
               {%- assign kname = 'sw' | append: i | append: '_name' -%}
@@ -216,7 +216,7 @@
             {%- endfor -%}
           </div>
         {%- when 'mega_images' -%}
-          <a class="ceh-m-link" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | default: 'Expériences' }}</a>
+          <a class="ceh-m-link" href="{{ block.settings.link | default: '#' }}">{{ block.settings.label | default: 'Experiences' }}</a>
       {%- endcase -%}
     {%- endfor -%}
   </div>
@@ -260,77 +260,77 @@
 
 {% schema %}
 {
-  "name": "En-tête Clinique",
+  "name": "Clinic Essabar Header",
   "class": "ceh-section",
   "settings": [
     { "type": "image_picker", "id": "logo", "label": "Logo" },
     { "type": "range", "id": "logo_height", "min": 20, "max": 70, "step": 2, "unit": "px", "label": "Hauteur du logo", "default": 34 },
-    { "type": "color", "id": "accent", "label": "Couleur d'accent", "default": "#12a3a0" },
-    { "type": "checkbox", "id": "show_search", "label": "Afficher la recherche", "default": true },
-    { "type": "checkbox", "id": "show_account", "label": "Afficher le compte", "default": true }
+    { "type": "color", "id": "accent", "label": "Accent color", "default": "#12a3a0" },
+    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
+    { "type": "checkbox", "id": "show_account", "label": "Show account", "default": true }
   ],
   "blocks": [
     {
       "type": "link",
-      "name": "Lien simple",
+      "name": "Simple link",
       "settings": [
-        { "type": "text", "id": "label", "label": "Texte", "default": "Accueil" },
-        { "type": "url", "id": "link", "label": "Lien" }
+        { "type": "text", "id": "label", "label": "Text", "default": "Home" },
+        { "type": "url", "id": "link", "label": "Link" }
       ]
     },
     {
       "type": "mega_product",
       "name": "Menu produit (teintes)",
       "settings": [
-        { "type": "text", "id": "label", "label": "Texte du menu", "default": "Facette Dentaire" },
-        { "type": "url", "id": "link", "label": "Lien produit" },
-        { "type": "text", "id": "heading", "label": "Titre du panneau", "default": "Choisissez votre teinte" },
-        { "type": "text", "id": "cta_text", "label": "Texte du bouton", "default": "Voir le produit" },
+        { "type": "text", "id": "label", "label": "Menu label", "default": "Dental Veneers" },
+        { "type": "url", "id": "link", "label": "Product link" },
+        { "type": "text", "id": "heading", "label": "Panel heading", "default": "Choose your shade" },
+        { "type": "text", "id": "cta_text", "label": "Button text", "default": "View product" },
         { "type": "header", "content": "Teinte 1" },
         { "type": "text", "id": "sw1_name", "label": "Nom", "default": "Ivoire" },
         { "type": "text", "id": "sw1_code", "label": "Code / sous-titre", "default": "A3" },
-        { "type": "color", "id": "sw1_color", "label": "Couleur pastille", "default": "#efe4cf" },
+        { "type": "color", "id": "sw1_color", "label": "Swatch color", "default": "#efe4cf" },
         { "type": "image_picker", "id": "sw1_img", "label": "Image (optionnelle)" },
-        { "type": "url", "id": "sw1_link", "label": "Lien" },
+        { "type": "url", "id": "sw1_link", "label": "Link" },
         { "type": "header", "content": "Teinte 2" },
         { "type": "text", "id": "sw2_name", "label": "Nom", "default": "Blanc naturel" },
         { "type": "text", "id": "sw2_code", "label": "Code / sous-titre", "default": "A1" },
-        { "type": "color", "id": "sw2_color", "label": "Couleur pastille", "default": "#f5f0e6" },
+        { "type": "color", "id": "sw2_color", "label": "Swatch color", "default": "#f5f0e6" },
         { "type": "image_picker", "id": "sw2_img", "label": "Image (optionnelle)" },
-        { "type": "url", "id": "sw2_link", "label": "Lien" },
+        { "type": "url", "id": "sw2_link", "label": "Link" },
         { "type": "header", "content": "Teinte 3" },
         { "type": "text", "id": "sw3_name", "label": "Nom", "default": "Hollywood" },
         { "type": "text", "id": "sw3_code", "label": "Code / sous-titre", "default": "BL2" },
-        { "type": "color", "id": "sw3_color", "label": "Couleur pastille", "default": "#ffffff" },
+        { "type": "color", "id": "sw3_color", "label": "Swatch color", "default": "#ffffff" },
         { "type": "image_picker", "id": "sw3_img", "label": "Image (optionnelle)" },
-        { "type": "url", "id": "sw3_link", "label": "Lien" }
+        { "type": "url", "id": "sw3_link", "label": "Link" }
       ]
     },
     {
       "type": "mega_images",
-      "name": "Menu images (Expériences)",
+      "name": "Image menu (Experiences)",
       "settings": [
-        { "type": "text", "id": "label", "label": "Texte du menu", "default": "Expériences" },
-        { "type": "url", "id": "link", "label": "Lien" },
-        { "type": "text", "id": "heading", "label": "Titre du panneau", "default": "Découvrir" },
+        { "type": "text", "id": "label", "label": "Menu label", "default": "Experiences" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "heading", "label": "Panel heading", "default": "Discover" },
         { "type": "header", "content": "Carte 1" },
         { "type": "image_picker", "id": "card1_img", "label": "Image" },
-        { "type": "text", "id": "card1_title", "label": "Titre", "default": "Avant / Après" },
-        { "type": "url", "id": "card1_link", "label": "Lien" },
+        { "type": "text", "id": "card1_title", "label": "Title", "default": "Before / After" },
+        { "type": "url", "id": "card1_link", "label": "Link" },
         { "type": "header", "content": "Carte 2" },
         { "type": "image_picker", "id": "card2_img", "label": "Image" },
-        { "type": "text", "id": "card2_title", "label": "Titre", "default": "Témoignages" },
-        { "type": "url", "id": "card2_link", "label": "Lien" },
+        { "type": "text", "id": "card2_title", "label": "Title", "default": "Testimonials" },
+        { "type": "url", "id": "card2_link", "label": "Link" },
         { "type": "header", "content": "Carte 3" },
         { "type": "image_picker", "id": "card3_img", "label": "Image" },
-        { "type": "text", "id": "card3_title", "label": "Titre", "default": "Guide d'utilisation" },
-        { "type": "url", "id": "card3_link", "label": "Lien" }
+        { "type": "text", "id": "card3_title", "label": "Title", "default": "Guide d'utilisation" },
+        { "type": "url", "id": "card3_link", "label": "Link" }
       ]
     }
   ],
   "presets": [
     {
-      "name": "En-tête Clinique",
+      "name": "Clinic Essabar Header",
       "blocks": [
         { "type": "link", "settings": { "label": "Accueil" } },
         { "type": "mega_product" },

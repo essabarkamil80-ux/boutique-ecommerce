@@ -15,28 +15,28 @@
         "step-1": {
           "type": "step",
           "settings": {
-            "title": "Recevez votre kit d'empreinte",
+            "title": "Receive your impression kit",
             "text": ""
           }
         },
         "step-2": {
           "type": "step",
           "settings": {
-            "title": "Réalisez votre empreinte dentaire et renvoyez-la.",
+            "title": "Make your impression and return it",
             "text": ""
           }
         },
         "step-3": {
           "type": "step",
           "settings": {
-            "title": "Nous fabriquons vos facettes sur-mesure",
+            "title": "We craft your custom veneers",
             "text": ""
           }
         },
         "step-4": {
           "type": "step",
           "settings": {
-            "title": "Recevez vos facettes parfaitement ajustées",
+            "title": "Receive your perfectly fitted veneers",
             "text": ""
           }
         },
@@ -68,42 +68,42 @@
         "faq-1": {
           "type": "faq",
           "settings": {
-            "question": "Combien de temps durent les facettes ?",
-            "answer": "<p>La durée de vie de vos facettes dépend directement de leur entretien et de la façon dont vous les utilisez au quotidien. Avec des soins réguliers et attentifs, elles vous accompagnent durablement.</p><p>Pour les préserver au mieux :</p><ul><li>Nettoyez-les régulièrement avec une brosse à dents souple et de l'eau tiède (évitez l'eau chaude).</li><li>Manipulez-les avec précaution lors de la pose et du retrait.</li><li>Rangez-les dans leur étui après chaque utilisation.</li></ul><p>Un entretien soigné est la clé pour conserver leur éclat et leur confort le plus longtemps possible.</p>"
+            "question": "How long do the veneers last?",
+            "answer": "<p>How long your veneers last depends directly on how you care for and use them day to day. With regular, gentle care they can last a long time.</p><p>To keep them at their best:</p><ul><li>Clean them regularly with a soft toothbrush and lukewarm water (avoid hot water).</li><li>Handle them with care when placing and removing them.</li><li>Store them in their case after each use.</li></ul><p>Careful maintenance is the key to keeping their shine and comfort for as long as possible.</p>"
           }
         },
         "faq-2": {
           "type": "faq",
           "settings": {
-            "question": "Combien de dents couvrent-elles ?",
-            "answer": "<p>Vos facettes sont conçues pour couvrir l'ensemble de l'arcade dentaire sélectionnée, et non quelques dents isolées : vous obtenez ainsi un sourire harmonieux et uniforme.</p><p>Vous choisissez l'arcade supérieure, inférieure, ou les deux selon l'offre. Chaque pièce est fabriquée <strong>sur mesure</strong> à partir de vos propres empreintes, pour un ajustement parfaitement adapté à votre dentition.</p>"
+            "question": "How many teeth do they cover?",
+            "answer": "<p>Your veneers are designed to cover the entire selected dental arch — not just a few individual teeth — so you get a harmonious, even smile.</p><p>You choose the upper arch, the lower arch, or both depending on the offer. Each piece is <strong>custom-made</strong> from your own impression for a fit tailored to your teeth.</p>"
           }
         },
         "faq-3": {
           "type": "faq",
           "settings": {
-            "question": "Comment se passe la prise d'empreinte ?",
-            "answer": "<p>C'est simple et entièrement réalisable chez vous, en quelques minutes et sans dentiste. Vous êtes guidé pas à pas grâce à notre tutoriel détaillé.</p><p>Vous retrouvez ce tutoriel dans la rubrique <strong>« Aide &amp; Infos » &rsaquo; « Prise d'empreinte »</strong> du site.</p><p>Une fois vos empreintes réalisées, il vous suffit de nous les renvoyer : nos spécialistes les utilisent pour concevoir vos facettes sur mesure, adaptées à votre sourire.</p>"
+            "question": "How does taking the impression work?",
+            "answer": "<p>It’s simple and can be done entirely at home, in a few minutes and without a dentist. You’re guided step by step by our detailed tutorial.</p><p>You’ll find this tutorial in the <strong>“Help &amp; Info” › “Impression”</strong> section of the site.</p><p>Once your impression is done, simply send it back to us: our specialists use it to craft your custom veneers.</p>"
           }
         },
         "faq-4": {
           "type": "faq",
           "settings": {
-            "question": "Et si je ne suis pas satisfait ?",
-            "answer": "<p>Votre satisfaction est notre priorité. Vous bénéficiez de notre garantie <strong>« satisfait ou remboursé » de 30 jours</strong>.</p><p>Si vos facettes ne vous conviennent pas ou que vous n'êtes pas pleinement satisfait de votre achat, vous pouvez demander un remboursement dans le cadre des conditions de cette garantie.</p><p>Notre équipe reste à votre écoute à chaque étape pour vous accompagner et trouver la meilleure solution.</p>"
+            "question": "What if I'm not satisfied?",
+            "answer": "<p>Your satisfaction is our priority. You’re covered by our <strong>30-Day Satisfaction Guarantee</strong>.</p><p>If your veneers don’t fit correctly or cause discomfort, contact Clinic Essabar so we can review your case and apply the guarantee in line with our return &amp; refund policy.</p><p>Our team is here to help at every step to find the best solution.</p>"
           }
         },
         "shade-1": {
           "type": "shade",
           "settings": {
-            "name": "Ivoire",
+            "name": "Ivory",
             "code": "A3"
           }
         },
         "shade-2": {
           "type": "shade",
           "settings": {
-            "name": "Blanc naturel",
+            "name": "Natural white",
             "code": "A1"
           }
         },
@@ -153,8 +153,8 @@
           "type": "review",
           "settings": {
             "image": "shopify://shop_images/temoiganges_5.jpg",
-            "title": "Bluffant de réalisme",
-            "text": "Je n'osais plus sourire. En 2 minutes je pose mes facettes et le résultat est incroyable.",
+            "title": "Incredibly realistic",
+            "text": "I didn't dare smile anymore. In 2 minutes I clip on my veneers and the result is incredible.",
             "author": "Sarah M."
           }
         },
@@ -162,8 +162,8 @@
           "type": "review",
           "settings": {
             "image": "shopify://shop_images/temoiganage3.jpg",
-            "title": "Enfin confiant",
-            "text": "Le kit d'empreinte est super simple et le rendu est bluffant. Je recommande à 100%.",
+            "title": "Confident at last",
+            "text": "The impression kit is really simple and the result is stunning. Highly recommend.",
             "author": "Julien R."
           }
         },
@@ -171,17 +171,17 @@
           "type": "review",
           "settings": {
             "image": "shopify://shop_images/remoigange1S.jpg",
-            "title": "Ça a changé ma vie",
-            "text": "Après des années à cacher mes dents, je souris enfin sur les photos.",
-            "author": "Amélie D."
+            "title": "It changed my life",
+            "text": "After years of hiding my teeth, I finally smile in photos.",
+            "author": "Amelia D."
           }
         },
         "review-4": {
           "type": "review",
           "settings": {
             "image": "shopify://shop_images/BErfi3CQp.jpg",
-            "title": "Très naturel",
-            "text": "La teinte Blanc naturel est parfaite, ni trop ni trop peu.",
+            "title": "Very natural",
+            "text": "The Natural White shade is perfect — not too much, not too little.",
             "author": "Karim B."
           }
         },
@@ -189,8 +189,8 @@
           "type": "review",
           "settings": {
             "image": "shopify://shop_images/Screenshot_2026-08-11_15.42.48.png",
-            "title": "Confortable",
-            "text": "On les oublie une fois posées. Vraiment confortables.",
+            "title": "Comfortable",
+            "text": "You forget they're there once fitted. Really comfortable.",
             "author": "Emma L."
           }
         },
@@ -198,8 +198,8 @@
           "type": "review",
           "settings": {
             "image": "shopify://shop_images/jYNKb9WVZ.jpg",
-            "title": "Livraison rapide",
-            "text": "Kit reçu vite, facettes conformes. Service au top.",
+            "title": "Fast delivery",
+            "text": "Kit arrived quickly, veneers as described. Great service.",
             "author": "Thomas P."
           }
         }
@@ -237,93 +237,93 @@
         "color_accent": "#15776a",
         "color_accent_dark": "#0f5b51",
         "color_ink": "#15242b",
-        "brand_name": "Clinique Essabar",
-        "hero_badge": "Nouveau",
-        "hero_title": "Facettes Dentaires Amovibles Premium",
-        "hero_sub": "Facettes dentaires amovibles, personnalisées et sur-mesure pour vos dents.",
-        "rating": "4,7/5",
+        "brand_name": "Clinic Essabar",
+        "hero_badge": "New",
+        "hero_title": "Premium Removable Dental Veneers",
+        "hero_sub": "Custom-made removable veneers, tailored to your smile.",
+        "rating": "4.7/5",
         "rating_value": 4.7,
-        "review_count": "2 400+ avis",
-        "fallback_price": "215,99 $",
-        "steps_title": "Quatre étapes simples",
-        "cta_add": "Ajouter au panier",
+        "review_count": "7,400+ satisfied customers",
+        "fallback_price": "",
+        "steps_title": "Four simple steps",
+        "cta_add": "Buy now",
         "offer_enable": true,
-        "offer_eyebrow": "Offre exclusive",
+        "offer_eyebrow": "Exclusive offer",
         "offer_badge": "-50%",
-        "offer_title": "Votre 2ᵉ arcade OFFERTE",
-        "offer_sub": "Choisissez votre arcade supérieure : l'arcade inférieure vous est offerte.",
+        "offer_title": "Your 2nd arch — FREE",
+        "offer_sub": "Choose your upper arch and the lower arch is included free.",
         "offer_img_top": "shopify://shop_images/ivoire.webp",
         "offer_img_bottom": "shopify://shop_images/ChatGPT_Image_12_aout_2026_22_38_14.png",
-        "tax_note": "Taxes incluses. Livraison calculée au paiement.",
+        "tax_note": "Taxes included · Free shipping",
         "press_enable": true,
-        "press_title": "Ils parlent de nous",
+        "press_title": "As featured in",
         "press1_image": "shopify://shop_images/Cosmopolitan_e9c2361b-d25a-4d18-a76e-6c54681b6d73.webp",
-        "press1_name": "Women's Health",
+        "press1_name": "Cosmopolitan",
         "press2_image": "shopify://shop_images/Womans_Health_f0205559-60fd-45a6-ad7e-4ef9d5919725.webp",
-        "press2_name": "Cosmopolitan",
+        "press2_name": "Women's Health",
         "press3_name": "",
         "press4_name": "",
         "info_enable": true,
-        "spec1_title": "Délais de livraison",
-        "spec1_text": "<p>Production : 10 jours après réception de votre empreinte (5 jours en express). Expédition : 1 à 3 jours selon le mode choisi.</p>",
-        "spec2_title": "Matière",
-        "spec2_text": "<p>Résine dentaire haute résistance, sans BPA, épaisseur de 0,3 à 0,5 mm pour un rendu naturel.</p>",
-        "spec3_title": "Certificat",
-        "spec3_text": "<p>Fabriqué selon des normes strictes de qualité. Matériaux certifiés et contrôlés.</p>",
+        "spec1_title": "Delivery times",
+        "spec1_text": "<p>You'll receive your impression kit in about 6 days. Once we receive your completed impression, your custom veneers are made and shipped within up to 10 days in total.</p>",
+        "spec2_title": "Material",
+        "spec2_text": "<p>High-strength, BPA-free dental resin, 0.3–0.5 mm thick for a natural-looking finish.</p>",
+        "spec3_title": "Quality & origin",
+        "spec3_text": "<p>Crafted by our partner laboratory in Seoul, South Korea, under strict quality-control standards.</p>",
         "innov_enable": true,
         "innov_image": "shopify://shop_images/same-day-clicks_800x_c95ad7d7-b3ed-407b-942f-b8a1ee9c7459.webp",
-        "innov_title": "Une innovation pour un sourire éclatant",
-        "innov_text": "<p>Nos facettes se posent en quelques secondes, sans dentiste et sans douleur. Fabriquées sur-mesure à partir de votre empreinte, elles offrent un rendu naturel et un confort optimal au quotidien.</p>",
-        "express_enable": true,
-        "express_title": "Production express — 20 $",
-        "express_sub": "Recevez vos facettes en priorité, plus rapidement.",
+        "innov_title": "Innovation for a radiant smile",
+        "innov_text": "<p>Our veneers clip on in seconds at home — no dental appointment required. Custom-made from your impression, they're designed for a natural look and comfortable everyday wear.</p>",
+        "express_enable": false,
+        "express_title": "Express production",
+        "express_sub": "Get your veneers faster with priority production.",
         "tabs_enable": true,
         "tab1_image": "shopify://shop_images/Vor_dem_Zahn-Veneer.avif",
         "tab2_image": "shopify://shop_images/videoframe_1459.png",
         "tab3_image": "shopify://shop_images/apres.avif",
-        "helps_title": "aide à transformer les sourires",
-        "helps_label1": "Avant",
-        "helps_label2": "Pose",
-        "helps_label3": "Après",
+        "helps_title": "helps transform smiles",
+        "helps_label1": "Before",
+        "helps_label2": "Fitting",
+        "helps_label3": "After",
         "ugc_badge": "SOCIAL MEDIA TAGS",
-        "ugc_title": "Le sourire de nos clients",
-        "ugc_sub": "Des expériences réelles, filmées par nos clients.",
-        "faq_title": "Questions fréquentes",
+        "ugc_title": "Our customers' smiles",
+        "ugc_sub": "Real experiences, filmed by our customers.",
+        "faq_title": "Frequently asked questions",
         "cmp_enable": true,
-        "shades_title": "Comparaison réelle des teintes",
-        "made_in_label": "Made in South Korea",
-        "var_label": "Variante",
-        "col_label": "Couleur",
-        "shade1_label": "Blanc naturel",
+        "shades_title": "Compare the shades in real life",
+        "made_in_label": "",
+        "var_label": "Product",
+        "col_label": "In mouth",
+        "shade1_label": "Natural white",
         "shade1_variant": "shopify://shop_images/natural_white.webp",
         "shade1_color": "shopify://shop_images/ChatGPT_Image_11_aout_2026_15_44_32.png",
-        "shade2_label": "Ivoire",
+        "shade2_label": "Ivory",
         "shade2_variant": "shopify://shop_images/ivoire.webp",
         "shade2_color": "shopify://shop_images/ChatGPT_Image_11_aout_2026_15_48_12.png",
         "shade3_label": "Hollywood",
         "shade3_variant": "shopify://shop_images/Hollywood_smile.webp",
         "shade3_color": "shopify://shop_images/Gemini_Generated_Image_gndv6ogndv6ogndv.png",
-        "ba_eyebrow": "Résultats",
-        "ba_title": "Avant / Après",
-        "ba_sub": "Un nouveau sourire avec Clinique Essabar",
-        "reviews_title": "Plus de 55 000 sourires déjà transformés",
+        "ba_eyebrow": "Results",
+        "ba_title": "Before / After",
+        "ba_sub": "A new smile with Clinic Essabar",
+        "reviews_title": "7,400+ smiles already transformed",
         "wa_enable": true,
-        "wa_title": "La prise d'empreinte la plus simple au monde",
-        "wa_sub": "Réalisez facilement votre empreinte dentaire depuis chez vous grâce à notre kit complet. Simple, pratique et conçu pour vous accompagner à chaque étape.",
-        "wa_cta1": "Commander maintenant",
+        "wa_title": "Taking your impression has never been easier",
+        "wa_sub": "Easily take your dental impression at home with our complete kit. Simple, practical, and designed to guide you every step of the way.",
+        "wa_cta1": "Buy now",
         "wa_image": "shopify://shop_images/22f4c9cd-2c64-492f-8a5f-b13d1bba175c.png",
         "about_enable": true,
-        "about_title": "Les facettes dentaires Clinique Essabar",
-        "about_intro": "<p>Un sourire éclatant, simplement et rapidement. Nos facettes amovibles offrent flexibilité et confort, fabriquées sur-mesure à partir de votre empreinte, sans passer par le dentiste.</p>",
-        "about_h1": "Offrez-vous un sourire parfait",
-        "about_t1": "<p>Dents manquantes, espaces ou teinte terne ? Nos facettes corrigent les imperfections de vos dents naturelles pour un sourire harmonieux, quand vous le souhaitez.</p>",
-        "about_h2": "Simple et rapide",
-        "about_t2": "<p>Aucune visite chez le dentiste. Vous réalisez votre empreinte à la maison, nous fabriquons vos facettes et vous les recevez par courrier. Il ne reste qu'à les poser.</p>",
-        "about_h3": "L'alternative douce",
-        "about_t3": "<p>Les facettes se posent et se retirent à tout moment, sans abîmer l'émail ni blanchir vos dents. Vos dents restent saines et protégées.</p>",
-        "about_h4": "Qualité au juste prix",
-        "about_t4": "<p>Grâce à une fabrication soignée et des matériaux de qualité, profitez d'un rendu premium à un prix accessible.</p>",
-        "sticky_name": "Facettes Premium"
+        "about_title": "Clinic Essabar dental veneers",
+        "about_intro": "<p>A radiant smile, simply and quickly. Our removable veneers offer flexibility and comfort, custom-made from your impression — no dental visit required.</p>",
+        "about_h1": "Give yourself a perfect smile",
+        "about_t1": "<p>Missing teeth, gaps, or a dull shade? Our veneers cover the imperfections of your natural teeth for a harmonious smile, whenever you like.</p>",
+        "about_h2": "Simple and fast",
+        "about_t2": "<p>No dental appointment needed. You take your impression at home, we craft your veneers, and we ship them to you.</p>",
+        "about_h3": "The gentle alternative",
+        "about_t3": "<p>The veneers clip on and off at any time. They sit over your natural teeth without grinding or drilling — your own teeth stay untouched.</p>",
+        "about_h4": "Quality at a fair price",
+        "about_t4": "<p>Thanks to careful craftsmanship and quality materials, enjoy a premium finish at an accessible price.</p>",
+        "sticky_name": "Premium Veneers"
       }
     }
   },

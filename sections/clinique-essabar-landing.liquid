@@ -75,14 +75,14 @@
         <div class="ce-offer__viz">
           <div class="ce-offer__jaw">
             <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_top != blank -%}<img src="{{ section.settings.offer_img_top | image_url: width: 200 }}" alt="Arcade supérieure" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
-            <span class="ce-offer__jaw-lbl">Arcade supérieure</span>
-            <span class="ce-offer__jaw-state">Achetée</span>
+            <span class="ce-offer__jaw-lbl">Upper arch</span>
+            <span class="ce-offer__jaw-state">You buy this</span>
           </div>
           <span class="ce-offer__plus">+</span>
           <div class="ce-offer__jaw ce-offer__jaw--free">
             <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_bottom != blank -%}<img src="{{ section.settings.offer_img_bottom | image_url: width: 200 }}" alt="Arcade inférieure" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
-            <span class="ce-offer__jaw-lbl">Arcade inférieure</span>
-            <span class="ce-offer__jaw-state ce-offer__jaw-state--free">🎁 Offerte</span>
+            <span class="ce-offer__jaw-lbl">Lower arch</span>
+            <span class="ce-offer__jaw-state ce-offer__jaw-state--free">🎁 Free</span>
           </div>
         </div>
         {%- if section.settings.offer_sub != blank -%}<div class="ce-offer__note">{{ section.settings.offer_sub }}</div>{%- endif -%}
@@ -144,11 +144,12 @@
         {%- endif -%}
 
         <button type="button" class="ce-btn ce-btn--primary ce-btn--full" data-addcart>{{ section.settings.cta_add }}</button>
+        <p class="ce-buymsg" data-buy-msg hidden role="alert"></p>
 
         <div class="ce-reassure">
-          <span>🔒 Paiement sécurisé</span>
-          <span>🚚 Livraison offerte</span>
-          <span>🛡️ Garantie 30 jours</span>
+          <span>🔒 Secure payment</span>
+          <span>🚚 Free shipping</span>
+          <span>🛡️ 30-day guarantee</span>
         </div>
         <div class="ce-pay">
           <svg viewBox="0 0 40 26" role="img" aria-label="Visa"><rect width="40" height="26" rx="4" fill="#fff" stroke="#e7e7e7"/><text x="20" y="17.4" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="11" font-style="italic" font-weight="700" fill="#1434CB" letter-spacing="-.4">VISA</text></svg>
@@ -186,7 +187,7 @@
       <div class="ce-innov__body">
         <h2 class="ce-h2 ce-h2--left">{{ section.settings.innov_title }}</h2>
         <div class="ce-rte">{{ section.settings.innov_text }}</div>
-        <button type="button" class="ce-btn ce-btn--primary" data-addcart>Commander</button>
+        <button type="button" class="ce-btn ce-btn--primary" data-addcart>Buy now</button>
       </div>
     </div>
   </div>
@@ -295,7 +296,7 @@
     <div class="ce-cmp__top">
       <div class="ce-cmp__toggle">
         <span class="ce-cmp__lbl is-on" data-cmp-lbl="variant">{{ section.settings.var_label }}</span>
-        <button type="button" class="ce-cmp__sw" role="switch" aria-checked="false" data-cmp-sw aria-label="Comparer variante et couleur"><span class="ce-cmp__knob"></span></button>
+        <button type="button" class="ce-cmp__sw" role="switch" aria-checked="false" data-cmp-sw aria-label="Compare product and in-mouth color"><span class="ce-cmp__knob"></span></button>
         <span class="ce-cmp__lbl" data-cmp-lbl="color">{{ section.settings.col_label }}</span>
       </div>
     </div>
@@ -358,13 +359,13 @@
   {%- if reviews.size > 0 -%}
   <div class="ce-band">
     <h2 class="ce-h2">{{ section.settings.reviews_title }}</h2>
-    <div class="ce-tp"><span class="ce-stars"><span class="ce-stars__bg">★★★★★</span><span class="ce-stars__fill" style="width: {{ section.settings.rating_value | default: 4.7 | times: 20 }}%">★★★★★</span></span><span class="ce-tp__txt">Noté {{ section.settings.rating }} par nos clients</span></div>
+    <div class="ce-tp"><span class="ce-stars"><span class="ce-stars__bg">★★★★★</span><span class="ce-stars__fill" style="width: {{ section.settings.rating_value | default: 4.7 | times: 20 }}%">★★★★★</span></span><span class="ce-tp__txt">Rated {{ section.settings.rating }} by our customers</span></div>
     <div class="ce-wall">
       {%- for block in reviews -%}
         <article class="ce-rev" {{ block.shopify_attributes }}>
           {%- if block.settings.image != blank -%}<div class="ce-rev__img"><img src="{{ block.settings.image | image_url: width: 500 }}" alt="" loading="lazy"></div>{%- endif -%}
           <div class="ce-rev__body">
-            <div class="ce-rev__top"><span class="ce-stars ce-stars--sm">★★★★★</span><span class="ce-rev__v">✓ Vérifié</span></div>
+            <div class="ce-rev__top"><span class="ce-stars ce-stars--sm">★★★★★</span></div>
             {%- if block.settings.title != blank -%}<h3 class="ce-rev__title">{{ block.settings.title }}</h3>{%- endif -%}
             <p class="ce-rev__text">{{ block.settings.text }}</p>
             <div class="ce-rev__auth">— {{ block.settings.author }}</div>
@@ -480,6 +481,8 @@
   #ce-{{ section.id }} .ce-btn--white { background: #fff; color: var(--ce-acc); }
   #ce-{{ section.id }} .ce-btn--ghost { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.6); }
 
+  #ce-{{ section.id }} .ce-buymsg { margin: 10px 0 0; font-size: 13px; font-weight: 600; color: #c0392b; }
+  #ce-{{ section.id }} .ce-buymsg[hidden] { display: none; }
   #ce-{{ section.id }} .ce-reassure { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px; font-size: 12px; color: #6a747c; }
   #ce-{{ section.id }} .ce-pay { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
   #ce-{{ section.id }} .ce-pay svg { width: 38px; height: 25px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
@@ -787,38 +790,31 @@
         if (window.ttq && ttq.track) ttq.track('AddToCart', { content_id: String(id), value: val, currency: cur });
       } catch (e) {}
     }
+    var buyMsg = root.querySelector('[data-buy-msg]');
+    function showBuyMsg(t) { if (buyMsg) { buyMsg.textContent = t; buyMsg.hidden = false; } }
+    function clearBuyMsg() { if (buyMsg) { buyMsg.hidden = true; buyMsg.textContent = ''; } }
+    function goCheckout() {
+      var base = (window.Shopify && Shopify.routes && Shopify.routes.root) ? Shopify.routes.root : '/';
+      window.location.href = base + 'checkout';
+    }
     function addToCart(btn) {
+      clearBuyMsg();
       var id = input ? input.value : '';
-      if (!id) { window.location = '/cart'; return; }
-      var drawer = document.querySelector('cart-drawer');
+      if (!id) { showBuyMsg('Please select an option to continue.'); return; }
+      var qtyEl = root.querySelector('[data-qty]');
+      var qty = qtyEl ? (parseInt(qtyEl.value, 10) || 1) : 1;
       var original = btn ? btn.innerHTML : '';
-      if (btn) { btn.disabled = true; btn.innerHTML = 'Ajout…'; }
-      var body = { items: [{ id: Number(id), quantity: 1 }] };
-      if (drawer) { body.sections = 'cart-drawer,cart-icon-bubble'; body.sections_url = window.location.pathname; }
-      fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(body) })
-        .then(function (r) { if (!r.ok) throw new Error('add'); return r.json(); })
+      if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.innerHTML = 'Redirecting…'; }
+      fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ items: [{ id: Number(id), quantity: qty }] }) })
+        .then(function (r) { if (!r.ok) { return r.json().then(function (e) { throw e; }); } return r.json(); })
         .then(function (res) {
-          if (btn) { btn.disabled = false; btn.innerHTML = original; }
-          track(id, 1, res);
-          if (!drawer) { window.location = '/cart'; return; }
-          try {
-            if (res.sections && res.sections['cart-drawer']) {
-              var ni = new DOMParser().parseFromString(res.sections['cart-drawer'], 'text/html').querySelector('#CartDrawer');
-              var ci = document.querySelector('#CartDrawer');
-              if (ni && ci) ci.innerHTML = ni.innerHTML;
-            }
-            if (res.sections && res.sections['cart-icon-bubble']) {
-              var nb = new DOMParser().parseFromString(res.sections['cart-icon-bubble'], 'text/html');
-              var newB = nb.querySelector('#cart-icon-bubble') || nb.querySelector('.shopify-section');
-              var curB = document.getElementById('cart-icon-bubble');
-              if (newB && curB) curB.innerHTML = newB.innerHTML;
-            }
-            var inner = drawer.querySelector('.drawer__inner'); if (inner) inner.classList.remove('is-empty');
-            drawer.classList.remove('is-empty');
-            if (typeof drawer.open === 'function') drawer.open();
-            else { drawer.classList.add('animate', 'active'); document.body.classList.add('overflow-hidden'); }
-          } catch (e) { window.location = '/cart'; }
-        }).catch(function () { if (btn) { btn.disabled = false; btn.innerHTML = original; } window.location = '/cart'; });
+          track(id, qty, res);
+          goCheckout();
+        })
+        .catch(function (err) {
+          if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); btn.innerHTML = original; }
+          showBuyMsg((err && err.description) ? err.description : 'Something went wrong. Please try again.');
+        });
     }
     root.querySelectorAll('[data-addcart]').forEach(function (b) { b.addEventListener('click', function () { addToCart(b); }); });
 
@@ -858,7 +854,7 @@
     { "type": "text", "id": "review_count", "label": "Avis", "default": "2 400+ avis" },
     { "type": "text", "id": "fallback_price", "label": "Prix (si aucun produit)", "default": "215,99 $" },
     { "type": "text", "id": "steps_title", "label": "Titre des étapes", "default": "Quatre étapes simples" },
-    { "type": "text", "id": "cta_add", "label": "Bouton principal", "default": "Ajouter au panier" },
+    { "type": "text", "id": "cta_add", "label": "Bouton principal", "default": "Buy now" },
     { "type": "header", "content": "Offre (mise en avant)" },
     { "type": "checkbox", "id": "offer_enable", "label": "Afficher l'offre", "default": true },
     { "type": "text", "id": "offer_eyebrow", "label": "Étiquette offre", "default": "Offre exclusive" },

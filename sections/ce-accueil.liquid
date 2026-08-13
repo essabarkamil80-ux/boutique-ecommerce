@@ -83,7 +83,7 @@
       <div class="ch-how__steps">
         {%- for block in steps -%}
           <div class="ch-step" {{ block.shopify_attributes }}>
-            <span class="ch-step__tag">Étape {{ forloop.index }}</span>
+            <span class="ch-step__tag">Step {{ forloop.index }}</span>
             <h3>{{ block.settings.title }}</h3>
             <p>{{ block.settings.text }}</p>
           </div>

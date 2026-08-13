@@ -17,10 +17,10 @@
           "settings": {
             "image": "shopify://shop_images/Screenshot_2026-08-12_15.49.37.png",
             "link": "/products/custom-dental-veneers?variant=52072623669569",
-            "badge": "Ivoire",
-            "name": "Facettes Premium",
-            "subtitle": "Teinte A3",
-            "price": "299,00 €",
+            "badge": "Ivory",
+            "name": "Premium Veneers",
+            "subtitle": "Shade A3",
+            "price": "",
             "compare": ""
           }
         },
@@ -29,10 +29,10 @@
           "settings": {
             "image": "shopify://shop_images/Screenshot_2026-08-12_15.50.03.png",
             "link": "/products/custom-dental-veneers?variant=52072623702337",
-            "badge": "Blanc naturel",
-            "name": "Facettes Premium",
-            "subtitle": "Teinte A1",
-            "price": "299,00 €",
+            "badge": "Natural white",
+            "name": "Premium Veneers",
+            "subtitle": "Shade A1",
+            "price": "",
             "compare": ""
           }
         },
@@ -42,59 +42,59 @@
             "image": "shopify://shop_images/Screenshot_2026-08-12_15.50.31.png",
             "link": "/products/custom-dental-veneers?variant=52072623735105",
             "badge": "Hollywood",
-            "name": "Facettes Premium",
-            "subtitle": "Teinte BL2",
-            "price": "299,00 €",
+            "name": "Premium Veneers",
+            "subtitle": "Shade BL2",
+            "price": "",
             "compare": ""
           }
         },
         "step-1": {
           "type": "step",
           "settings": {
-            "title": "Commandez votre kit d’empreinte",
-            "text": "Passez votre commande en ligne et recevez votre kit d’empreinte directement à domicile. Vous disposez de tout le nécessaire pour réaliser vos empreintes tranquillement chez vous, sans avoir besoin de vous déplacer."
+            "title": "Order your impression kit",
+            "text": "Order online and receive your impression kit at home — everything you need to take your impressions comfortably, with no need to travel."
           }
         },
         "step-2": {
           "type": "step",
           "settings": {
-            "title": "Prenez votre empreinte",
-            "text": "Recevez votre kit et suivez notre tutoriel d’empreinte disponible ici, qui vous guide étape par étape pour réaliser vos empreintes simplement et correctement depuis chez vous."
+            "title": "Take your impression",
+            "text": "Follow our step-by-step impression tutorial to take your impressions correctly at home, then send them back to us."
           }
         },
         "step-3": {
           "type": "step",
           "settings": {
-            "title": "Recevez vos facettes",
-            "text": "Une fois vos empreintes réceptionnées et vérifiées, Clinic Essabar prépare soigneusement vos facettes avant de les expédier directement à votre domicile."
+            "title": "Receive your veneers",
+            "text": "Once we receive and check your impression, Clinic Essabar carefully crafts your veneers and ships them to your door."
           }
         },
         "faq-1": {
           "type": "faq",
           "settings": {
-            "question": "Combien de temps durent les facettes ?",
-            "answer": "<p>La durée de vie de vos facettes dépend directement de leur entretien et de la façon dont vous les utilisez au quotidien. Avec des soins réguliers et attentifs, elles vous accompagnent durablement.</p><p>Pour les préserver au mieux :</p><ul><li>Nettoyez-les régulièrement avec une brosse à dents souple et de l'eau tiède (évitez l'eau chaude).</li><li>Manipulez-les avec précaution lors de la pose et du retrait.</li><li>Rangez-les dans leur étui après chaque utilisation.</li></ul><p>Un entretien soigné est la clé pour conserver leur éclat et leur confort le plus longtemps possible.</p>"
+            "question": "How long do the veneers last?",
+            "answer": "<p>How long your veneers last depends directly on how you care for and use them day to day. With regular, gentle care they can last a long time.</p><p>To keep them at their best:</p><ul><li>Clean them regularly with a soft toothbrush and lukewarm water (avoid hot water).</li><li>Handle them with care when placing and removing them.</li><li>Store them in their case after each use.</li></ul><p>Careful maintenance is the key to keeping their shine and comfort for as long as possible.</p>"
           }
         },
         "faq-2": {
           "type": "faq",
           "settings": {
-            "question": "Combien de dents couvrent-elles ?",
-            "answer": "<p>Vos facettes sont conçues pour couvrir l'ensemble de l'arcade dentaire sélectionnée, et non quelques dents isolées : vous obtenez ainsi un sourire harmonieux et uniforme.</p><p>Vous choisissez l'arcade supérieure, inférieure, ou les deux selon l'offre. Chaque pièce est fabriquée <strong>sur mesure</strong> à partir de vos propres empreintes, pour un ajustement parfaitement adapté à votre dentition.</p>"
+            "question": "How many teeth do they cover?",
+            "answer": "<p>Your veneers are designed to cover the entire selected dental arch — not just a few individual teeth — so you get a harmonious, even smile.</p><p>You choose the upper arch, the lower arch, or both depending on the offer. Each piece is <strong>custom-made</strong> from your own impression for a fit tailored to your teeth.</p>"
           }
         },
         "faq-3": {
           "type": "faq",
           "settings": {
-            "question": "Comment se passe la prise d'empreinte ?",
-            "answer": "<p>C'est simple et entièrement réalisable chez vous, en quelques minutes et sans dentiste. Vous êtes guidé pas à pas grâce à notre tutoriel détaillé.</p><p>Vous retrouvez ce tutoriel dans la rubrique <strong>« Aide &amp; Infos » &rsaquo; « Prise d'empreinte »</strong> du site.</p><p>Une fois vos empreintes réalisées, il vous suffit de nous les renvoyer : nos spécialistes les utilisent pour concevoir vos facettes sur mesure, adaptées à votre sourire.</p>"
+            "question": "How does taking the impression work?",
+            "answer": "<p>It’s simple and can be done entirely at home, in a few minutes and without a dentist. You’re guided step by step by our detailed tutorial.</p><p>You’ll find this tutorial in the <strong>“Help &amp; Info” › “Impression”</strong> section of the site.</p><p>Once your impression is done, simply send it back to us: our specialists use it to craft your custom veneers.</p>"
           }
         },
         "faq-4": {
           "type": "faq",
           "settings": {
-            "question": "Et si je ne suis pas satisfait ?",
-            "answer": "<p>Votre satisfaction est notre priorité. Vous bénéficiez de notre garantie <strong>« satisfait ou remboursé » de 30 jours</strong>.</p><p>Si vos facettes ne vous conviennent pas ou que vous n'êtes pas pleinement satisfait de votre achat, vous pouvez demander un remboursement dans le cadre des conditions de cette garantie.</p><p>Notre équipe reste à votre écoute à chaque étape pour vous accompagner et trouver la meilleure solution.</p>"
+            "question": "What if I'm not satisfied?",
+            "answer": "<p>Your satisfaction is our priority. You’re covered by our <strong>30-Day Satisfaction Guarantee</strong>.</p><p>If your veneers don’t fit correctly or cause discomfort, contact Clinic Essabar so we can review your case and apply the guarantee in line with our return &amp; refund policy.</p><p>Our team is here to help at every step to find the best solution.</p>"
           }
         },
         "social-1": {
@@ -144,34 +144,34 @@
         "color_accent_dark": "#0f5b51",
         "color_ink": "#12293a",
         "hero_video_url": "https://cdn.shopify.com/videos/c/o/v/f60e129a8f10414a9460bd58c9834931.mov",
-        "hero_badge": "Dispositif cosmétique premium",
-        "hero_title": "Retrouvez un sourire éclatant",
-        "hero_cta": "Découvrir les facettes",
-        "hero_sub": "Facettes dentaires amovibles premium, sur-mesure, sans dentiste. Disponibles en trois teintes.",
-        "card_cta": "Vers le produit",
-        "card_taxes": "Taxes incluses. Hors frais de livraison.",
+        "hero_badge": "Premium cosmetic device",
+        "hero_title": "Rediscover a radiant smile",
+        "hero_cta": "Discover the veneers",
+        "hero_sub": "Premium removable dental veneers, custom-made, no dentist. Available in three shades.",
+        "card_cta": "View product",
+        "card_taxes": "Taxes included · Free shipping",
         "card_bg": "#a8cee0",
-        "steps_eyebrow": "Simple & rapide",
-        "steps_title": "Comment ça fonctionne",
-        "steps_sub": "Votre nouveau sourire en seulement 3 étapes.",
+        "steps_eyebrow": "Simple & fast",
+        "steps_title": "How it works",
+        "steps_sub": "Your new smile in just a few simple steps.",
         "steps_image": "shopify://shop_images/same-day-clicks_800x_c95ad7d7-b3ed-407b-942f-b8a1ee9c7459.webp",
         "feat_enable": true,
-        "feat_label": "Clinique Essabar facts",
-        "faq_title": "Questions fréquentes",
-        "why_title": "Pourquoi Clinique Essabar ?",
+        "feat_label": "Clinic Essabar facts",
+        "faq_title": "Frequently asked questions",
+        "why_title": "Why Clinic Essabar?",
         "stats_enable": true,
-        "stats_lines": "",
+        "stats_lines": "7,400+ | satisfied customers\n4.7/5 | average rating\n30 days | satisfaction guarantee",
         "kit_enable": true,
-        "kit_title": "Votre kit d'empreinte pour la maison",
-        "kit_text": "Réalisez facilement votre empreinte dentaire depuis chez vous grâce à notre kit complet. Simple, pratique et conçu pour vous accompagner à chaque étape.",
-        "kit_cta": "Commander maintenant",
+        "kit_title": "Your at-home impression kit",
+        "kit_text": "Easily take your dental impression at home with our complete kit. Simple, practical, and designed to guide you every step of the way.",
+        "kit_cta": "Buy now",
         "kit_image": "shopify://shop_images/22f4c9cd-2c64-492f-8a5f-b13d1bba175c.png",
-        "social_eyebrow": "Communauté",
-        "social_title": "Réseaux sociaux",
-        "social_sub": "Rejoignez la communauté et partagez votre sourire.",
+        "social_eyebrow": "Community",
+        "social_title": "Follow us",
+        "social_sub": "Join the community and share your smile.",
         "ugc_badge": "SOCIAL MEDIA TAGS",
-        "ugc_title": "Les selfies de nos clients avec Clinique Essabar",
-        "ugc_sub": "Des expériences réelles, de vraies personnes."
+        "ugc_title": "Our customers' selfies with Clinic Essabar",
+        "ugc_sub": "Real experiences, real people."
       }
     }
   },

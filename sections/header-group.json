@@ -17,7 +17,7 @@
         "announcement_niGYQY": {
           "type": "announcement",
           "settings": {
-            "text": "Free shipping · 30-day satisfaction guarantee · Secure payment",
+            "text": "Fast worldwide shipping · 30-day satisfaction guarantee · Secure payment",
             "link": ""
           }
         }
@@ -27,7 +27,7 @@
       ],
       "settings": {
         "show_countdown": false,
-        "cd_message": "Free shipping · 30-day satisfaction guarantee",
+        "cd_message": "Fast worldwide shipping · 30-day satisfaction guarantee",
         "cd_subtext": "Limited-time offer",
         "cd_show_timer": true,
         "cd_hours": "12",

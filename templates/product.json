@@ -255,7 +255,7 @@
         "offer_img_top": "shopify://shop_images/ivoire.webp",
         "offer_img_bottom": "shopify://shop_images/ChatGPT_Image_12_aout_2026_22_38_14.png",
         "tax_note": "Taxes included · Shipping calculated at checkout",
-        "press_enable": true,
+        "press_enable": false,
         "press_title": "As featured in",
         "press1_image": "shopify://shop_images/Cosmopolitan_e9c2361b-d25a-4d18-a76e-6c54681b6d73.webp",
         "press1_name": "Cosmopolitan",

@@ -18,7 +18,7 @@
             "image": "shopify://shop_images/Screenshot_2026-08-12_15.49.37.png",
             "link": "/products/custom-dental-veneers?variant=52072623669569",
             "badge": "Ivory",
-            "name": "Teeth-Veneer 3.0 by Essabar",
+            "name": "Premium Veneers",
             "subtitle": "Shade A3",
             "price": "",
             "compare": ""
@@ -30,7 +30,7 @@
             "image": "shopify://shop_images/Screenshot_2026-08-12_15.50.03.png",
             "link": "/products/custom-dental-veneers?variant=52072623702337",
             "badge": "Natural white",
-            "name": "Teeth-Veneer 3.0 by Essabar",
+            "name": "Premium Veneers",
             "subtitle": "Shade A1",
             "price": "",
             "compare": ""
@@ -42,7 +42,7 @@
             "image": "shopify://shop_images/Screenshot_2026-08-12_15.50.31.png",
             "link": "/products/custom-dental-veneers?variant=52072623735105",
             "badge": "Hollywood",
-            "name": "Teeth-Veneer 3.0 by Essabar",
+            "name": "Premium Veneers",
             "subtitle": "Shade BL2",
             "price": "",
             "compare": ""
@@ -94,7 +94,7 @@
           "type": "faq",
           "settings": {
             "question": "What if I'm not satisfied?",
-            "answer": "<p>Your satisfaction is our priority. You’re covered by our <strong>30-Day Satisfaction Guarantee</strong>.</p><p>If your veneers don’t fit correctly or cause discomfort, contact Clinic Essabar so we can review your case and apply the guarantee in line with our return &amp; refund policy.</p><p>Our team is here to help at every step to find the best solution.</p>"
+            "answer": "<p>Your satisfaction is our priority. You’re covered by our <strong>30-Day Satisfaction Guarantee</strong>.</p><p>If your veneers don’t fit correctly or cause discomfort, contact Clinic Essabar so we can review your case and apply the guarantee in line with our return & refund policy.</p><p>Our team is here to help at every step to find the best solution.</p>"
           }
         },
         "social-1": {
@@ -147,7 +147,7 @@
         "hero_badge": "Premium cosmetic device",
         "hero_title": "Rediscover a radiant smile",
         "hero_cta": "Discover the veneers",
-        "hero_sub": "Teeth-Veneer 3.0 by Essabar — custom-made removable veneers, no dentist. Available in three shades.",
+        "hero_sub": "Premium removable dental veneers, custom-made, no dentist. Available in three shades.",
         "card_cta": "View product",
         "card_taxes": "Taxes included · Shipping calculated at checkout",
         "card_bg": "#a8cee0",
@@ -160,7 +160,7 @@
         "faq_title": "Frequently asked questions",
         "why_title": "Why Clinic Essabar?",
         "stats_enable": true,
-        "stats_lines": "7,400+ | satisfied customers\n4.7/5 | average rating\n30 days | satisfaction guarantee",
+        "stats_image": "shopify://shop_images/Gemini_Generated_Image_yww7cryww7cryww7_2f94883a-afe6-4b4b-ab9c-d66dd910386a.png",
         "kit_enable": true,
         "kit_title": "Your at-home impression kit",
         "kit_text": "Easily take your dental impression at home with our complete kit. Simple, practical, and designed to guide you every step of the way.",

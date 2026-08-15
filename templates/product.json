@@ -76,7 +76,7 @@
           "type": "faq",
           "settings": {
             "question": "How many teeth do they cover?",
-            "answer": "<p>Your veneers are designed to cover the entire selected dental arch — not just a few individual teeth — so you get a harmonious, even smile.</p><p>You choose the upper arch, the lower arch, or both depending on the offer. Each piece is <strong>custom-made</strong> from your own impression for a fit tailored to your teeth.</p>"
+            "answer": "<p>Your veneers are designed to cover a full set of your visible teeth — not just a few individual teeth — so you get a harmonious, even smile.</p><p>You choose the upper teeth, the lower teeth, or both depending on the offer. Each piece is <strong>custom-made</strong> from your own impression for a fit tailored to your teeth.</p>"
           }
         },
         "faq-3": {
@@ -249,10 +249,10 @@
         "cta_add": "Buy now",
         "offer_enable": true,
         "offer_eyebrow": "EXCLUSIVE OFFER",
-        "offer_title": "BUY 1 ARCH — GET THE 2ND FREE",
-        "offer_sub": "Choose your upper arch and receive your lower arch FREE.",
-        "offer_foot": "2 ARCHES · 1 PRICE",
-        "offer_ebook": "+ FREE SMILE GUIDE INCLUDED",
+        "offer_title": "BUY YOUR UPPER TEETH — GET YOUR LOWER TEETH FREE",
+        "offer_sub": "Choose your upper teeth and receive your lower teeth FREE.",
+        "offer_foot": "",
+        "offer_ebook": "+ FREE EBOOK",
         "offer_img_top": "shopify://shop_images/ivoire.webp",
         "offer_img_bottom": "shopify://shop_images/Zahn-Veneer_Unten_Elfenbein-min.webp",
         "tax_note": "Taxes included · Shipping calculated at checkout",

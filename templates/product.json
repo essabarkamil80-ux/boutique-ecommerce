@@ -76,7 +76,7 @@
           "type": "faq",
           "settings": {
             "question": "How many teeth do they cover?",
-            "answer": "<p>Your veneers are designed to cover the entire selected dental arch — not just a few individual teeth — so you get a harmonious, even smile.</p><p>You choose the upper arch, the lower arch, or both depending on the offer. Each piece is <strong>custom-made</strong> from your own impression for a fit tailored to your teeth.</p>"
+            "answer": "<p>Your veneers are designed to cover a full set of your visible teeth — not just a few individual teeth — so you get a harmonious, even smile.</p><p>You choose the upper teeth, the lower teeth, or both depending on the offer. Each piece is <strong>custom-made</strong> from your own impression for a fit tailored to your teeth.</p>"
           }
         },
         "faq-3": {
@@ -246,13 +246,14 @@
         "review_count": "7,400+ satisfied customers",
         "fallback_price": "",
         "steps_title": "Four simple steps",
-        "cta_add": "Buy now",
+        "cta_add": "Buy Now",
+        "cta_cart": "Add to Cart",
         "offer_enable": true,
         "offer_eyebrow": "Exclusive offer",
         "offer_badge": "-50%",
-        "offer_title": "Your Lower Teeth Veneers — FREE",
+        "offer_title": "BUY YOUR UPPER VENEERS — GET YOUR LOWER VENEERS FREE!",
         "offer_sub": "Choose your upper teeth veneers and your lower set is included completely free.",
-        "offer_ebook": "Plus a FREE digital care & fitting eBook",
+        "offer_ebook": "+ FREE EBOOK INCLUDED",
         "offer_img_top": "shopify://shop_images/ivoire.webp",
         "offer_img_bottom": "shopify://shop_images/ChatGPT_Image_12_aout_2026_22_38_14.png",
         "tax_note": "Taxes included · Shipping calculated at checkout",

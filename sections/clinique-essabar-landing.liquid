@@ -86,7 +86,7 @@
           </div>
         </div>
         {%- if section.settings.offer_sub != blank -%}<div class="ce-offer__note">{{ section.settings.offer_sub }}</div>{%- endif -%}
-        {%- if section.settings.offer_ebook != blank -%}<div class="ce-offer__bonus"><span class="ce-offer__bonus-ico">📘</span><span>{{ section.settings.offer_ebook }}</span></div>{%- endif -%}
+        {%- if section.settings.offer_ebook != blank -%}<div class="ce-offer__bonus">{{ section.settings.offer_ebook }}</div>{%- endif -%}
       </div>
       {%- endif -%}
 
@@ -144,7 +144,10 @@
           </div>
         {%- endif -%}
 
-        <button type="button" class="ce-btn ce-btn--primary ce-btn--full" data-addcart>{{ section.settings.cta_add }}</button>
+        <div class="ce-cta-row">
+          <button type="button" class="ce-btn ce-btn--outline" data-addtocart>{{ section.settings.cta_cart | default: 'Add to Cart' }}</button>
+          <button type="button" class="ce-btn ce-btn--primary" data-buynow>{{ section.settings.cta_add | default: 'Buy Now' }}</button>
+        </div>
         <p class="ce-buymsg" data-buy-msg hidden role="alert"></p>
 
         <div class="ce-reassure">
@@ -478,6 +481,10 @@
   #ce-{{ section.id }} .ce-btn--primary { background: var(--ce-acc); color: #fff; box-shadow: 0 8px 20px color-mix(in srgb, var(--ce-acc) 30%, transparent); }
   #ce-{{ section.id }} .ce-btn--primary:hover { background: var(--ce-acc-dark); transform: translateY(-1px); }
   #ce-{{ section.id }} .ce-btn--full { width: 100%; padding: 17px; font-size: 16px; }
+  #ce-{{ section.id }} .ce-btn--outline { background: #fff; color: var(--ce-acc); box-shadow: inset 0 0 0 1.5px var(--ce-acc); }
+  #ce-{{ section.id }} .ce-btn--outline:hover { background: var(--ce-tint); transform: translateY(-1px); }
+  #ce-{{ section.id }} .ce-cta-row { display: flex; gap: 10px; }
+  #ce-{{ section.id }} .ce-cta-row .ce-btn { flex: 1 1 0; min-width: 0; padding: 16px 14px; font-size: 15.5px; }
   #ce-{{ section.id }} .ce-btn--dark { background: var(--ce-ink); color: #fff; }
   #ce-{{ section.id }} .ce-btn--white { background: #fff; color: var(--ce-acc); }
   #ce-{{ section.id }} .ce-btn--ghost { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.6); }
@@ -555,8 +562,7 @@
   #ce-{{ section.id }} .ce-offer__jaw-img { width: 68px; height: 68px; border-radius: 12px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
   #ce-{{ section.id }} .ce-offer__jaw--free .ce-offer__jaw-img { background: #fff; }
   #ce-{{ section.id }} .ce-offer__jaw-img img { width: 100%; height: 100%; object-fit: contain; padding: 5px; display: block; }
-  #ce-{{ section.id }} .ce-offer__bonus { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; padding: 9px 12px; border-radius: 10px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.24); font-size: 13px; font-weight: 700; line-height: 1.3; }
-  #ce-{{ section.id }} .ce-offer__bonus-ico { font-size: 15px; flex: 0 0 auto; }
+  #ce-{{ section.id }} .ce-offer__bonus { display: block; text-align: center; margin-top: 9px; font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; opacity: .92; }
   #ce-{{ section.id }} .ce-offer__jaw-ico { font-size: 24px; line-height: 1; }
   #ce-{{ section.id }} .ce-offer__jaw-lbl { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12.5px; letter-spacing: .2px; line-height: 1.15; margin-top: 2px; }
   #ce-{{ section.id }} .ce-offer__jaw-state { font-size: 11.5px; opacity: .9; white-space: nowrap; }
@@ -800,26 +806,32 @@
       var base = (window.Shopify && Shopify.routes && Shopify.routes.root) ? Shopify.routes.root : '/';
       window.location.href = base + 'checkout';
     }
-    function addToCart(btn) {
+    function goCart() {
+      var base = (window.Shopify && Shopify.routes && Shopify.routes.root) ? Shopify.routes.root : '/';
+      window.location.href = base + 'cart';
+    }
+    function addItem(btn, mode) {
       clearBuyMsg();
       var id = input ? input.value : '';
       if (!id) { showBuyMsg('Please select an option to continue.'); return; }
       var qtyEl = root.querySelector('[data-qty]');
       var qty = qtyEl ? (parseInt(qtyEl.value, 10) || 1) : 1;
       var original = btn ? btn.innerHTML : '';
-      if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.innerHTML = 'Redirecting…'; }
+      if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.innerHTML = (mode === 'cart' ? 'Adding…' : 'Redirecting…'); }
       fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ items: [{ id: Number(id), quantity: qty }] }) })
         .then(function (r) { if (!r.ok) { return r.json().then(function (e) { throw e; }); } return r.json(); })
         .then(function (res) {
           track(id, qty, res);
-          goCheckout();
+          if (mode === 'cart') { goCart(); } else { goCheckout(); }
         })
         .catch(function (err) {
           if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); btn.innerHTML = original; }
           showBuyMsg((err && err.description) ? err.description : 'Something went wrong. Please try again.');
         });
     }
-    root.querySelectorAll('[data-addcart]').forEach(function (b) { b.addEventListener('click', function () { addToCart(b); }); });
+    root.querySelectorAll('[data-addtocart]').forEach(function (b) { b.addEventListener('click', function () { addItem(b, 'cart'); }); });
+    root.querySelectorAll('[data-buynow]').forEach(function (b) { b.addEventListener('click', function () { addItem(b, 'checkout'); }); });
+    root.querySelectorAll('[data-addcart]').forEach(function (b) { b.addEventListener('click', function () { addItem(b, 'checkout'); }); });
 
     var sticky = root.querySelector('[data-sticky]');
     var buy = root.querySelector('[data-buy]');
@@ -857,14 +869,15 @@
     { "type": "text", "id": "review_count", "label": "Review", "default": "2 400+ avis" },
     { "type": "text", "id": "fallback_price", "label": "Prix (si aucun produit)", "default": "215,99 $" },
     { "type": "text", "id": "steps_title", "label": "Steps title", "default": "Four simple steps" },
-    { "type": "text", "id": "cta_add", "label": "Primary button", "default": "Buy now" },
+    { "type": "text", "id": "cta_add", "label": "Primary button (Buy Now)", "default": "Buy Now" },
+    { "type": "text", "id": "cta_cart", "label": "Secondary button (Add to Cart)", "default": "Add to Cart" },
     { "type": "header", "content": "Offre (mise en avant)" },
     { "type": "checkbox", "id": "offer_enable", "label": "Show the offer", "default": true },
     { "type": "text", "id": "offer_eyebrow", "label": "Offer eyebrow", "default": "Exclusive offer" },
     { "type": "text", "id": "offer_badge", "label": "Badge", "default": "-50%" },
-    { "type": "text", "id": "offer_title", "label": "Offer title", "default": "Your 2nd arch — FREE" },
+    { "type": "text", "id": "offer_title", "label": "Offer title", "default": "BUY YOUR UPPER VENEERS — GET YOUR LOWER VENEERS FREE!" },
     { "type": "text", "id": "offer_sub", "label": "Subtitle", "default": "Choose your upper teeth veneers and your lower set is included completely free." },
-    { "type": "text", "id": "offer_ebook", "label": "Bonus line (eBook)", "default": "Plus a FREE digital care & fitting eBook" },
+    { "type": "text", "id": "offer_ebook", "label": "Bonus line (eBook)", "default": "+ FREE EBOOK INCLUDED" },
     { "type": "image_picker", "id": "offer_img_top", "label": "Small image — upper teeth veneers" },
     { "type": "image_picker", "id": "offer_img_bottom", "label": "Small image — lower teeth veneers" },
     { "type": "text", "id": "tax_note", "label": "Tax note", "default": "Taxes included · Shipping calculated at checkout" },
@@ -977,7 +990,7 @@
         { "type": "ugc", "settings": {} },
         { "type": "ugc", "settings": {} },
         { "type": "faq", "settings": { "question": "How long do the veneers last?", "answer": "<p>With careful maintenance they last a long time and can be reused every day.</p>" } },
-        { "type": "faq", "settings": { "question": "How many teeth do they cover?", "answer": "<p>They cover the visible teeth of your smile, on the upper and/or lower arch depending on the option chosen.</p>" } },
+        { "type": "faq", "settings": { "question": "How many teeth do they cover?", "answer": "<p>They cover the visible teeth of your smile, on the upper and/or lower teeth depending on the option chosen.</p>" } },
         { "type": "faq", "settings": { "question": "How does taking the impression work?", "answer": "<p>You receive a complete kit with a step-by-step guide, then send your impression back to us.</p>" } },
         { "type": "faq", "settings": { "question": "What if I'm not satisfied?", "answer": "<p>You're covered by our 30-Day Satisfaction Guarantee.</p>" } },
         { "type": "shade", "settings": { "name": "Ivory", "code": "A3" } },

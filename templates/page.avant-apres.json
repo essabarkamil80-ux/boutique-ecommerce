@@ -1,21 +1,115 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "ce-avant-apres",
       "blocks": {
-        "p1": { "type": "pair", "settings": { "label": "Blanc naturel" } },
-        "p2": { "type": "pair", "settings": { "label": "Blanc naturel" } },
-        "p3": { "type": "pair", "settings": { "label": "Hollywood" } },
-        "p4": { "type": "pair", "settings": { "label": "Hollywood" } },
-        "p5": { "type": "pair", "settings": { "label": "Blanc naturel" } },
-        "p6": { "type": "pair", "settings": { "label": "Blanc naturel" } },
-        "p7": { "type": "pair", "settings": { "label": "Hollywood" } },
-        "p8": { "type": "pair", "settings": { "label": "Hollywood" } },
-        "p9": { "type": "pair", "settings": { "label": "Hollywood" } }
+        "p1": {
+          "type": "pair",
+          "settings": {
+            "before_image": "shopify://shop_images/F_BA_Seperate_Male_Before_0006_1x1_385cbe28-1dd6-4031-b08c-d1ad629e5d88.webp",
+            "label": "Blanc naturel"
+          }
+        },
+        "p2": {
+          "type": "pair",
+          "settings": {
+            "before_image": "shopify://shop_images/F_BA_Seperate_Female_Before_0008_1x1_4b38f31a-3a4a-4f14-b233-56814fb46d03.webp",
+            "label": "Blanc naturel"
+          }
+        },
+        "p3": {
+          "type": "pair",
+          "settings": {
+            "label": "Hollywood"
+          }
+        },
+        "p4": {
+          "type": "pair",
+          "settings": {
+            "before_image": "shopify://shop_images/F_BA_Seperate_Male_Before_0003_1x1_c6a810d8-554a-47af-a50a-ef1ca968268e.webp",
+            "label": "Hollywood"
+          }
+        },
+        "p5": {
+          "type": "pair",
+          "settings": {
+            "before_image": "shopify://shop_images/F_BA_Seperate_Female_Before_0007_1x1_48148e24-28dc-45d0-b537-6c583108cbc8.webp",
+            "label": "Blanc naturel"
+          }
+        },
+        "p6": {
+          "type": "pair",
+          "settings": {
+            "before_image": "shopify://shop_images/F_BA_Seperate_Female_Before_0004_1x1_32666fd7-ea10-449e-a2e0-aae6904e6614.webp",
+            "label": "Blanc naturel"
+          }
+        },
+        "p7": {
+          "type": "pair",
+          "settings": {
+            "before_image": "shopify://shop_images/F_BA_Seperate_Male_Before_0005_1x1_42fc0fc4-c2f6-4fd6-9654-bb41c3bb664a.webp",
+            "label": "Hollywood"
+          }
+        },
+        "p8": {
+          "type": "pair",
+          "settings": {
+            "before_image": "shopify://shop_images/F_BA_Seperate_Female_Before_0006_1x1_e1f4e065-8b50-4d5e-a895-95d63e0be9ed.webp",
+            "label": "Hollywood"
+          }
+        },
+        "p9": {
+          "type": "pair",
+          "settings": {
+            "before_image": "shopify://shop_images/F_BA_Seperate_Female_Before_0005_1x1_f0432e6a-c59a-4c0b-8ed6-b8b6a292c910.webp",
+            "label": "Hollywood"
+          }
+        }
       },
-      "block_order": ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9"],
-      "settings": {}
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8",
+        "p9"
+      ],
+      "settings": {
+        "product": "",
+        "color_accent": "#12a3a0",
+        "color_accent_dark": "#0b7a78",
+        "color_ink": "#15242b",
+        "eyebrow": "BEFORE | AFTER",
+        "title": "The before / after effect",
+        "intro": "<p>Many customers send us their before/after photos as soon as they receive their veneers. We've selected a few in Natural white and Hollywood to show what's possible.</p>",
+        "highlight": "Stunning results!",
+        "subtitle": "Discover the transformative power of veneers through these before/after photos.",
+        "cta_enable": true,
+        "cta_title": "Take the first step toward your new smile!",
+        "cta_text": "Order your impression kit or get in touch for free advice.",
+        "cta_btn1": "Discover the veneers",
+        "cta_btn2": "Help center",
+        "cta_btn2_link": "",
+        "foot_title": "The before / after of veneers",
+        "foot_text": "<p>As these photos show, your teeth play a key role in your appearance. Straight, white teeth make the face more harmonious and support an attractive smile.</p>",
+        "foot_link_label": "En savoir plus",
+        "foot_link": ""
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

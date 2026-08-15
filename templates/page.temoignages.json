@@ -1,21 +1,120 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "ce-temoignages",
       "blocks": {
-        "v1": { "type": "vid", "settings": {} },
-        "v2": { "type": "vid", "settings": {} },
-        "v3": { "type": "vid", "settings": {} },
-        "v4": { "type": "vid", "settings": {} },
-        "v5": { "type": "vid", "settings": {} },
-        "f1": { "type": "faq", "settings": { "question": "How do you get my impression?", "answer": "<p>You receive an impression kit to use at home, with a video tutorial. It's simple and guided, and our WhatsApp support is on hand to answer your questions.</p>" } },
-        "f2": { "type": "faq", "settings": { "question": "How do the veneers stay in place?", "answer": "<p>They clip onto your teeth and hold securely, with no glue.</p>" } },
-        "f3": { "type": "faq", "settings": { "question": "Who are the veneers suitable for?", "answer": "<p>For most smiles. If you're unsure, our team is happy to advise you before you order.</p>" } },
-        "f4": { "type": "faq", "settings": { "question": "Is there a guarantee?", "answer": "<p>Yes — you're covered by our 30-Day Satisfaction Guarantee.</p>" } }
+        "v1": {
+          "type": "vid",
+          "settings": {
+            "video_url": ""
+          }
+        },
+        "v2": {
+          "type": "vid",
+          "settings": {
+            "video_url": ""
+          }
+        },
+        "v3": {
+          "type": "vid",
+          "settings": {
+            "video_url": ""
+          }
+        },
+        "v4": {
+          "type": "vid",
+          "settings": {
+            "video_url": ""
+          }
+        },
+        "v5": {
+          "type": "vid",
+          "settings": {
+            "video_url": ""
+          }
+        },
+        "f1": {
+          "type": "faq",
+          "settings": {
+            "question": "How do you get my impression?",
+            "answer": "<p>You receive an impression kit to use at home, with a video tutorial. It's simple and guided, and our WhatsApp support is on hand to answer your questions.</p>"
+          }
+        },
+        "f2": {
+          "type": "faq",
+          "settings": {
+            "question": "How do the veneers stay in place?",
+            "answer": "<p>They clip onto your teeth and hold securely, with no glue.</p>"
+          }
+        },
+        "f3": {
+          "type": "faq",
+          "settings": {
+            "question": "Who are the veneers suitable for?",
+            "answer": "<p>For most smiles. If you're unsure, our team is happy to advise you before you order.</p>"
+          }
+        },
+        "f4": {
+          "type": "faq",
+          "settings": {
+            "question": "Is there a guarantee?",
+            "answer": "<p>Yes — you're covered by our 30-Day Satisfaction Guarantee.</p>"
+          }
+        }
       },
-      "block_order": ["v1", "v2", "v3", "v4", "v5", "f1", "f2", "f3", "f4"],
-      "settings": {}
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4",
+        "v5",
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {
+        "product": "custom-dental-veneers",
+        "color_accent": "#12a3a0",
+        "color_accent_dark": "#0b7a78",
+        "color_ink": "#15242b",
+        "eyebrow": "MOVING STORIES",
+        "title": "Experiences with Clinic Essabar",
+        "subtitle": "Interviews clients",
+        "intro": "<p>Our product changes lives. Some customers have kindly agreed to share their story and experience in an interview.</p>",
+        "feat_enable": true,
+        "feat_video": "shopify://files/videos/Veneera™ Erfahrungen _ Interview mit Gerhard Schmidt - Veneera™ hat mein Leben verändert.mp4",
+        "feat_video_url": "",
+        "feat_name": "Gerard S.",
+        "feat_quote": "<p>The veneers changed Gerard's life. In this interview he shares his story — a truly moving moment.</p>",
+        "wall_eyebrow": "SOCIAL MEDIA",
+        "wall_title": "Customer reviews on video",
+        "wall_sub": "Review videos sent in by our customers. Nothing more authentic and genuine.",
+        "faq_title": "Questions about experiences",
+        "cta_enable": true,
+        "cta_text": "The easiest impression method in the world — video tutorial and dedicated support.",
+        "cta_big": "Your new smile is waiting 😁😍",
+        "cta_btn1": "Order my veneers",
+        "cta_btn2": "Help center",
+        "cta_btn2_link": "",
+        "stat_line": "7,400+ customers already smile with Clinic Essabar.",
+        "foot_title": "Experiences full of emotion",
+        "foot_text": "<p>Our customers love sharing their experience, because the change stirs deep emotions. Their stories inspire us every day.</p>",
+        "foot_link_label": "En savoir plus",
+        "foot_link": ""
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

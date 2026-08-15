@@ -67,25 +67,24 @@
 
       {%- if section.settings.offer_enable -%}
       <div class="ce-offer">
-        <div class="ce-offer__top">
-          <span class="ce-offer__eyebrow">🎁 {{ section.settings.offer_eyebrow | default: 'Offre exclusive' }}</span>
-          {%- if section.settings.offer_badge != blank -%}<span class="ce-offer__save">{{ section.settings.offer_badge }}</span>{%- endif -%}
-        </div>
+        <span class="ce-offer__eyebrow">🎁 {{ section.settings.offer_eyebrow | default: 'EXCLUSIVE OFFER' }}</span>
         {%- if section.settings.offer_title != blank -%}<div class="ce-offer__head">{{ section.settings.offer_title }}</div>{%- endif -%}
+        {%- if section.settings.offer_sub != blank -%}<p class="ce-offer__lede">{{ section.settings.offer_sub }}</p>{%- endif -%}
         <div class="ce-offer__viz">
           <div class="ce-offer__jaw">
-            <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_top != blank -%}<img src="{{ section.settings.offer_img_top | image_url: width: 240 }}" alt="Upper teeth veneers" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
-            <span class="ce-offer__jaw-lbl">Upper Teeth Veneers</span>
-            <span class="ce-offer__jaw-state">You buy this</span>
+            <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_top != blank -%}<img src="{{ section.settings.offer_img_top | image_url: width: 400 }}" alt="Upper arch veneers" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
+            <span class="ce-offer__jaw-lbl">Upper arch</span>
+            <span class="ce-offer__jaw-state">You pay for this</span>
           </div>
           <span class="ce-offer__plus">+</span>
           <div class="ce-offer__jaw ce-offer__jaw--free">
-            <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_bottom != blank -%}<img src="{{ section.settings.offer_img_bottom | image_url: width: 240 }}" alt="Lower teeth veneers" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
-            <span class="ce-offer__jaw-lbl">Lower Teeth Veneers</span>
-            <span class="ce-offer__jaw-state ce-offer__jaw-state--free">🎁 Free</span>
+            <span class="ce-offer__freeflag">FREE</span>
+            <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_bottom != blank -%}<img src="{{ section.settings.offer_img_bottom | image_url: width: 400 }}" alt="Lower arch veneers" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
+            <span class="ce-offer__jaw-lbl">Lower arch</span>
+            <span class="ce-offer__jaw-state ce-offer__jaw-state--free">Included free</span>
           </div>
         </div>
-        {%- if section.settings.offer_sub != blank -%}<div class="ce-offer__note">{{ section.settings.offer_sub }}</div>{%- endif -%}
+        {%- if section.settings.offer_foot != blank -%}<div class="ce-offer__foot">{{ section.settings.offer_foot }}</div>{%- endif -%}
         {%- if section.settings.offer_ebook != blank -%}<div class="ce-offer__bonus">{{ section.settings.offer_ebook }}</div>{%- endif -%}
       </div>
       {%- endif -%}
@@ -535,11 +534,11 @@
     #ce-{{ section.id }} .ce-gallery__thumbs { flex-wrap: wrap; overflow-x: visible; gap: 8px; }
     #ce-{{ section.id }} .ce-gallery__thumb { width: 58px; height: 58px; border-radius: 10px; }
     #ce-{{ section.id }} .ce-card { padding: 15px; }
-    #ce-{{ section.id }} .ce-offer__head { font-size: 18px; }
+    #ce-{{ section.id }} .ce-offer__head { font-size: 19px; }
     #ce-{{ section.id }} .ce-offer__jaw { padding: 10px 8px; }
-    #ce-{{ section.id }} .ce-offer__jaw-img { width: 58px; height: 58px; }
-    #ce-{{ section.id }} .ce-offer__jaw-lbl { font-size: 11.5px; }
-    #ce-{{ section.id }} .ce-offer__jaw-ico { font-size: 21px; }
+    #ce-{{ section.id }} .ce-offer__jaw-lbl { font-size: 12px; }
+    #ce-{{ section.id }} .ce-offer__jaw-ico { font-size: 28px; }
+    #ce-{{ section.id }} .ce-offer__freeflag { font-size: 11px; padding: 3px 9px; }
     #ce-{{ section.id }} .ce-helps__grid { gap: 8px; }
     #ce-{{ section.id }} .ce-helps__img { border-radius: 10px; }
     #ce-{{ section.id }} .ce-helps__label { font-size: 9.5px; padding: 5px 10px; margin-bottom: 8px; letter-spacing: .5px; }
@@ -551,25 +550,25 @@
   /* Tax note */
   #ce-{{ section.id }} .ce-taxnote { font-size: 12px; color: #8a949c; margin: 0 0 12px; }
   /* Offer banner */
-  #ce-{{ section.id }} .ce-offer { background: linear-gradient(135deg, var(--ce-acc-dark) 0%, var(--ce-acc) 100%); color: #fff; border-radius: 16px; padding: 15px 16px; margin: 4px 0 18px; box-shadow: 0 14px 30px -16px rgba(15,91,81,.75); }
-  #ce-{{ section.id }} .ce-offer__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 9px; }
-  #ce-{{ section.id }} .ce-offer__eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 1.3px; text-transform: uppercase; opacity: .96; }
-  #ce-{{ section.id }} .ce-offer__save { background: #fff; color: var(--ce-acc-dark); font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 13px; padding: 5px 12px; border-radius: 999px; flex-shrink: 0; box-shadow: 0 3px 10px rgba(0,0,0,.16); }
-  #ce-{{ section.id }} .ce-offer__head { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(17px, 2.6vw, 21px); line-height: 1.18; margin-bottom: 14px; text-align: center; }
-  #ce-{{ section.id }} .ce-offer__viz { display: flex; align-items: stretch; justify-content: center; gap: 10px; }
-  #ce-{{ section.id }} .ce-offer__jaw { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.24); border-radius: 14px; padding: 12px 10px; }
-  #ce-{{ section.id }} .ce-offer__jaw--free { background: #fff; border-color: #fff; }
-  #ce-{{ section.id }} .ce-offer__jaw-img { width: 68px; height: 68px; border-radius: 12px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
-  #ce-{{ section.id }} .ce-offer__jaw--free .ce-offer__jaw-img { background: #fff; }
-  #ce-{{ section.id }} .ce-offer__jaw-img img { width: 100%; height: 100%; object-fit: contain; padding: 5px; display: block; }
-  #ce-{{ section.id }} .ce-offer__bonus { display: block; text-align: center; margin-top: 9px; font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; opacity: .92; }
-  #ce-{{ section.id }} .ce-offer__jaw-ico { font-size: 24px; line-height: 1; }
-  #ce-{{ section.id }} .ce-offer__jaw-lbl { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12.5px; letter-spacing: .2px; line-height: 1.15; margin-top: 2px; }
-  #ce-{{ section.id }} .ce-offer__jaw-state { font-size: 11.5px; opacity: .9; white-space: nowrap; }
+  #ce-{{ section.id }} .ce-offer { background: linear-gradient(135deg, var(--ce-acc-dark) 0%, var(--ce-acc) 100%); color: #fff; border-radius: 18px; padding: 20px 18px; margin: 4px 0 18px; box-shadow: 0 16px 34px -18px rgba(15,91,81,.75); text-align: center; }
+  #ce-{{ section.id }} .ce-offer__eyebrow { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; opacity: .95; margin-bottom: 9px; }
+  #ce-{{ section.id }} .ce-offer__head { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(19px, 3.4vw, 25px); line-height: 1.14; margin: 0 0 7px; }
+  #ce-{{ section.id }} .ce-offer__lede { font-size: 13px; opacity: .95; line-height: 1.45; margin: 0 auto 16px; max-width: 340px; }
+  #ce-{{ section.id }} .ce-offer__lede strong { font-weight: 800; }
+  #ce-{{ section.id }} .ce-offer__viz { display: flex; align-items: stretch; justify-content: center; gap: 12px; }
+  #ce-{{ section.id }} .ce-offer__jaw { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); border-radius: 14px; padding: 12px 10px; }
+  #ce-{{ section.id }} .ce-offer__jaw--free { background: #fff; border-color: #fff; box-shadow: 0 10px 24px -12px rgba(0,0,0,.4); }
+  #ce-{{ section.id }} .ce-offer__jaw-img { width: 100%; aspect-ratio: 4 / 3; border-radius: 11px; overflow: hidden; background: #d7e8f1; display: flex; align-items: center; justify-content: center; }
+  #ce-{{ section.id }} .ce-offer__jaw-img img { width: 100%; height: 100%; object-fit: contain; padding: 6px; display: block; }
+  #ce-{{ section.id }} .ce-offer__jaw-ico { font-size: 34px; line-height: 1; }
+  #ce-{{ section.id }} .ce-offer__jaw-lbl { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: .2px; line-height: 1.15; margin-top: 2px; }
+  #ce-{{ section.id }} .ce-offer__jaw-state { font-size: 11.5px; opacity: .9; }
   #ce-{{ section.id }} .ce-offer__jaw--free .ce-offer__jaw-lbl { color: var(--ce-ink); }
   #ce-{{ section.id }} .ce-offer__jaw-state--free { color: var(--ce-acc-dark); font-weight: 800; opacity: 1; }
-  #ce-{{ section.id }} .ce-offer__plus { align-self: center; font-weight: 800; font-size: 20px; opacity: .92; flex-shrink: 0; }
-  #ce-{{ section.id }} .ce-offer__note { font-size: 12px; opacity: .93; line-height: 1.4; margin-top: 12px; text-align: center; }
+  #ce-{{ section.id }} .ce-offer__freeflag { position: absolute; top: -11px; right: -7px; z-index: 2; background: #fff; color: var(--ce-acc-dark); font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: .6px; padding: 4px 11px; border-radius: 999px; box-shadow: 0 5px 12px rgba(0,0,0,.28); transform: rotate(3deg); }
+  #ce-{{ section.id }} .ce-offer__plus { align-self: center; font-weight: 800; font-size: 22px; opacity: .92; flex-shrink: 0; }
+  #ce-{{ section.id }} .ce-offer__foot { margin-top: 15px; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 13.5px; letter-spacing: 1px; text-transform: uppercase; }
+  #ce-{{ section.id }} .ce-offer__bonus { display: block; text-align: center; margin-top: 7px; font-size: 11.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; opacity: .88; }
   /* Press strip */
   #ce-{{ section.id }} .ce-press { margin: 0 0 16px; }
   #ce-{{ section.id }} .ce-press__label { display: block; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: #9aa4ac; font-weight: 700; margin-bottom: 9px; }
@@ -873,13 +872,13 @@
     { "type": "text", "id": "cta_cart", "label": "Secondary button (Add to Cart)", "default": "Add to Cart" },
     { "type": "header", "content": "Offre (mise en avant)" },
     { "type": "checkbox", "id": "offer_enable", "label": "Show the offer", "default": true },
-    { "type": "text", "id": "offer_eyebrow", "label": "Offer eyebrow", "default": "Exclusive offer" },
-    { "type": "text", "id": "offer_badge", "label": "Badge", "default": "-50%" },
-    { "type": "text", "id": "offer_title", "label": "Offer title", "default": "BUY YOUR UPPER VENEERS — GET YOUR LOWER VENEERS FREE!" },
-    { "type": "text", "id": "offer_sub", "label": "Subtitle", "default": "Choose your upper teeth veneers and your lower set is included completely free." },
-    { "type": "text", "id": "offer_ebook", "label": "Bonus line (eBook)", "default": "+ FREE EBOOK INCLUDED" },
-    { "type": "image_picker", "id": "offer_img_top", "label": "Small image — upper teeth veneers" },
-    { "type": "image_picker", "id": "offer_img_bottom", "label": "Small image — lower teeth veneers" },
+    { "type": "text", "id": "offer_eyebrow", "label": "Offer eyebrow", "default": "EXCLUSIVE OFFER" },
+    { "type": "text", "id": "offer_title", "label": "Offer title (headline)", "default": "BUY 1 ARCH — GET THE 2ND FREE" },
+    { "type": "text", "id": "offer_sub", "label": "Subtitle (explains the offer)", "default": "Choose your upper arch and receive your lower arch FREE." },
+    { "type": "text", "id": "offer_foot", "label": "Footer line", "default": "2 ARCHES · 1 PRICE" },
+    { "type": "text", "id": "offer_ebook", "label": "Bonus line (eBook)", "default": "+ FREE SMILE GUIDE INCLUDED" },
+    { "type": "image_picker", "id": "offer_img_top", "label": "Image — upper arch" },
+    { "type": "image_picker", "id": "offer_img_bottom", "label": "Image — lower arch (free)" },
     { "type": "text", "id": "tax_note", "label": "Tax note", "default": "Taxes included · Shipping calculated at checkout" },
     { "type": "header", "content": "Press (As featured in)" },
     { "type": "checkbox", "id": "press_enable", "label": "Show", "default": true },

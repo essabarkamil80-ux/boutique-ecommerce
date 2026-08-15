@@ -74,18 +74,19 @@
         {%- if section.settings.offer_title != blank -%}<div class="ce-offer__head">{{ section.settings.offer_title }}</div>{%- endif -%}
         <div class="ce-offer__viz">
           <div class="ce-offer__jaw">
-            <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_top != blank -%}<img src="{{ section.settings.offer_img_top | image_url: width: 200 }}" alt="Upper arch" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
-            <span class="ce-offer__jaw-lbl">Upper arch</span>
+            <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_top != blank -%}<img src="{{ section.settings.offer_img_top | image_url: width: 240 }}" alt="Upper teeth veneers" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
+            <span class="ce-offer__jaw-lbl">Upper Teeth Veneers</span>
             <span class="ce-offer__jaw-state">You buy this</span>
           </div>
           <span class="ce-offer__plus">+</span>
           <div class="ce-offer__jaw ce-offer__jaw--free">
-            <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_bottom != blank -%}<img src="{{ section.settings.offer_img_bottom | image_url: width: 200 }}" alt="Lower arch" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
-            <span class="ce-offer__jaw-lbl">Lower arch</span>
+            <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_bottom != blank -%}<img src="{{ section.settings.offer_img_bottom | image_url: width: 240 }}" alt="Lower teeth veneers" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
+            <span class="ce-offer__jaw-lbl">Lower Teeth Veneers</span>
             <span class="ce-offer__jaw-state ce-offer__jaw-state--free">🎁 Free</span>
           </div>
         </div>
         {%- if section.settings.offer_sub != blank -%}<div class="ce-offer__note">{{ section.settings.offer_sub }}</div>{%- endif -%}
+        {%- if section.settings.offer_ebook != blank -%}<div class="ce-offer__bonus"><span class="ce-offer__bonus-ico">📘</span><span>{{ section.settings.offer_ebook }}</span></div>{%- endif -%}
       </div>
       {%- endif -%}
 
@@ -529,7 +530,7 @@
     #ce-{{ section.id }} .ce-card { padding: 15px; }
     #ce-{{ section.id }} .ce-offer__head { font-size: 18px; }
     #ce-{{ section.id }} .ce-offer__jaw { padding: 10px 8px; }
-    #ce-{{ section.id }} .ce-offer__jaw-img { width: 44px; height: 44px; }
+    #ce-{{ section.id }} .ce-offer__jaw-img { width: 58px; height: 58px; }
     #ce-{{ section.id }} .ce-offer__jaw-lbl { font-size: 11.5px; }
     #ce-{{ section.id }} .ce-offer__jaw-ico { font-size: 21px; }
     #ce-{{ section.id }} .ce-helps__grid { gap: 8px; }
@@ -551,9 +552,11 @@
   #ce-{{ section.id }} .ce-offer__viz { display: flex; align-items: stretch; justify-content: center; gap: 10px; }
   #ce-{{ section.id }} .ce-offer__jaw { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.24); border-radius: 14px; padding: 12px 10px; }
   #ce-{{ section.id }} .ce-offer__jaw--free { background: #fff; border-color: #fff; }
-  #ce-{{ section.id }} .ce-offer__jaw-img { width: 52px; height: 52px; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,.5); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
-  #ce-{{ section.id }} .ce-offer__jaw--free .ce-offer__jaw-img { background: var(--ce-tint); }
-  #ce-{{ section.id }} .ce-offer__jaw-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #ce-{{ section.id }} .ce-offer__jaw-img { width: 68px; height: 68px; border-radius: 12px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  #ce-{{ section.id }} .ce-offer__jaw--free .ce-offer__jaw-img { background: #fff; }
+  #ce-{{ section.id }} .ce-offer__jaw-img img { width: 100%; height: 100%; object-fit: contain; padding: 5px; display: block; }
+  #ce-{{ section.id }} .ce-offer__bonus { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; padding: 9px 12px; border-radius: 10px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.24); font-size: 13px; font-weight: 700; line-height: 1.3; }
+  #ce-{{ section.id }} .ce-offer__bonus-ico { font-size: 15px; flex: 0 0 auto; }
   #ce-{{ section.id }} .ce-offer__jaw-ico { font-size: 24px; line-height: 1; }
   #ce-{{ section.id }} .ce-offer__jaw-lbl { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12.5px; letter-spacing: .2px; line-height: 1.15; margin-top: 2px; }
   #ce-{{ section.id }} .ce-offer__jaw-state { font-size: 11.5px; opacity: .9; white-space: nowrap; }
@@ -847,7 +850,7 @@
     { "type": "header", "content": "Hero / Fiche produit" },
     { "type": "text", "id": "brand_name", "label": "Brand name", "default": "Clinic Essabar" },
     { "type": "text", "id": "hero_badge", "label": "Badge", "default": "Nouveau" },
-    { "type": "text", "id": "hero_title", "label": "Title", "default": "Premium Removable Dental Veneers" },
+    { "type": "text", "id": "hero_title", "label": "Title", "default": "Teeth-Veneer 3.0 by Essabar" },
     { "type": "textarea", "id": "hero_sub", "label": "Subtitle", "default": "Removable dental veneers, custom-made to fit your teeth." },
     { "type": "text", "id": "rating", "label": "Rating (text)", "default": "4.7/5" },
     { "type": "range", "id": "rating_value", "min": 0, "max": 5, "step": 0.1, "unit": "★", "label": "Rating (filled stars)", "default": 4.7 },
@@ -860,9 +863,10 @@
     { "type": "text", "id": "offer_eyebrow", "label": "Offer eyebrow", "default": "Exclusive offer" },
     { "type": "text", "id": "offer_badge", "label": "Badge", "default": "-50%" },
     { "type": "text", "id": "offer_title", "label": "Offer title", "default": "Your 2nd arch — FREE" },
-    { "type": "text", "id": "offer_sub", "label": "Subtitle", "default": "Choose your upper arch and get the lower arch free." },
-    { "type": "image_picker", "id": "offer_img_top", "label": "Small image — upper arch" },
-    { "type": "image_picker", "id": "offer_img_bottom", "label": "Small image — lower arch" },
+    { "type": "text", "id": "offer_sub", "label": "Subtitle", "default": "Choose your upper teeth veneers and your lower set is included completely free." },
+    { "type": "text", "id": "offer_ebook", "label": "Bonus line (eBook)", "default": "Plus a FREE digital care & fitting eBook" },
+    { "type": "image_picker", "id": "offer_img_top", "label": "Small image — upper teeth veneers" },
+    { "type": "image_picker", "id": "offer_img_bottom", "label": "Small image — lower teeth veneers" },
     { "type": "text", "id": "tax_note", "label": "Tax note", "default": "Taxes included · Shipping calculated at checkout" },
     { "type": "header", "content": "Press (As featured in)" },
     { "type": "checkbox", "id": "press_enable", "label": "Show", "default": true },
@@ -882,7 +886,7 @@
     { "type": "text", "id": "spec2_title", "label": "Title 2", "default": "Material" },
     { "type": "richtext", "id": "spec2_text", "label": "Text 2", "default": "<p>High-strength, BPA-free dental resin, 0.3 to 0.5 mm thick for a natural look.</p>" },
     { "type": "text", "id": "spec3_title", "label": "Title 3", "default": "Origin" },
-    { "type": "richtext", "id": "spec3_text", "label": "Text 3", "default": "<p>Crafted by our partner laboratory in Seoul, South Korea, with careful quality control at every step.</p>" },
+    { "type": "richtext", "id": "spec3_text", "label": "Text 3", "default": "<p>Crafted by dental professionals in a specialized laboratory, under strict quality-control standards.</p>" },
     { "type": "header", "content": "Section Innovation" },
     { "type": "checkbox", "id": "innov_enable", "label": "Show", "default": true },
     { "type": "image_picker", "id": "innov_image", "label": "Image" },
@@ -938,7 +942,7 @@
     { "type": "image_picker", "id": "wa_image", "label": "Image" },
     { "type": "header", "content": "Description longue (SEO, au-dessus du footer)" },
     { "type": "checkbox", "id": "about_enable", "label": "Show", "default": true },
-    { "type": "text", "id": "about_title", "label": "Title", "default": "Clinic Essabar dental veneers" },
+    { "type": "text", "id": "about_title", "label": "Title", "default": "Teeth-Veneer 3.0 by Essabar" },
     { "type": "richtext", "id": "about_intro", "label": "Introduction", "default": "<p>A radiant smile, simply and quickly. Our removable veneers offer flexibility and comfort, custom-made from your own impression, with no dentist visit.</p>" },
     { "type": "text", "id": "about_h1", "label": "Subtitle 1", "default": "Treat yourself to a perfect smile" },
     { "type": "richtext", "id": "about_t1", "label": "Text 1", "default": "<p>Missing teeth, gaps or a dull shade? Our veneers help cover the imperfections of your natural teeth for a harmonious smile, whenever you like.</p>" },
@@ -949,7 +953,7 @@
     { "type": "text", "id": "about_h4", "label": "Subtitle 4", "default": "Quality at a fair price" },
     { "type": "richtext", "id": "about_t4", "label": "Text 4", "default": "<p>Thanks to careful craftsmanship and quality materials, enjoy a premium result at an accessible price.</p>" },
     { "type": "header", "content": "Barre mobile" },
-    { "type": "text", "id": "sticky_name", "label": "Name", "default": "Premium Veneers" }
+    { "type": "text", "id": "sticky_name", "label": "Name", "default": "Teeth-Veneer 3.0 by Essabar" }
   ],
   "blocks": [
     { "type": "step", "name": "Step", "settings": [ { "type": "text", "id": "title", "label": "Title", "default": "Receive your impression kit" }, { "type": "textarea", "id": "text", "label": "Text (optional)" } ] },

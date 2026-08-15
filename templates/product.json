@@ -239,7 +239,7 @@
         "color_ink": "#15242b",
         "brand_name": "Clinic Essabar",
         "hero_badge": "New",
-        "hero_title": "Premium Removable Dental Veneers",
+        "hero_title": "Teeth-Veneer 3.0 by Essabar",
         "hero_sub": "Custom-made removable veneers, tailored to your smile.",
         "rating": "4.7/5",
         "rating_value": 4.7,
@@ -250,8 +250,9 @@
         "offer_enable": true,
         "offer_eyebrow": "Exclusive offer",
         "offer_badge": "-50%",
-        "offer_title": "Your 2nd arch — FREE",
-        "offer_sub": "Choose your upper arch and the lower arch is included free.",
+        "offer_title": "Your Lower Teeth Veneers — FREE",
+        "offer_sub": "Choose your upper teeth veneers and your lower set is included completely free.",
+        "offer_ebook": "Plus a FREE digital care & fitting eBook",
         "offer_img_top": "shopify://shop_images/ivoire.webp",
         "offer_img_bottom": "shopify://shop_images/ChatGPT_Image_12_aout_2026_22_38_14.png",
         "tax_note": "Taxes included · Shipping calculated at checkout",
@@ -269,7 +270,7 @@
         "spec2_title": "Material",
         "spec2_text": "<p>High-strength, BPA-free dental resin, 0.3–0.5 mm thick for a natural-looking finish.</p>",
         "spec3_title": "Quality & origin",
-        "spec3_text": "<p>Crafted by our partner laboratory in Seoul, South Korea, under strict quality-control standards.</p>",
+        "spec3_text": "<p>Crafted by dental professionals in a specialized laboratory, under strict quality-control standards.</p>",
         "innov_enable": true,
         "innov_image": "shopify://shop_images/same-day-clicks_800x_c95ad7d7-b3ed-407b-942f-b8a1ee9c7459.webp",
         "innov_title": "Innovation for a radiant smile",
@@ -313,7 +314,7 @@
         "wa_cta1": "Buy now",
         "wa_image": "shopify://shop_images/22f4c9cd-2c64-492f-8a5f-b13d1bba175c.png",
         "about_enable": true,
-        "about_title": "Clinic Essabar dental veneers",
+        "about_title": "Teeth-Veneer 3.0 by Essabar",
         "about_intro": "<p>A radiant smile, simply and quickly. Our removable veneers offer flexibility and comfort, custom-made from your impression — no dental visit required.</p>",
         "about_h1": "Give yourself a perfect smile",
         "about_t1": "<p>Missing teeth, gaps, or a dull shade? Our veneers cover the imperfections of your natural teeth for a harmonious smile, whenever you like.</p>",
@@ -323,7 +324,7 @@
         "about_t3": "<p>The veneers clip on and off at any time. They sit over your natural teeth without grinding or drilling — your own teeth stay untouched.</p>",
         "about_h4": "Quality at a fair price",
         "about_t4": "<p>Thanks to careful craftsmanship and quality materials, enjoy a premium finish at an accessible price.</p>",
-        "sticky_name": "Premium Veneers"
+        "sticky_name": "Teeth-Veneer 3.0 by Essabar"
       }
     }
   },

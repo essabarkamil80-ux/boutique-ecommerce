@@ -16,6 +16,7 @@
           "type": "pair",
           "settings": {
             "before_image": "shopify://shop_images/F_BA_Seperate_Male_Before_0006_1x1_385cbe28-1dd6-4031-b08c-d1ad629e5d88.webp",
+            "after_image": "shopify://shop_images/F_BA_Seperate_Male_After_0006_1x1_a1610c5b-afd0-4efe-b705-e79a574994b9.webp",
             "label": "Blanc naturel"
           }
         },
@@ -23,12 +24,15 @@
           "type": "pair",
           "settings": {
             "before_image": "shopify://shop_images/F_BA_Seperate_Female_Before_0008_1x1_4b38f31a-3a4a-4f14-b233-56814fb46d03.webp",
+            "after_image": "shopify://shop_images/F_BA_Seperate_Female_After_0008_1x1_1f570754-b5b8-4fac-bc42-2f4ec3716ae8.webp",
             "label": "Blanc naturel"
           }
         },
         "p3": {
           "type": "pair",
           "settings": {
+            "before_image": "shopify://shop_images/F_BA_Seperate_Male_Before_0004_1x1_e5891d4c-8c8e-4135-b7b8-d877fe97f9af_2.webp",
+            "after_image": "shopify://shop_images/F_BA_Seperate_Male_After_0004_1x1_f33284e2-b087-4691-af27-937dc4997ab3_1.webp",
             "label": "Hollywood"
           }
         },
@@ -36,6 +40,7 @@
           "type": "pair",
           "settings": {
             "before_image": "shopify://shop_images/F_BA_Seperate_Male_Before_0003_1x1_c6a810d8-554a-47af-a50a-ef1ca968268e.webp",
+            "after_image": "shopify://shop_images/F_BA_Seperate_Male_After_0003_1x1_d3865f30-93f2-4747-aa34-9b665c73e5a9.webp",
             "label": "Hollywood"
           }
         },
@@ -43,6 +48,7 @@
           "type": "pair",
           "settings": {
             "before_image": "shopify://shop_images/F_BA_Seperate_Female_Before_0007_1x1_48148e24-28dc-45d0-b537-6c583108cbc8.webp",
+            "after_image": "shopify://shop_images/F_BA_Seperate_Female_After_0007_1x1_ac9b53d4-9806-4bec-8456-af3ae858bf5d.webp",
             "label": "Blanc naturel"
           }
         },
@@ -50,6 +56,7 @@
           "type": "pair",
           "settings": {
             "before_image": "shopify://shop_images/F_BA_Seperate_Female_Before_0004_1x1_32666fd7-ea10-449e-a2e0-aae6904e6614.webp",
+            "after_image": "shopify://shop_images/F_BA_Seperate_Female_After_0004_1x1_2dca494f-c885-4fa9-8715-8216f12613af.webp",
             "label": "Blanc naturel"
           }
         },
@@ -57,6 +64,7 @@
           "type": "pair",
           "settings": {
             "before_image": "shopify://shop_images/F_BA_Seperate_Male_Before_0005_1x1_42fc0fc4-c2f6-4fd6-9654-bb41c3bb664a.webp",
+            "after_image": "shopify://shop_images/F_BA_Seperate_Male_After_0005_1x1_9adf20c8-f663-4e38-943b-15078c91b794.webp",
             "label": "Hollywood"
           }
         },
@@ -64,6 +72,7 @@
           "type": "pair",
           "settings": {
             "before_image": "shopify://shop_images/F_BA_Seperate_Female_Before_0006_1x1_e1f4e065-8b50-4d5e-a895-95d63e0be9ed.webp",
+            "after_image": "shopify://shop_images/F_BA_Seperate_Female_After_0006_1x1_701972c3-3457-40c2-a443-62479402a103.webp",
             "label": "Hollywood"
           }
         },
@@ -71,6 +80,7 @@
           "type": "pair",
           "settings": {
             "before_image": "shopify://shop_images/F_BA_Seperate_Female_Before_0005_1x1_f0432e6a-c59a-4c0b-8ed6-b8b6a292c910.webp",
+            "after_image": "shopify://shop_images/F_BA_Seperate_Female_After_0005_1x1_6504c2bc-67b2-4801-98da-289effa79611.webp",
             "label": "Hollywood"
           }
         }

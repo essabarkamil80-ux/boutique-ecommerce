@@ -36,12 +36,6 @@
             "video_url": ""
           }
         },
-        "v5": {
-          "type": "vid",
-          "settings": {
-            "video_url": ""
-          }
-        },
         "f1": {
           "type": "faq",
           "settings": {
@@ -76,7 +70,6 @@
         "v2",
         "v3",
         "v4",
-        "v5",
         "f1",
         "f2",
         "f3",

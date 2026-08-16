@@ -3,14 +3,49 @@
     "main": {
       "type": "ce-impression",
       "blocks": {
-        "a1": { "type": "acc", "settings": { "question": "Good to know", "answer": "<p>Follow the video step by step and take your time for a clean result.</p>" } },
-        "a2": { "type": "acc", "settings": { "question": "What's in the impression kit", "answer": "<p>The kit contains the impression trays, the putty, and an illustrated guide.</p>" } },
-        "t1": { "type": "tuto", "settings": { "title": "Upper jaw impression", "badge": "VIDEO TUTORIAL" } },
-        "t2": { "type": "tuto", "settings": { "title": "Lower jaw impression", "badge": "VIDEO TUTORIAL" } }
+        "a1": {
+          "type": "acc",
+          "settings": {
+            "question": "Please note",
+            "answer": "<p><strong>Please take your time to watch the video before you start taking your impressions.</strong></p><p>Further information:</p><ul><li>The impression material is not suitable for consumption.</li><li>Please do not swallow.</li><li>Avoid contact of the impression material with the eyes. In case of contact, rinse your eyes with clean water.</li><li>If possible, breathe only through your nose while taking impressions.</li><li>If you have loose teeth, consult your dentist first.</li><li>Use at your own risk.</li></ul>"
+          }
+        },
+        "a2": {
+          "type": "acc",
+          "settings": {
+            "question": "Contents of impression kit",
+            "answer": "<p>In your impression kit, you will find:</p><ul><li><strong>Impression trays</strong></li><li><strong>Yellow and white putties</strong></li><li><strong>Double syringe with mixing tips</strong></li></ul><p>The material is enough for two attempts per jaw. If you ordered veneers for the upper or lower teeth, you'll have material for two attempts in your kit. If you ordered veneers for both the upper and lower teeth, there should be enough material for four attempts.</p>"
+          }
+        },
+        "t1": {
+          "type": "tuto",
+          "settings": {
+            "title": "Upper teeth impression",
+            "badge": "VIDEO TUTORIAL"
+          }
+        },
+        "t2": {
+          "type": "tuto",
+          "settings": {
+            "title": "Lower teeth impression",
+            "badge": "VIDEO TUTORIAL"
+          }
+        }
       },
-      "block_order": ["a1", "a2", "t1", "t2"],
-      "settings": {}
+      "block_order": [
+        "a1",
+        "a2",
+        "t1",
+        "t2"
+      ],
+      "settings": {
+        "addr_title": "Send your dental impressions to our specialised laboratory, where your custom veneers are crafted:",
+        "addr_text": "<p><strong>Huile Denture Tech HK Co Ltd</strong><br>R10, 2F, Sheung Ling Pei<br>Tung Chung, Lantau Island<br>Hong Kong</p>",
+        "addr_note": "We recommend sending them by tracked mail."
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

@@ -106,6 +106,9 @@
   #imp-{{ section.id }} .imp-acc__ico { color: var(--imp-acc); transition: transform .2s; }
   #imp-{{ section.id }} .imp-acc__item[open] .imp-acc__ico { transform: rotate(180deg); }
   #imp-{{ section.id }} .imp-acc__body { padding: 0 18px 16px; font-size: 14px; color: #55606a; line-height: 1.6; }
+  #imp-{{ section.id }} .imp-acc__body ul { margin: 8px 0; padding-left: 20px; }
+  #imp-{{ section.id }} .imp-acc__body li { margin: 4px 0; }
+  #imp-{{ section.id }} .imp-acc__body p { margin: 0 0 8px; }
   #imp-{{ section.id }} .imp-addr { background: #f5f8f8; border: 1px solid #e6ecec; border-radius: 12px; padding: 20px; }
   #imp-{{ section.id }} .imp-addr__h { font-weight: 600; margin: 0 0 12px; color: var(--imp-ink); }
   #imp-{{ section.id }} .imp-addr__body { font-size: 15px; line-height: 1.6; color: var(--imp-ink); font-weight: 700; }
@@ -135,7 +138,7 @@
 
 {% schema %}
 {
-  "name": "Clinique — Empreinte",
+  "name": "Clinic — Impression",
   "tag": "section",
   "settings": [
     { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
@@ -149,8 +152,8 @@
     { "type": "text", "id": "return_label", "label": "Back button (text)", "default": "Back" },
     { "type": "url", "id": "return_link", "label": "Bouton retour (lien)" },
     { "type": "header", "content": "Shipping address" },
-    { "type": "text", "id": "addr_title", "label": "Title", "default": "Send your impressions to the following address:" },
-    { "type": "richtext", "id": "addr_text", "label": "Address", "default": "<p>Clinic Essabar<br>Frohnhofweg 15<br>50858 Cologne<br>Germany</p>" },
+    { "type": "text", "id": "addr_title", "label": "Title", "default": "Send your dental impressions to our specialised laboratory, where your custom veneers are crafted:" },
+    { "type": "richtext", "id": "addr_text", "label": "Address", "default": "<p><strong>Huile Denture Tech HK Co Ltd</strong><br>R10, 2F, Sheung Ling Pei<br>Tung Chung, Lantau Island<br>Hong Kong</p>" },
     { "type": "text", "id": "addr_note", "label": "Note", "default": "We recommend sending it with tracking." },
     { "type": "header", "content": "IMPORTANT block (footer)" },
     { "type": "image_picker", "id": "imp_image", "label": "Image" },
@@ -181,7 +184,7 @@
   ],
   "presets": [
     {
-      "name": "Clinique — Empreinte",
+      "name": "Clinic — Impression",
       "blocks": [
         { "type": "acc", "settings": { "question": "Good to know", "answer": "<p>Follow the video step by step and take your time for a clean result.</p>" } },
         { "type": "acc", "settings": { "question": "What's in the impression kit", "answer": "<p>The kit contains the impression trays, the putty, and an illustrated guide.</p>" } },

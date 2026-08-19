@@ -67,25 +67,23 @@
 
       {%- if section.settings.offer_enable -%}
       <div class="ce-offer">
-        <span class="ce-offer__eyebrow">🎁 {{ section.settings.offer_eyebrow | default: 'EXCLUSIVE OFFER' }}</span>
-        {%- if section.settings.offer_title != blank -%}<div class="ce-offer__head">{{ section.settings.offer_title }}</div>{%- endif -%}
-        {%- if section.settings.offer_sub != blank -%}<p class="ce-offer__lede">{{ section.settings.offer_sub }}</p>{%- endif -%}
-        <div class="ce-offer__viz">
-          <div class="ce-offer__jaw">
-            <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_top != blank -%}<img src="{{ section.settings.offer_img_top | image_url: width: 400 }}" alt="Upper teeth veneers" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
-            <span class="ce-offer__jaw-lbl">Upper teeth</span>
-            <span class="ce-offer__jaw-state">You pay for this</span>
-          </div>
-          <span class="ce-offer__plus">+</span>
-          <div class="ce-offer__jaw ce-offer__jaw--free">
-            <span class="ce-offer__freeflag">FREE</span>
-            <span class="ce-offer__jaw-img">{%- if section.settings.offer_img_bottom != blank -%}<img src="{{ section.settings.offer_img_bottom | image_url: width: 400 }}" alt="Lower teeth veneers" loading="lazy">{%- else -%}<span class="ce-offer__jaw-ico">🦷</span>{%- endif -%}</span>
-            <span class="ce-offer__jaw-lbl">Lower teeth</span>
-            <span class="ce-offer__jaw-state ce-offer__jaw-state--free">Included free</span>
-          </div>
+        <div class="ce-offer__pics">
+          <span class="ce-offer__pic">
+            <span class="ce-offer__box">{%- if section.settings.offer_img_top != blank -%}<img src="{{ section.settings.offer_img_top | image_url: width: 240 }}" alt="Upper teeth veneers" loading="lazy">{%- else -%}<span class="ce-offer__ico">🦷</span>{%- endif -%}</span>
+            <span class="ce-offer__cap">Upper</span>
+          </span>
+          <span class="ce-offer__op">+</span>
+          <span class="ce-offer__pic ce-offer__pic--free">
+            <span class="ce-offer__ftag">FREE</span>
+            <span class="ce-offer__box">{%- if section.settings.offer_img_bottom != blank -%}<img src="{{ section.settings.offer_img_bottom | image_url: width: 240 }}" alt="Lower teeth veneers" loading="lazy">{%- else -%}<span class="ce-offer__ico">🦷</span>{%- endif -%}</span>
+            <span class="ce-offer__cap">Lower</span>
+          </span>
         </div>
-        {%- if section.settings.offer_foot != blank -%}<div class="ce-offer__foot">{{ section.settings.offer_foot }}</div>{%- endif -%}
-        {%- if section.settings.offer_ebook != blank -%}<div class="ce-offer__bonus">{{ section.settings.offer_ebook }}</div>{%- endif -%}
+        <div class="ce-offer__txt">
+          <span class="ce-offer__eyebrow">🎁 {{ section.settings.offer_eyebrow | default: 'EXCLUSIVE OFFER' }}</span>
+          {%- if section.settings.offer_title != blank -%}<span class="ce-offer__head">{{ section.settings.offer_title }}</span>{%- endif -%}
+          {%- if section.settings.offer_sub != blank -%}<span class="ce-offer__sub">{{ section.settings.offer_sub }}</span>{%- endif -%}
+        </div>
       </div>
       {%- endif -%}
 
@@ -148,6 +146,11 @@
           <button type="button" class="ce-btn ce-btn--primary" data-buynow>{{ section.settings.cta_add | default: 'Buy Now' }}</button>
         </div>
         <p class="ce-buymsg" data-buy-msg hidden role="alert"></p>
+        <form class="ce-buyform" data-buyform action="{{ routes.cart_add_url }}" method="post" accept-charset="UTF-8" hidden aria-hidden="true">
+          <input type="hidden" name="id" data-fid value="">
+          <input type="hidden" name="quantity" data-fqty value="1">
+          <input type="hidden" name="return_to" data-freturn value="/checkout">
+        </form>
 
         <div class="ce-reassure">
           <span>🔒 Secure payment</span>
@@ -534,11 +537,11 @@
     #ce-{{ section.id }} .ce-gallery__thumbs { flex-wrap: wrap; overflow-x: visible; gap: 8px; }
     #ce-{{ section.id }} .ce-gallery__thumb { width: 58px; height: 58px; border-radius: 10px; }
     #ce-{{ section.id }} .ce-card { padding: 15px; }
-    #ce-{{ section.id }} .ce-offer__head { font-size: 19px; }
-    #ce-{{ section.id }} .ce-offer__jaw { padding: 10px 8px; }
-    #ce-{{ section.id }} .ce-offer__jaw-lbl { font-size: 12px; }
-    #ce-{{ section.id }} .ce-offer__jaw-ico { font-size: 28px; }
-    #ce-{{ section.id }} .ce-offer__freeflag { font-size: 11px; padding: 3px 9px; }
+    #ce-{{ section.id }} .ce-offer { gap: 11px; padding: 11px 12px; }
+    #ce-{{ section.id }} .ce-offer__box { width: 54px; height: 54px; }
+    #ce-{{ section.id }} .ce-offer__pics { gap: 6px; }
+    #ce-{{ section.id }} .ce-offer__head { font-size: 14.5px; }
+    #ce-{{ section.id }} .ce-offer__sub { font-size: 11px; }
     #ce-{{ section.id }} .ce-helps__grid { gap: 8px; }
     #ce-{{ section.id }} .ce-helps__img { border-radius: 10px; }
     #ce-{{ section.id }} .ce-helps__label { font-size: 9.5px; padding: 5px 10px; margin-bottom: 8px; letter-spacing: .5px; }
@@ -550,25 +553,19 @@
   /* Tax note */
   #ce-{{ section.id }} .ce-taxnote { font-size: 12px; color: #8a949c; margin: 0 0 12px; }
   /* Offer banner */
-  #ce-{{ section.id }} .ce-offer { background: linear-gradient(135deg, var(--ce-acc-dark) 0%, var(--ce-acc) 100%); color: #fff; border-radius: 16px; padding: 13px 14px; margin: 4px 0 14px; box-shadow: 0 14px 30px -18px rgba(15,91,81,.72); text-align: center; }
-  #ce-{{ section.id }} .ce-offer__eyebrow { display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; opacity: .95; margin-bottom: 6px; }
-  #ce-{{ section.id }} .ce-offer__head { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: clamp(18px, 3.2vw, 23px); line-height: 1.12; margin: 0 0 5px; }
-  #ce-{{ section.id }} .ce-offer__lede { font-size: 12.5px; opacity: .95; line-height: 1.4; margin: 0 auto 9px; max-width: 330px; }
-  #ce-{{ section.id }} .ce-offer__lede strong { font-weight: 800; }
-  #ce-{{ section.id }} .ce-offer__viz { display: flex; align-items: stretch; justify-content: center; gap: 12px; }
-  #ce-{{ section.id }} .ce-offer__jaw { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); border-radius: 13px; padding: 10px 9px; }
-  #ce-{{ section.id }} .ce-offer__jaw--free { background: #fff; border-color: #fff; box-shadow: 0 10px 24px -12px rgba(0,0,0,.4); }
-  #ce-{{ section.id }} .ce-offer__jaw-img { width: 100%; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; background: #dbe8f1; display: flex; align-items: center; justify-content: center; }
-  #ce-{{ section.id }} .ce-offer__jaw-img img { width: 100%; height: 100%; object-fit: contain; padding: 5px; display: block; mix-blend-mode: multiply; }
-  #ce-{{ section.id }} .ce-offer__jaw-ico { font-size: 34px; line-height: 1; }
-  #ce-{{ section.id }} .ce-offer__jaw-lbl { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: .2px; line-height: 1.15; margin-top: 2px; }
-  #ce-{{ section.id }} .ce-offer__jaw-state { font-size: 11.5px; opacity: .9; }
-  #ce-{{ section.id }} .ce-offer__jaw--free .ce-offer__jaw-lbl { color: var(--ce-ink); }
-  #ce-{{ section.id }} .ce-offer__jaw-state--free { color: var(--ce-acc-dark); font-weight: 800; opacity: 1; }
-  #ce-{{ section.id }} .ce-offer__freeflag { position: absolute; top: -11px; right: -7px; z-index: 2; background: #fff; color: var(--ce-acc-dark); font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: .6px; padding: 4px 11px; border-radius: 999px; box-shadow: 0 5px 12px rgba(0,0,0,.28); transform: rotate(3deg); }
-  #ce-{{ section.id }} .ce-offer__plus { align-self: center; font-weight: 800; font-size: 22px; opacity: .92; flex-shrink: 0; }
-  #ce-{{ section.id }} .ce-offer__foot { margin-top: 11px; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
-  #ce-{{ section.id }} .ce-offer__bonus { display: block; text-align: center; margin-top: 9px; font-size: 12px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; opacity: .9; }
+  #ce-{{ section.id }} .ce-offer { background: linear-gradient(135deg, var(--ce-acc-dark) 0%, var(--ce-acc) 100%); color: #fff; border-radius: 15px; padding: 12px 14px; margin: 4px 0 14px; box-shadow: 0 12px 26px -18px rgba(15,91,81,.68); display: flex; align-items: center; gap: 14px; }
+  #ce-{{ section.id }} .ce-offer__pics { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+  #ce-{{ section.id }} .ce-offer__pic { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  #ce-{{ section.id }} .ce-offer__box { width: 60px; height: 60px; border-radius: 10px; overflow: hidden; background: #dbe8f1; display: flex; align-items: center; justify-content: center; }
+  #ce-{{ section.id }} .ce-offer__box img { width: 100%; height: 100%; object-fit: contain; padding: 4px; display: block; mix-blend-mode: multiply; }
+  #ce-{{ section.id }} .ce-offer__ico { font-size: 26px; line-height: 1; }
+  #ce-{{ section.id }} .ce-offer__cap { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10.5px; letter-spacing: .5px; text-transform: uppercase; opacity: .95; }
+  #ce-{{ section.id }} .ce-offer__op { font-weight: 800; font-size: 18px; opacity: .9; flex: 0 0 auto; }
+  #ce-{{ section.id }} .ce-offer__ftag { position: absolute; top: -9px; right: -9px; z-index: 2; background: #fff; color: var(--ce-acc-dark); font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: .5px; padding: 2px 8px; border-radius: 999px; box-shadow: 0 3px 8px rgba(0,0,0,.28); }
+  #ce-{{ section.id }} .ce-offer__txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  #ce-{{ section.id }} .ce-offer__eyebrow { font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; opacity: .92; }
+  #ce-{{ section.id }} .ce-offer__head { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 15.5px; line-height: 1.16; }
+  #ce-{{ section.id }} .ce-offer__sub { font-size: 11.5px; opacity: .92; line-height: 1.32; }
   /* Press strip */
   #ce-{{ section.id }} .ce-press { margin: 0 0 16px; }
   #ce-{{ section.id }} .ce-press__label { display: block; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: #9aa4ac; font-weight: 700; margin-bottom: 9px; }
@@ -801,36 +798,31 @@
     var buyMsg = root.querySelector('[data-buy-msg]');
     function showBuyMsg(t) { if (buyMsg) { buyMsg.textContent = t; buyMsg.hidden = false; } }
     function clearBuyMsg() { if (buyMsg) { buyMsg.hidden = true; buyMsg.textContent = ''; } }
-    function goCheckout() {
-      var base = (window.Shopify && Shopify.routes && Shopify.routes.root) ? Shopify.routes.root : '/';
-      window.location.href = base + 'checkout';
-    }
-    function goCart() {
-      var base = (window.Shopify && Shopify.routes && Shopify.routes.root) ? Shopify.routes.root : '/';
-      window.location.href = base + 'cart';
-    }
-    function addItem(btn, mode) {
+    var buyForm = root.querySelector('[data-buyform]');
+    var busy = false;
+    function submitBuy(btn, mode) {
+      if (busy) { return; }
       clearBuyMsg();
       var id = input ? input.value : '';
       if (!id) { showBuyMsg('Please select an option to continue.'); return; }
       var qtyEl = root.querySelector('[data-qty]');
       var qty = qtyEl ? (parseInt(qtyEl.value, 10) || 1) : 1;
-      var original = btn ? btn.innerHTML : '';
+      busy = true;
       if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.innerHTML = (mode === 'cart' ? 'Adding…' : 'Redirecting…'); }
-      fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ items: [{ id: Number(id), quantity: qty }] }) })
-        .then(function (r) { if (!r.ok) { return r.json().then(function (e) { throw e; }); } return r.json(); })
-        .then(function (res) {
-          track(id, qty, res);
-          if (mode === 'cart') { goCart(); } else { goCheckout(); }
-        })
-        .catch(function (err) {
-          if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); btn.innerHTML = original; }
-          showBuyMsg((err && err.description) ? err.description : 'Something went wrong. Please try again.');
-        });
+      try { track(id, qty, null); } catch (e) {}
+      if (buyForm) {
+        buyForm.querySelector('[data-fid]').value = id;
+        buyForm.querySelector('[data-fqty]').value = qty;
+        buyForm.querySelector('[data-freturn]').value = (mode === 'cart') ? '/cart' : '/checkout';
+        buyForm.submit();
+      } else {
+        var base = (window.Shopify && Shopify.routes && Shopify.routes.root) ? Shopify.routes.root : '/';
+        window.location.href = base + (mode === 'cart' ? 'cart' : 'checkout');
+      }
     }
-    root.querySelectorAll('[data-addtocart]').forEach(function (b) { b.addEventListener('click', function () { addItem(b, 'cart'); }); });
-    root.querySelectorAll('[data-buynow]').forEach(function (b) { b.addEventListener('click', function () { addItem(b, 'checkout'); }); });
-    root.querySelectorAll('[data-addcart]').forEach(function (b) { b.addEventListener('click', function () { addItem(b, 'checkout'); }); });
+    root.querySelectorAll('[data-addtocart]').forEach(function (b) { b.addEventListener('click', function () { submitBuy(b, 'cart'); }); });
+    root.querySelectorAll('[data-buynow]').forEach(function (b) { b.addEventListener('click', function () { submitBuy(b, 'checkout'); }); });
+    root.querySelectorAll('[data-addcart]').forEach(function (b) { b.addEventListener('click', function () { submitBuy(b, 'checkout'); }); });
 
     var sticky = root.querySelector('[data-sticky]');
     var buy = root.querySelector('[data-buy]');

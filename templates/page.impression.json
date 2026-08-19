@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -21,14 +30,16 @@
           "type": "tuto",
           "settings": {
             "title": "Upper teeth impression",
-            "badge": "VIDEO TUTORIAL"
+            "badge": "VIDEO TUTORIAL",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/dc38b8259c684383bd1cc8bd4523c82c.mp4"
           }
         },
         "t2": {
           "type": "tuto",
           "settings": {
             "title": "Lower teeth impression",
-            "badge": "VIDEO TUTORIAL"
+            "badge": "VIDEO TUTORIAL",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/e6956784851b4770abecf0223c818e7e.mp4"
           }
         }
       },
@@ -39,9 +50,21 @@
         "t2"
       ],
       "settings": {
+        "color_accent": "#12a3a0",
+        "color_accent_dark": "#0b7a78",
+        "color_ink": "#15242b",
+        "eyebrow": "TUTORIAL",
+        "title": "Taking the impression for your veneers",
+        "intro": "<p>We've developed a simplified procedure so you can take your own dental impression at home. It's easier and far more comfortable than at the dentist.</p><p>Take the time to watch the video — once <strong>before you start</strong>, and again while taking the impression.</p>",
+        "band_title": "Important information",
+        "return_label": "Back",
+        "return_link": "",
         "addr_title": "Send your dental impressions to our specialised laboratory, where your custom veneers are crafted:",
         "addr_text": "<p><strong>Huile Denture Tech HK Co Ltd</strong><br>R10, 2F, Sheung Ling Pei<br>Tung Chung, Lantau Island<br>Hong Kong</p>",
-        "addr_note": "We recommend sending them by tracked mail."
+        "addr_note": "We recommend sending them by tracked mail.",
+        "imp_title": "IMPORTANT",
+        "imp_text": "<p>Send a photo of your impression to Clinic Essabar support for a first check:</p>",
+        "imp_contact": "WhatsApp : +49 221 828 290 36"
       }
     }
   },

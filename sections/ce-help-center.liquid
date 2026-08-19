@@ -1,0 +1,297 @@
+{% comment %}theme-check-disable ImgWidthAndHeight,RemoteAsset,AssetUrlFilters,RemoteAssetUrl{% endcomment %}
+{%- comment -%} Clinic Essabar — Help Center (own code, Veneera-style flow) {%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+{%- assign hp = section.settings.product -%}
+{%- assign prod = hp -%}
+{%- unless prod.title -%}{%- assign prod = all_products[hp] -%}{%- endunless -%}
+
+<section id="hc-{{ section.id }}" class="hc" style="--hc-acc: {{ section.settings.color_accent }}; --hc-acc-dark: {{ section.settings.color_accent_dark }}; --hc-ink: {{ section.settings.color_ink }};">
+
+  <div class="hc-hero">
+    <h1 class="hc-hero__title">{{ section.settings.title | default: 'Help Center' }}</h1>
+    <div class="hc-search">
+      <svg class="hc-search__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="search" data-search placeholder="{{ section.settings.search_placeholder | default: 'Search' }}" aria-label="Search help">
+      <div class="hc-results" data-results hidden></div>
+    </div>
+  </div>
+
+  <div class="hc-grid">
+    <button type="button" class="hc-card" data-card data-action="flow" data-id="teeth"><span>Questions about the Teeth-Veneer</span><span class="hc-card__chev">›</span></button>
+    <button type="button" class="hc-card" data-card data-action="form" data-id="order"><span>Status of my order</span><span class="hc-card__chev">›</span></button>
+    <button type="button" class="hc-card" data-card data-action="flow" data-id="impression"><span>Questions about the impression</span><span class="hc-card__chev">›</span></button>
+    <button type="button" class="hc-card" data-card data-action="form" data-id="complaint"><span>Product complaint</span><span class="hc-card__chev">›</span></button>
+    <button type="button" class="hc-card" data-card data-action="flow" data-id="suitability"><span>Suitability Teeth-Veneer</span><span class="hc-card__chev">›</span></button>
+    <button type="button" class="hc-card" data-card data-action="product" data-id="reorder"><span>Reorder product</span><span class="hc-card__chev">›</span></button>
+    <button type="button" class="hc-card" data-card data-action="form" data-id="track"><span>Track order</span><span class="hc-card__chev">›</span></button>
+    <button type="button" class="hc-card" data-card data-action="form" data-id="report"><span>Report issue</span><span class="hc-card__chev">›</span></button>
+  </div>
+
+  {%- comment -%} Reusable product card (rendered server-side so price converts per market) {%- endcomment -%}
+  <template data-productcard>
+    <a class="hc-pcard" href="{{ prod.url | default: '/products/custom-dental-veneers' }}">
+      <span class="hc-pcard__img">
+        {%- if prod.featured_image -%}<img src="{{ prod.featured_image | image_url: width: 260 }}" alt="{{ prod.title | escape }}" loading="lazy">{%- else -%}<span class="hc-pcard__ico">🦷</span>{%- endif -%}
+      </span>
+      <span class="hc-pcard__info">
+        <span class="hc-pcard__title">{{ prod.title | default: 'Custom Dental Veneers' }}</span>
+        {%- if prod.price -%}
+          <span class="hc-pcard__price">{%- if prod.compare_at_price > prod.price -%}<s>{{ prod.compare_at_price | money }}</s> {% endif %}{{ prod.price | money }}</span>
+        {%- endif -%}
+        <span class="hc-pcard__btn">View Product</span>
+      </span>
+    </a>
+  </template>
+
+  {%- comment -%} Reusable native Shopify contact form {%- endcomment -%}
+  <template data-contactform>
+    <div class="hc-form">
+      <p class="hc-form__title">Send us a message</p>
+      <p class="hc-form__sub">Tell us how we can help — we'll reply by email.</p>
+      {%- form 'contact' -%}
+        <input class="hc-form__in" type="text" name="contact[name]" placeholder="Your name" aria-label="Your name" required>
+        <input class="hc-form__in" type="email" name="contact[email]" placeholder="Your email" aria-label="Your email" required>
+        <textarea class="hc-form__in hc-form__ta" name="contact[body]" placeholder="How can we help?" aria-label="Your message" required></textarea>
+        <button class="hc-form__btn" type="submit">Send message</button>
+      {%- endform -%}
+    </div>
+  </template>
+
+  <div class="hc-modal" data-modal hidden>
+    <div class="hc-modal__overlay" data-close></div>
+    <div class="hc-modal__card" role="dialog" aria-modal="true" aria-label="Help">
+      <button class="hc-modal__back" type="button" data-back hidden aria-label="Back">‹</button>
+      <button class="hc-modal__close" type="button" data-close aria-label="Close">×</button>
+      <div class="hc-modal__body" data-body></div>
+    </div>
+  </div>
+
+  <div class="hc-toast" data-toast hidden>Your message has been sent. We'll get back to you soon.</div>
+
+  <script type="application/json" data-flow>
+  {
+    "flows": {
+      "teeth": {
+        "title": "Questions about the Teeth-Veneer",
+        "prompt": "What exactly is your question?",
+        "items": [
+          { "q": "How do I get my custom veneers?", "a": "<p>It's simple and done entirely at home:</p><ul><li>Order online and receive your impression kit in about 6 days.</li><li>Take your impression at home, guided by our step-by-step video.</li><li>Send it back to our laboratory by tracked mail.</li><li>We craft your custom veneers and ship them within up to 10 days.</li></ul>" },
+          { "q": "Can I eat or drink with my veneers?", "a": "<p>Your veneers are designed for cosmetic wear. We recommend removing them to eat so they stay at their best, and rinsing them gently with lukewarm water. Drinking water while wearing them is fine.</p>" },
+          { "q": "How many teeth do they cover?", "a": "<p>They cover the visible teeth of your smile — the upper teeth, the lower teeth, or both, depending on the offer. Each set is custom-made from your own impression.</p>" },
+          { "q": "How long do they last?", "a": "<p>With gentle, regular care they last a long time. Clean them with a soft toothbrush and lukewarm water (avoid hot water), handle them carefully, and store them in their case after each use.</p>" },
+          { "q": "What if I'm not satisfied?", "a": "<p>You're covered by our 30-Day Satisfaction Guarantee. If your veneers don't fit correctly or cause discomfort, just contact us — we'll review your case and apply the guarantee in line with our return &amp; refund policy.</p>" },
+          { "q": "My question isn't listed", "form": true }
+        ]
+      },
+      "impression": {
+        "title": "Questions about the impression",
+        "prompt": "What exactly is your question?",
+        "items": [
+          { "q": "Is the impression kit included in my order?", "a": "<p>Yes — your impression kit is included and sent to you right after your order. It arrives in about 6 days and contains everything you need to take your impressions at home.</p>" },
+          { "q": "How do I take my dental impression?", "a": "<p>It's easy and done at home in a few minutes, with no dentist. You're guided step by step by our video tutorial — you'll find it in the <strong>Help &amp; Info &rsaquo; Impression</strong> section. Take your time and follow each step for a clean result.</p>" },
+          { "q": "Questions about shipping", "a": "<p>After your order, your impression kit arrives in about <strong>6 days</strong>. Once your impressions are done, send them back by tracked mail to our laboratory:</p><p><strong>Huile Denture Tech HK Co Ltd</strong><br>R10, 2F, Sheung Ling Pei<br>Tung Chung, Lantau Island<br>Hong Kong</p><p>After we receive and check your impressions, your veneers are made and shipped within up to 10 days.</p>" },
+          { "q": "My request was not included", "form": true }
+        ]
+      },
+      "suitability": {
+        "title": "Suitability Teeth-Veneer",
+        "prompt": "What best describes your teeth?",
+        "items": [
+          { "q": "Missing, broken or crooked teeth / gaps", "a": "<p>Perfect — our veneers are designed for exactly this. They help cover missing, broken or crooked teeth and gaps for a harmonious, even smile.</p>", "product": true },
+          { "q": "Dentures, crowns or bridges", "a": "<p>Dentures, crowns or bridges are generally no problem. Just make sure the front of the teeth is free of clasps. Your veneers can still be made from an impression taken at home.</p>", "product": true },
+          { "q": "Multiple reasons", "a": "<p>No problem — whatever the combination, your veneers are custom-made from your own impression to fit your smile.</p>", "product": true },
+          { "q": "Flawless teeth", "a": "<p>Wonderful! Even on already-nice teeth, our veneers give a brighter, more even and confident smile.</p>", "product": true },
+          { "q": "Wobbly or loose teeth", "a": "<p>If you have loose teeth, we recommend checking with your dentist first. Once that's confirmed, your veneers can be made from an impression taken at home.</p>", "product": true },
+          { "q": "Other", "form": true }
+        ]
+      }
+    }
+  }
+  </script>
+
+{%- style -%}
+  #hc-{{ section.id }}.hc { background: #fff; color: var(--hc-ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+  #hc-{{ section.id }} * { box-sizing: border-box; }
+  #hc-{{ section.id }} h1, #hc-{{ section.id }} h2, #hc-{{ section.id }} h3 { font-family: 'Manrope', sans-serif; }
+
+  #hc-{{ section.id }} .hc-hero { background: linear-gradient(120deg, #cfe9e3, #e7f4ef 55%, #f3e6ef); padding: 54px 20px 60px; text-align: center; }
+  #hc-{{ section.id }} .hc-hero__title { font-size: clamp(30px, 5vw, 46px); font-weight: 800; color: #fff; margin: 0 0 22px; text-shadow: 0 2px 14px rgba(18,41,58,.18); }
+  #hc-{{ section.id }} .hc-search { position: relative; max-width: 720px; margin: 0 auto; }
+  #hc-{{ section.id }} .hc-search__ico { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #8a949c; pointer-events: none; }
+  #hc-{{ section.id }} .hc-search input { width: 100%; border: 0; border-radius: 14px; background: #fff; padding: 18px 20px 18px 52px; font-size: 16px; color: var(--hc-ink); box-shadow: 0 12px 30px -14px rgba(0,0,0,.25); outline: none; font-family: inherit; }
+  #hc-{{ section.id }} .hc-results { position: absolute; left: 0; right: 0; top: calc(100% + 8px); background: #fff; border-radius: 12px; box-shadow: 0 16px 40px -14px rgba(0,0,0,.28); overflow: hidden; z-index: 5; text-align: left; }
+  #hc-{{ section.id }} .hc-res { display: block; width: 100%; text-align: left; border: 0; background: transparent; padding: 13px 18px; font-size: 14.5px; color: var(--hc-ink); cursor: pointer; font-family: inherit; border-bottom: 1px solid #eef2f2; }
+  #hc-{{ section.id }} .hc-res:hover { background: #f4f8f7; color: var(--hc-acc-dark); }
+
+  #hc-{{ section.id }} .hc-grid { max-width: 1080px; margin: -30px auto 0; padding: 0 20px 60px; display: grid; grid-template-columns: 1fr; gap: 16px; position: relative; z-index: 2; }
+  #hc-{{ section.id }} .hc-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; background: #fff; border: 1px solid #e8ecec; border-radius: 14px; padding: 22px 24px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 16px; color: var(--hc-ink); cursor: pointer; box-shadow: 0 8px 20px -16px rgba(0,0,0,.3); transition: transform .12s, box-shadow .15s, border-color .15s; }
+  #hc-{{ section.id }} .hc-card:hover { transform: translateY(-2px); border-color: var(--hc-acc); box-shadow: 0 14px 26px -16px rgba(0,0,0,.32); }
+  #hc-{{ section.id }} .hc-card__chev { color: var(--hc-acc); font-size: 22px; font-weight: 700; flex: 0 0 auto; }
+
+  #hc-{{ section.id }} .hc-modal { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  #hc-{{ section.id }} .hc-modal[hidden] { display: none; }
+  #hc-{{ section.id }} .hc-modal__overlay { position: absolute; inset: 0; background: rgba(18,41,58,.55); backdrop-filter: blur(2px); }
+  #hc-{{ section.id }} .hc-modal__card { position: relative; z-index: 1; background: #fff; border-radius: 20px; width: 100%; max-width: 680px; max-height: 86vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 30px 70px -20px rgba(0,0,0,.5); }
+  #hc-{{ section.id }} .hc-modal__back, #hc-{{ section.id }} .hc-modal__close { position: absolute; top: 14px; width: 40px; height: 40px; border: 0; background: transparent; color: var(--hc-ink); font-size: 30px; line-height: 1; cursor: pointer; border-radius: 50%; }
+  #hc-{{ section.id }} .hc-modal__back { left: 14px; }
+  #hc-{{ section.id }} .hc-modal__close { right: 14px; }
+  #hc-{{ section.id }} .hc-modal__back:hover, #hc-{{ section.id }} .hc-modal__close:hover { background: #f1f4f4; }
+  #hc-{{ section.id }} .hc-modal__body { padding: 64px 30px 40px; overflow-y: auto; text-align: center; }
+
+  #hc-{{ section.id }} .hc-q { font-size: 18px; font-weight: 600; color: var(--hc-ink); margin: 0 0 26px; }
+  #hc-{{ section.id }} .hc-chips { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  #hc-{{ section.id }} .hc-chip { display: inline-block; max-width: 100%; background: #f1f4f4; border: 1px solid transparent; border-radius: 12px; padding: 15px 22px; font-family: inherit; font-size: 15.5px; font-weight: 600; color: var(--hc-ink); cursor: pointer; transition: background .14s, border-color .14s, transform .1s; line-height: 1.35; }
+  #hc-{{ section.id }} .hc-chip:hover { background: #e7f2f0; border-color: var(--hc-acc); transform: translateY(-1px); }
+  #hc-{{ section.id }} .hc-answer { font-size: 15.5px; line-height: 1.65; color: #35424a; text-align: left; margin: 0 auto 22px; max-width: 520px; }
+  #hc-{{ section.id }} .hc-answer p { margin: 0 0 12px; }
+  #hc-{{ section.id }} .hc-answer ul { margin: 10px 0; padding-left: 20px; }
+  #hc-{{ section.id }} .hc-answer li { margin: 5px 0; }
+  #hc-{{ section.id }} .hc-answer strong { color: var(--hc-ink); }
+  #hc-{{ section.id }} .hc-help__q { font-size: 15px; font-weight: 600; margin: 6px 0 16px; }
+  #hc-{{ section.id }} .hc-help__row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  #hc-{{ section.id }} .hc-home { margin: 26px auto 0; display: inline-block; background: #f1f4f4; border: 0; border-radius: 12px; padding: 15px 30px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 15px; color: var(--hc-ink); cursor: pointer; }
+  #hc-{{ section.id }} .hc-home:hover { background: #e7f2f0; }
+
+  #hc-{{ section.id }} .hc-pcard { display: flex; align-items: center; gap: 16px; text-align: left; max-width: 440px; margin: 0 auto; background: #fff; border: 1px solid #e8ecec; border-radius: 16px; padding: 16px; text-decoration: none; box-shadow: 0 12px 26px -18px rgba(0,0,0,.4); transition: transform .12s, box-shadow .15s; }
+  #hc-{{ section.id }} .hc-pcard:hover { transform: translateY(-2px); box-shadow: 0 18px 30px -18px rgba(0,0,0,.42); }
+  #hc-{{ section.id }} .hc-pcard__img { flex: 0 0 92px; width: 92px; height: 92px; border-radius: 12px; overflow: hidden; background: #dbe8f1; display: flex; align-items: center; justify-content: center; }
+  #hc-{{ section.id }} .hc-pcard__img img { width: 100%; height: 100%; object-fit: contain; padding: 6px; mix-blend-mode: multiply; }
+  #hc-{{ section.id }} .hc-pcard__ico { font-size: 34px; }
+  #hc-{{ section.id }} .hc-pcard__info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  #hc-{{ section.id }} .hc-pcard__title { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 16px; color: var(--hc-ink); }
+  #hc-{{ section.id }} .hc-pcard__price { font-size: 15px; font-weight: 700; color: var(--hc-acc-dark); }
+  #hc-{{ section.id }} .hc-pcard__price s { color: #9aa4ac; font-weight: 500; margin-right: 4px; }
+  #hc-{{ section.id }} .hc-pcard__btn { margin-top: 8px; display: inline-block; background: var(--hc-acc); color: #fff; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 13.5px; padding: 9px 16px; border-radius: 9px; text-align: center; }
+
+  #hc-{{ section.id }} .hc-form { max-width: 460px; margin: 0 auto; text-align: left; }
+  #hc-{{ section.id }} .hc-form__title { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 20px; margin: 0 0 6px; text-align: center; }
+  #hc-{{ section.id }} .hc-form__sub { font-size: 14px; color: #55606a; margin: 0 0 20px; text-align: center; }
+  #hc-{{ section.id }} .hc-form__in { width: 100%; border: 1px solid #d8dede; border-radius: 11px; padding: 14px 16px; font-family: inherit; font-size: 15px; color: var(--hc-ink); margin-bottom: 12px; outline: none; background: #fff; }
+  #hc-{{ section.id }} .hc-form__in:focus { border-color: var(--hc-acc); }
+  #hc-{{ section.id }} .hc-form__ta { min-height: 120px; resize: vertical; }
+  #hc-{{ section.id }} .hc-form__btn { width: 100%; border: 0; background: var(--hc-acc); color: #fff; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 15.5px; padding: 15px; border-radius: 11px; cursor: pointer; transition: background .15s; }
+  #hc-{{ section.id }} .hc-form__btn:hover { background: var(--hc-acc-dark); }
+
+  #hc-{{ section.id }} .hc-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 10000; background: var(--hc-acc-dark); color: #fff; padding: 14px 22px; border-radius: 12px; font-weight: 600; font-size: 14.5px; box-shadow: 0 12px 30px -12px rgba(0,0,0,.5); max-width: 92vw; text-align: center; }
+  #hc-{{ section.id }} .hc-toast[hidden] { display: none; }
+
+  @media (min-width: 750px) {
+    #hc-{{ section.id }} .hc-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
+    #hc-{{ section.id }} .hc-modal__body { padding: 70px 44px 46px; }
+  }
+{%- endstyle -%}
+
+<script>
+  (function(){
+    var root = document.getElementById('hc-{{ section.id }}');
+    if (!root) return;
+    var cfgEl = root.querySelector('[data-flow]');
+    var cfg = {};
+    try { cfg = JSON.parse(cfgEl.textContent); } catch (e) { return; }
+    var modal = root.querySelector('[data-modal]');
+    var body = root.querySelector('[data-body]');
+    var backBtn = root.querySelector('[data-back]');
+    var pcTpl = root.querySelector('[data-productcard]');
+    var cfTpl = root.querySelector('[data-contactform]');
+    var stack = [];
+
+    function openModal(){ modal.hidden = false; document.documentElement.style.overflow = 'hidden'; }
+    function closeModal(){ modal.hidden = true; document.documentElement.style.overflow = ''; stack = []; }
+    function updateBack(){ backBtn.hidden = stack.length <= 1; }
+    function render(){ if (!stack.length){ return; } var fn = stack[stack.length - 1]; body.innerHTML = ''; fn(body); updateBack(); body.scrollTop = 0; }
+    function push(fn){ stack.push(fn); render(); }
+    function pop(){ if (stack.length > 1){ stack.pop(); render(); } else { closeModal(); } }
+    function start(fn){ openModal(); stack = [fn]; render(); }
+
+    function productCardEl(){ return pcTpl.content.firstElementChild.cloneNode(true); }
+    function contactFormEl(){ return cfTpl.content.firstElementChild.cloneNode(true); }
+
+    function homeBtn(){ var b = document.createElement('button'); b.type = 'button'; b.className = 'hc-home'; b.textContent = 'Back to Home'; b.addEventListener('click', closeModal); return b; }
+
+    function formScreen(el){ el.appendChild(contactFormEl()); }
+    function thanksScreen(el){ var p = document.createElement('p'); p.className = 'hc-q'; p.textContent = 'Glad we could help 😊'; el.appendChild(p); el.appendChild(homeBtn()); }
+
+    function itemScreen(it){
+      return function(el){
+        if (it.form){ formScreen(el); return; }
+        if (it.a){ var a = document.createElement('div'); a.className = 'hc-answer'; a.innerHTML = it.a; el.appendChild(a); }
+        if (it.product){ el.appendChild(productCardEl()); el.appendChild(homeBtn()); return; }
+        var help = document.createElement('div'); help.className = 'hc-help';
+        var q = document.createElement('p'); q.className = 'hc-help__q'; q.textContent = 'Was this helpful?'; help.appendChild(q);
+        var row = document.createElement('div'); row.className = 'hc-help__row';
+        var yes = document.createElement('button'); yes.type = 'button'; yes.className = 'hc-chip'; yes.textContent = 'Yes, thank you'; yes.addEventListener('click', function(){ push(thanksScreen); });
+        var no = document.createElement('button'); no.type = 'button'; no.className = 'hc-chip'; no.textContent = 'No, I need more help'; no.addEventListener('click', function(){ push(formScreen); });
+        row.appendChild(yes); row.appendChild(no); help.appendChild(row); el.appendChild(help);
+      };
+    }
+
+    function flowScreen(flow){
+      return function(el){
+        var h = document.createElement('p'); h.className = 'hc-q'; h.textContent = flow.prompt || 'What exactly is your question?'; el.appendChild(h);
+        var wrap = document.createElement('div'); wrap.className = 'hc-chips';
+        flow.items.forEach(function(it){ var b = document.createElement('button'); b.type = 'button'; b.className = 'hc-chip'; b.textContent = it.q; b.addEventListener('click', function(){ push(itemScreen(it)); }); wrap.appendChild(b); });
+        el.appendChild(wrap);
+      };
+    }
+
+    function reorderScreen(el){
+      var p = document.createElement('div'); p.className = 'hc-answer'; p.innerHTML = '<p>Ready for another set? Here is your product:</p>'; el.appendChild(p);
+      el.appendChild(productCardEl()); el.appendChild(homeBtn());
+    }
+
+    root.querySelectorAll('[data-card]').forEach(function(c){
+      c.addEventListener('click', function(){
+        var action = c.getAttribute('data-action');
+        var id = c.getAttribute('data-id');
+        if (action === 'flow'){ var flow = cfg.flows[id]; if (flow){ start(flowScreen(flow)); } }
+        else if (action === 'form'){ start(formScreen); }
+        else if (action === 'product'){ start(reorderScreen); }
+      });
+    });
+
+    backBtn.addEventListener('click', pop);
+    root.querySelectorAll('[data-close]').forEach(function(x){ x.addEventListener('click', closeModal); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !modal.hidden){ closeModal(); } });
+
+    var search = root.querySelector('[data-search]');
+    var results = root.querySelector('[data-results]');
+    var index = [];
+    Object.keys(cfg.flows).forEach(function(fid){ cfg.flows[fid].items.forEach(function(it){ if (!it.form){ index.push({ fid: fid, it: it }); } }); });
+    if (search && results){
+      search.addEventListener('input', function(){
+        var v = search.value.trim().toLowerCase(); results.innerHTML = '';
+        if (!v){ results.hidden = true; return; }
+        var m = index.filter(function(x){ return x.it.q.toLowerCase().indexOf(v) > -1; }).slice(0, 6);
+        if (!m.length){ results.hidden = true; return; }
+        m.forEach(function(x){ var b = document.createElement('button'); b.type = 'button'; b.className = 'hc-res'; b.textContent = x.it.q; b.addEventListener('click', function(){ openModal(); stack = [flowScreen(cfg.flows[x.fid]), itemScreen(x.it)]; render(); results.hidden = true; search.value = ''; }); results.appendChild(b); });
+        results.hidden = false;
+      });
+      document.addEventListener('click', function(e){ if (!root.querySelector('.hc-search').contains(e.target)){ results.hidden = true; } });
+    }
+
+    if (window.location.search.indexOf('contact_posted=true') > -1){
+      var toast = root.querySelector('[data-toast]');
+      if (toast){ toast.hidden = false; setTimeout(function(){ toast.hidden = true; }, 6000); }
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Clinic — Help Center",
+  "tag": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product (for card / reorder)" },
+    { "type": "color", "id": "color_accent", "label": "Accent", "default": "#12a3a0" },
+    { "type": "color", "id": "color_accent_dark", "label": "Dark accent", "default": "#0b7a78" },
+    { "type": "color", "id": "color_ink", "label": "Text", "default": "#15242b" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Help Center" },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search" }
+  ],
+  "presets": [ { "name": "Clinic — Help Center" } ]
+}
+{% endschema %}

@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "ce-help-center",
+      "settings": {
+        "product": "custom-dental-veneers"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

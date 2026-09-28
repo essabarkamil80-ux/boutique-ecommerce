@@ -1,0 +1,62 @@
+{%- assign coll = section.settings.collection -%}
+<section class="sf sf-prod" id="sf-prod-{{ section.id }}" style="--prod-bg: {{ section.settings.bg }};">
+  <div class="sf-wrap sf-prod__head">
+    <h2 class="sf-h2">{{ section.settings.title }}</h2>
+    <div class="sf-prod__tools">
+      {%- if section.settings.view_all_label != blank -%}
+        <a class="sf-prod__all" href="{{ section.settings.view_all_link | default: coll.url | default: routes.all_products_collection_url }}">{{ section.settings.view_all_label }}</a>
+      {%- endif -%}
+      <div class="sf-arrows sf-prod__arrows">
+        <button type="button" class="sf-arrow" data-sf-prev aria-label="Précédent">{%- render 'sf-icon', name: 'arrow-left' -%}</button>
+        <button type="button" class="sf-arrow" data-sf-next aria-label="Suivant">{%- render 'sf-icon', name: 'arrow-right' -%}</button>
+      </div>
+    </div>
+  </div>
+  <ul class="sf-rail sf-prod__rail">
+    {%- if coll != blank and coll.products_count > 0 -%}
+      {%- for product in coll.products limit: section.settings.limit -%}
+        <li class="sf-prod__item">{%- render 'sf-card', card_product: product -%}</li>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..5) -%}
+        <li class="sf-prod__item">{%- render 'sf-card', placeholder: i -%}</li>
+      {%- endfor -%}
+    {%- endif -%}
+  </ul>
+</section>
+<script>window.sfRail && window.sfRail(document.getElementById('sf-prod-{{ section.id }}'));</script>
+
+{% stylesheet %}
+  .sf-prod { background: var(--prod-bg); padding: clamp(40px, 4vw, 58px) 0 clamp(44px, 4.5vw, 65px); }
+  .sf-prod__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: clamp(24px, 2.8vw, 40px); }
+  .sf-prod__tools { display: flex; align-items: center; gap: 18px; }
+  .sf-prod__all { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    text-decoration: underline; text-underline-offset: 4px; color: var(--sf-ink); }
+  .sf-prod__arrows { display: none; color: var(--sf-ink); }
+  .sf-prod:hover .sf-prod__arrows { display: flex; }
+  .sf-prod__rail { gap: clamp(12px, 1.45vw, 21px); }
+  .sf-prod__item { width: clamp(220px, 19.3vw, 278px); }
+  @media (hover: none) { .sf-prod:hover .sf-prod__arrows { display: none; } }
+  @media (max-width: 749px) {
+    .sf-prod__item { width: 64vw; }
+    .sf-prod__head { margin-bottom: 16px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Carrousel produits",
+  "tag": "section",
+  "class": "sf-section-prod",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Best Sellers" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "min": 4, "max": 16, "step": 1, "label": "Nombre de produits", "default": 8 },
+    { "type": "text", "id": "view_all_label", "label": "Lien « voir tout »", "default": "View all" },
+    { "type": "url", "id": "view_all_link", "label": "URL « voir tout » (vide = la collection)" },
+    { "type": "color", "id": "bg", "label": "Fond", "default": "#FFFFFF" },
+    { "type": "paragraph", "content": "Pastille : ajoutez le tag « badge:Best seller » ou « badge:New » au produit. Sous-titre : metafield custom.subtitle. Les étoiles apparaissent seules quand une appli d'avis remplit reviews.rating." }
+  ],
+  "presets": [ { "name": "SF · Carrousel produits" } ]
+}
+{% endschema %}

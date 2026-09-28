@@ -1,0 +1,110 @@
+{%- assign s = section.settings -%}
+<section class="sf sf-promo" style="--promo-bg: {{ s.bg }}; --promo-shade: {{ s.shade | divided_by: 100.0 }};">
+  <div class="sf-promo__media">
+    {%- if s.image != blank -%}
+      {%- if s.image_mobile != blank -%}
+        <picture>
+          <source media="(max-width: 749px)" srcset="{{ s.image_mobile | image_url: width: 750 }} 750w, {{ s.image_mobile | image_url: width: 1100 }} 1100w" sizes="100vw">
+          {{ s.image | image_url: width: 2000 | image_tag: widths: '900, 1400, 2000', sizes: '100vw', alt: s.image.alt, loading: 'lazy' }}
+        </picture>
+      {%- else -%}
+        {{ s.image | image_url: width: 2000 | image_tag: widths: '750, 1100, 1400, 2000', sizes: '100vw', alt: s.image.alt, loading: 'lazy' }}
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+  <div class="sf-wrap sf-promo__wrap">
+    <div class="sf-promo__box">
+      <h2 class="sf-promo__title">
+        {%- if s.show_tag -%}<span class="sf-promo__tag">{%- render 'sf-icon', name: 'tag' -%}</span>{%- endif -%}
+        {{ s.title }}{%- if s.title_2 != blank -%}<br>{{ s.title_2 }}{%- endif -%}
+      </h2>
+      {%- if s.text != blank -%}<p class="sf-promo__text">{{ s.text }}</p>{%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+        <ul class="sf-promo__tiles">
+          {%- for block in section.blocks -%}
+            <li class="sf-promo__tile" {{ block.shopify_attributes }}>
+              <span class="sf-promo__ico">{%- render 'sf-icon', name: block.settings.icon -%}</span>
+              <span>{{ block.settings.label }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if s.btn_label != blank -%}
+        <a class="sf-promo__btn" href="{{ s.btn_link | default: routes.all_products_collection_url }}">{{ s.btn_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sf-promo { position: relative; background: var(--promo-bg); color: #fff; overflow: hidden;
+    min-height: clamp(460px, 37vw, 620px); display: flex; align-items: center; }
+  .sf-promo__media { position: absolute; inset: 0; }
+  .sf-promo__media img, .sf-promo__media picture { width: 100%; height: 100%; object-fit: cover; object-position: 70% center; }
+  .sf-promo__media::after { content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(40, 10, 24, var(--promo-shade)) 0%, rgba(40, 10, 24, 0) 55%); }
+  .sf-promo__wrap { position: relative; z-index: 1; padding-top: 48px; padding-bottom: 48px; }
+  .sf-promo__box { max-width: 490px; }
+  .sf-promo__title { font-family: var(--sf-serif); font-weight: 400; font-size: clamp(34px, 3.4vw, 49px);
+    line-height: 1.02; letter-spacing: -.015em; color: #fff; }
+  .sf-promo__tag { display: inline-flex; vertical-align: .08em; margin-right: .14em; }
+  .sf-promo__tag svg { width: .74em; height: .74em; }
+  .sf-promo__text { margin-top: 12px; font-size: 14.5px; line-height: 1.5; color: rgba(255, 255, 255, .92); max-width: 440px; }
+  .sf-promo__tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 22px; }
+  .sf-promo__tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; min-height: 76px;
+    padding: 12px 8px; border-radius: 8px; background: rgba(255, 255, 255, .11); text-align: center;
+    font-size: 13px; font-weight: 700; line-height: 1.2; }
+  .sf-promo__ico { color: #F4C9D6; display: inline-flex; }
+  .sf-promo__ico svg { width: 16px; height: 16px; }
+  .sf-promo__btn { display: flex; align-items: center; justify-content: center; min-height: 56px; margin-top: 22px;
+    border-radius: 10px; background: #fff; color: var(--sf-plum) !important; font-size: 14.5px; font-weight: 700;
+    letter-spacing: .04em; text-transform: uppercase; transition: transform .15s, box-shadow .15s; }
+  .sf-promo__btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .45); }
+  @media (max-width: 749px) {
+    .sf-promo { flex-direction: column; align-items: stretch; min-height: 0; }
+    .sf-promo__media { position: relative; aspect-ratio: 4 / 3; }
+    .sf-promo__media::after { background: linear-gradient(0deg, var(--promo-bg) 0%, rgba(0, 0, 0, 0) 35%); }
+    .sf-promo__wrap { padding-top: 22px; padding-bottom: 34px; }
+    .sf-promo__tiles { gap: 8px; }
+    .sf-promo__tile { font-size: 12px; min-height: 70px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Bandeau promo",
+  "tag": "section",
+  "class": "sf-section-promo",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image de fond (sujet à droite)" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Image mobile (optionnelle)" },
+    { "type": "color", "id": "bg", "label": "Couleur de fond", "default": "#6B2441" },
+    { "type": "range", "id": "shade", "min": 0, "max": 80, "step": 5, "unit": "%", "label": "Assombrir derrière le texte", "default": 20 },
+    { "type": "checkbox", "id": "show_tag", "label": "Icône étiquette avant le titre", "default": true },
+    { "type": "text", "id": "title", "label": "Titre (ligne 1)", "default": "70% Off" },
+    { "type": "text", "id": "title_2", "label": "Titre (ligne 2)", "default": "On Full Outfits" },
+    { "type": "text", "id": "text", "label": "Texte", "default": "One draining 3D knit, 4 pieces, from your arms to your ankles. Wear one, or wear them all." },
+    { "type": "text", "id": "btn_label", "label": "Bouton", "default": "Shop now" },
+    { "type": "url", "id": "btn_link", "label": "Lien du bouton" }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Atout",
+      "limit": 3,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icône", "default": "feather", "options": [
+          { "value": "feather", "label": "Plume" }, { "value": "heart", "label": "Cœur" }, { "value": "sparkle", "label": "Étincelle" },
+          { "value": "check", "label": "Coche" }, { "value": "shield", "label": "Bouclier" }, { "value": "truck", "label": "Livraison" }
+        ] },
+        { "type": "text", "id": "label", "label": "Texte", "default": "Benefit" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Bandeau promo", "blocks": [
+    { "type": "tile", "settings": { "icon": "feather", "label": "Smooths and lifts" } },
+    { "type": "tile", "settings": { "icon": "heart", "label": "Seamless 3D knit" } },
+    { "type": "tile", "settings": { "icon": "sparkle", "label": "No routine to keep" } }
+  ] } ]
+}
+{% endschema %}

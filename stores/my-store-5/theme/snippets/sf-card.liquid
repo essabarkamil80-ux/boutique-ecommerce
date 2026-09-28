@@ -1,0 +1,94 @@
+{%- comment -%}
+  Carte produit.
+  - card_product : objet produit (sinon carte d'exemple, avec placeholder: index)
+  - Pastille : tag produit "badge:Best seller" ou "badge:New"
+  - Sous-titre : metafield custom.subtitle
+  - Note : metafield reviews.rating / reviews.rating_count (rempli par les applis d'avis).
+    Aucune note n'est affichee si le produit n'en a pas.
+{%- endcomment -%}
+{%- if card_product != blank -%}
+  {%- assign product = card_product -%}
+  {%- liquid
+    assign badge = ''
+    for tag in product.tags
+      if tag contains 'badge:'
+        assign badge = tag | remove_first: 'badge:' | strip
+        break
+      endif
+    endfor
+    assign badge_dc = badge | downcase
+    assign color_opt = blank
+    for opt in product.options_with_values
+      assign on = opt.name | downcase
+      if on == 'color' or on == 'colour' or on == 'couleur' or on == 'colore' or on == 'farbe'
+        assign color_opt = opt
+        break
+      endif
+    endfor
+    assign rating = product.metafields.reviews.rating.value
+    assign rating_count = product.metafields.reviews.rating_count.value
+    assign img2 = product.media[1]
+  -%}
+  <div class="sf-card">
+    <a class="sf-card__media sf-media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+      {%- if product.featured_media != blank -%}
+        {%- assign calt = product.featured_media.alt | default: product.title -%}
+        {{ product.featured_media | image_url: width: 800 | image_tag: widths: '300, 450, 600, 800', sizes: '(min-width: 990px) 280px, 62vw', alt: calt, loading: 'lazy', class: 'sf-card__img' }}
+        {%- if img2 != blank and img2.media_type == 'image' -%}
+          {{ img2 | image_url: width: 800 | image_tag: widths: '300, 450, 600, 800', sizes: '(min-width: 990px) 280px, 62vw', alt: '', loading: 'lazy', class: 'sf-card__img sf-card__img--2' }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-apparel-1' | placeholder_svg_tag: 'sf-ph' }}
+      {%- endif -%}
+      {%- if badge != '' -%}
+        <span class="sf-card__badge{% if badge_dc == 'new' or badge_dc == 'nouveau' %} sf-card__badge--new{% endif %}">{{ badge }}</span>
+      {%- endif -%}
+    </a>
+
+    {%- if color_opt != blank -%}
+      <ul class="sf-card__sw" aria-label="{{ color_opt.name | escape }}">
+        {%- for v in color_opt.values limit: 5 -%}
+          {%- assign swc = v.swatch.color -%}
+          <li title="{{ v | escape }}"{% if swc != blank %} style="background: {{ swc }}"{% elsif v.swatch.image != blank %} style="background: url('{{ v.swatch.image | image_url: width: 40 }}') center/cover"{% endif %}></li>
+        {%- endfor -%}
+        {%- if color_opt.values.size > 5 -%}<li class="sf-card__more">+{{ color_opt.values.size | minus: 5 }}</li>{%- endif -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if rating != blank and rating.rating > 0 -%}
+      {%- assign rpct = rating.rating | times: 100.0 | divided_by: rating.scale_max -%}
+      <div class="sf-card__rate">
+        <span class="sf-rate" aria-label="{{ rating.rating | round: 1 }} / {{ rating.scale_max }}">
+          <span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span>
+          <span class="sf-rate__fg" style="width: {{ rpct }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span>
+        </span>
+        <span class="sf-card__rnum">{{ rating.rating | round: 1 }}/{{ rating.scale_max | round }}{% if rating_count > 0 %} ({{ rating_count }}){% endif %}</span>
+      </div>
+    {%- endif -%}
+
+    <div class="sf-card__row">
+      <a class="sf-card__title" href="{{ product.url }}">{{ product.title }}</a>
+      <div class="sf-card__price">
+        {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+        <span>{%- if product.price_varies -%}{{ product.price_min | money }}+{%- else -%}{{ product.price | money }}{%- endif -%}</span>
+      </div>
+    </div>
+    {%- if product.metafields.custom.subtitle != blank -%}<p class="sf-card__sub">{{ product.metafields.custom.subtitle }}</p>{%- endif -%}
+  </div>
+{%- else -%}
+  {%- assign phn = placeholder | default: 1 | modulo: 4 | plus: 1 -%}
+  <div class="sf-card">
+    <div class="sf-card__media sf-media">
+      {%- assign phname = 'product-apparel-' | append: phn -%}
+      {{ phname | placeholder_svg_tag: 'sf-ph' }}
+      {%- if placeholder == 1 or placeholder == 2 or placeholder == 3 -%}<span class="sf-card__badge">Best seller</span>{%- endif -%}
+      {%- if placeholder == 4 -%}<span class="sf-card__badge sf-card__badge--new">New</span>{%- endif -%}
+    </div>
+    <ul class="sf-card__sw" aria-hidden="true"><li style="background:#111"></li><li style="background:#6f6f73"></li><li style="background:#d7c3a6"></li><li style="background:#8a8f94"></li><li style="background:#12808a"></li><li class="sf-card__more">+8</li></ul>
+    <div class="sf-card__row">
+      <span class="sf-card__title">Product title</span>
+      <div class="sf-card__price"><s>€59,90</s><span>€29,90</span></div>
+    </div>
+    <p class="sf-card__sub">Short product benefit</p>
+  </div>
+{%- endif -%}

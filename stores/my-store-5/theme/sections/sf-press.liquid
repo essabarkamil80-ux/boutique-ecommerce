@@ -1,0 +1,70 @@
+{%- if section.blocks.size > 0 -%}
+<section class="sf sf-press" style="--press-bg: {{ section.settings.bg }}; --press-speed: {{ section.settings.speed }}s;">
+  {%- if section.settings.label != blank -%}<p class="sf-press__label">{{ section.settings.label }}</p>{%- endif -%}
+  <div class="sf-press__rail">
+    <div class="sf-press__track">
+      {%- comment -%} 2 passes : la 2e est decorative (aria-hidden) pour une boucle sans a-coup. {%- endcomment -%}
+      {%- for pass in (1..2) -%}
+        <ul class="sf-press__set"{% if pass == 2 %} aria-hidden="true"{% endif %}>
+          {%- for block in section.blocks -%}
+            <li class="sf-press__logo"{% if pass == 1 %} {{ block.shopify_attributes }}{% endif %}>
+              {%- if block.settings.logo != blank -%}
+                {{ block.settings.logo | image_url: height: 80 | image_tag: height: 32, alt: block.settings.name, loading: 'lazy' }}
+              {%- else -%}
+                <span class="sf-press__name">{{ block.settings.name | default: 'Press logo' }}</span>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% stylesheet %}
+  .sf-press { background: var(--press-bg); color: #fff; padding: 22px 0 21px; overflow: hidden; }
+  .sf-press__label { text-align: center; font-size: 10px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+    opacity: .75; margin-bottom: 17px; line-height: 14px; }
+  .sf-press__rail { overflow: hidden; }
+  .sf-press__track { display: flex; width: max-content; animation: sfPress var(--press-speed, 40s) linear infinite; }
+  .sf-press__rail:hover .sf-press__track { animation-play-state: paused; }
+  .sf-press__set { display: flex; align-items: center; gap: clamp(36px, 4.4vw, 64px); padding-right: clamp(36px, 4.4vw, 64px); }
+  .sf-press__logo { flex: 0 0 auto; display: flex; align-items: center; height: 36px; }
+  .sf-press__logo img { height: 32px; width: auto; filter: brightness(0) invert(1); opacity: .95; }
+  .sf-press__name { font-family: var(--sf-serif); font-size: 30px; line-height: 1; letter-spacing: .02em; white-space: nowrap; opacity: .92; }
+  @keyframes sfPress { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .sf-press__track { animation: none; }
+    .sf-press__rail { overflow-x: auto; }
+  }
+  @media (max-width: 749px) {
+    .sf-press__logo img { height: 24px; }
+    .sf-press__name { font-size: 22px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Bandeau presse",
+  "tag": "section",
+  "class": "sf-section-press",
+  "settings": [
+    { "type": "paragraph", "content": "Uniquement des médias qui ont réellement parlé de votre marque. Les logos passent en blanc automatiquement." },
+    { "type": "text", "id": "label", "label": "Libellé", "default": "As seen in" },
+    { "type": "color", "id": "bg", "label": "Fond", "default": "#6B2441" },
+    { "type": "range", "id": "speed", "min": 15, "max": 90, "step": 5, "unit": "s", "label": "Durée d'une boucle", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        { "type": "image_picker", "id": "logo", "label": "Logo (PNG transparent)" },
+        { "type": "text", "id": "name", "label": "Nom (si pas d'image)", "default": "Press logo" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Bandeau presse", "blocks": [ { "type": "logo" }, { "type": "logo" }, { "type": "logo" }, { "type": "logo" }, { "type": "logo" }, { "type": "logo" } ] } ]
+}
+{% endschema %}

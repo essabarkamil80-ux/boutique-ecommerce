@@ -1,0 +1,205 @@
+{%- assign s = section.settings -%}
+<section class="sf sf-rev" id="sf-rev-{{ section.id }}" style="--rev-bg: {{ s.bg }};">
+  <div class="sf-wrap sf-rev__head">
+    {%- if s.pill_label != blank or s.pill_rating != blank -%}
+      <span class="sf-rev__pill">
+        <span class="sf-tp">{%- for i in (1..5) -%}<span>{%- render 'sf-icon', name: 'star' -%}</span>{%- endfor -%}</span>
+        {%- if s.pill_label != blank -%}<b>{{ s.pill_label }}</b>{%- endif -%}
+        {%- if s.pill_rating != blank -%}<span class="sf-rev__pillr">· {{ s.pill_rating }}</span>{%- endif -%}
+      </span>
+    {%- endif -%}
+    <h2 class="sf-h2 sf-rev__title">{{ s.title }}</h2>
+  </div>
+
+  <div class="sf-rev__railwrap">
+    <ul class="sf-rail sf-rev__rail">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <li class="sf-rev__card" {{ block.shopify_attributes }}>
+          <div class="sf-rev__photo sf-media">
+            {%- if b.photo != blank -%}
+              {{ b.photo | image_url: width: 700 | image_tag: widths: '350, 500, 700', sizes: '(min-width: 990px) 316px, 78vw', alt: b.name, loading: 'lazy' }}
+            {%- else -%}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'sf-ph' }}
+            {%- endif -%}
+          </div>
+          <div class="sf-rev__body">
+            <div class="sf-rev__who">
+              <div>
+                <p class="sf-rev__name">{{ b.name }}
+                  {%- if b.verified -%}<span class="sf-rev__ver">{%- render 'sf-icon', name: 'verified' -%}Verified</span>{%- endif -%}
+                </p>
+                {%- if b.meta != blank -%}<p class="sf-rev__meta">{{ b.meta }}</p>{%- endif -%}
+              </div>
+              {%- if b.badge != blank -%}<span class="sf-rev__badge">{%- render 'sf-icon', name: 'weeks' -%}{{ b.badge }}</span>{%- endif -%}
+            </div>
+            {%- if b.quote != blank -%}<blockquote class="sf-rev__quote">“{{ b.quote }}”</blockquote>{%- endif -%}
+
+            {%- case b.widget -%}
+              {%- when 'compare' -%}
+                <div class="sf-rw sf-rw--cmp">
+                  <div class="sf-rw__box"><span class="sf-rw__lbl">{{ b.w_before_label }}</span><s>{{ b.w_before }}</s></div>
+                  <div class="sf-rw__box sf-rw__box--hi"><span class="sf-rw__lbl sf-rw__lbl--hi">{{ b.w_after_label }}</span><b>{{ b.w_after }}</b></div>
+                </div>
+              {%- when 'stats' -%}
+                <div class="sf-rw sf-rw--stats">
+                  {%- for i in (1..3) -%}
+                    {%- assign kv = 'w_s' | append: i | append: '_val' -%}
+                    {%- assign kl = 'w_s' | append: i | append: '_lbl' -%}
+                    <div class="sf-rw__box{% if forloop.last %} sf-rw__box--hi{% endif %}">
+                      <b>{{ b[kv] }}</b><span>{{ b[kl] }}</span>
+                      <i>{%- if i == 1 -%}{%- render 'sf-icon', name: 'clock' -%}{%- elsif i == 2 -%}{%- render 'sf-icon', name: 'calendar' -%}{%- else -%}{%- render 'sf-icon', name: 'dot' -%}{%- endif -%}</i>
+                    </div>
+                  {%- endfor -%}
+                </div>
+              {%- when 'progress' -%}
+                <div class="sf-rw sf-rw--prog">
+                  <p class="sf-rw__head">{%- render 'sf-icon', name: 'trend' -%}{{ b.w_p_title }} <b>{{ b.w_p_hi }}</b></p>
+                  <div class="sf-rw__bars"><span></span><span></span><span></span></div>
+                  <div class="sf-rw__ticks"><span>{{ b.w_p1 }}</span><span>{{ b.w_p2 }}</span><span>{{ b.w_p3 }}</span></div>
+                </div>
+              {%- when 'score' -%}
+                <div class="sf-rw sf-rw--score">
+                  <p class="sf-rw__head">{{ b.w_sc_title }} <b>{{ b.w_sc_hi }}</b></p>
+                  <div class="sf-rw__line"><span>{{ b.w_sc_before_lbl }}</span><i><em style="width: {{ b.w_sc_before | times: 10 }}%"></em></i><b>{{ b.w_sc_before }}/10</b></div>
+                  <div class="sf-rw__line sf-rw__line--now"><span>{{ b.w_sc_now_lbl }}</span><i><em style="width: {{ b.w_sc_now | times: 10 }}%"></em></i><b>{{ b.w_sc_now }}/10</b></div>
+                </div>
+            {%- endcase -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <div class="sf-arrows sf-rev__arrows">
+      <button type="button" class="sf-arrow" data-sf-prev aria-label="Précédent">{%- render 'sf-icon', name: 'arrow-left' -%}</button>
+      <button type="button" class="sf-arrow" data-sf-next aria-label="Suivant">{%- render 'sf-icon', name: 'arrow-right' -%}</button>
+    </div>
+  </div>
+</section>
+<script>window.sfRail && window.sfRail(document.getElementById('sf-rev-{{ section.id }}'));</script>
+
+{% stylesheet %}
+  .sf-rev { background: var(--rev-bg); color: #fff; padding: clamp(40px, 4.2vw, 60px) 0 clamp(44px, 4vw, 58px); }
+  .sf-rev__head { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .sf-rev__pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px 5px 6px; border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .32); background: rgba(255, 255, 255, .07); font-size: 11.5px; letter-spacing: .02em; }
+  .sf-rev__pill .sf-tp { font-size: 11px; }
+  .sf-rev__pill b { font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+  .sf-rev__pillr { opacity: .85; }
+  .sf-rev .sf-rev__title { color: #fff; margin: 14px 0 clamp(24px, 2.7vw, 38px); }
+  .sf-rev__railwrap { position: relative; }
+  .sf-rev__rail { gap: clamp(12px, 1.45vw, 21px); padding-bottom: 4px; }
+  .sf-rev__card { width: clamp(270px, 21.9vw, 316px); background: #fff; color: var(--sf-ink); border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column; }
+  .sf-rev__photo { aspect-ratio: 16 / 9; }
+  .sf-rev__photo img, .sf-rev__photo > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-rev__body { padding: 12px 13px 13px; display: flex; flex-direction: column; flex: 1; }
+  .sf-rev__who { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .sf-rev__name { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; }
+  .sf-rev__ver { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 400; color: var(--sf-green); }
+  .sf-rev__ver svg { width: 11px; height: 11px; color: var(--sf-green); }
+  .sf-rev__meta { margin-top: 2px; font-size: 10.5px; color: #7B7371; }
+  .sf-rev__badge { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; padding: 3px 7px; border-radius: 6px;
+    border: 1px solid #E3DBD7; font-size: 8.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6f6664; }
+  .sf-rev__badge svg { width: 9px; height: 9px; color: var(--sf-plum); }
+  .sf-rev__quote { margin: 11px 0 0; font-size: 14px; line-height: 1.45; font-style: italic; color: #2a2230; }
+  .sf-rev__arrows { position: absolute; right: var(--sf-gutter); top: -58px; color: #fff; display: none; }
+  .sf-rev:hover .sf-rev__arrows { display: flex; }
+  @media (hover: none) { .sf-rev:hover .sf-rev__arrows { display: none; } }
+
+  /* mini-graphiques sous les temoignages */
+  .sf-rw { margin-top: auto; padding-top: 12px; }
+  .sf-rw--cmp, .sf-rw--stats { display: grid; gap: 7px; }
+  .sf-rw--cmp { grid-template-columns: 1fr 1fr; }
+  .sf-rw--stats { grid-template-columns: repeat(3, 1fr); }
+  .sf-rw__box { position: relative; border: 1px solid #EDE6E2; border-radius: 8px; padding: 14px 9px 9px; font-size: 12px; line-height: 1.3; }
+  .sf-rw__box--hi { background: #F7EEEE; border-color: #F7EEEE; }
+  .sf-rw__lbl { position: absolute; top: -7px; left: 9px; background: #E7E1DE; color: #7a716e; font-size: 7.5px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; }
+  .sf-rw__lbl--hi { background: var(--sf-plum); color: #fff; }
+  .sf-rw--cmp s { color: #9b9290; }
+  .sf-rw--cmp b { font-weight: 600; font-size: 13px; color: var(--sf-ink); }
+  .sf-rw--stats .sf-rw__box { padding: 9px 4px 7px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .sf-rw--stats b { font-size: 15px; font-weight: 700; }
+  .sf-rw--stats span { font-size: 9.5px; color: #6f6664; }
+  .sf-rw--stats i { display: inline-flex; margin-top: 3px; color: var(--sf-plum); }
+  .sf-rw--stats i svg { width: 9px; height: 9px; }
+  .sf-rw--prog, .sf-rw--score { border: 1px solid #EDE6E2; border-radius: 8px; padding: 9px 10px 8px; margin-top: auto; }
+  .sf-rw__head { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #6f6664; }
+  .sf-rw__head svg { width: 11px; height: 11px; color: var(--sf-plum); }
+  .sf-rw__head b { color: var(--sf-ink); font-weight: 700; }
+  .sf-rw__bars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; align-items: end; }
+  .sf-rw__bars span { border-radius: 4px; background: var(--sf-plum); }
+  .sf-rw__bars span:nth-child(1) { height: 3px; opacity: .45; }
+  .sf-rw__bars span:nth-child(2) { height: 5px; opacity: .7; }
+  .sf-rw__bars span:nth-child(3) { height: 8px; }
+  .sf-rw__ticks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 5px; font-size: 8.5px; color: #9b9290; }
+  .sf-rw__line { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 8px; margin-top: 7px;
+    font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; color: #9b9290; }
+  .sf-rw__line i { height: 3px; border-radius: 3px; background: #EFE8E4; overflow: hidden; }
+  .sf-rw__line em { display: block; height: 100%; background: #C9A9B6; border-radius: 3px; }
+  .sf-rw__line--now em { background: var(--sf-plum); }
+  .sf-rw__line b { font-size: 10px; letter-spacing: 0; color: var(--sf-ink); font-weight: 600; }
+  .sf-rw__line--now span { color: var(--sf-ink); font-weight: 700; }
+  @media (max-width: 749px) {
+    .sf-rev__card { width: 80vw; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Avis clients",
+  "tag": "section",
+  "class": "sf-section-rev",
+  "settings": [
+    { "type": "paragraph", "content": "Uniquement de vrais avis de vraies clientes, avec leur accord. La note de la pastille doit être votre note réelle (ex. celle de Judge.me) — vide = masquée." },
+    { "type": "text", "id": "pill_label", "label": "Pastille : mot", "default": "Excellent" },
+    { "type": "text", "id": "pill_rating", "label": "Pastille : note réelle (ex. Rated 4.8/5)" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Reviews from women like you" },
+    { "type": "color", "id": "bg", "label": "Fond", "default": "#6B2441" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Avis",
+      "settings": [
+        { "type": "image_picker", "id": "photo", "label": "Photo de la cliente" },
+        { "type": "text", "id": "name", "label": "Prénom + initiale", "default": "Customer name" },
+        { "type": "checkbox", "id": "verified", "label": "Achat vérifié", "default": false },
+        { "type": "text", "id": "meta", "label": "Ligne infos (taille · âge · ville)" },
+        { "type": "text", "id": "badge", "label": "Badge (ex. 7 weeks)" },
+        { "type": "textarea", "id": "quote", "label": "Témoignage", "default": "Paste a real customer review here." },
+        { "type": "select", "id": "widget", "label": "Mini-graphique", "default": "none", "options": [
+          { "value": "none", "label": "Aucun" }, { "value": "compare", "label": "Avant / après (texte)" },
+          { "value": "stats", "label": "3 chiffres" }, { "value": "progress", "label": "Progression" }, { "value": "score", "label": "Note avant / maintenant" }
+        ] },
+        { "type": "header", "content": "Avant / après (texte)" },
+        { "type": "text", "id": "w_before_label", "label": "Étiquette avant", "default": "Before" },
+        { "type": "text", "id": "w_before", "label": "Texte avant (barré)" },
+        { "type": "text", "id": "w_after_label", "label": "Étiquette après", "default": "After" },
+        { "type": "text", "id": "w_after", "label": "Texte après" },
+        { "type": "header", "content": "3 chiffres" },
+        { "type": "text", "id": "w_s1_val", "label": "Chiffre 1" },
+        { "type": "text", "id": "w_s1_lbl", "label": "Légende 1" },
+        { "type": "text", "id": "w_s2_val", "label": "Chiffre 2" },
+        { "type": "text", "id": "w_s2_lbl", "label": "Légende 2" },
+        { "type": "text", "id": "w_s3_val", "label": "Chiffre 3" },
+        { "type": "text", "id": "w_s3_lbl", "label": "Légende 3" },
+        { "type": "header", "content": "Progression" },
+        { "type": "text", "id": "w_p_title", "label": "Titre" },
+        { "type": "text", "id": "w_p_hi", "label": "Titre (partie en gras)" },
+        { "type": "text", "id": "w_p1", "label": "Repère 1", "default": "Day 1" },
+        { "type": "text", "id": "w_p2", "label": "Repère 2", "default": "Week 2" },
+        { "type": "text", "id": "w_p3", "label": "Repère 3", "default": "Week 6" },
+        { "type": "header", "content": "Note avant / maintenant" },
+        { "type": "text", "id": "w_sc_title", "label": "Titre", "default": "Her own" },
+        { "type": "text", "id": "w_sc_hi", "label": "Titre (partie en gras)" },
+        { "type": "text", "id": "w_sc_before_lbl", "label": "Libellé avant", "default": "Before" },
+        { "type": "range", "id": "w_sc_before", "min": 0, "max": 10, "step": 1, "label": "Note avant", "default": 2 },
+        { "type": "text", "id": "w_sc_now_lbl", "label": "Libellé maintenant", "default": "Now" },
+        { "type": "range", "id": "w_sc_now", "min": 0, "max": 10, "step": 1, "label": "Note maintenant", "default": 9 }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Avis clients", "blocks": [ { "type": "review" }, { "type": "review" }, { "type": "review" }, { "type": "review" } ] } ]
+}
+{% endschema %}

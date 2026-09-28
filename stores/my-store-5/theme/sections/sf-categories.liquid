@@ -1,0 +1,82 @@
+<section class="sf sf-cat" style="--cat-bg: {{ section.settings.bg }};">
+  <div class="sf-wrap">
+    {%- if section.settings.title != blank -%}<h2 class="sf-h2 sf-cat__title">{{ section.settings.title }}</h2>{%- endif -%}
+    <ul class="sf-cat__grid" style="--cat-cols: {{ section.settings.cols }};">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign c = block.settings.collection
+          assign img = block.settings.image
+          if img == blank and c != blank
+            assign img = c.featured_image
+          endif
+          assign label = block.settings.label
+          if label == blank and c != blank
+            assign label = c.title
+          endif
+          assign href = block.settings.link
+          if href == blank and c != blank
+            assign href = c.url
+          endif
+        -%}
+        <li {{ block.shopify_attributes }}>
+          <a class="sf-cat__card" href="{{ href | default: '#' }}">
+            <span class="sf-cat__media sf-media">
+              {%- if img != blank -%}
+                {{ img | image_url: width: 700 | image_tag: widths: '300, 450, 600, 700', sizes: '(min-width: 990px) 300px, 46vw', alt: label, loading: 'lazy' }}
+              {%- else -%}
+                {%- assign phn = forloop.index | modulo: 4 | plus: 1 -%}
+                {%- assign phname = 'product-apparel-' | append: phn -%}
+                {{ phname | placeholder_svg_tag: 'sf-ph' }}
+              {%- endif -%}
+            </span>
+            <span class="sf-cat__name">{{ label | default: 'Category' }}</span>
+            {%- if block.settings.sub != blank -%}<span class="sf-cat__sub">{{ block.settings.sub }}</span>{%- endif -%}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sf-cat { background: var(--cat-bg); padding: clamp(40px, 4vw, 58px) 0 clamp(44px, 4.3vw, 62px); }
+  .sf-cat__title { text-align: center; margin-bottom: clamp(22px, 2.6vw, 38px); }
+  .sf-cat__grid { display: grid; grid-template-columns: repeat(var(--cat-cols, 4), 1fr); gap: clamp(10px, 1.1vw, 16px); }
+  .sf-cat__card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .sf-cat__media { display: block; width: 100%; aspect-ratio: 1 / 1; border-radius: 12px; }
+  .sf-cat__media img, .sf-cat__media > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .sf-cat__card:hover .sf-cat__media img { transform: scale(1.04); }
+  .sf-cat__name { margin-top: 10px; font-size: 15px; font-weight: 700; color: var(--sf-ink); }
+  .sf-cat__sub { margin-top: 2px; font-size: 12px; color: var(--sf-muted); }
+  @media (max-width: 749px) {
+    .sf-cat__grid { grid-template-columns: repeat(2, 1fr); gap: 10px 10px; }
+    .sf-cat__name { font-size: 14px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Catégories",
+  "tag": "section",
+  "class": "sf-section-cat",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Popular Categories" },
+    { "type": "range", "id": "cols", "min": 2, "max": 6, "step": 1, "label": "Colonnes (ordinateur)", "default": 4 },
+    { "type": "color", "id": "bg", "label": "Fond", "default": "#FFFFFF" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Catégorie",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Image (vide = image de la collection)" },
+        { "type": "text", "id": "label", "label": "Nom (vide = nom de la collection)" },
+        { "type": "text", "id": "sub", "label": "Sous-texte (ex. 13 colors)" },
+        { "type": "url", "id": "link", "label": "Lien (vide = la collection)" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Catégories", "blocks": [ { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" } ] } ]
+}
+{% endschema %}

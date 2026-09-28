@@ -1,0 +1,130 @@
+{%- liquid
+  assign s = section.settings
+  assign avatars = 0
+  if s.avatar_1 != blank
+    assign avatars = avatars | plus: 1
+  endif
+  if s.avatar_2 != blank
+    assign avatars = avatars | plus: 1
+  endif
+  if s.avatar_3 != blank
+    assign avatars = avatars | plus: 1
+  endif
+  if s.avatar_4 != blank
+    assign avatars = avatars | plus: 1
+  endif
+-%}
+<section class="sf sf-hero" style="--hero-bg: {{ s.bg }};">
+  <div class="sf-hero__txt">
+    <div class="sf-hero__inner">
+      {%- if s.pill != blank -%}
+        <span class="sf-hero__pill"><span class="sf-hero__pillico">{%- render 'sf-icon', name: 'heart' -%}</span>{{ s.pill }}</span>
+      {%- endif -%}
+      <h1 class="sf-hero__title">{{ s.title }}</h1>
+      {%- if s.offer_pill != blank or s.offer_prefix != blank or s.offer_suffix != blank -%}
+        <p class="sf-hero__line">
+          {%- if s.offer_prefix != blank -%}{{ s.offer_prefix }} {% endif -%}
+          {%- if s.offer_pill != blank -%}<span class="sf-hero__offer">{{ s.offer_pill }}</span>{%- endif -%}
+          {%- if s.offer_suffix != blank %} {{ s.offer_suffix }}{%- endif -%}
+        </p>
+      {%- endif -%}
+      {%- if s.sub != blank -%}<p class="sf-hero__line">{{ s.sub }}</p>{%- endif -%}
+      {%- if s.btn_label != blank -%}
+        <a class="sf-hero__btn" href="{{ s.btn_link | default: routes.all_products_collection_url }}">{{ s.btn_label }}</a>
+      {%- endif -%}
+      {%- if s.proof_text != blank -%}
+        <div class="sf-hero__proof">
+          {%- if avatars > 0 -%}
+            <span class="sf-hero__avatars">
+              {%- for i in (1..4) -%}
+                {%- assign k = 'avatar_' | append: i -%}
+                {%- if s[k] != blank -%}{{ s[k] | image_url: width: 64 | image_tag: width: 20, height: 20, alt: '', loading: 'lazy' }}{%- endif -%}
+              {%- endfor -%}
+            </span>
+          {%- endif -%}
+          <span>{{ s.proof_text }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="sf-hero__media sf-media">
+    {%- if s.image != blank -%}
+      {%- if s.image_mobile != blank -%}
+        <picture>
+          <source media="(max-width: 749px)" srcset="{{ s.image_mobile | image_url: width: 750 }} 750w, {{ s.image_mobile | image_url: width: 1100 }} 1100w" sizes="100vw">
+          {{ s.image | image_url: width: 1440 | image_tag: widths: '600, 900, 1200, 1440', sizes: '(min-width: 750px) 50vw, 100vw', alt: s.image.alt, loading: 'eager', fetchpriority: 'high' }}
+        </picture>
+      {%- else -%}
+        {{ s.image | image_url: width: 1440 | image_tag: widths: '600, 900, 1200, 1440', sizes: '(min-width: 750px) 50vw, 100vw', alt: s.image.alt, loading: 'eager', fetchpriority: 'high' }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'sf-ph' }}
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .sf-hero { display: grid; grid-template-columns: 1fr 1fr; min-height: clamp(460px, 40.2vw, 680px); background: var(--hero-bg); }
+  .sf-hero__txt { display: flex; align-items: center; justify-content: center; padding: 48px var(--sf-gutter) 48px; }
+  .sf-hero__inner { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 520px; }
+  .sf-hero__pill { display: inline-flex; align-items: center; gap: 7px; background: #fff; color: var(--sf-ink);
+    font-size: 13px; font-weight: 400; padding: 6px 13px 6px 11px; border-radius: 999px; margin-bottom: 18px; }
+  .sf-hero__pillico { color: var(--sf-plum); display: inline-flex; }
+  .sf-hero__pillico svg { width: 13px; height: 13px; }
+  .sf-hero__title { font-family: var(--sf-serif); font-weight: 400; font-size: clamp(38px, 4.35vw, 64px);
+    line-height: .98; letter-spacing: -.025em; color: var(--sf-ink); margin-bottom: 20px; }
+  .sf-hero__title em, .sf-hero__title i { font-style: normal; color: var(--sf-plum); }
+  .sf-hero__line { font-size: 15.5px; line-height: 1.5; color: var(--sf-ink); }
+  .sf-hero__line strong { font-weight: 700; }
+  .sf-hero__offer { display: inline-block; background: var(--sf-green); color: #fff; font-weight: 700; font-size: 13px;
+    line-height: 1; padding: 4px 8px; border-radius: 6px; vertical-align: 1px; }
+  .sf-hero__btn { display: flex; align-items: center; justify-content: center; width: min(414px, 100%); min-height: 54px;
+    margin-top: 26px; padding: 0 24px; border-radius: 10px; background: var(--sf-plum); color: #fff !important;
+    font-size: 14.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; transition: filter .15s, transform .15s; }
+  .sf-hero__btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
+  .sf-hero__proof { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; color: var(--sf-ink); }
+  .sf-hero__avatars { display: inline-flex; }
+  .sf-hero__avatars img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--hero-bg); margin-left: -6px; }
+  .sf-hero__avatars img:first-child { margin-left: 0; }
+  .sf-hero__media { min-height: 100%; }
+  .sf-hero__media img, .sf-hero__media picture { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-hero__media > svg { position: absolute; inset: 0; }
+  @media (max-width: 749px) {
+    .sf-hero { grid-template-columns: 1fr; min-height: 0; }
+    .sf-hero__media { order: -1; aspect-ratio: 1 / 1; }
+    .sf-hero__txt { padding: 28px 18px 34px; }
+    .sf-hero__title { font-size: clamp(36px, 10.5vw, 46px); margin-bottom: 16px; }
+    .sf-hero__line { font-size: 15px; }
+    .sf-hero__btn { margin-top: 22px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Hero",
+  "tag": "section",
+  "class": "sf-section-hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image (droite)" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Image mobile (optionnelle)" },
+    { "type": "color", "id": "bg", "label": "Fond du texte", "default": "#F9F3EE" },
+    { "type": "text", "id": "pill", "label": "Pastille au-dessus du titre", "default": "Self-care Month Offer" },
+    { "type": "inline_richtext", "id": "title", "label": "Titre (italique = couleur accent)", "default": "Cellulite care made for <em>every body</em>" },
+    { "type": "text", "id": "offer_prefix", "label": "Ligne offre : avant la pastille", "default": "Up to" },
+    { "type": "text", "id": "offer_pill", "label": "Ligne offre : pastille verte", "default": "70% OFF" },
+    { "type": "text", "id": "offer_suffix", "label": "Ligne offre : après la pastille", "default": "the whole collection" },
+    { "type": "inline_richtext", "id": "sub", "label": "Seconde ligne", "default": "Plus <strong>FREE SHIPPING</strong> on every order, no minimum" },
+    { "type": "text", "id": "btn_label", "label": "Bouton", "default": "Shop the 3D leggings" },
+    { "type": "url", "id": "btn_link", "label": "Lien du bouton" },
+    { "type": "header", "content": "Preuve sociale (sous le bouton)" },
+    { "type": "paragraph", "content": "N'indiquez qu'un chiffre réel et vérifiable. Vide = masqué." },
+    { "type": "text", "id": "proof_text", "label": "Texte (ex. 1 200+ clientes)" },
+    { "type": "image_picker", "id": "avatar_1", "label": "Avatar 1" },
+    { "type": "image_picker", "id": "avatar_2", "label": "Avatar 2" },
+    { "type": "image_picker", "id": "avatar_3", "label": "Avatar 3" },
+    { "type": "image_picker", "id": "avatar_4", "label": "Avatar 4" }
+  ],
+  "presets": [ { "name": "SF · Hero" } ]
+}
+{% endschema %}

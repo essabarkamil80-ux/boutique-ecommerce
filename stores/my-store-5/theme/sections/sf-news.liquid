@@ -1,0 +1,72 @@
+{%- assign blog = section.settings.blog -%}
+<section class="sf sf-news" style="--news-bg: {{ section.settings.bg }};">
+  <div class="sf-wrap">
+    <div class="sf-news__head">
+      <h2 class="sf-h2">{{ section.settings.title }}</h2>
+      {%- if blog != blank and section.settings.view_all_label != blank -%}
+        <a class="sf-news__all" href="{{ blog.url }}">{{ section.settings.view_all_label }}</a>
+      {%- endif -%}
+    </div>
+    <ul class="sf-news__grid">
+      {%- if blog != blank and blog.articles_count > 0 -%}
+        {%- for article in blog.articles limit: section.settings.limit -%}
+          <li class="sf-news__card">
+            <a class="sf-news__media sf-media" href="{{ article.url }}" aria-label="{{ article.title | escape }}">
+              {%- if article.image != blank -%}
+                {{ article.image | image_url: width: 900 | image_tag: widths: '400, 600, 800, 900', sizes: '(min-width: 990px) 400px, 88vw', alt: article.title, loading: 'lazy' }}
+              {%- else -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'sf-ph' }}
+              {%- endif -%}
+            </a>
+            <h3 class="sf-news__title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+            <p class="sf-news__date">{{ article.published_at | time_tag: format: 'month_day_year' }}</p>
+            <p class="sf-news__ex">{{ article.excerpt_or_content | strip_html | truncatewords: section.settings.words }}</p>
+          </li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..3) -%}
+          <li class="sf-news__card">
+            <div class="sf-news__media sf-media">{{ 'lifestyle-1' | placeholder_svg_tag: 'sf-ph' }}</div>
+            <h3 class="sf-news__title">Your blog post title</h3>
+            <p class="sf-news__date">September 25, 2026</p>
+            <p class="sf-news__ex">Choose a blog in the section settings to show your latest articles here, with their image, date and a short excerpt.</p>
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sf-news { background: var(--news-bg); padding: clamp(44px, 5.2vw, 76px) 0 clamp(48px, 5.4vw, 78px); }
+  .sf-news__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: clamp(22px, 2.6vw, 38px); }
+  .sf-news__all { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 4px; }
+  .sf-news__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 1.45vw, 21px); }
+  .sf-news__media { display: block; aspect-ratio: 16 / 9; border-radius: 10px; }
+  .sf-news__media img, .sf-news__media > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .sf-news__card:hover .sf-news__media img { transform: scale(1.03); }
+  .sf-news__title { margin-top: 12px; font-family: var(--sf-sans); font-size: clamp(17px, 1.4vw, 20px); font-weight: 600; line-height: 1.22; color: #111; }
+  .sf-news__title a:hover { color: var(--sf-plum); }
+  .sf-news__date { margin-top: 8px; font-size: 13px; color: #8f8683; }
+  .sf-news__ex { margin-top: 12px; font-size: 13.5px; line-height: 1.5; color: var(--sf-muted); }
+  @media (max-width: 749px) {
+    .sf-news__grid { grid-template-columns: 1fr; gap: 28px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Articles",
+  "tag": "section",
+  "class": "sf-section-news",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "News" },
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "range", "id": "limit", "min": 2, "max": 6, "step": 1, "label": "Nombre d'articles", "default": 3 },
+    { "type": "range", "id": "words", "min": 12, "max": 60, "step": 2, "label": "Longueur de l'extrait (mots)", "default": 34 },
+    { "type": "text", "id": "view_all_label", "label": "Lien « tout voir »" },
+    { "type": "color", "id": "bg", "label": "Fond", "default": "#F9F3EE" }
+  ],
+  "presets": [ { "name": "SF · Articles" } ]
+}
+{% endschema %}

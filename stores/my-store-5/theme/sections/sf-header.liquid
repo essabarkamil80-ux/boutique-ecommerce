@@ -1,0 +1,148 @@
+{%- render 'sf-base' -%}
+{%- assign menu = section.settings.menu -%}
+<header class="sf sf-hd{% if section.settings.sticky %} sf-hd--sticky{% endif %}" data-sf-hd>
+  <div class="sf-hd__in">
+    <button type="button" class="sf-hd__burger" data-sf-open aria-label="Menu" aria-expanded="false">{%- render 'sf-icon', name: 'menu' -%}</button>
+
+    <a class="sf-hd__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      {%- if section.settings.logo != blank -%}
+        {%- assign lw = section.settings.logo_width -%}
+        {%- assign lstyle = 'width:' | append: lw | append: 'px;height:auto' -%}
+        {{ section.settings.logo | image_url: width: 600 | image_tag: width: lw, style: lstyle, alt: shop.name, loading: 'eager' }}
+      {%- else -%}
+        <span class="sf-hd__word">{{ section.settings.logo_text | default: shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="sf-hd__nav" aria-label="Navigation principale">
+      <ul>
+        {%- for link in menu.links -%}
+          <li class="sf-hd__item{% if link.links.size > 0 %} has-sub{% endif %}">
+            <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}{%- if link.links.size > 0 -%}<span class="sf-hd__chev">{%- render 'sf-icon', name: 'chevron' -%}</span>{%- endif -%}</a>
+            {%- if link.links.size > 0 -%}
+              <ul class="sf-hd__sub">
+                {%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="sf-hd__icons">
+      {%- if section.settings.show_account and shop.customer_accounts_enabled -%}
+        <a class="sf-hd__icon" href="{{ routes.account_url }}" aria-label="Compte">{%- render 'sf-icon', name: 'account' -%}</a>
+      {%- endif -%}
+      <a class="sf-hd__icon sf-hd__cart" href="{{ routes.cart_url }}" aria-label="Panier ({{ cart.item_count }})">
+        {%- render 'sf-icon', name: 'cart' -%}
+        {%- if cart.item_count > 0 -%}<span class="sf-hd__count">{{ cart.item_count }}</span>{%- endif -%}
+      </a>
+    </div>
+  </div>
+
+  <div class="sf-hd__drawer" data-sf-drawer hidden>
+    <div class="sf-hd__panel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="sf-hd__phead">
+        <span class="sf-hd__word">{{ section.settings.logo_text | default: shop.name }}</span>
+        <button type="button" class="sf-hd__icon" data-sf-close aria-label="Fermer">{%- render 'sf-icon', name: 'close' -%}</button>
+      </div>
+      <ul class="sf-hd__mlist">
+        {%- for link in menu.links -%}
+          <li>
+            {%- if link.links.size > 0 -%}
+              <details><summary>{{ link.title }}{%- render 'sf-icon', name: 'chevron' -%}</summary>
+                <ul>{%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}</ul>
+              </details>
+            {%- else -%}
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  (function () {
+    var hd = document.querySelector('[data-sf-hd]'); if (!hd || hd.dataset.ready) return; hd.dataset.ready = '1';
+    var drawer = hd.querySelector('[data-sf-drawer]'), openBtn = hd.querySelector('[data-sf-open]');
+    function open() { drawer.hidden = false; requestAnimationFrame(function () { drawer.classList.add('is-open'); });
+      openBtn.setAttribute('aria-expanded', 'true'); document.documentElement.style.overflow = 'hidden'; }
+    function close() { drawer.classList.remove('is-open'); openBtn.setAttribute('aria-expanded', 'false');
+      document.documentElement.style.overflow = ''; setTimeout(function () { drawer.hidden = true; }, 250); }
+    openBtn.addEventListener('click', open);
+    hd.querySelector('[data-sf-close]').addEventListener('click', close);
+    drawer.addEventListener('click', function (e) { if (e.target === drawer) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !drawer.hidden) close(); });
+  })();
+</script>
+
+{% stylesheet %}
+  .sf-hd { background: #fff; position: relative; z-index: 20; }
+  .sf-hd--sticky { position: sticky; top: 0; box-shadow: 0 1px 0 rgba(19, 7, 46, .06); }
+  .sf-hd__in { max-width: calc(var(--sf-max) + 2 * var(--sf-gutter)); margin: 0 auto; padding: 0 var(--sf-gutter);
+    min-height: 50px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; }
+  .sf-hd__burger { display: none; width: 40px; height: 40px; place-items: center; }
+  .sf-hd__burger svg { width: 24px; height: 24px; }
+  .sf-hd__logo { justify-self: start; display: inline-flex; align-items: center; }
+  .sf-hd__word { font-family: var(--sf-serif); font-size: 25px; line-height: 1; letter-spacing: -.01em; color: var(--sf-ink); white-space: nowrap; }
+  .sf-hd__nav ul { display: flex; align-items: center; gap: 26px; }
+  .sf-hd__item { position: relative; }
+  .sf-hd__nav > ul > li > a { display: inline-flex; align-items: center; gap: 4px; padding: 15px 0;
+    font-size: 14px; font-weight: 600; color: var(--sf-ink); white-space: nowrap; }
+  .sf-hd__nav > ul > li > a:hover, .sf-hd__nav a[aria-current] { color: var(--sf-plum); }
+  .sf-hd__chev svg { width: 13px; height: 13px; }
+  .sf-hd__sub { position: absolute; top: 100%; left: -16px; min-width: 200px; background: #fff; padding: 10px 0;
+    border-radius: 10px; box-shadow: 0 18px 40px -14px rgba(19, 7, 46, .25); opacity: 0; visibility: hidden;
+    transform: translateY(6px); transition: .16s; display: block !important; }
+  .sf-hd__item:hover > .sf-hd__sub, .sf-hd__item:focus-within > .sf-hd__sub { opacity: 1; visibility: visible; transform: none; }
+  .sf-hd__sub a { display: block; padding: 8px 18px; font-size: 14px; }
+  .sf-hd__sub a:hover { color: var(--sf-plum); background: var(--sf-cream); }
+  .sf-hd__icons { justify-self: end; display: flex; align-items: center; gap: 14px; }
+  .sf-hd__icon { position: relative; width: 36px; height: 36px; display: grid; place-items: center; color: var(--sf-ink); }
+  .sf-hd__icon svg { width: 22px; height: 22px; }
+  .sf-hd__count { position: absolute; top: 1px; right: -1px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px;
+    background: var(--sf-plum); color: #fff; font-size: 10.5px; font-weight: 700; line-height: 17px; text-align: center; }
+
+  .sf-hd__drawer { position: fixed; inset: 0; z-index: 100; background: rgba(19, 7, 46, 0); transition: background .25s; }
+  .sf-hd__drawer.is-open { background: rgba(19, 7, 46, .45); }
+  .sf-hd__panel { position: absolute; top: 0; bottom: 0; left: 0; width: min(86vw, 360px); background: #fff; padding: 16px 20px;
+    transform: translateX(-100%); transition: transform .25s ease; overflow-y: auto; }
+  .sf-hd__drawer.is-open .sf-hd__panel { transform: none; }
+  .sf-hd__phead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .sf-hd__mlist > li { border-bottom: 1px solid var(--sf-line); }
+  .sf-hd__mlist a, .sf-hd__mlist summary { display: flex; align-items: center; justify-content: space-between;
+    padding: 15px 0; font-size: 16px; font-weight: 600; list-style: none; cursor: pointer; }
+  .sf-hd__mlist summary::-webkit-details-marker { display: none; }
+  .sf-hd__mlist summary svg { width: 16px; height: 16px; transition: transform .2s; }
+  .sf-hd__mlist details[open] summary svg { transform: rotate(180deg); }
+  .sf-hd__mlist details ul a { padding: 10px 0 10px 14px; font-weight: 400; font-size: 15px; }
+
+  @media (max-width: 989px) {
+    .sf-hd__in { grid-template-columns: 40px 1fr auto; gap: 8px; min-height: 58px; }
+    .sf-hd__burger { display: grid; }
+    .sf-hd__logo { justify-self: center; }
+    .sf-hd__nav { display: none; }
+    .sf-hd__word { font-size: 22px; }
+    .sf-hd__icons { gap: 4px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · En-tête",
+  "tag": "section",
+  "class": "sf-section-hd",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo (sinon, texte)" },
+    { "type": "range", "id": "logo_width", "min": 60, "max": 260, "step": 5, "unit": "px", "label": "Largeur du logo", "default": 130 },
+    { "type": "text", "id": "logo_text", "label": "Texte du logo (vide = nom de la boutique)" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "show_account", "label": "Icône compte", "default": true },
+    { "type": "checkbox", "id": "sticky", "label": "En-tête collant", "default": false }
+  ],
+  "presets": [ { "name": "SF · En-tête" } ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

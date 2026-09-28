@@ -1,0 +1,20 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "sf_announcement": {
+      "type": "sf-announcement",
+      "settings": {}
+    },
+    "sf_header": {
+      "type": "sf-header",
+      "settings": {
+        "menu": "main-menu"
+      }
+    }
+  },
+  "order": [
+    "sf_announcement",
+    "sf_header"
+  ]
+}

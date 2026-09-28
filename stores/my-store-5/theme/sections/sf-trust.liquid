@@ -1,0 +1,66 @@
+{%- if section.blocks.size > 0 -%}
+<section class="sf sf-trust" style="--trust-bg: {{ section.settings.bg }};">
+  <ul class="sf-wrap sf-trust__row" style="--trust-n: {{ section.blocks.size }};">
+    {%- for block in section.blocks -%}
+      <li class="sf-trust__item" {{ block.shopify_attributes }}>
+        <span class="sf-trust__ico">
+          {%- if block.settings.icon == 'stars' -%}
+            <span class="sf-tp">{%- for i in (1..5) -%}<span>{%- render 'sf-icon', name: 'star' -%}</span>{%- endfor -%}</span>
+          {%- else -%}
+            {%- render 'sf-icon', name: block.settings.icon -%}
+          {%- endif -%}
+        </span>
+        <span class="sf-trust__txt">{%- if block.settings.bold != blank -%}<b>{{ block.settings.bold }}</b> {% endif -%}{{ block.settings.text }}</span>
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+{%- endif -%}
+
+{% stylesheet %}
+  .sf-trust { background: var(--trust-bg); color: #fff; padding: clamp(28px, 3.1vw, 45px) 0 clamp(26px, 2.8vw, 41px); }
+  .sf-trust__row { display: grid; grid-template-columns: repeat(var(--trust-n), 1fr); gap: 20px; }
+  .sf-trust__item { display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center; }
+  .sf-trust__ico { display: inline-flex; min-height: 20px; align-items: center; }
+  .sf-trust__ico > svg { width: 22px; height: 22px; }
+  .sf-trust__ico .sf-tp { font-size: 15px; }
+  .sf-trust__txt { font-size: 13.5px; color: rgba(255, 255, 255, .88); }
+  .sf-trust__txt b { color: #fff; font-weight: 700; }
+  @media (max-width: 749px) {
+    .sf-trust__row { grid-template-columns: repeat(2, 1fr); gap: 22px 12px; }
+    .sf-trust__txt { font-size: 12.5px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Réassurance",
+  "tag": "section",
+  "class": "sf-section-trust",
+  "settings": [
+    { "type": "paragraph", "content": "Chaque promesse doit correspondre à vos vraies conditions (livraison, retours, tailles). N'utilisez l'icône étoiles qu'avec votre note réelle." },
+    { "type": "color", "id": "bg", "label": "Fond", "default": "#6B2441" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Promesse",
+      "limit": 6,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icône", "default": "truck", "options": [
+          { "value": "stars", "label": "Étoiles" }, { "value": "truck", "label": "Livraison" }, { "value": "ruler", "label": "Mètre" },
+          { "value": "shield", "label": "Bouclier" }, { "value": "lock", "label": "Cadenas" }, { "value": "heart", "label": "Cœur" }, { "value": "check", "label": "Coche" }
+        ] },
+        { "type": "text", "id": "bold", "label": "Texte en gras", "default": "Free shipping" },
+        { "type": "text", "id": "text", "label": "Suite du texte", "default": "no minimum" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Réassurance", "blocks": [
+    { "type": "item", "settings": { "icon": "lock", "bold": "Secure", "text": "checkout" } },
+    { "type": "item", "settings": { "icon": "truck", "bold": "Free shipping", "text": "no minimum" } },
+    { "type": "item", "settings": { "icon": "ruler", "bold": "Fit guaranteed", "text": "from S to 5XL" } },
+    { "type": "item", "settings": { "icon": "shield", "bold": "Free returns", "text": "within 30 days" } }
+  ] } ]
+}
+{% endschema %}

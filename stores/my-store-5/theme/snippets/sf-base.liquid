@@ -1,0 +1,96 @@
+{%- comment -%}
+  Socle commun des sections "sf-" : polices + jetons de design + classes partagees.
+  Rendu une seule fois par page, depuis sf-header (le groupe d'en-tete est present partout).
+{%- endcomment -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+  :root {
+    --sf-plum: #6B2441;
+    --sf-ink: #13072E;
+    --sf-cream: #F9F3EE;
+    --sf-card: #F6EBE5;
+    --sf-green: #00B67A;
+    --sf-indigo: #4E43D8;
+    --sf-muted: #685F5B;
+    --sf-line: #E8E1DC;
+    --sf-serif: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+    --sf-sans: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --sf-max: 1224px;
+    --sf-gutter: clamp(16px, 7.5vw, 108px);
+    --sf-edge: max(var(--sf-gutter), calc((100% - var(--sf-max)) / 2));
+  }
+  /* Tout le socle est en :where() (specificite nulle) : il est charge dans le <body>, APRES le CSS des
+     sections, et ne doit jamais ecraser leurs couleurs/marges. Seul .sf-h2 garde une specificite normale
+     pour passer devant les styles h2 du theme hote. */
+  :where(.sf) { font-family: var(--sf-sans); color: var(--sf-ink); -webkit-font-smoothing: antialiased; }
+  /* Remise a zero en :where() = specificite nulle, pour que les classes des composants gagnent toujours. */
+  :where(.sf) *, :where(.sf) *::before, :where(.sf) *::after { box-sizing: border-box; }
+  :where(.sf) :where(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.sf) :where(ul, ol) { list-style: none; }
+  :where(.sf) :where(img) { display: block; max-width: 100%; height: auto; }
+  :where(.sf) :where(a) { color: inherit; text-decoration: none; }
+  :where(.sf) :where(button) { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  :where(.sf-wrap) { width: 100%; max-width: calc(var(--sf-max) + 2 * var(--sf-gutter)); margin: 0 auto; padding: 0 var(--sf-gutter); }
+  .sf-h2 { font-family: var(--sf-serif); font-weight: 400; font-size: clamp(30px, 3.3vw, 48px); line-height: 1.05; letter-spacing: -0.015em; color: var(--sf-ink); }
+  :where(.sf-ph) { background: var(--sf-card); overflow: hidden; }
+  :where(.sf-ph) svg { width: 100%; height: 100%; display: block; fill: rgba(107, 36, 65, .22); }
+  :where(.sf-media) { position: relative; overflow: hidden; background: var(--sf-card); }
+  :where(.sf-media) > img, :where(.sf-media) > svg { width: 100%; height: 100%; object-fit: cover; }
+  .sf-stars { display: inline-flex; gap: 1px; color: var(--sf-green); line-height: 1; }
+  .sf-stars svg { width: 1em; height: 1em; display: block; }
+  .sf-tp { display: inline-flex; gap: 2px; }
+  .sf-tp span { width: 1.15em; height: 1.15em; background: var(--sf-green); display: grid; place-items: center; }
+  .sf-tp svg { width: .78em; height: .78em; fill: #fff; }
+  /* rangee defilante (carrousels a bord perdu a droite) */
+  :where(.sf-rail) { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    padding-left: var(--sf-edge); padding-right: var(--sf-gutter); scroll-padding-left: var(--sf-edge); }
+  :where(.sf-rail)::-webkit-scrollbar { display: none; }
+  :where(.sf-rail) > * { scroll-snap-align: start; flex: 0 0 auto; }
+  :where(.sf-arrows) { display: flex; gap: 8px; }
+  .sf-arrow { width: 38px; height: 38px; border-radius: 50%; border: 1px solid currentColor; display: grid; place-items: center; opacity: .75; transition: opacity .15s; }
+  .sf-arrow:hover { opacity: 1; }
+  .sf-arrow svg { width: 16px; height: 16px; }
+  .sf-arrow[disabled] { opacity: .25; cursor: default; }
+  @media (prefers-reduced-motion: reduce) { .sf-rail { scroll-behavior: auto; } }
+
+  /* Carte produit (snippet sf-card) */
+  .sf-card { width: 100%; }
+  .sf-card__media { display: block; aspect-ratio: 4 / 5; border-radius: 12px; }
+  .sf-card__img, .sf-card__media > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .35s ease; }
+  .sf-card__img--2 { opacity: 0; }
+  .sf-card__media:hover .sf-card__img--2 { opacity: 1; }
+  .sf-card__badge { position: absolute; top: 10px; right: 10px; z-index: 1; background: var(--sf-indigo); color: #fff;
+    font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; line-height: 1; padding: 4px 7px; border-radius: 4px; }
+  .sf-card__badge--new { background: #111; }
+  .sf-card__badge--new::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #fff; margin-right: 5px; vertical-align: 1px; }
+  .sf-card__sw { display: flex; align-items: center; gap: 6px; margin-top: 12px; }
+  .sf-card__sw li { width: 12px; height: 12px; border-radius: 50%; background: var(--sf-card); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .14); }
+  .sf-card__sw .sf-card__more { width: auto; height: auto; background: none; box-shadow: none; font-size: 11px; color: #9a9290; }
+  .sf-card__rate { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 11px; color: #6d6664; }
+  .sf-rate { position: relative; display: inline-flex; font-size: 12px; line-height: 1; }
+  .sf-rate__bg, .sf-rate__fg { display: inline-flex; gap: 1px; }
+  .sf-rate__bg { color: #D9D4D0; }
+  .sf-rate__fg { position: absolute; top: 0; left: 0; bottom: 0; overflow: hidden; color: var(--sf-green); white-space: nowrap; }
+  .sf-rate svg { width: 1em; height: 1em; flex: 0 0 auto; }
+  .sf-card__row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-top: 8px; }
+  .sf-card__title { font-family: var(--sf-serif); font-size: 18px; line-height: 1.15; color: var(--sf-ink); }
+  .sf-card__price { display: flex; flex-direction: column; align-items: flex-end; font-size: 14px; font-weight: 600; white-space: nowrap; color: var(--sf-ink); }
+  .sf-card__price s { font-size: 11px; font-weight: 400; color: #9a9290; }
+  .sf-card__sub { margin-top: 5px; font-size: 13px; color: var(--sf-muted); }
+</style>
+<script>
+  /* Fleches des carrousels .sf-rail : une seule fonction pour toutes les sections. */
+  window.sfRail = window.sfRail || function (root) {
+    var rail = root.querySelector('.sf-rail'); if (!rail) return;
+    var prev = root.querySelector('[data-sf-prev]'), next = root.querySelector('[data-sf-next]');
+    function step() { var c = rail.children[0]; if (!c) return rail.clientWidth * .8;
+      var g = parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap) || 0; return c.getBoundingClientRect().width + g; }
+    function sync() { if (!prev || !next) return; prev.disabled = rail.scrollLeft < 4;
+      next.disabled = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 4; }
+    if (prev) prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    if (next) next.addEventListener('click', function () { rail.scrollBy({ left: step(), behavior: 'smooth' }); });
+    rail.addEventListener('scroll', sync, { passive: true }); window.addEventListener('resize', sync); sync();
+  };
+</script>

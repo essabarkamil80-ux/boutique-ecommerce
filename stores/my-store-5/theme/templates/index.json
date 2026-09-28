@@ -1,0 +1,306 @@
+{
+  "sections": {
+    "hero": {
+      "type": "sf-hero",
+      "settings": {}
+    },
+    "press": {
+      "type": "sf-press",
+      "blocks": {
+        "logo-1": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        },
+        "logo-2": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        },
+        "logo-3": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        },
+        "logo-4": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        },
+        "logo-5": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        },
+        "logo-6": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        }
+      },
+      "block_order": [
+        "logo-1",
+        "logo-2",
+        "logo-3",
+        "logo-4",
+        "logo-5",
+        "logo-6"
+      ],
+      "settings": {}
+    },
+    "bestsellers": {
+      "type": "sf-products",
+      "settings": {
+        "title": "Best Sellers"
+      }
+    },
+    "promo": {
+      "type": "sf-promo",
+      "blocks": {
+        "tile-1": {
+          "type": "tile",
+          "settings": {
+            "icon": "feather",
+            "label": "Smooths and lifts"
+          }
+        },
+        "tile-2": {
+          "type": "tile",
+          "settings": {
+            "icon": "heart",
+            "label": "Seamless 3D knit"
+          }
+        },
+        "tile-3": {
+          "type": "tile",
+          "settings": {
+            "icon": "sparkle",
+            "label": "No routine to keep"
+          }
+        }
+      },
+      "block_order": [
+        "tile-1",
+        "tile-2",
+        "tile-3"
+      ],
+      "settings": {}
+    },
+    "categories": {
+      "type": "sf-categories",
+      "blocks": {
+        "cat-1": {
+          "type": "category",
+          "settings": {
+            "label": "3D Leggings",
+            "sub": "13 colors"
+          }
+        },
+        "cat-2": {
+          "type": "category",
+          "settings": {
+            "label": "3D Shorts",
+            "sub": "11 colors"
+          }
+        },
+        "cat-3": {
+          "type": "category",
+          "settings": {
+            "label": "3D T-shirts",
+            "sub": "3 colors"
+          }
+        },
+        "cat-4": {
+          "type": "category",
+          "settings": {
+            "label": "3D Sleeves",
+            "sub": "2 colors"
+          }
+        }
+      },
+      "block_order": [
+        "cat-1",
+        "cat-2",
+        "cat-3",
+        "cat-4"
+      ],
+      "settings": {}
+    },
+    "reviews": {
+      "type": "sf-reviews",
+      "blocks": {
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "name": "Customer name",
+            "verified": false,
+            "meta": "Size · age · city",
+            "badge": "7 weeks",
+            "quote": "Paste a real customer review here, with her permission.",
+            "widget": "compare",
+            "w_before": "What she tried before",
+            "w_after": "What changed for her"
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "name": "Customer name",
+            "verified": false,
+            "meta": "Size · age · city",
+            "badge": "7 weeks",
+            "quote": "Paste a real customer review here, with her permission.",
+            "widget": "stats",
+            "w_s1_val": "—",
+            "w_s1_lbl": "stat label",
+            "w_s2_val": "—",
+            "w_s2_lbl": "stat label",
+            "w_s3_val": "—",
+            "w_s3_lbl": "stat label"
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "name": "Customer name",
+            "verified": false,
+            "meta": "Size · age · city",
+            "badge": "7 weeks",
+            "quote": "Paste a real customer review here, with her permission.",
+            "widget": "progress",
+            "w_p_title": "Result",
+            "w_p_hi": "from week —"
+          }
+        },
+        "review-4": {
+          "type": "review",
+          "settings": {
+            "name": "Customer name",
+            "verified": false,
+            "meta": "Size · age · city",
+            "badge": "7 weeks",
+            "quote": "Paste a real customer review here, with her permission.",
+            "widget": "score",
+            "w_sc_hi": "rating"
+          }
+        }
+      },
+      "block_order": [
+        "review-1",
+        "review-2",
+        "review-3",
+        "review-4"
+      ],
+      "settings": {}
+    },
+    "colors": {
+      "type": "sf-colors",
+      "blocks": {
+        "color-1": {
+          "type": "color",
+          "settings": {
+            "label": "Black"
+          }
+        },
+        "color-2": {
+          "type": "color",
+          "settings": {
+            "label": "Beige"
+          }
+        },
+        "color-3": {
+          "type": "color",
+          "settings": {
+            "label": "Grey"
+          }
+        },
+        "color-4": {
+          "type": "color",
+          "settings": {
+            "label": "Blue"
+          }
+        },
+        "color-5": {
+          "type": "color",
+          "settings": {
+            "label": "Browse all",
+            "dots": "#111111, #8b3a5b, #12808a, #d7c3a6, #f2b6c6, #999999"
+          }
+        }
+      },
+      "block_order": [
+        "color-1",
+        "color-2",
+        "color-3",
+        "color-4",
+        "color-5"
+      ],
+      "settings": {}
+    },
+    "news": {
+      "type": "sf-news",
+      "settings": {}
+    },
+    "trust": {
+      "type": "sf-trust",
+      "blocks": {
+        "item-1": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "bold": "Secure",
+            "text": "checkout"
+          }
+        },
+        "item-2": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "bold": "Free shipping",
+            "text": "no minimum"
+          }
+        },
+        "item-3": {
+          "type": "item",
+          "settings": {
+            "icon": "ruler",
+            "bold": "Fit guaranteed",
+            "text": "from S to 5XL"
+          }
+        },
+        "item-4": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "bold": "Free returns",
+            "text": "within 30 days"
+          }
+        }
+      },
+      "block_order": [
+        "item-1",
+        "item-2",
+        "item-3",
+        "item-4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "press",
+    "bestsellers",
+    "promo",
+    "categories",
+    "reviews",
+    "colors",
+    "news",
+    "trust"
+  ]
+}

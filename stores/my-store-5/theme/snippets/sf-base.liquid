@@ -27,12 +27,17 @@
   :where(.sf) { font-family: var(--sf-sans); color: var(--sf-ink); -webkit-font-smoothing: antialiased; }
   /* Remise a zero en :where() = specificite nulle, pour que les classes des composants gagnent toujours. */
   :where(.sf) *, :where(.sf) *::before, :where(.sf) *::after { box-sizing: border-box; }
-  :where(.sf) :where(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
-  :where(.sf) :where(ul, ol) { list-style: none; }
+  :where(.sf) h1, :where(.sf) h2, :where(.sf) h3, :where(.sf) h4, :where(.sf) p, :where(.sf) ul, :where(.sf) ol,
+  :where(.sf) figure, :where(.sf) blockquote { margin: 0; padding: 0; }
+  :where(.sf) ul, :where(.sf) ol { list-style: none; }
+  :where(.sf) blockquote { border: 0; }
+  /* Horizon impose sa propre casse / interlettrage / marge aux titres : on les neutralise, chaque composant
+     redefinit ensuite ce dont il a besoin. */
+  :where(.sf) h1, :where(.sf) h2, :where(.sf) h3, :where(.sf) h4 { text-transform: none; letter-spacing: normal; font-style: normal; }
   :where(.sf) :where(img) { display: block; max-width: 100%; height: auto; }
   :where(.sf) :where(a) { color: inherit; text-decoration: none; }
   :where(.sf) :where(button) { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
-  :where(.sf-wrap) { width: 100%; max-width: calc(var(--sf-max) + 2 * var(--sf-gutter)); margin: 0 auto; padding: 0 var(--sf-gutter); }
+  .sf-wrap { width: 100%; max-width: calc(var(--sf-max) + 2 * var(--sf-gutter)); margin-left: auto; margin-right: auto; padding-left: var(--sf-gutter); padding-right: var(--sf-gutter); }
   .sf-h2 { font-family: var(--sf-serif); font-weight: 400; font-size: clamp(30px, 3.3vw, 48px); line-height: 1.05; letter-spacing: -0.015em; color: var(--sf-ink); }
   :where(.sf-ph) { background: var(--sf-card); overflow: hidden; }
   :where(.sf-ph) svg { width: 100%; height: 100%; display: block; fill: rgba(107, 36, 65, .22); }
@@ -44,7 +49,7 @@
   .sf-tp span { width: 1.15em; height: 1.15em; background: var(--sf-green); display: grid; place-items: center; }
   .sf-tp svg { width: .78em; height: .78em; fill: #fff; }
   /* rangee defilante (carrousels a bord perdu a droite) */
-  :where(.sf-rail) { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  .sf-rail { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
     padding-left: var(--sf-edge); padding-right: var(--sf-gutter); scroll-padding-left: var(--sf-edge); }
   :where(.sf-rail)::-webkit-scrollbar { display: none; }
   :where(.sf-rail) > * { scroll-snap-align: start; flex: 0 0 auto; }

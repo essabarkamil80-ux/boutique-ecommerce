@@ -97,5 +97,6 @@ async function renderSection(id, conf, ctxBase) {
   html += '<main>';
   for (const k of idx.order) html += await renderSection(k, idx.sections[k], ctxBase);
   html += '</main>';
-  process.stdout.write(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0}</style><style>${CSS.join('\n')}</style></head><body>${html}</body></html>`);
+  const HG = process.argv[3] === 'horizon' ? fs.readFileSync(path.join(__dirname, 'horizon-globals.css'), 'utf8') : '';
+  process.stdout.write(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0}</style><style>${HG}</style><style>${CSS.join('\n')}</style></head><body>${html}</body></html>`);
 })().catch((e) => { console.error('ERREUR :', e.message); process.exit(1); });

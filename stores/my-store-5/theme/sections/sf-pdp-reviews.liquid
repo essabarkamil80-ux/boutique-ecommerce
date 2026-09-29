@@ -1,0 +1,135 @@
+{%- assign s = section.settings -%}
+{%- assign revs = section.blocks | where: 'type', 'review' -%}
+<section class="sf sf-prev" id="sf-prev-{{ section.id }}" data-per="{{ s.per_page }}">
+  <div class="sf-wrap">
+    <div class="sf-prev__head">
+      {%- if s.badge != blank -%}<p class="sf-prev__badge"><i></i>{{ s.badge }}</p>{%- endif -%}
+      <h2 class="sf-h2 sf-prev__title">{{ s.title_1 }} <em>{{ s.title_2 }}</em></h2>
+    </div>
+
+    {%- if s.g1_label != blank -%}
+      <div class="sf-prev__gauges">
+        <ul>
+          {%- for n in (1..4) -%}
+            {%- assign kl = 'g' | append: n | append: '_label' -%}
+            {%- assign kv = 'g' | append: n | append: '_value' -%}
+            {%- if s[kl] != blank -%}
+              {%- assign gp = s[kv] | times: 20 -%}
+              <li><span>{{ s[kl] }}</span><i><em style="left: {{ gp }}%"></em></i><b>{% if s[kv] > 0 %}{{ s[kv] }}/5{% else %}—{% endif %}</b></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+        {%- if s.gauge_note != blank -%}<p class="sf-prev__gnote">{{ s.gauge_note }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <ul class="sf-prev__list" data-list>
+      {%- for r in revs -%}
+        {%- assign rs = r.settings -%}
+        <li class="sf-prev__item" {{ r.shopify_attributes }}>
+          {%- assign rp = rs.rating | times: 20 -%}
+          <span class="sf-rate sf-prev__stars" aria-label="{{ rs.rating }} / 5"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rp }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>
+          <p class="sf-prev__who"><i>{{ rs.name | slice: 0 }}</i>{{ rs.name }}{%- if rs.verified -%}<span class="sf-prev__ver">{%- render 'sf-icon', name: 'verified' -%}Verified</span>{%- endif -%}</p>
+          <h3 class="sf-prev__rt">{{ rs.title }}</h3>
+          <p class="sf-prev__rx">{{ rs.text }}</p>
+          {%- if rs.photo != blank -%}
+            <span class="sf-prev__photo sf-media">{{ rs.photo | image_url: width: 400 | image_tag: widths: '200, 400', sizes: '112px', alt: rs.title, loading: 'lazy' }}</span>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+    <nav class="sf-prev__pager" data-pager aria-label="Reviews pages" hidden></nav>
+  </div>
+</section>
+<script>
+  (function () {
+    var root = document.getElementById('sf-prev-{{ section.id }}'); if (!root || root.dataset.ready) return; root.dataset.ready = '1';
+    var per = parseInt(root.dataset.per, 10) || 5, items = [].slice.call(root.querySelectorAll('[data-list] > li')), pager = root.querySelector('[data-pager]'), page = 1;
+    var pages = Math.ceil(items.length / per); if (pages < 2) return;
+    function render() {
+      items.forEach(function (li, i) { li.hidden = Math.floor(i / per) + 1 !== page; });
+      var h = '<button type="button" data-go="' + (page - 1) + '" aria-label="Previous"' + (page === 1 ? ' disabled' : '') + '>‹</button>';
+      for (var p = 1; p <= pages; p++) h += '<button type="button" data-go="' + p + '"' + (p === page ? ' class="is-on" aria-current="page"' : '') + '>' + p + '</button>';
+      h += '<button type="button" data-go="' + (page + 1) + '" aria-label="Next"' + (page === pages ? ' disabled' : '') + '>›</button>';
+      pager.innerHTML = h; pager.hidden = false;
+    }
+    pager.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-go]'); if (!b || b.disabled) return; page = parseInt(b.dataset.go, 10); render();
+      root.querySelector('[data-list]').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    render();
+  })();
+</script>
+
+{% stylesheet %}
+  .sf-prev { background: #fff; padding: clamp(40px, 4.4vw, 64px) 0 clamp(36px, 4vw, 56px); }
+  .sf-prev__head { text-align: center; }
+  .sf-prev__badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: #5f5654; }
+  .sf-prev__badge i { width: 8px; height: 8px; border-radius: 50%; background: var(--sf-green); }
+  .sf-prev .sf-prev__title { margin-top: 14px; }
+  .sf-prev__title em { font-style: normal; color: var(--sf-plum); }
+  .sf-prev__gauges { max-width: 400px; margin: clamp(20px, 2.4vw, 34px) auto 0; padding: 14px 18px 12px; border-radius: 10px; background: #fff; box-shadow: 0 8px 26px -20px rgba(19, 7, 46, .35); }
+  .sf-prev__gauges li { display: grid; grid-template-columns: 96px 1fr 34px; gap: 12px; align-items: center; padding: 6px 0; font-size: 12px; color: #4d4543; }
+  .sf-prev__gauges i { position: relative; height: 3px; border-radius: 3px; background: linear-gradient(90deg, #BFE7D8, #F2DDE2); }
+  .sf-prev__gauges em { position: absolute; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--sf-green); }
+  .sf-prev__gauges b { font-size: 11px; font-weight: 400; text-align: right; color: #8b8280; }
+  .sf-prev__gnote { margin-top: 8px; text-align: center; font-size: 11px; color: #8b8280; }
+  .sf-prev__list { margin-top: clamp(28px, 3.6vw, 52px); }
+  .sf-prev__item { padding: 26px 0; border-bottom: 1px solid #EFE9E5; }
+  .sf-prev__item[hidden] { display: none; }
+  .sf-prev__stars { font-size: 18px; }
+  .sf-prev__stars .sf-rate__bg { color: #D9D4D0; }
+  .sf-prev__who { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: 13px; font-weight: 700; color: var(--sf-ink); }
+  .sf-prev__who i { width: 30px; height: 30px; border-radius: 50%; background: #E7F3EE; display: grid; place-items: center; font-style: normal; font-size: 12px; color: #0d7a5b; text-transform: uppercase; }
+  .sf-prev__ver { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 600; color: var(--sf-green); }
+  .sf-prev__ver svg { width: 11px; height: 11px; }
+  .sf-prev__rt { margin-top: 14px; font-family: var(--sf-sans); font-size: 16px; font-weight: 700; line-height: 1.3; color: var(--sf-ink); }
+  .sf-prev__rx { margin-top: 6px; font-size: 14px; line-height: 1.5; color: #4d4543; max-width: 760px; }
+  .sf-prev__photo { display: block; width: 112px; height: 112px; margin-top: 14px; border-radius: 8px; }
+  .sf-prev__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-prev__pager { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 26px; }
+  .sf-prev__pager[hidden] { display: none; }
+  .sf-prev__pager button { min-width: 28px; height: 28px; padding: 0 6px; border-radius: 50%; font-size: 12px; color: #6f6664; }
+  .sf-prev__pager button:disabled { opacity: .35; cursor: default; }
+  .sf-prev__pager button.is-on { background: #12808A; color: #fff; font-weight: 700; }
+  @media (max-width: 749px) { .sf-prev__gauges li { grid-template-columns: 80px 1fr 30px; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Liste d'avis",
+  "tag": "section",
+  "class": "sf-section-prev",
+  "settings": [
+    { "type": "paragraph", "content": "Squelette prêt à remplir. Étoiles à 0 = grises ; jauges à 0 = « — ». N'entrez que de vrais avis et de vraies notes." },
+    { "type": "text", "id": "badge", "label": "Pastille au-dessus du titre", "default": "Customer reviews" },
+    { "type": "text", "id": "title_1", "label": "Titre : début", "default": "What our customers say about" },
+    { "type": "text", "id": "title_2", "label": "Titre : fin (prune)", "default": "Essabar&Co." },
+    { "type": "text", "id": "g1_label", "label": "Jauge 1 : nom (vide = pas de jauges)", "default": "Fit" },
+    { "type": "range", "id": "g1_value", "min": 0, "max": 5, "step": 0.1, "label": "Jauge 1 : note réelle", "default": 0 },
+    { "type": "text", "id": "g2_label", "label": "Jauge 2 : nom", "default": "Comfort" },
+    { "type": "range", "id": "g2_value", "min": 0, "max": 5, "step": 0.1, "label": "Jauge 2 : note réelle", "default": 0 },
+    { "type": "text", "id": "g3_label", "label": "Jauge 3 : nom", "default": "Quality" },
+    { "type": "range", "id": "g3_value", "min": 0, "max": 5, "step": 0.1, "label": "Jauge 3 : note réelle", "default": 0 },
+    { "type": "text", "id": "g4_label", "label": "Jauge 4 : nom", "default": "Value" },
+    { "type": "range", "id": "g4_value", "min": 0, "max": 5, "step": 0.1, "label": "Jauge 4 : note réelle", "default": 0 },
+    { "type": "text", "id": "gauge_note", "label": "Petite ligne sous les jauges" },
+    { "type": "range", "id": "per_page", "min": 3, "max": 10, "step": 1, "label": "Avis par page", "default": 5 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Avis",
+      "settings": [
+        { "type": "range", "id": "rating", "min": 0, "max": 5, "step": 1, "label": "Étoiles", "default": 0 },
+        { "type": "text", "id": "name", "label": "Prénom + initiale", "default": "Customer name" },
+        { "type": "checkbox", "id": "verified", "label": "Achat vérifié (cocher seulement si c'est réel)", "default": false },
+        { "type": "text", "id": "title", "label": "Titre de l'avis", "default": "Review title" },
+        { "type": "textarea", "id": "text", "label": "Texte de l'avis", "default": "Paste a real customer review here." },
+        { "type": "image_picker", "id": "photo", "label": "Photo de la cliente (optionnelle)" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Liste d'avis", "blocks": [ { "type": "review" }, { "type": "review" }, { "type": "review" } ] } ]
+}
+{% endschema %}

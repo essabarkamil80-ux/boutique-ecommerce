@@ -1,0 +1,112 @@
+{%- assign s = section.settings -%}
+<section class="sf sf-feat" style="--feat-bg: {{ s.bg }};">
+  <div class="sf-wrap sf-feat__grid">
+    <div class="sf-feat__media sf-media">
+      {%- if s.image != blank -%}
+        {{ s.image | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '(min-width: 990px) 607px, 92vw', alt: s.image.alt, loading: 'lazy' }}
+      {%- else -%}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'sf-ph' }}
+      {%- endif -%}
+    </div>
+    <div class="sf-feat__txt">
+      {%- assign chips = section.blocks | where: 'type', 'chip' -%}
+      {%- if chips.size > 0 -%}
+        <ul class="sf-feat__chips">
+          {%- for c in chips -%}<li {{ c.shopify_attributes }}>{%- render 'sf-icon', name: c.settings.icon -%}{{ c.settings.text }}</li>{%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <h2 class="sf-h2 sf-feat__title">{{ s.title_1 }}<br><em>{{ s.title_2 }}</em></h2>
+      {%- if s.sub != blank -%}<p class="sf-feat__sub">{{ s.sub }}</p>{%- endif -%}
+      <ul class="sf-feat__rows">
+        {%- for r in section.blocks -%}
+          {%- if r.type == 'row' -%}
+            <li class="sf-feat__row" {{ r.shopify_attributes }}>
+              <span class="sf-feat__thumb sf-media">
+                {%- if r.settings.image != blank -%}{{ r.settings.image | image_url: width: 300 | image_tag: widths: '150, 300', sizes: '100px', alt: r.settings.title, loading: 'lazy' }}{%- else -%}{{ 'product-apparel-2' | placeholder_svg_tag: 'sf-ph' }}{%- endif -%}
+              </span>
+              <div class="sf-feat__rtxt">
+                <div class="sf-feat__rhead"><b>{{ r.settings.title }}</b>{%- if r.settings.tag != blank -%}<small>{{ r.settings.tag }}</small>{%- endif -%}</div>
+                <i class="sf-feat__line"></i>
+                <p>{{ r.settings.text }}</p>
+              </div>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sf-feat { background: var(--feat-bg); padding: clamp(40px, 4.4vw, 64px) 0 clamp(40px, 4.6vw, 66px); }
+  .sf-feat__grid { display: grid; grid-template-columns: minmax(0, 607fr) minmax(0, 572fr); column-gap: clamp(24px, 3.2vw, 45px); align-items: center; }
+  .sf-feat__media { aspect-ratio: 607 / 708; border-radius: 14px; background: #F1F0EF; }
+  .sf-feat__media img, .sf-feat__media > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-feat__chips { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+  .sf-feat__chips li { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #6f6664; }
+  .sf-feat__chips svg { width: 14px; height: 14px; color: var(--sf-plum); }
+  .sf-feat .sf-feat__title { margin-top: 18px; line-height: 1.06; letter-spacing: -.02em; }
+  .sf-feat__title em { font-style: normal; color: var(--sf-plum); }
+  .sf-feat__sub { margin-top: 14px; font-size: 14.5px; line-height: 1.5; color: #6f6664; }
+  .sf-feat__rows { margin-top: clamp(24px, 3vw, 44px); display: grid; gap: clamp(16px, 1.9vw, 28px); }
+  .sf-feat__row { display: grid; grid-template-columns: clamp(76px, 7vw, 100px) 1fr; gap: 16px; align-items: start; }
+  .sf-feat__thumb { aspect-ratio: 1; border-radius: 10px; background: var(--sf-card); }
+  .sf-feat__thumb img, .sf-feat__thumb > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-feat__rhead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .sf-feat__rhead b { font-size: 15.5px; font-weight: 700; color: var(--sf-ink); }
+  .sf-feat__rhead small { font-size: 11px; color: #9a9290; }
+  .sf-feat__line { display: block; height: 2px; margin: 7px 0 9px; border-radius: 2px; background: linear-gradient(90deg, var(--sf-plum) 0 78%, #E9DCD8 78%); }
+  .sf-feat__rtxt p { font-size: 13px; line-height: 1.5; color: #6f6664; }
+  @media (max-width: 749px) {
+    .sf-feat__grid { grid-template-columns: 1fr; row-gap: 24px; }
+    .sf-feat__media { aspect-ratio: 1 / 1; }
+    .sf-feat__row { grid-template-columns: 76px 1fr; gap: 14px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Atouts produit",
+  "tag": "section",
+  "class": "sf-section-feat",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Fond", "default": "#FFFFFF" },
+    { "type": "image_picker", "id": "image", "label": "Grande image (à gauche)" },
+    { "type": "text", "id": "title_1", "label": "Titre : ligne 1", "default": "A 3D texture designed" },
+    { "type": "text", "id": "title_2", "label": "Titre : ligne 2 (prune)", "default": "to sculpt your silhouette" },
+    { "type": "text", "id": "sub", "label": "Sous-titre", "default": "Comfort, support and a flattering fit, every day." }
+  ],
+  "blocks": [
+    {
+      "type": "chip",
+      "name": "Étiquette",
+      "limit": 3,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icône", "default": "check", "options": [
+          { "value": "check", "label": "Coche" }, { "value": "sparkle", "label": "Étincelle" }, { "value": "heart", "label": "Cœur" }, { "value": "feather", "label": "Plume" }
+        ] },
+        { "type": "text", "id": "text", "label": "Texte", "default": "Tag" }
+      ]
+    },
+    {
+      "type": "row",
+      "name": "Ligne",
+      "limit": 4,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Miniature" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Feature" },
+        { "type": "text", "id": "tag", "label": "Petit texte à droite du titre" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Short description." }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Atouts produit", "blocks": [
+    { "type": "chip", "settings": { "icon": "sparkle", "text": "3D texture" } },
+    { "type": "chip", "settings": { "icon": "heart", "text": "High waist" } },
+    { "type": "chip", "settings": { "icon": "check", "text": "Everyday wear" } },
+    { "type": "row", "settings": { "title": "3D sculpting texture", "tag": "Texture", "text": "An innovative 3D texture designed to sculpt your silhouette." } },
+    { "type": "row", "settings": { "title": "High-waist design", "tag": "Fit", "text": "Gently wraps your waist and highlights your curves." } },
+    { "type": "row", "settings": { "title": "A smoother, more even look", "tag": "Look", "text": "The 3D texture helps create a smoother-looking skin." } }
+  ] } ]
+}
+{% endschema %}

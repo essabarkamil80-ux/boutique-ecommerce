@@ -5,3 +5,7 @@ tools/*.png
 tools/fonts-test/
 tools/cmp.html
 tools/fonts-size.html
+tools/out-product*.html
+tools/p*.png
+tools/pdp-*.png
+tools/d*.png

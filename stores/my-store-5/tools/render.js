@@ -4,6 +4,7 @@ const { Liquid, Tag, Hash } = require('liquidjs');
 const fs = require('fs'), path = require('path');
 const T = path.join(__dirname, '..', 'theme');
 const withImg = process.argv[2] === '1';
+const MODE = process.argv[4] === 'product' ? 'product' : 'index';
 
 const CSS = [];
 const engine = new Liquid({ root: [path.join(T, 'snippets')], extname: '.liquid', strictFilters: true,
@@ -19,6 +20,19 @@ for (const name of ['schema', 'javascript', 'stylesheet']) {
     * render() { if (name === 'stylesheet') CSS.push(this.body.join('')); return ''; }
   });
 }
+
+// {% form 'product', product, id: x, class: y %}
+engine.registerTag('form', class extends Tag {
+  constructor(token, remain, liquid) { super(token, remain, liquid); this.args = token.args; this.tpls = [];
+    const stream = this.liquid.parser.parseStream(remain).on('tag:endform', () => stream.stop())
+      .on('template', (t) => this.tpls.push(t)).on('end', () => { throw new Error('form non ferme'); });
+    stream.start(); }
+  * render(ctx, emitter) {
+    const m = /class:\s*'([^']*)'/.exec(this.args) || []; const i = /id:\s*([\w]+)/.exec(this.args);
+    emitter.write(`<form method="post" action="/cart/add" class="${m[1] || ''}" novalidate>`);
+    yield this.liquid.renderer.renderTemplates(this.tpls, ctx, emitter); emitter.write('</form>');
+  }
+});
 
 // --- faux objets image ---------------------------------------------------------
 const PAL = ['#cdb8ad', '#b9c7c2', '#d9c4bb', '#a9b7bd', '#c9b2c0', '#d8cbb8'];
@@ -55,9 +69,23 @@ function defaults(list) { const o = {}; for (const s of list || []) if (s.id) o[
 const IMGKEYS = new Set(['image', 'photo', 'logo_img']);
 function injectImages(type, settings, label) {
   if (!withImg) return;
+  if (MODE === 'product') { for (const k of Object.keys(settings)) if (settings[k] === '' && /^(image|photo|before|after|avatar_\d)$/.test(k)) settings[k] = fakeImg(k + ' ' + type, 900, 900); }
   if (type === 'sf-hero') settings.image = fakeImg('hero photo', 1200, 1200);
   if (type === 'sf-promo') settings.image = fakeImg('promo photo', 2000, 760);
 }
+
+
+// --- faux produit (7 couleurs, une image) ------------------------------------------
+const COLORS = ['Gray', 'Black', 'Beige', 'Blue', 'Purple', 'Pink', 'Brown'];
+const mkMedia = (id, n) => Object.assign(fakeImg('product ' + n, 1254, 1254), { id, alt: n === 1 ? 'Sculpt leggings' : '' });
+const MEDIA = [mkMedia(101, 1), mkMedia(102, 2), mkMedia(103, 3), mkMedia(104, 4), mkMedia(105, 5)];
+const VARIANTS = COLORS.map((c, i) => ({ id: 5000 + i, title: c, options: [c], price: 4999, compare_at_price: 5999, available: c !== 'Brown',
+  featured_media: c === 'Black' ? MEDIA[1] : (c === 'Beige' ? MEDIA[2] : null) }));
+class OV { constructor(n, sel) { this.n = n; this.selected = sel; this.swatch = { color: null }; } toString() { return this.n; } }
+const PRODUCT = { id: 11190618194257, title: 'Essabar&Co Sculpt 3D Leggings', url: '/products/x', handle: 'x', tags: [], media: MEDIA, featured_media: MEDIA[0],
+  variants: VARIANTS, selected_or_first_available_variant: VARIANTS[0], has_only_default_variant: false,
+  options_with_values: [{ name: 'Couleur', position: 1, values: COLORS.map((c, i) => new OV(c, i === 0)) }],
+  description: '<p>Scolpisci la tua silhouette.</p>', metafields: {}, price: 4999, compare_at_price: 5999, price_min: 4999, price_varies: false };
 
 async function renderSection(id, conf, ctxBase) {
   const { src, schema } = schemaOf(conf.type);
@@ -66,13 +94,15 @@ async function renderSection(id, conf, ctxBase) {
   const blocks = (conf.block_order || []).map((k) => {
     const b = conf.blocks[k]; const def = (schema.blocks || []).find((x) => x.type === b.type);
     const st = Object.assign(defaults(def && def.settings), b.settings || {});
-    if (withImg && (b.type === 'category' || b.type === 'color' || b.type === 'review')) {
+    if (withImg && MODE === 'product') { for (const k of Object.keys(st)) if (st[k] === '' && /^(image|photo|before|after)$/.test(k)) st[k] = fakeImg((st.name || st.title || b.type) + ' ' + k, 700, 900); }
+    if (withImg && MODE !== 'product' && (b.type === 'category' || b.type === 'color' || b.type === 'review')) {
       const key = b.type === 'review' ? 'photo' : 'image';
       st[key] = fakeImg(st.label || st.name || b.type, 900, b.type === 'review' ? 506 : 900);
     }
     return { id: k, type: b.type, settings: st, shopify_attributes: '' };
   });
   const ctx = Object.assign({}, ctxBase, { section: { id, settings, blocks } });
+  if (MODE === 'product') ctx.product = PRODUCT;
   const out = await engine.parseAndRender(src, ctx);
   return `<div class="shopify-section" id="shopify-section-${id}">${out}</div>`;
 }
@@ -80,14 +110,14 @@ async function renderSection(id, conf, ctxBase) {
 (async () => {
   const ctxBase = {
     shop: { name: 'My Store 5', customer_accounts_enabled: true },
-    routes: { root_url: '/', cart_url: '/cart', account_url: '/account', all_products_collection_url: '/collections/all' },
-    cart: { item_count: 2 },
+    routes: { root_url: '/', cart_add_url: '/cart/add.js', cart_url: '/cart', account_url: '/account', all_products_collection_url: '/collections/all' },
+    cart: { item_count: 2, currency: { iso_code: 'EUR' } }, request: { locale: { iso_code: 'en' }, design_mode: process.env.DM === '1' }, recommendations: { products: [] }, settings: {},
     linklists: {}, product: null,
   };
   // menu de demo : resolu via le reglage link_list
   const menu = { links: ['3D Leggings', '3D Shorts', '3D T-shirts', '3D Sleeves', 'Contact', 'Track Your Order'].map((t) => ({ title: t, url: '#', links: [] })) };
   const hg = JSON.parse(fs.readFileSync(path.join(T, 'sections/header-group.json'), 'utf8'));
-  const idx = JSON.parse(fs.readFileSync(path.join(T, 'templates/index.json'), 'utf8'));
+  const idx = JSON.parse(fs.readFileSync(path.join(T, MODE === 'product' ? 'templates/product.json' : 'templates/index.json'), 'utf8'));
   let html = '';
   for (const k of hg.order) {
     const conf = JSON.parse(JSON.stringify(hg.sections[k]));

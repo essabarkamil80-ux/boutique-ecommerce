@@ -80,3 +80,13 @@ Volontairement laissés vides ou neutres, à remplir uniquement avec des éléme
 Conteneur 1 224 px (marges 108 px). Hero 579 px. Cartes produit 278 × 347 px, écart 21 px. Catégories 294 px.
 Cartes d'avis 315 px, photo 177 px. Couleurs 235 px. Articles 394 × 222 px. Réassurance 141 px.
 Palette : prune `#6B2441`, encre `#13072E`, crème `#F9F3EE`, vert `#00B67A`, indigo `#4E43D8`.
+
+## Page produit (`templates/product.json`)
+
+Sections : `sf-pdp` (galerie + achat : variantes, offre en lots, bouton, réassurance, carte avant/après, accordéons),
+`sf-press` et `sf-reviews` et `sf-trust` (réutilisées de l'accueil), `sf-pdp-proof` (grand chiffre + cartes), `sf-pdp-features`,
+`sf-pdp-faq` (FAQ + étapes), `sf-pdp-reviews` (liste d'avis paginée), `sf-pdp-related`.
+Test local : `OUT=out-product.html sh tools/build.sh 1 horizon product` puis `node tools/pdp-test.js`
+(variantes, lots, galerie, ajout panier avec réseau simulé).
+L'ajout au panier envoie `{items:[…], sections}` à `/cart/add.js` puis déclenche l'évènement `CartLinesUpdateEvent` d'Horizon
+(importé via `@shopify/events`) pour que le tiroir se rafraîchisse ; sans cet import, retour à `/cart`.

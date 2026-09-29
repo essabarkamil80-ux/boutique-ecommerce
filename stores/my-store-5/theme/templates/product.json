@@ -1,0 +1,550 @@
+{
+  "sections": {
+    "main": {
+      "type": "sf-pdp",
+      "blocks": {
+        "pdp-1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "sparkle",
+            "text": "3D sculpting texture, designed to sculpt your silhouette"
+          }
+        },
+        "pdp-2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "feather",
+            "text": "A smoother, more even-looking skin"
+          }
+        },
+        "pdp-3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "heart",
+            "text": "High-waist design that gently wraps your waist"
+          }
+        },
+        "pdp-4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "check",
+            "text": "Comfortable, flattering fit for everyday wear"
+          }
+        },
+        "pdp-5": {
+          "type": "tier",
+          "settings": {
+            "quantity": 1
+          }
+        },
+        "pdp-6": {
+          "type": "tier",
+          "settings": {
+            "quantity": 2,
+            "badge": "Bundle",
+            "note": "Choose the color of each piece"
+          }
+        },
+        "pdp-7": {
+          "type": "tier",
+          "settings": {
+            "quantity": 3,
+            "badge": "Bundle",
+            "note": "Choose the color of each piece"
+          }
+        },
+        "pdp-8": {
+          "type": "result",
+          "settings": {
+            "name": "Customer 1",
+            "meta": "Size M · 46",
+            "label": "Result label"
+          }
+        },
+        "pdp-9": {
+          "type": "result",
+          "settings": {
+            "name": "Customer 2",
+            "meta": "Size M · 46",
+            "label": "Result label"
+          }
+        },
+        "pdp-10": {
+          "type": "result",
+          "settings": {
+            "name": "Customer 3",
+            "meta": "Size M · 46",
+            "label": "Result label"
+          }
+        },
+        "pdp-11": {
+          "type": "result",
+          "settings": {
+            "name": "Customer 4",
+            "meta": "Size M · 46",
+            "label": "Result label"
+          }
+        },
+        "pdp-12": {
+          "type": "accordion",
+          "settings": {
+            "title": "Fabric & fit",
+            "use_description": true
+          }
+        },
+        "pdp-13": {
+          "type": "accordion",
+          "settings": {
+            "title": "How to wear it",
+            "content": "<p>Add your styling and care advice here.</p>"
+          }
+        },
+        "pdp-14": {
+          "type": "accordion",
+          "settings": {
+            "title": "Shipping & returns",
+            "content": "<p>Free shipping on every order, no minimum. Free returns within 30 days.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "pdp-1",
+        "pdp-2",
+        "pdp-3",
+        "pdp-4",
+        "pdp-5",
+        "pdp-6",
+        "pdp-7",
+        "pdp-8",
+        "pdp-9",
+        "pdp-10",
+        "pdp-11",
+        "pdp-12",
+        "pdp-13",
+        "pdp-14"
+      ],
+      "settings": {}
+    },
+    "press": {
+      "type": "sf-press",
+      "blocks": {
+        "logo-1": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        },
+        "logo-2": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        },
+        "logo-3": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        },
+        "logo-4": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        },
+        "logo-5": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        },
+        "logo-6": {
+          "type": "logo",
+          "settings": {
+            "name": "Press logo"
+          }
+        }
+      },
+      "block_order": [
+        "logo-1",
+        "logo-2",
+        "logo-3",
+        "logo-4",
+        "logo-5",
+        "logo-6"
+      ],
+      "settings": {}
+    },
+    "proof": {
+      "type": "sf-pdp-proof",
+      "settings": {},
+      "blocks": {
+        "card-1": {
+          "type": "card",
+          "settings": {
+            "icon": "sparkle",
+            "title": "3D sculpting texture",
+            "text": "Designed to sculpt your silhouette."
+          }
+        },
+        "card-2": {
+          "type": "card",
+          "settings": {
+            "icon": "heart",
+            "title": "High-waist design",
+            "text": "Gently wraps your waist and highlights your curves."
+          }
+        },
+        "card-3": {
+          "type": "card",
+          "settings": {
+            "icon": "feather",
+            "title": "Smoother look",
+            "text": "The 3D texture helps create a more even-looking skin."
+          }
+        },
+        "card-4": {
+          "type": "card",
+          "settings": {
+            "icon": "check",
+            "title": "Comfort all day",
+            "text": "A comfortable, flattering fit for everyday wear."
+          }
+        }
+      },
+      "block_order": [
+        "card-1",
+        "card-2",
+        "card-3",
+        "card-4"
+      ]
+    },
+    "features": {
+      "type": "sf-pdp-features",
+      "blocks": {
+        "f-1": {
+          "type": "chip",
+          "settings": {
+            "icon": "sparkle",
+            "text": "3D texture"
+          }
+        },
+        "f-2": {
+          "type": "chip",
+          "settings": {
+            "icon": "heart",
+            "text": "High waist"
+          }
+        },
+        "f-3": {
+          "type": "chip",
+          "settings": {
+            "icon": "check",
+            "text": "Everyday wear"
+          }
+        },
+        "f-4": {
+          "type": "row",
+          "settings": {
+            "title": "3D sculpting texture",
+            "tag": "Texture",
+            "text": "An innovative 3D texture designed to sculpt your silhouette."
+          }
+        },
+        "f-5": {
+          "type": "row",
+          "settings": {
+            "title": "High-waist design",
+            "tag": "Fit",
+            "text": "Gently wraps your waist and highlights your curves."
+          }
+        },
+        "f-6": {
+          "type": "row",
+          "settings": {
+            "title": "A smoother, more even look",
+            "tag": "Look",
+            "text": "The 3D texture helps create a smoother-looking skin."
+          }
+        }
+      },
+      "block_order": [
+        "f-1",
+        "f-2",
+        "f-3",
+        "f-4",
+        "f-5",
+        "f-6"
+      ],
+      "settings": {}
+    },
+    "reviews": {
+      "type": "sf-reviews",
+      "blocks": {
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "name": "Customer name",
+            "verified": true,
+            "meta": "Size M · 46 · City",
+            "badge": "X weeks",
+            "quote": "Paste a real customer review here, with her permission.",
+            "widget": "compare",
+            "w_before": "What she tried before",
+            "w_after": "Her result, in her words"
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "name": "Customer name",
+            "verified": true,
+            "meta": "Size M · 46 · City",
+            "badge": "X weeks",
+            "quote": "Paste a real customer review here, with her permission.",
+            "widget": "stats",
+            "w_s1_val": "00",
+            "w_s1_lbl": "weeks of use",
+            "w_s2_val": "0x",
+            "w_s2_lbl": "times a week",
+            "w_s3_val": "00",
+            "w_s3_lbl": "her result"
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "name": "Customer name",
+            "verified": true,
+            "meta": "Size M · 46 · City",
+            "badge": "X weeks",
+            "quote": "Paste a real customer review here, with her permission.",
+            "widget": "progress",
+            "w_p_title": "Result",
+            "w_p_hi": "from week 0"
+          }
+        },
+        "review-4": {
+          "type": "review",
+          "settings": {
+            "name": "Customer name",
+            "verified": true,
+            "meta": "Size M · 46 · City",
+            "badge": "X weeks",
+            "quote": "Paste a real customer review here, with her permission.",
+            "widget": "score",
+            "w_sc_hi": "rating",
+            "w_sc_before": 0,
+            "w_sc_now": 0
+          }
+        }
+      },
+      "block_order": [
+        "review-1",
+        "review-2",
+        "review-3",
+        "review-4"
+      ],
+      "settings": {
+        "pill_label": ""
+      }
+    },
+    "faq": {
+      "type": "sf-pdp-faq",
+      "blocks": {
+        "q-1": {
+          "type": "item",
+          "settings": {
+            "tag": "Good to know",
+            "icon": "clock",
+            "question": "What should I expect from my leggings?",
+            "answer": "<p>Add a short introduction here.</p>",
+            "open": true,
+            "show_steps": true
+          }
+        },
+        "q-2": {
+          "type": "step",
+          "settings": {
+            "label": "Step 1"
+          }
+        },
+        "q-3": {
+          "type": "step",
+          "settings": {
+            "label": "Step 2"
+          }
+        },
+        "q-4": {
+          "type": "step",
+          "settings": {
+            "label": "Step 3"
+          }
+        },
+        "q-5": {
+          "type": "step",
+          "settings": {
+            "label": "Step 4"
+          }
+        },
+        "q-6": {
+          "type": "step",
+          "settings": {
+            "label": "Step 5"
+          }
+        },
+        "q-7": {
+          "type": "item",
+          "settings": {
+            "tag": "3D texture",
+            "icon": "sparkle",
+            "question": "Why choose a 3D texture legging?",
+            "answer": "<p>Add your answer here.</p>"
+          }
+        },
+        "q-8": {
+          "type": "item",
+          "settings": {
+            "tag": "Comfort",
+            "icon": "heart",
+            "question": "Are they comfortable for everyday wear?",
+            "answer": "<p>They are designed for a comfortable, flattering fit for everyday wear.</p>"
+          }
+        },
+        "q-9": {
+          "type": "item",
+          "settings": {
+            "tag": "Sizing",
+            "icon": "ruler",
+            "question": "How do I choose my size?",
+            "answer": "<p>Add your size advice here.</p>"
+          }
+        },
+        "q-10": {
+          "type": "item",
+          "settings": {
+            "tag": "Care",
+            "icon": "check",
+            "question": "How do I care for them?",
+            "answer": "<p>Add your care instructions here.</p>"
+          }
+        },
+        "q-11": {
+          "type": "item",
+          "settings": {
+            "tag": "Returns",
+            "icon": "shield",
+            "question": "What happens if I pick the wrong size?",
+            "answer": "<p>Free returns within 30 days.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q-1",
+        "q-2",
+        "q-3",
+        "q-4",
+        "q-5",
+        "q-6",
+        "q-7",
+        "q-8",
+        "q-9",
+        "q-10",
+        "q-11"
+      ],
+      "settings": {}
+    },
+    "prev": {
+      "type": "sf-pdp-reviews",
+      "blocks": {
+        "r-1": {
+          "type": "review",
+          "settings": {}
+        },
+        "r-2": {
+          "type": "review",
+          "settings": {}
+        },
+        "r-3": {
+          "type": "review",
+          "settings": {}
+        },
+        "r-4": {
+          "type": "review",
+          "settings": {}
+        },
+        "r-5": {
+          "type": "review",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "r-1",
+        "r-2",
+        "r-3",
+        "r-4",
+        "r-5"
+      ],
+      "settings": {}
+    },
+    "related": {
+      "type": "sf-pdp-related",
+      "settings": {}
+    },
+    "trust": {
+      "type": "sf-trust",
+      "blocks": {
+        "item-1": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "bold": "Secure",
+            "text": "checkout"
+          }
+        },
+        "item-2": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "bold": "Free shipping",
+            "text": "no minimum"
+          }
+        },
+        "item-3": {
+          "type": "item",
+          "settings": {
+            "icon": "ruler",
+            "bold": "Fit guaranteed",
+            "text": "from S to 5XL"
+          }
+        },
+        "item-4": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "bold": "Free returns",
+            "text": "within 30 days"
+          }
+        }
+      },
+      "block_order": [
+        "item-1",
+        "item-2",
+        "item-3",
+        "item-4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "press",
+    "proof",
+    "features",
+    "reviews",
+    "faq",
+    "prev",
+    "related",
+    "trust"
+  ]
+}

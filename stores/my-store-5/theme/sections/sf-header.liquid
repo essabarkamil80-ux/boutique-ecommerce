@@ -94,6 +94,7 @@
         if (d && typeof d.open === 'function') { e.preventDefault(); d.open(); }
       });
     }
+    document.addEventListener('sf:cart', function (e) { if (e.detail && typeof e.detail.item_count === 'number') setCount(e.detail.item_count); });
     document.addEventListener('theme-drawer:close', refreshCount);
     document.addEventListener('theme-drawer:open', refreshCount);
     window.addEventListener('pageshow', function (e) { if (e.persisted) refreshCount(); });

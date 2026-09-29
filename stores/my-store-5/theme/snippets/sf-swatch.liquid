@@ -1,0 +1,35 @@
+{%- comment -%}
+  Couleur d'une pastille de variante. Usage : {% render 'sf-swatch', value: 'Black', swatch: option_value.swatch.color %}
+  Utilise la couleur d'echantillon Shopify si elle existe, sinon devine d'apres le nom (EN / FR / IT).
+{%- endcomment -%}
+{%- liquid
+  assign c = '#cbbfb8'
+  if swatch != blank
+    assign c = swatch
+  else
+    assign nm = value | downcase | strip
+    case nm
+      when 'black', 'noir', 'nero'
+        assign c = '#141414'
+      when 'gray', 'grey', 'gris', 'grigio', 'charcoal', 'anthracite'
+        assign c = '#8b8f94'
+      when 'beige', 'nude', 'sand', 'sable', 'cream', 'creme', 'crème', 'crema'
+        assign c = '#d9c4a8'
+      when 'blue', 'bleu', 'blu', 'azzurro', 'navy'
+        assign c = '#3f6fb0'
+      when 'teal', 'green', 'vert', 'verde'
+        assign c = '#12808a'
+      when 'purple', 'violet', 'viola', 'lilac', 'lilas'
+        assign c = '#8a5aa8'
+      when 'pink', 'rose', 'rosa'
+        assign c = '#ee8fb1'
+      when 'brown', 'marron', 'marrone', 'chocolate', 'chocolat'
+        assign c = '#7a5238'
+      when 'red', 'rouge', 'rosso', 'burgundy', 'bordeaux'
+        assign c = '#a3263f'
+      when 'white', 'blanc', 'bianco'
+        assign c = '#f3efec'
+    endcase
+  endif
+-%}
+{{- c -}}

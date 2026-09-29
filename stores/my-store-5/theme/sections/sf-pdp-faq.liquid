@@ -1,0 +1,140 @@
+{%- assign s = section.settings -%}
+{%- assign steps = section.blocks | where: 'type', 'step' -%}
+<section class="sf sf-faq" style="--faq-bg: {{ s.bg }};">
+  <div class="sf-wrap">
+    <div class="sf-faq__head">
+      {%- if s.badge_1 != blank or s.badge_2 != blank -%}
+        <p class="sf-faq__badges">
+          {%- if s.badge_1 != blank -%}<span><i></i>{{ s.badge_1 }}</span>{%- endif -%}
+          {%- if s.badge_2 != blank -%}<span><i></i>{{ s.badge_2 }}</span>{%- endif -%}
+        </p>
+      {%- endif -%}
+      <h2 class="sf-h2 sf-faq__title">{{ s.title_1 }} <em>{{ s.title_2 }}</em></h2>
+      {%- if s.sub != blank -%}<p class="sf-faq__sub">{{ s.sub }}</p>{%- endif -%}
+    </div>
+
+    <div class="sf-faq__card">
+      {%- for b in section.blocks -%}
+        {%- if b.type == 'item' -%}
+          {%- assign is_open = false -%}
+          {%- if b.settings.open -%}{%- assign is_open = true -%}{%- endif -%}
+          <details class="sf-faq__item{% if b.settings.open %} is-first{% endif %}" {% if is_open %}open{% endif %} {{ b.shopify_attributes }}>
+            <summary>
+              <span class="sf-faq__q">
+                {%- if b.settings.tag != blank -%}<span class="sf-faq__tag">{%- render 'sf-icon', name: b.settings.icon -%}{{ b.settings.tag }}</span>{%- endif -%}
+                <b>{{ b.settings.question }}</b>
+              </span>
+              <span class="sf-faq__chev">{%- render 'sf-icon', name: 'chevron' -%}</span>
+            </summary>
+            <div class="sf-faq__a">
+              {%- if b.settings.answer != blank -%}<div class="sf-faq__txt">{{ b.settings.answer }}</div>{%- endif -%}
+              {%- if b.settings.show_steps and steps.size > 0 -%}
+                <ul class="sf-faq__steps" style="--n: {{ steps.size }}">
+                  {%- for st in steps -%}
+                    <li {{ st.shopify_attributes }}>
+                      <span class="sf-faq__pic sf-media">
+                        {%- if st.settings.image != blank -%}{{ st.settings.image | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '(min-width: 990px) 220px, 60vw', alt: st.settings.caption, loading: 'lazy' }}{%- else -%}<span class="sf-faq__empty">{%- render 'sf-icon', name: 'camera' -%}</span>{%- endif -%}
+                      </span>
+                      <span class="sf-faq__cap">{{ st.settings.caption }}</span>
+                      <span class="sf-faq__node"><i></i></span>
+                      <span class="sf-faq__lbl">{{ st.settings.label }}</span>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sf-faq { background: var(--faq-bg); padding: clamp(40px, 4.4vw, 64px) 0 clamp(44px, 4.8vw, 70px); }
+  .sf-faq__head { text-align: center; }
+  .sf-faq__badges { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .sf-faq__badges span { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; background: #fff; font-size: 11.5px; color: #5f5654; }
+  .sf-faq__badges i { width: 7px; height: 7px; border-radius: 50%; background: var(--sf-green); }
+  .sf-faq .sf-faq__title { margin-top: 16px; }
+  .sf-faq__title em { font-style: normal; color: var(--sf-plum); }
+  .sf-faq__sub { margin-top: 10px; font-size: 14px; color: #6f6664; }
+  .sf-faq__card { margin-top: clamp(22px, 2.6vw, 38px); padding: 8px clamp(16px, 2.1vw, 30px); border-radius: 16px; background: #fff; box-shadow: 0 14px 40px -30px rgba(19, 7, 46, .35); }
+  .sf-faq__item { border-bottom: 1px solid #F2EBE7; }
+  .sf-faq__item:last-child { border-bottom: 0; }
+  .sf-faq__item summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0; cursor: pointer; list-style: none; }
+  .sf-faq__item summary::-webkit-details-marker { display: none; }
+  .sf-faq__q { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .sf-faq__q b { font-size: 15px; font-weight: 700; line-height: 1.3; color: var(--sf-ink); }
+  .sf-faq__tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: 5px; background: #FBEDEF; color: var(--sf-plum); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .sf-faq__tag svg { width: 11px; height: 11px; }
+  .sf-faq__item.is-first .sf-faq__tag { background: var(--sf-plum); color: #fff; }
+  .sf-faq__chev svg { width: 16px; height: 16px; color: #6f6664; transition: transform .2s; }
+  .sf-faq__item[open] .sf-faq__chev svg { transform: rotate(180deg); }
+  .sf-faq__a { padding: 0 0 26px; }
+  .sf-faq__txt { max-width: 780px; font-size: 14px; line-height: 1.55; color: #4d4543; }
+  .sf-faq__steps { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+  .sf-faq__steps li { display: grid; justify-items: center; text-align: center; }
+  .sf-faq__pic { width: 100%; aspect-ratio: 222 / 153; border-radius: 10px; background: var(--sf-card); }
+  .sf-faq__pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-faq__empty { position: absolute; inset: 8px; border: 1.5px dashed #D2C4BE; border-radius: 8px; display: grid; place-items: center; color: #a89b95; }
+  .sf-faq__empty svg { width: 22px; height: 22px; }
+  .sf-faq__cap { display: block; margin-top: 8px; min-height: 30px; font-size: 11.5px; line-height: 1.3; color: #6f6664; }
+  .sf-faq__node { position: relative; display: block; width: 100%; height: 26px; margin-top: 8px; }
+  .sf-faq__node::before { content: ''; position: absolute; left: -6px; right: -6px; top: 50%; height: 2px; margin-top: -1px; background: #C9A9B6; }
+  .sf-faq__steps li:first-child .sf-faq__node::before { left: 50%; }
+  .sf-faq__steps li:last-child .sf-faq__node::before { right: 50%; }
+  .sf-faq__node i { position: absolute; left: 50%; top: 50%; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%; background: #fff; border: 5px solid var(--sf-plum); box-sizing: border-box; }
+  .sf-faq__lbl { margin-top: 6px; font-size: 11px; font-weight: 700; color: var(--sf-plum); }
+  @media (max-width: 749px) {
+    .sf-faq__steps { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: -4px; padding-inline: 4px; }
+    .sf-faq__steps::-webkit-scrollbar { display: none; }
+    .sf-faq__steps li { flex: 0 0 58vw; scroll-snap-align: start; }
+    .sf-faq__item summary { padding: 18px 0; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · FAQ + étapes",
+  "tag": "section",
+  "class": "sf-section-faq",
+  "settings": [
+    { "type": "paragraph", "content": "Photos et légendes : uniquement de vrais clients, avec leur accord. Les repères d'étapes sont à adapter." },
+    { "type": "color", "id": "bg", "label": "Fond", "default": "#F9F3EE" },
+    { "type": "text", "id": "badge_1", "label": "Pastille 1", "default": "Free returns" },
+    { "type": "text", "id": "badge_2", "label": "Pastille 2", "default": "Free shipping" },
+    { "type": "text", "id": "title_1", "label": "Titre : début", "default": "How our 3D leggings" },
+    { "type": "text", "id": "title_2", "label": "Titre : fin (prune)", "default": "fit into your day" },
+    { "type": "text", "id": "sub", "label": "Sous-titre", "default": "Everything you need to know before you order." }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "tag", "label": "Étiquette", "default": "Good to know" },
+        { "type": "select", "id": "icon", "label": "Icône de l'étiquette", "default": "sparkle", "options": [
+          { "value": "sparkle", "label": "Étincelle" }, { "value": "clock", "label": "Horloge" }, { "value": "check", "label": "Coche" },
+          { "value": "heart", "label": "Cœur" }, { "value": "shield", "label": "Bouclier" }, { "value": "ruler", "label": "Mètre" }, { "value": "truck", "label": "Livraison" }
+        ] },
+        { "type": "text", "id": "question", "label": "Question", "default": "Question" },
+        { "type": "richtext", "id": "answer", "label": "Réponse" },
+        { "type": "checkbox", "id": "open", "label": "Ouvert par défaut", "default": false },
+        { "type": "checkbox", "id": "show_steps", "label": "Afficher les étapes avec photos", "default": false }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Étape (photo + repère)",
+      "limit": 6,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "text", "id": "caption", "label": "Légende" },
+        { "type": "text", "id": "label", "label": "Repère", "default": "Step" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · FAQ + étapes" } ]
+}
+{% endschema %}

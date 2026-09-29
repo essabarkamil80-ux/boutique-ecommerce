@@ -1,0 +1,57 @@
+{%- liquid
+  assign s = section.settings
+  assign coll = s.collection
+  assign list = blank
+  if coll != blank
+    assign list = coll.products
+  else
+    assign list = recommendations.products
+  endif
+  assign n = 0
+  assign show_ph = false
+  if request.design_mode
+    assign show_ph = true
+  endif
+-%}
+{%- capture cards -%}
+  {%- for item in list -%}
+    {%- unless item.id == product.id or n >= s.limit -%}
+      <li class="sf-rel__item">{%- render 'sf-card', card_product: item -%}</li>
+      {%- assign n = n | plus: 1 -%}
+    {%- endunless -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if n > 0 or show_ph -%}
+<section class="sf sf-rel" id="sf-rel-{{ section.id }}">
+  <div class="sf-wrap">
+    <h2 class="sf-rel__title">{{ s.title }}</h2>
+  </div>
+  <ul class="sf-rail sf-rel__rail">
+    {%- if n > 0 -%}{{ cards }}{%- else -%}
+      {%- for i in (1..3) -%}<li class="sf-rel__item">{%- render 'sf-card', placeholder: i -%}</li>{%- endfor -%}
+    {%- endif -%}
+  </ul>
+</section>
+{%- endif -%}
+
+{% stylesheet %}
+  .sf-rel { background: #fff; padding: clamp(24px, 3vw, 44px) 0 clamp(40px, 4.6vw, 68px); }
+  .sf-rel__title { margin-bottom: 20px; font-family: var(--sf-sans); font-size: 16px; font-weight: 600; letter-spacing: 0; color: var(--sf-ink); }
+  .sf-rel__rail { gap: clamp(12px, 1.4vw, 20px); }
+  .sf-rel__item { width: calc((min(100vw - 2 * var(--sf-gutter), var(--sf-max)) - 2 * clamp(12px, 1.4vw, 20px)) / 3); }
+  @media (max-width: 749px) { .sf-rel__item { width: 64vw; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Produits liés",
+  "tag": "section",
+  "class": "sf-section-rel",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "You may also like" },
+    { "type": "collection", "id": "collection", "label": "Collection (vide = recommandations Shopify)" },
+    { "type": "range", "id": "limit", "min": 3, "max": 12, "step": 1, "label": "Nombre de produits", "default": 6 }
+  ],
+  "presets": [ { "name": "SF · Produits liés" } ]
+}
+{% endschema %}

@@ -1,0 +1,735 @@
+{%- comment -%}
+  Zone produit : galerie a gauche, achat a droite (offre en lots, variantes, ajout au panier, reassurance,
+  carte "avant / apres" et accordeons). Utilise le vrai produit du modele : variantes, prix, stock et images Shopify.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign p = product
+  assign cur = p.selected_or_first_available_variant
+  assign color_pos = 0
+  for opt in p.options_with_values
+    assign on = opt.name | downcase
+    if on == 'color' or on == 'colour' or on == 'couleur' or on == 'colore' or on == 'farbe'
+      assign color_pos = opt.position
+    endif
+  endfor
+  assign rv = p.metafields.reviews.rating.value
+  assign rating_num = 0
+  assign rating_max = 5
+  if rv != blank
+    assign rating_num = rv.rating | times: 1.0
+    assign rating_max = rv.scale_max | default: 5
+    assign rating_cnt = p.metafields.reviews.rating_count.value
+  elsif s.rating_manual != blank
+    assign rating_num = s.rating_manual | times: 1.0
+    assign rating_cnt = s.rating_count
+  endif
+  assign rating_pct = rating_num | times: 100.0 | divided_by: rating_max
+  assign main_alt = p.title
+  assign form_id = 'sf-pdp-form-' | append: section.id
+  assign btn_txt = s.atc_label
+  if cur.available == false
+    assign btn_txt = s.sold_label
+  endif
+-%}
+<section class="sf sf-pdp" id="sf-pdp-{{ section.id }}" data-sf-pdp>
+  <span id="sf-pdp-top" class="sf-pdp__anchor"></span>
+  <div class="sf-wrap sf-pdp__grid">
+
+    {%- comment -%} ------------------------ GALERIE ------------------------ {%- endcomment -%}
+    <div class="sf-pdp__gal">
+      {%- assign fm = p.featured_media -%}
+      <div class="sf-pdp__stage sf-media">
+        {%- if fm != blank -%}
+          {%- if fm.alt != blank -%}{%- assign main_alt = fm.alt -%}{%- endif -%}
+          {{ fm | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 647px, 100vw', alt: main_alt, class: 'sf-pdp__img', loading: 'eager', fetchpriority: 'high' }}
+        {%- else -%}
+          {{ 'product-apparel-1' | placeholder_svg_tag: 'sf-ph' }}
+        {%- endif -%}
+        {%- if p.media.size > 1 -%}
+          <button type="button" class="sf-pdp__nav sf-pdp__nav--prev" data-sf-prev-img aria-label="Previous image">{%- render 'sf-icon', name: 'arrow-left' -%}</button>
+          <button type="button" class="sf-pdp__nav sf-pdp__nav--next" data-sf-next-img aria-label="Next image">{%- render 'sf-icon', name: 'arrow-right' -%}</button>
+        {%- endif -%}
+      </div>
+      {%- if p.media.size > 1 -%}
+        <ul class="sf-pdp__thumbs" data-sf-thumbs>
+          {%- for m in p.media -%}
+            {%- if m.media_type == 'image' -%}
+              {%- capture big -%}{{ m | image_url: width: 1400 }}{%- endcapture -%}
+              <li>
+                <button type="button" class="sf-pdp__thumb{% if m.id == fm.id %} is-active{% endif %}" data-sf-thumb data-media="{{ m.id }}" data-src="{{ big }}" data-alt="{{ m.alt | default: p.title | escape }}" aria-label="Image {{ forloop.index }}">
+                  {{ m | image_url: width: 200 | image_tag: width: 76, height: 76, alt: '', loading: 'lazy' }}
+                </button>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ------------------------ ACHAT ------------------------ {%- endcomment -%}
+    <div class="sf-pdp__buy">
+      {%- if s.chip_1 != blank or s.chip_2 != blank -%}
+        <div class="sf-pdp__chips">
+          {%- if s.chip_1 != blank -%}<span class="sf-pdp__chip">{%- render 'sf-icon', name: 'heart' -%}{{ s.chip_1 }}</span>{%- endif -%}
+          {%- if s.chip_2 != blank -%}<span class="sf-pdp__chip sf-pdp__chip--fill">{%- render 'sf-icon', name: 'tag' -%}{{ s.chip_2 }}</span>{%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if s.eyebrow != blank -%}<p class="sf-pdp__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+      <h1 class="sf-pdp__title">{{ p.title }}</h1>
+      {%- if s.highlight != blank -%}
+        <p class="sf-pdp__hl"><span>{%- render 'sf-icon', name: 'check' -%}</span>{{ s.highlight }}</p>
+      {%- endif -%}
+      {%- if rating_num > 0 -%}
+        <div class="sf-pdp__rate">
+          <span class="sf-rate" aria-label="{{ rating_num | round: 1 }} / {{ rating_max }}">
+            <span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span>
+            <span class="sf-rate__fg" style="width: {{ rating_pct }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span>
+          </span>
+          <span>{{ rating_num | round: 1 }}/{{ rating_max }}{% if rating_cnt != blank %} · {{ rating_cnt }}{% endif %}</span>
+        </div>
+      {%- endif -%}
+
+      {%- assign bens = section.blocks | where: 'type', 'benefit' -%}
+      {%- if bens.size > 0 -%}
+        <ul class="sf-pdp__ben">
+          {%- for b in bens -%}
+            <li {{ b.shopify_attributes }}><span class="sf-pdp__benico">{%- render 'sf-icon', name: b.settings.icon -%}</span><span>{{ b.settings.text }}</span></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if s.help_title != blank -%}
+        <div class="sf-pdp__help">
+          <span class="sf-pdp__helpico">{%- render 'sf-icon', name: 'ruler' -%}</span>
+          <div class="sf-pdp__helptxt">
+            <b>{{ s.help_title }}</b>
+            {%- if s.help_text != blank -%}<span>{{ s.help_text }}</span>{%- endif -%}
+            {%- if s.help_chips != blank -%}
+              {%- assign hc = s.help_chips | split: ',' -%}
+              <span class="sf-pdp__helpchips">{%- for c in hc -%}<i>{{ c | strip }}</i>{%- endfor -%}</span>
+            {%- endif -%}
+          </div>
+          {%- if s.help_btn_label != blank -%}<a class="sf-pdp__helpbtn" href="{{ s.help_btn_link | default: '/pages/contact' }}">{{ s.help_btn_label }}</a>{%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if s.helper_left != blank or s.helper_link != blank -%}
+        <div class="sf-pdp__helper"><span>{{ s.helper_left }}</span>{%- if s.helper_link != blank -%}<a href="{{ s.helper_link }}">{{ s.helper_link_label }} ›</a>{%- endif -%}</div>
+      {%- endif -%}
+
+      {%- form 'product', p, id: form_id, class: 'sf-pdp__form' -%}
+        <input type="hidden" name="id" value="{{ cur.id }}" data-sf-id>
+
+        {%- comment -%} Variantes (une rangee par option) {%- endcomment -%}
+        {%- unless p.has_only_default_variant -%}
+          {%- for opt in p.options_with_values -%}
+            <fieldset class="sf-pdp__opt" data-sf-opt="{{ opt.position }}">
+              <legend>{{ opt.name }}: <b data-sf-optval>{{ cur.options[forloop.index0] }}</b></legend>
+              <div class="sf-pdp__pills">
+                {%- for ov in opt.values -%}
+                  {%- assign is_col = false -%}
+                  {%- if opt.position == color_pos -%}{%- assign is_col = true -%}{%- endif -%}
+                  <button type="button" class="sf-pill{% if ov.selected %} is-active{% endif %}" data-val="{{ ov | escape }}" aria-pressed="{{ ov.selected }}">
+                    {%- if is_col -%}<i class="sf-dot" style="background: {% render 'sf-swatch', value: ov, swatch: ov.swatch.color %}"></i>{%- endif -%}
+                    <span>{{ ov }}</span>
+                  </button>
+                {%- endfor -%}
+              </div>
+            </fieldset>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        {%- comment -%} Offre en lots {%- endcomment -%}
+        {%- assign tiers = section.blocks | where: 'type', 'tier' -%}
+        {%- if tiers.size > 0 -%}
+          <div class="sf-offer" data-sf-offer>
+            <div class="sf-offer__head">
+              <span class="sf-offer__ttl"><em>{{ s.offer_title_1 }}</em> <b>{{ s.offer_title_2 }}</b></span>
+              {%- if s.offer_sub != blank -%}<span class="sf-offer__sub">{{ s.offer_sub }}</span>{%- endif -%}
+            </div>
+            {%- for t in tiers -%}
+              {%- assign ts = t.settings -%}
+              {%- assign sel = false -%}
+              {%- if forloop.index == s.default_tier -%}{%- assign sel = true -%}{%- endif -%}
+              {%- if forloop.last and s.default_tier > tiers.size -%}{%- assign sel = true -%}{%- endif -%}
+              <div class="sf-tier{% if sel %} is-selected{% endif %}" data-sf-tier data-q="{{ ts.quantity }}" {{ t.shopify_attributes }}>
+                {%- if ts.badge != blank -%}<span class="sf-tier__badge">{{ ts.badge }}</span>{%- endif -%}
+                <label class="sf-tier__top">
+                  <input type="radio" name="sf-tier-{{ section.id }}" class="sf-tier__radio"{% if sel %} checked{% endif %}>
+                  <span class="sf-tier__mark" aria-hidden="true"></span>
+                  <span class="sf-tier__txt">
+                    <b class="sf-tier__name"><span data-count>{{ ts.quantity }}</span>× {{ p.title }}</b>
+                    <span class="sf-tier__save" data-save></span>
+                    {%- if ts.note != blank -%}<span class="sf-tier__note">{{ ts.note }}</span>{%- endif -%}
+                  </span>
+                  <span class="sf-tier__price"><b data-price></b><s data-compare></s></span>
+                </label>
+                <div class="sf-tier__rows{% if ts.quantity == 1 %} is-solo{% endif %}">
+                  {%- for i in (1..ts.quantity) -%}
+                    <div class="sf-row" data-row>
+                      <span class="sf-row__img"><img alt="" data-row-img loading="lazy" width="40" height="40"{% if fm != blank %} src="{{ fm | image_url: width: 120 }}"{% endif %}></span>
+                      <label class="sf-sel"><i class="sf-dot" data-dot></i>
+                        <select data-var aria-label="Variant">
+                          {%- for v in p.variants -%}<option value="{{ v.id }}"{% if v.id == cur.id %} selected{% endif %}>{{ v.title }}</option>{%- endfor -%}
+                        </select>
+                      </label>
+                      <label class="sf-sel sf-sel--qty"><select data-qty aria-label="Quantity">
+                        {%- for q in (1..9) -%}<option value="{{ q }}">{{ q }}</option>{%- endfor -%}
+                      </select></label>
+                    </div>
+                  {%- endfor -%}
+                </div>
+                {%- if s.offer_ship != blank -%}<div class="sf-tier__ship">{{ s.offer_ship }}</div>{%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <button type="submit" name="add" class="sf-atc" data-sf-atc{% if cur.available == false %} disabled{% endif %}>
+          <span class="sf-atc__lbl" data-atc-label>{{ btn_txt }}</span>
+          <span class="sf-atc__sep" aria-hidden="true"></span>
+          <span class="sf-atc__price"><b data-atc-price>{{ cur.price | money }}</b><s data-atc-compare>{% if cur.compare_at_price > cur.price %}{{ cur.compare_at_price | money }}{% endif %}</s></span>
+        </button>
+        <p class="sf-atc__err" role="alert" data-sf-err hidden></p>
+      {%- endform -%}
+
+      {%- if s.r1_title != blank or s.r2_title != blank -%}
+        <ul class="sf-pdp__re">
+          {%- if s.r1_title != blank -%}<li><span class="sf-pdp__reico">{%- render 'sf-icon', name: 'truck' -%}</span><span><b>{{ s.r1_title }}</b>{{ s.r1_text }}</span></li>{%- endif -%}
+          {%- if s.r2_title != blank -%}<li><span class="sf-pdp__reico">{%- render 'sf-icon', name: 'lock' -%}</span><span><b>{{ s.r2_title }}</b>{{ s.r2_text }}</span></li>{%- endif -%}
+        </ul>
+      {%- endif -%}
+
+      {%- comment -%} Carte avant / apres : squelette, a remplir avec de vrais temoignages {%- endcomment -%}
+      {%- assign results = section.blocks | where: 'type', 'result' -%}
+      {%- if results.size > 0 -%}
+        <div class="sf-res" data-sf-res>
+          <div class="sf-res__head"><b>{{ s.results_title }}</b><span aria-hidden="true">{%- render 'sf-icon', name: 'chevron' -%}</span></div>
+          <div class="sf-res__tabs" role="tablist">
+            {%- for r in results -%}
+              <button type="button" role="tab" class="sf-res__tab{% if forloop.first %} is-active{% endif %}" data-tab="{{ forloop.index0 }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                <i class="sf-res__av">{{ r.settings.name | slice: 0 }}</i>
+                <span><b>{{ r.settings.name }}</b>{%- if r.settings.meta != blank -%}<small>{{ r.settings.meta }}</small>{%- endif -%}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+          {%- for r in results -%}
+            {%- assign rs = r.settings -%}
+            <div class="sf-res__panel" data-panel="{{ forloop.index0 }}"{% unless forloop.first %} hidden{% endunless %} {{ r.shopify_attributes }}>
+              <div class="sf-res__pics">
+                <div class="sf-res__pic sf-media">
+                  {%- if rs.before != blank -%}{{ rs.before | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '250px', alt: 'Before', loading: 'lazy' }}{%- else -%}<span class="sf-res__empty">{%- render 'sf-icon', name: 'camera' -%}<em>Before photo</em></span>{%- endif -%}
+                </div>
+                <div class="sf-res__pic sf-media">
+                  {%- if rs.after != blank -%}{{ rs.after | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '250px', alt: 'After', loading: 'lazy' }}{%- else -%}<span class="sf-res__empty">{%- render 'sf-icon', name: 'camera' -%}<em>After photo</em></span>{%- endif -%}
+                </div>
+              </div>
+              {%- if rs.label != blank -%}<div class="sf-res__label">{{ rs.label }}</div>{%- endif -%}
+              <div class="sf-res__info">
+                {%- if rs.rating > 0 -%}
+                  {%- assign rp = rs.rating | times: 20 -%}
+                  <span class="sf-rate sf-res__stars"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rp }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>
+                {%- endif -%}
+                {%- if rs.highlight != blank -%}<p class="sf-res__hl">{{ rs.highlight }}</p>{%- endif -%}
+                {%- if rs.quote != blank -%}<p class="sf-res__quote">“{{ rs.quote }}”</p>{%- endif -%}
+                {%- if rs.b1_label != blank -%}
+                  <ul class="sf-res__bars">
+                    {%- for n in (1..3) -%}
+                      {%- assign kl = 'b' | append: n | append: '_label' -%}
+                      {%- assign kv = 'b' | append: n | append: '_value' -%}
+                      {%- if rs[kl] != blank -%}
+                        {%- assign bp = rs[kv] | times: 10 -%}
+                        <li><span>{{ rs[kl] }}</span><i><em style="left: {{ bp }}%; width: {{ bp }}%"></em></i><b>{{ rs[kv] }}/10</b></li>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- assign accs = section.blocks | where: 'type', 'accordion' -%}
+      {%- if accs.size > 0 -%}
+        <div class="sf-acc">
+          {%- for a in accs -%}
+            <details class="sf-acc__item" {{ a.shopify_attributes }}>
+              <summary><span>{{ a.settings.title }}</span>{%- render 'sf-icon', name: 'chevron' -%}</summary>
+              <div class="sf-acc__body">
+                {%- if a.settings.use_description and p.description != blank -%}{{ p.description }}{%- else -%}{{ a.settings.content }}{%- endif -%}
+              </div>
+            </details>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <script type="application/json" data-sf-data>
+  {
+    "current": {{ cur.id }},
+    "currency": {{ cart.currency.iso_code | json }},
+    "locale": {{ request.locale.iso_code | json }},
+    "cartAdd": {{ routes.cart_add_url | json }},
+    "colorPos": {{ color_pos }},
+    "labels": { "add": {{ s.atc_label | json }}, "sold": {{ s.sold_label | json }}, "adding": {{ s.adding_label | json }}, "save": {{ s.save_label | json }} },
+    "variants": [
+      {%- for v in p.variants -%}
+        {%- assign dot = '#cbbfb8' -%}
+        {%- if color_pos > 0 -%}
+          {%- assign ci = color_pos | minus: 1 -%}
+          {%- capture dot -%}{% render 'sf-swatch', value: v.options[ci] %}{%- endcapture -%}
+        {%- endif -%}
+        {
+          "id": {{ v.id }}, "title": {{ v.title | json }}, "options": {{ v.options | json }},
+          "price": {{ v.price }}, "compare": {{ v.compare_at_price | default: 0 }}, "available": {{ v.available }},
+          "media": {{ v.featured_media.id | default: 0 }},
+          "thumb": {% if v.featured_media != blank %}{{ v.featured_media | image_url: width: 120 | json }}{% else %}""{% endif %},
+          "dot": {{ dot | strip | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+  </script>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('sf-pdp-{{ section.id }}');
+    if (!root || root.dataset.ready) return; root.dataset.ready = '1';
+    var D = JSON.parse(root.querySelector('[data-sf-data]').textContent), V = D.variants;
+    var $ = function (s, r) { return (r || root).querySelector(s); }, $$ = function (s, r) { return Array.prototype.slice.call((r || root).querySelectorAll(s)); };
+    var byId = {}; V.forEach(function (v) { byId[v.id] = v; });
+    var cur = byId[D.current] || V[0];
+    var fmt; try { fmt = new Intl.NumberFormat(D.locale || undefined, { style: 'currency', currency: D.currency || 'EUR' }); } catch (e) { fmt = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'EUR' }); }
+    function money(c) { return fmt.format(c / 100); }
+
+    /* ---------- galerie ---------- */
+    var main = $('.sf-pdp__stage img'), thumbs = $$('[data-sf-thumb]'), idx = 0;
+    function showThumb(i) {
+      if (!thumbs.length) return;
+      idx = (i + thumbs.length) % thumbs.length;
+      var t = thumbs[idx];
+      thumbs.forEach(function (x) { x.classList.toggle('is-active', x === t); });
+      if (main) { main.removeAttribute('srcset'); main.removeAttribute('sizes'); main.src = t.dataset.src; main.alt = t.dataset.alt || ''; }
+      var wrap = t.parentNode.parentNode; if (wrap && wrap.scrollTo) wrap.scrollTo({ left: t.parentNode.offsetLeft - 8, behavior: 'smooth' });
+    }
+    thumbs.forEach(function (t, i) { t.addEventListener('click', function () { showThumb(i); }); });
+    var pv = $('[data-sf-prev-img]'), nx = $('[data-sf-next-img]');
+    if (pv) pv.addEventListener('click', function () { showThumb(idx - 1); });
+    if (nx) nx.addEventListener('click', function () { showThumb(idx + 1); });
+
+    /* ---------- variantes ---------- */
+    var idInput = $('[data-sf-id]'), fieldsets = $$('[data-sf-opt]');
+    function selectedOptions() { return fieldsets.map(function (f) { var a = $('.sf-pill.is-active', f); return a ? a.dataset.val : null; }); }
+    function findVariant(opts) {
+      return V.filter(function (v) { return opts.every(function (o, i) { return o === null || v.options[i] === o; }); })[0];
+    }
+    function refreshPills() {
+      var opts = selectedOptions();
+      fieldsets.forEach(function (f, fi) {
+        $$('.sf-pill', f).forEach(function (b) {
+          var test = opts.slice(); test[fi] = b.dataset.val;
+          var v = findVariant(test);
+          b.classList.toggle('is-soldout', !v || !v.available);
+          b.setAttribute('aria-pressed', b.classList.contains('is-active') ? 'true' : 'false');
+        });
+        var lab = $('[data-sf-optval]', f), a = $('.sf-pill.is-active', f); if (lab && a) lab.textContent = a.dataset.val;
+      });
+    }
+    fieldsets.forEach(function (f) {
+      $$('.sf-pill', f).forEach(function (b) {
+        b.addEventListener('click', function () {
+          $$('.sf-pill', f).forEach(function (x) { x.classList.toggle('is-active', x === b); });
+          var v = findVariant(selectedOptions()) || cur; setVariant(v, true);
+        });
+      });
+    });
+    function setVariant(v, fromUser) {
+      cur = v; idInput.value = v.id;
+      $$('[data-var]').forEach(function (s) { s.value = v.id; });
+      if (fromUser && window.history && history.replaceState) { try { var u = new URL(location.href); u.searchParams.set('variant', v.id); history.replaceState(null, '', u); } catch (e) {} }
+      if (v.media) { var k = thumbs.findIndex(function (t) { return t.dataset.media == v.media; }); if (k > -1) showThumb(k); }
+      fieldsets.forEach(function (f, i) { $$('.sf-pill', f).forEach(function (b) { b.classList.toggle('is-active', b.dataset.val === v.options[i]); }); });
+      refreshPills(); recalc();
+    }
+
+    /* ---------- offre en lots ---------- */
+    var tiers = $$('[data-sf-tier]'), atc = $('[data-sf-atc]'), err = $('[data-sf-err]');
+    function rowsOf(t) { return $$('[data-row]', t); }
+    function rowState(r) { var v = byId[$('[data-var]', r).value] || cur, q = parseInt($('[data-qty]', r).value, 10) || 1; return { v: v, q: q }; }
+    function tierTotals(t) {
+      var price = 0, compare = 0, count = 0, ok = true;
+      rowsOf(t).forEach(function (r) {
+        var st = rowState(r);
+        price += st.v.price * st.q; compare += (st.v.compare > st.v.price ? st.v.compare : st.v.price) * st.q; count += st.q;
+        if (!st.v.available) ok = false;
+      });
+      return { price: price, compare: compare, count: count, ok: ok };
+    }
+    function recalc() {
+      tiers.forEach(function (t) {
+        rowsOf(t).forEach(function (r) {
+          var st = rowState(r), img = $('[data-row-img]', r), dot = $('[data-dot]', r);
+          if (dot) dot.style.background = st.v.dot;
+          if (img && st.v.thumb) img.src = st.v.thumb;
+          $$('option', $('[data-var]', r)).forEach(function (o) { var v = byId[o.value]; o.disabled = !!(v && !v.available); });
+        });
+        var T = tierTotals(t);
+        $('[data-count]', t).textContent = T.count;
+        $('[data-price]', t).textContent = money(T.price);
+        var cmp = $('[data-compare]', t), sv = $('[data-save]', t);
+        cmp.textContent = T.compare > T.price ? money(T.compare) : '';
+        sv.textContent = T.compare > T.price ? D.labels.save.replace('{amount}', money(T.compare - T.price)) : '';
+        t.classList.toggle('is-out', !T.ok);
+      });
+      var sel = tiers.filter(function (t) { return t.classList.contains('is-selected'); })[0], price, compare, ok;
+      if (sel) { var S = tierTotals(sel); price = S.price; compare = S.compare; ok = S.ok; }
+      else { price = cur.price; compare = cur.compare > cur.price ? cur.compare : 0; ok = cur.available; }
+      $('[data-atc-price]').textContent = money(price);
+      $('[data-atc-compare]').textContent = compare > price ? money(compare) : '';
+      atc.disabled = !ok; $('[data-atc-label]').textContent = ok ? D.labels.add : D.labels.sold;
+    }
+    tiers.forEach(function (t) {
+      $('.sf-tier__radio', t).addEventListener('change', function () {
+        tiers.forEach(function (x) { x.classList.toggle('is-selected', x === t); }); recalc();
+      });
+      $$('select', t).forEach(function (s) { s.addEventListener('change', recalc); });
+    });
+
+    /* ---------- carte avant / apres ---------- */
+    var res = $('[data-sf-res]');
+    if (res) $$('.sf-res__tab', res).forEach(function (b) {
+      b.addEventListener('click', function () {
+        $$('.sf-res__tab', res).forEach(function (x) { var on = x === b; x.classList.toggle('is-active', on); x.setAttribute('aria-selected', on); });
+        $$('.sf-res__panel', res).forEach(function (p) { p.hidden = p.dataset.panel !== b.dataset.tab; });
+      });
+    });
+
+    /* ---------- ajout au panier : meme mecanique que le formulaire du theme (evenement + sections) ---------- */
+    var busy = false;
+    function lines() {
+      var sel = tiers.filter(function (t) { return t.classList.contains('is-selected'); })[0], map = {}, order = [];
+      if (!sel) return [{ id: cur.id, quantity: 1 }];
+      rowsOf(sel).forEach(function (r) { var st = rowState(r); if (!map[st.v.id]) { map[st.v.id] = 0; order.push(st.v.id); } map[st.v.id] += st.q; });
+      return order.map(function (id) { return { id: id, quantity: map[id] }; });
+    }
+    function showErr(m) { err.textContent = m; err.hidden = !m; }
+    function add(e) {
+      e.preventDefault(); if (busy || atc.disabled) return;
+      busy = true; atc.classList.add('is-loading'); atc.setAttribute('aria-busy', 'true'); showErr('');
+      var items = lines(), secIds = $$('cart-items-component', document).map(function (c) { return c.dataset.sectionId; }).filter(Boolean);
+      var Evt = null, deferred = null;
+      $('[data-atc-label]').textContent = D.labels.adding;
+      var load = import('@shopify/events').then(function (m) { Evt = m.CartLinesUpdateEvent; }).catch(function () {});
+      load.then(function () {
+        if (Evt && Evt.createPromise) {
+          deferred = Evt.createPromise();
+          document.dispatchEvent(new Evt({ action: 'add', context: 'product', lines: items.map(function (i) { return { merchandiseId: String(i.id), quantity: i.quantity }; }), promise: deferred.promise }));
+        }
+        return fetch(D.cartAdd, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ items: items, sections: secIds.join(',') }) });
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok && !j.status, j: j }; }); })
+        .then(function (res) {
+          if (!res.ok) { var msg = res.j.description || res.j.message || 'Could not add to cart.'; showErr(msg); if (deferred) deferred.reject(new Error(msg)); return; }
+          return fetch('/cart.js', { credentials: 'same-origin', headers: { Accept: 'application/json' } }).then(function (r) { return r.json(); }).then(function (cart) {
+            document.dispatchEvent(new CustomEvent('sf:cart', { detail: cart }));
+            if (deferred) deferred.resolve({ cart: Evt.createCartFromAjaxResponse(cart), detail: { items: cart.items, source: 'sf-pdp', sourceId: root.id, itemCount: items.reduce(function (a, i) { return a + i.quantity; }, 0), productId: '{{ p.id }}', sections: res.j.sections, didError: false } });
+            var d = document.getElementById('cart-drawer');
+            if (d && typeof d.open === 'function') { if (!d.isOpen) d.open(); } else { location.href = '/cart'; }
+          });
+        })
+        .catch(function (x) { showErr('Something went wrong. Please try again.'); if (deferred) deferred.reject(x); })
+        .then(function () { busy = false; atc.classList.remove('is-loading'); atc.removeAttribute('aria-busy'); recalc(); });
+    }
+    root.querySelector('form').addEventListener('submit', add);
+
+    refreshPills(); recalc();
+  })();
+</script>
+
+{% stylesheet %}
+  .sf-pdp { background: #fff; padding: 24px 0 64px; }
+  .sf-pdp__anchor { display: block; position: relative; top: -20px; height: 0; }
+  .sf-pdp__grid { display: grid; grid-template-columns: minmax(0, 647fr) minmax(0, 528fr); column-gap: clamp(24px, 3.4vw, 49px); align-items: start; }
+  /* galerie */
+  .sf-pdp__gal { position: sticky; top: 20px; }
+  .sf-pdp__stage { aspect-ratio: 647 / 652; border-radius: 12px; background: #EEF0F1; }
+  .sf-pdp__stage img, .sf-pdp__stage > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-pdp__nav { position: absolute; top: 50%; z-index: 2; width: 30px; height: 30px; margin-top: -15px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(255, 255, 255, .85); color: var(--sf-ink); box-shadow: 0 2px 8px rgba(0, 0, 0, .12); opacity: 0; transition: opacity .15s; }
+  .sf-pdp__nav svg { width: 14px; height: 14px; }
+  .sf-pdp__nav--prev { left: 10px; } .sf-pdp__nav--next { right: 10px; }
+  .sf-pdp__stage:hover .sf-pdp__nav, .sf-pdp__nav:focus-visible { opacity: 1; }
+  @media (hover: none) { .sf-pdp__nav { opacity: 1; } }
+  .sf-pdp__thumbs { display: flex; gap: 7px; margin-top: 9px; overflow-x: auto; scrollbar-width: none; padding: 2px; }
+  .sf-pdp__thumbs::-webkit-scrollbar { display: none; }
+  .sf-pdp__thumbs li { flex: 0 0 auto; }
+  .sf-pdp__thumb { display: block; width: clamp(60px, 5.3vw, 76px); aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 2px solid transparent; background: #EEF0F1; padding: 0; }
+  .sf-pdp__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .sf-pdp__thumb.is-active { border-color: var(--sf-plum); }
+  /* colonne achat */
+  .sf-pdp__chips { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+  .sf-pdp__chips:has(> :only-child) { grid-template-columns: 1fr; }
+  .sf-pdp__chip { display: flex; align-items: center; justify-content: center; gap: 6px; height: 28px; border-radius: 6px; border: 1px solid #DCD1CC; background: #fff;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--sf-ink); }
+  .sf-pdp__chip svg { width: 11px; height: 11px; color: var(--sf-plum); }
+  .sf-pdp__chip--fill { background: var(--sf-plum); border-color: var(--sf-plum); color: #fff; }
+  .sf-pdp__chip--fill svg { color: #fff; }
+  .sf-pdp__eyebrow { margin-top: 14px; font-size: 10.5px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; color: var(--sf-plum); }
+  .sf-pdp__title { margin-top: 8px; font-family: var(--sf-serif); font-weight: 400; font-size: clamp(27px, 2.3vw, 33px); line-height: 1.1; letter-spacing: -.01em; color: var(--sf-ink); }
+  .sf-pdp__hl { display: inline-flex; align-items: center; gap: 7px; margin-top: 12px; padding: 5px 10px 5px 7px; border-radius: 6px; background: #FBF4DA; font-size: 12px; color: #5b4d17; }
+  .sf-pdp__hl span { display: inline-flex; color: #b28a10; } .sf-pdp__hl svg { width: 13px; height: 13px; }
+  .sf-pdp__rate { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12.5px; color: #5f5654; }
+  .sf-pdp__rate .sf-rate { font-size: 15px; }
+  .sf-pdp__ben { margin-top: 16px; }
+  .sf-pdp__ben li { display: flex; align-items: center; gap: 14px; min-height: 44px; font-size: 14.5px; line-height: 1.3; color: var(--sf-ink); }
+  .sf-pdp__benico { flex: 0 0 auto; width: 28px; height: 28px; display: inline-grid; place-items: center; color: var(--sf-plum); }
+  .sf-pdp__benico svg { width: 22px; height: 22px; }
+  .sf-pdp__help { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 10px 12px; border-radius: 10px; background: var(--sf-plum); color: #fff; }
+  .sf-pdp__helpico svg { width: 24px; height: 24px; color: #F4C9D6; }
+  .sf-pdp__helptxt { flex: 1; display: flex; flex-direction: column; gap: 2px; font-size: 11.5px; line-height: 1.3; }
+  .sf-pdp__helptxt b { font-size: 12.5px; font-weight: 700; }
+  .sf-pdp__helptxt span { opacity: .85; }
+  .sf-pdp__helpchips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 3px; }
+  .sf-pdp__helpchips i { font-style: normal; font-size: 10px; padding: 3px 7px; border-radius: 4px; background: rgba(255, 255, 255, .16); opacity: 1 !important; }
+  .sf-pdp__helpbtn { flex: 0 0 auto; display: inline-flex; align-items: center; height: 34px; padding: 0 16px; border-radius: 8px; background: #fff; color: var(--sf-plum) !important;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .sf-pdp__helper { display: flex; justify-content: space-between; margin-top: 10px; font-size: 11.5px; color: #5f5654; }
+  .sf-pdp__helper a { text-decoration: underline; text-underline-offset: 3px; }
+  .sf-pdp__form { margin: 0; }
+  .sf-pdp__opt { margin: 18px 0 0; padding: 0; border: 0; min-width: 0; }
+  .sf-pdp__opt legend { padding: 0; margin-bottom: 8px; font-size: 13px; color: #5f5654; }
+  .sf-pdp__opt legend b { color: var(--sf-ink); }
+  .sf-pdp__pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sf-pill { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 15px; border-radius: 10px; border: 1px solid #E2D8D3; background: #fff;
+    font-size: 13.5px; font-weight: 600; color: var(--sf-ink); transition: border-color .15s, background .15s; }
+  .sf-pill:hover { border-color: #b9a9a2; }
+  .sf-pill.is-active { border: 2px solid var(--sf-plum); background: #FBF3EE; padding: 0 14px; }
+  .sf-pill.is-soldout { color: #9a9290; }
+  .sf-pill.is-soldout span { text-decoration: line-through; }
+  .sf-dot { display: inline-block; width: 15px; height: 15px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .18); flex: 0 0 auto; }
+  /* offre en lots */
+  .sf-offer { margin-top: 22px; padding: 16px 14px 14px; border: 1px solid #EEE5E0; border-radius: 14px; background: #fff; box-shadow: 0 6px 22px -16px rgba(19, 7, 46, .25); }
+  .sf-offer__head { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 14px; }
+  .sf-offer__ttl { display: flex; align-items: center; gap: 8px; width: 100%; font-family: var(--sf-serif); font-size: 21px; line-height: 1.1; color: var(--sf-plum); white-space: nowrap; }
+  .sf-offer__ttl::before, .sf-offer__ttl::after { content: ''; flex: 1; height: 1px; background: #E8DDD8; }
+  .sf-offer__ttl em { font-style: italic; }
+  .sf-offer__ttl b { font-family: var(--sf-sans); font-weight: 800; letter-spacing: .06em; font-size: 16px; }
+  .sf-offer__sub { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: #8b8280; }
+  .sf-tier { position: relative; margin-top: 12px; padding: 14px 14px 0; border: 1.5px solid #E7DEDA; border-radius: 12px; background: #FAF7F5; overflow: hidden; }
+  .sf-offer__head + .sf-tier { margin-top: 0; }
+  .sf-tier.is-selected { border-color: var(--sf-plum); background: #FBF3EE; }
+  .sf-tier__badge { position: absolute; top: 0; right: 16px; padding: 5px 9px; border-radius: 0 0 6px 6px; background: var(--sf-plum); color: #fff; font-size: 9.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; line-height: 1; }
+  .sf-tier__top { display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center; cursor: pointer; padding-bottom: 14px; }
+  .sf-tier__radio { position: absolute; opacity: 0; pointer-events: none; }
+  .sf-tier__mark { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #C9BDB8; background: #fff; display: grid; place-items: center; }
+  .sf-tier.is-selected .sf-tier__mark { border-color: var(--sf-plum); }
+  .sf-tier.is-selected .sf-tier__mark::after { content: ''; width: 12px; height: 12px; border-radius: 50%; background: var(--sf-plum); }
+  .sf-tier__radio:focus-visible + .sf-tier__mark { outline: 2px solid var(--sf-indigo); outline-offset: 2px; }
+  .sf-tier__txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .sf-tier__name { font-size: 14.5px; font-weight: 700; line-height: 1.25; color: var(--sf-ink); }
+  .sf-tier__save { font-size: 12.5px; font-weight: 700; color: var(--sf-plum); }
+  .sf-tier__save:empty { display: none; }
+  .sf-tier__note { font-size: 11.5px; color: #6f6664; }
+  .sf-tier__price { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; white-space: nowrap; }
+  .sf-tier__price b { font-size: 15.5px; font-weight: 700; color: var(--sf-ink); }
+  .sf-tier__price s { font-size: 12px; color: #9a9290; } .sf-tier__price s:empty { display: none; }
+  .sf-tier__rows { display: none; padding: 0 0 14px 34px; }
+  .sf-tier.is-selected .sf-tier__rows:not(.is-solo) { display: grid; gap: 8px; }
+  .sf-row { display: grid; grid-template-columns: 40px 1fr 72px; gap: 8px; align-items: center; }
+  .sf-row__img { width: 40px; height: 40px; border-radius: 6px; overflow: hidden; background: #EEF0F1; }
+  .sf-row__img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .sf-sel { position: relative; display: flex; align-items: center; height: 36px; border: 1px solid #E2D8D3; border-radius: 8px; background: #fff; }
+  .sf-sel .sf-dot { position: absolute; left: 10px; width: 14px; height: 14px; pointer-events: none; }
+  .sf-sel select { width: 100%; height: 100%; padding: 0 26px 0 32px; border: 0; background: transparent; font: inherit; font-size: 13px; color: var(--sf-ink); appearance: none; -webkit-appearance: none; cursor: pointer;
+    background-image: linear-gradient(45deg, transparent 50%, #6f6664 50%), linear-gradient(135deg, #6f6664 50%, transparent 50%); background-position: calc(100% - 15px) 15px, calc(100% - 10px) 15px; background-size: 5px 5px; background-repeat: no-repeat; }
+  .sf-sel--qty select { padding-left: 12px; }
+  .sf-tier__ship { margin: 0 -14px; padding: 9px 14px; background: #E9E4E1; color: #4d4543; font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+  .sf-tier.is-selected .sf-tier__ship { background: var(--sf-plum); color: #fff; }
+  .sf-tier.is-out .sf-tier__price b { color: #9a9290; }
+  /* bouton d'achat */
+  .sf-atc { display: flex; align-items: center; justify-content: center; gap: 14px; width: 100%; height: 60px; margin-top: 16px; padding: 0 20px; border-radius: 10px; background: var(--sf-plum); color: #fff;
+    font-size: 15px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; transition: filter .15s, transform .15s; }
+  .sf-atc:hover:not(:disabled) { filter: brightness(1.12); transform: translateY(-1px); }
+  .sf-atc:focus-visible { outline: 2px solid var(--sf-indigo); outline-offset: 3px; }
+  .sf-atc:disabled { background: #b59aa5; cursor: not-allowed; }
+  .sf-atc__sep { width: 1px; height: 22px; background: rgba(255, 255, 255, .45); }
+  .sf-atc__price { display: inline-flex; align-items: baseline; gap: 8px; letter-spacing: 0; }
+  .sf-atc__price b { font-weight: 700; } .sf-atc__price s { font-size: 12.5px; font-weight: 400; opacity: .7; } .sf-atc__price s:empty { display: none; }
+  .sf-atc.is-loading { position: relative; color: transparent; pointer-events: none; }
+  .sf-atc.is-loading > * { visibility: hidden; }
+  .sf-atc.is-loading::after { content: ''; position: absolute; width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid rgba(255, 255, 255, .4); border-top-color: #fff; animation: sfSpin .7s linear infinite; }
+  @keyframes sfSpin { to { transform: rotate(360deg); } }
+  .sf-atc__err { margin-top: 8px; font-size: 12.5px; color: #B0173A; }
+  .sf-pdp__re { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+  .sf-pdp__re li { display: flex; align-items: center; gap: 10px; }
+  .sf-pdp__reico { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #E7DEDA; display: grid; place-items: center; color: var(--sf-plum); flex: 0 0 auto; }
+  .sf-pdp__reico svg { width: 16px; height: 16px; }
+  .sf-pdp__re li > span:last-child { display: flex; flex-direction: column; font-size: 11.5px; line-height: 1.3; color: #6f6664; }
+  .sf-pdp__re b { font-size: 12px; font-weight: 700; color: var(--sf-ink); }
+  /* carte avant / apres */
+  .sf-res { margin-top: 24px; padding: 12px; border: 1px solid #F0E6E1; border-radius: 14px; background: #FBF6F2; }
+  .sf-res__head { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 10px; }
+  .sf-res__head svg { width: 14px; height: 14px; transform: rotate(180deg); color: #6f6664; }
+  .sf-res__tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; }
+  .sf-res__tab { display: flex; align-items: center; gap: 6px; padding: 6px 4px 8px; border-bottom: 2px solid #E9DEDA; text-align: left; min-width: 0; color: #8b8280; }
+  .sf-res__tab.is-active { border-bottom-color: var(--sf-plum); color: var(--sf-ink); }
+  .sf-res__av { flex: 0 0 auto; width: 20px; height: 20px; border-radius: 50%; background: #EADFDB; font-style: normal; font-size: 10px; font-weight: 700; display: grid; place-items: center; text-transform: uppercase; }
+  .sf-res__tab span { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+  .sf-res__tab b { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sf-res__tab small { font-size: 9.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sf-res__panel[hidden] { display: none; }
+  .sf-res__pics { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border-radius: 10px 10px 0 0; overflow: hidden; }
+  .sf-res__pic { aspect-ratio: 249 / 452; background: #ECE4E0; }
+  .sf-res__pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-res__empty { position: absolute; inset: 10px; border: 1.5px dashed #CDBFB9; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #9d908a; }
+  .sf-res__empty svg { width: 24px; height: 24px; } .sf-res__empty em { font-style: normal; font-size: 11px; }
+  .sf-res__label { padding: 10px; background: var(--sf-plum); color: #fff; text-align: center; font-size: 17px; font-weight: 700; letter-spacing: -.005em; }
+  .sf-res__info { padding: 12px 12px 14px; background: #fff; border-radius: 0 0 10px 10px; }
+  .sf-res__info:empty { display: none; }
+  .sf-res__stars { font-size: 14px; }
+  .sf-res__hl { margin-top: 8px; font-size: 12.5px; font-weight: 600; color: var(--sf-plum); }
+  .sf-res__quote { margin-top: 6px; font-size: 12px; line-height: 1.5; font-style: italic; color: #4d4543; }
+  .sf-res__bars { margin-top: 10px; padding-top: 10px; border-top: 1px solid #F0E9E5; display: grid; gap: 8px; }
+  .sf-res__bars li { display: grid; grid-template-columns: 84px 1fr 30px; gap: 8px; align-items: center; font-size: 11px; color: #4d4543; }
+  .sf-res__bars i { position: relative; height: 3px; border-radius: 3px; background: #E6EFEB; }
+  .sf-res__bars em { position: absolute; left: 0; top: 0; bottom: 0; background: var(--sf-green); border-radius: 3px; }
+  .sf-res__bars em::after { content: ''; position: absolute; right: -4px; top: -3px; width: 9px; height: 9px; border-radius: 50%; background: var(--sf-green); }
+  .sf-res__bars b { font-size: 10.5px; font-weight: 400; text-align: right; color: #8b8280; }
+  /* accordeons */
+  .sf-acc { margin-top: 10px; }
+  .sf-acc__item { border-bottom: 1px solid #EFE7E3; }
+  .sf-acc__item summary { display: flex; justify-content: space-between; align-items: center; padding: 15px 4px; font-size: 13.5px; font-weight: 700; cursor: pointer; list-style: none; }
+  .sf-acc__item summary::-webkit-details-marker { display: none; }
+  .sf-acc__item summary svg { width: 15px; height: 15px; color: #6f6664; transition: transform .2s; }
+  .sf-acc__item[open] summary svg { transform: rotate(180deg); }
+  .sf-acc__body { padding: 0 4px 16px; font-size: 13.5px; line-height: 1.55; color: #4d4543; }
+  .sf-acc__body p + p { margin-top: 8px; }
+  .sf-acc__body ul { margin-top: 8px; padding-left: 0; }
+  @media (max-width: 989px) {
+    .sf-pdp__grid { grid-template-columns: 1fr; row-gap: 24px; }
+    .sf-pdp__gal { position: static; }
+  }
+  @media (max-width: 749px) {
+    .sf-pdp { padding: 0 0 44px; }
+    .sf-pdp__grid { padding-inline: 0; }
+    .sf-pdp__gal { margin-inline: calc(-1 * var(--sf-gutter)); }
+    .sf-pdp__stage { border-radius: 0; aspect-ratio: 1 / 1; }
+    .sf-pdp__thumbs { padding-inline: 16px; }
+    .sf-pdp__thumb { width: 62px; }
+    .sf-offer { padding: 14px 10px 12px; }
+    .sf-tier { padding: 12px 10px 0; }
+    .sf-tier__top { grid-template-columns: 22px 1fr auto; gap: 10px; }
+    .sf-tier__rows { padding-left: 32px; }
+    .sf-tier__ship { margin: 0 -10px; padding: 9px 10px; }
+    .sf-atc { height: 58px; font-size: 14px; gap: 10px; }
+    .sf-res__label { font-size: 15px; }
+    .sf-res__tab small { display: none; }
+    .sf-pdp__help { flex-wrap: wrap; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Produit",
+  "tag": "section",
+  "class": "sf-section-pdp",
+  "settings": [
+    { "type": "header", "content": "Petits éléments au-dessus du titre" },
+    { "type": "text", "id": "chip_1", "label": "Étiquette 1 (contour)", "default": "Self-care Month Offer" },
+    { "type": "text", "id": "chip_2", "label": "Étiquette 2 (pleine)", "default": "Free returns" },
+    { "type": "text", "id": "eyebrow", "label": "Sur-titre", "default": "Sculpting 3D texture" },
+    { "type": "text", "id": "highlight", "label": "Bandeau jaune sous le titre", "default": "Free shipping on every order, no minimum" },
+    { "type": "header", "content": "Avis (affichés seulement si renseignés)" },
+    { "type": "paragraph", "content": "La note vient du metafield reviews.rating (Judge.me, etc.). Sinon, renseignez votre note réelle ici. Vide = masqué." },
+    { "type": "text", "id": "rating_manual", "label": "Note réelle (ex. 4.8)" },
+    { "type": "text", "id": "rating_count", "label": "Texte à côté (ex. 120 reviews)" },
+    { "type": "header", "content": "Bandeau d'aide au choix" },
+    { "type": "text", "id": "help_title", "label": "Titre (vide = masqué)", "default": "Not sure of your size?" },
+    { "type": "text", "id": "help_text", "label": "Texte", "default": "Our team will help you choose." },
+    { "type": "text", "id": "help_chips", "label": "Pastilles (séparées par des virgules)" },
+    { "type": "text", "id": "help_btn_label", "label": "Bouton", "default": "Contact us" },
+    { "type": "url", "id": "help_btn_link", "label": "Lien du bouton (vide = page contact)" },
+    { "type": "text", "id": "helper_left", "label": "Ligne d'info (gauche)" },
+    { "type": "text", "id": "helper_link_label", "label": "Lien (droite) : texte", "default": "Size guide" },
+    { "type": "url", "id": "helper_link", "label": "Lien (droite) : URL (vide = masqué)" },
+    { "type": "header", "content": "Offre en lots" },
+    { "type": "paragraph", "content": "Chaque lot ajoute au panier le nombre de pièces indiqué, au prix normal du produit. Pour une vraie remise (ex. 2e à −50 %), créez-la dans Shopify (Réductions → automatique) : le prix affiché ici est le prix avant remise." },
+    { "type": "text", "id": "offer_title_1", "label": "Titre (italique)", "default": "Self-care" },
+    { "type": "text", "id": "offer_title_2", "label": "Titre (gras)", "default": "MONTH" },
+    { "type": "text", "id": "offer_sub", "label": "Sous-titre", "default": "Choose your bundle" },
+    { "type": "range", "id": "default_tier", "min": 1, "max": 3, "step": 1, "label": "Lot sélectionné par défaut", "default": 1 },
+    { "type": "text", "id": "offer_ship", "label": "Bandeau bas de chaque lot", "default": "+ FREE Shipping" },
+    { "type": "text", "id": "save_label", "label": "Texte d'économie ({amount} = montant)", "default": "You save {amount}" },
+    { "type": "header", "content": "Bouton d'achat" },
+    { "type": "text", "id": "atc_label", "label": "Texte", "default": "Add to cart" },
+    { "type": "text", "id": "sold_label", "label": "Texte si épuisé", "default": "Sold out" },
+    { "type": "text", "id": "adding_label", "label": "Texte pendant l'ajout", "default": "Adding…" },
+    { "type": "header", "content": "Réassurance sous le bouton" },
+    { "type": "text", "id": "r1_title", "label": "Bloc 1 : titre", "default": "Free shipping" },
+    { "type": "text", "id": "r1_text", "label": "Bloc 1 : texte", "default": "No minimum" },
+    { "type": "text", "id": "r2_title", "label": "Bloc 2 : titre", "default": "Secure payment" },
+    { "type": "text", "id": "r2_text", "label": "Bloc 2 : texte", "default": "Encrypted checkout" },
+    { "type": "header", "content": "Carte avant / après" },
+    { "type": "paragraph", "content": "Squelette vide : ajoutez uniquement de vraies photos de vraies clientes, avec leur accord." },
+    { "type": "text", "id": "results_title", "label": "Titre de la carte", "default": "Before & after: from our customers" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Avantage",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icône", "default": "sparkle", "options": [
+          { "value": "sparkle", "label": "Étincelle" }, { "value": "feather", "label": "Plume" }, { "value": "heart", "label": "Cœur" },
+          { "value": "check", "label": "Coche" }, { "value": "shield", "label": "Bouclier" }, { "value": "ruler", "label": "Mètre" },
+          { "value": "truck", "label": "Livraison" }, { "value": "trend", "label": "Courbe" }
+        ] },
+        { "type": "text", "id": "text", "label": "Texte", "default": "Benefit" }
+      ]
+    },
+    {
+      "type": "tier",
+      "name": "Lot",
+      "limit": 3,
+      "settings": [
+        { "type": "range", "id": "quantity", "min": 1, "max": 6, "step": 1, "label": "Nombre de pièces", "default": 1 },
+        { "type": "text", "id": "badge", "label": "Étiquette (coin haut droit)" },
+        { "type": "text", "id": "note", "label": "Petit texte sous le titre" }
+      ]
+    },
+    {
+      "type": "result",
+      "name": "Avant / après",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "name", "label": "Prénom + initiale", "default": "Customer name" },
+        { "type": "text", "id": "meta", "label": "Info (taille · âge)", "default": "Size M · 46" },
+        { "type": "image_picker", "id": "before", "label": "Photo avant" },
+        { "type": "image_picker", "id": "after", "label": "Photo après" },
+        { "type": "text", "id": "label", "label": "Bandeau prune sous les photos" },
+        { "type": "range", "id": "rating", "min": 0, "max": 5, "step": 1, "label": "Étoiles (0 = masquées)", "default": 0 },
+        { "type": "text", "id": "highlight", "label": "Phrase en prune" },
+        { "type": "textarea", "id": "quote", "label": "Témoignage réel" },
+        { "type": "text", "id": "b1_label", "label": "Jauge 1 : nom (vide = pas de jauges)" },
+        { "type": "range", "id": "b1_value", "min": 0, "max": 10, "step": 1, "label": "Jauge 1 : note", "default": 0 },
+        { "type": "text", "id": "b2_label", "label": "Jauge 2 : nom" },
+        { "type": "range", "id": "b2_value", "min": 0, "max": 10, "step": 1, "label": "Jauge 2 : note", "default": 0 },
+        { "type": "text", "id": "b3_label", "label": "Jauge 3 : nom" },
+        { "type": "range", "id": "b3_value", "min": 0, "max": 10, "step": 1, "label": "Jauge 3 : note", "default": 0 }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Accordéon",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titre", "default": "Details" },
+        { "type": "checkbox", "id": "use_description", "label": "Afficher la description du produit", "default": false },
+        { "type": "richtext", "id": "content", "label": "Contenu" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Produit" } ]
+}
+{% endschema %}

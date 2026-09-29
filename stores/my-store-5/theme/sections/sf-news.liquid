@@ -38,19 +38,19 @@
 </section>
 
 {% stylesheet %}
-  .sf-news { background: var(--news-bg); padding: clamp(44px, 5.2vw, 76px) 0 clamp(48px, 5.4vw, 78px); }
-  .sf-news__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: clamp(22px, 2.6vw, 38px); }
+  .sf-news { background: var(--news-bg); padding: clamp(48px, 5.6vw, 80px) 0 clamp(52px, 5.8vw, 84px); }
+  .sf-news__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: clamp(24px, 2.9vw, 42px); }
   .sf-news__all { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 4px; }
-  .sf-news__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 1.45vw, 21px); }
+  .sf-news__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 1.9vw, 28px); }
   .sf-news__media { display: block; aspect-ratio: 16 / 9; border-radius: 10px; }
   .sf-news__media img, .sf-news__media > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
   .sf-news__card:hover .sf-news__media img { transform: scale(1.03); }
-  .sf-news__title { margin-top: 12px; font-family: var(--sf-sans); font-size: clamp(17px, 1.4vw, 20px); font-weight: 600; line-height: 1.22; color: #111; }
+  .sf-news__title { margin-top: 14px; font-family: var(--sf-sans); font-size: clamp(19px, 1.6vw, 23px); font-weight: 700; line-height: 1.16; color: #111; }
   .sf-news__title a:hover { color: var(--sf-plum); }
-  .sf-news__date { margin-top: 8px; font-size: 13px; color: #8f8683; }
-  .sf-news__ex { margin-top: 12px; font-size: 13.5px; line-height: 1.5; color: var(--sf-muted); }
+  .sf-news__date { margin-top: 9px; font-size: clamp(13px, 1.07vw, 15.4px); color: #8f8683; }
+  .sf-news__ex { margin-top: 11px; font-size: clamp(14px, 1.11vw, 16px); line-height: 1.4; color: var(--sf-muted); }
   @media (max-width: 749px) {
-    .sf-news__grid { grid-template-columns: 1fr; gap: 28px; }
+    .sf-news__grid { grid-template-columns: 1fr; gap: 32px; }
   }
 {% endstylesheet %}
 

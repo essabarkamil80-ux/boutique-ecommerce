@@ -2,3 +2,6 @@ tools/node_modules/
 tools/fonts/
 tools/out.html
 tools/*.png
+tools/fonts-test/
+tools/cmp.html
+tools/fonts-size.html

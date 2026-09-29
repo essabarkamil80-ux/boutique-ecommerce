@@ -23,24 +23,24 @@
 {%- endif -%}
 
 {% stylesheet %}
-  .sf-press { background: var(--press-bg); color: #fff; padding: 22px 0 21px; overflow: hidden; }
-  .sf-press__label { text-align: center; font-size: 10px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
-    opacity: .75; margin-bottom: 17px; line-height: 14px; }
+  .sf-press { background: var(--press-bg); color: #fff; padding: 27px 0 26px; overflow: hidden; }
+  .sf-press__label { text-align: center; font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+    opacity: .78; margin-bottom: 20px; line-height: 16px; }
   .sf-press__rail { overflow: hidden; }
   .sf-press__track { display: flex; width: max-content; animation: sfPress var(--press-speed, 40s) linear infinite; }
   .sf-press__rail:hover .sf-press__track { animation-play-state: paused; }
-  .sf-press__set { display: flex; align-items: center; gap: clamp(36px, 4.4vw, 64px); padding-right: clamp(36px, 4.4vw, 64px); }
-  .sf-press__logo { flex: 0 0 auto; display: flex; align-items: center; height: 36px; }
-  .sf-press__logo img { height: 32px; width: auto; filter: brightness(0) invert(1); opacity: .95; }
-  .sf-press__name { font-family: var(--sf-serif); font-size: 30px; line-height: 1; letter-spacing: .02em; white-space: nowrap; opacity: .92; }
+  .sf-press__set { display: flex; align-items: center; gap: clamp(44px, 5.2vw, 76px); padding-right: clamp(44px, 5.2vw, 76px); }
+  .sf-press__logo { flex: 0 0 auto; display: flex; align-items: center; height: 42px; }
+  .sf-press__logo img { height: 38px; width: auto; filter: brightness(0) invert(1); opacity: .95; }
+  .sf-press__name { font-family: var(--sf-serif); font-size: 35px; line-height: 1; letter-spacing: .02em; white-space: nowrap; opacity: .92; }
   @keyframes sfPress { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @media (prefers-reduced-motion: reduce) {
     .sf-press__track { animation: none; }
     .sf-press__rail { overflow-x: auto; }
   }
   @media (max-width: 749px) {
-    .sf-press__logo img { height: 24px; }
-    .sf-press__name { font-size: 22px; }
+    .sf-press__logo img { height: 28px; }
+    .sf-press__name { font-size: 26px; }
   }
 {% endstylesheet %}
 

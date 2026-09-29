@@ -139,55 +139,57 @@
           "type": "review",
           "settings": {
             "name": "Customer name",
-            "verified": false,
-            "meta": "Size · age · city",
-            "badge": "7 weeks",
+            "verified": true,
+            "meta": "Size M · 46 · City",
+            "badge": "X weeks",
             "quote": "Paste a real customer review here, with her permission.",
             "widget": "compare",
             "w_before": "What she tried before",
-            "w_after": "What changed for her"
+            "w_after": "Her result, in her words"
           }
         },
         "review-2": {
           "type": "review",
           "settings": {
             "name": "Customer name",
-            "verified": false,
-            "meta": "Size · age · city",
-            "badge": "7 weeks",
+            "verified": true,
+            "meta": "Size M · 46 · City",
+            "badge": "X weeks",
             "quote": "Paste a real customer review here, with her permission.",
             "widget": "stats",
-            "w_s1_val": "—",
-            "w_s1_lbl": "stat label",
-            "w_s2_val": "—",
-            "w_s2_lbl": "stat label",
-            "w_s3_val": "—",
-            "w_s3_lbl": "stat label"
+            "w_s1_val": "00",
+            "w_s1_lbl": "weeks of use",
+            "w_s2_val": "0x",
+            "w_s2_lbl": "times a week",
+            "w_s3_val": "00",
+            "w_s3_lbl": "her result"
           }
         },
         "review-3": {
           "type": "review",
           "settings": {
             "name": "Customer name",
-            "verified": false,
-            "meta": "Size · age · city",
-            "badge": "7 weeks",
+            "verified": true,
+            "meta": "Size M · 46 · City",
+            "badge": "X weeks",
             "quote": "Paste a real customer review here, with her permission.",
             "widget": "progress",
             "w_p_title": "Result",
-            "w_p_hi": "from week —"
+            "w_p_hi": "from week 0"
           }
         },
         "review-4": {
           "type": "review",
           "settings": {
             "name": "Customer name",
-            "verified": false,
-            "meta": "Size · age · city",
-            "badge": "7 weeks",
+            "verified": true,
+            "meta": "Size M · 46 · City",
+            "badge": "X weeks",
             "quote": "Paste a real customer review here, with her permission.",
             "widget": "score",
-            "w_sc_hi": "rating"
+            "w_sc_hi": "rating",
+            "w_sc_before": 0,
+            "w_sc_now": 0
           }
         }
       },

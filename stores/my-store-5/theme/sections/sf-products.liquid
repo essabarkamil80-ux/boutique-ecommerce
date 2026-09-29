@@ -27,19 +27,20 @@
 <script>window.sfRail && window.sfRail(document.getElementById('sf-prod-{{ section.id }}'));</script>
 
 {% stylesheet %}
-  .sf-prod { background: var(--prod-bg); padding: clamp(40px, 4vw, 58px) 0 clamp(44px, 4.5vw, 65px); }
-  .sf-prod__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: clamp(24px, 2.8vw, 40px); }
+  .sf-prod { background: var(--prod-bg); padding: clamp(40px, 4.6vw, 66px) 0 clamp(44px, 4.5vw, 65px); }
+  .sf-prod__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: clamp(20px, 2.1vw, 30px); }
   .sf-prod__tools { display: flex; align-items: center; gap: 18px; }
-  .sf-prod__all { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  .sf-prod__all { font-size: 14.4px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
     text-decoration: underline; text-underline-offset: 4px; color: var(--sf-ink); }
-  .sf-prod__arrows { display: none; color: var(--sf-ink); }
-  .sf-prod:hover .sf-prod__arrows { display: flex; }
+  .sf-prod__arrows { visibility: hidden; color: var(--sf-ink); }
+  .sf-prod:hover .sf-prod__arrows { visibility: visible; }
   .sf-prod__rail { gap: clamp(12px, 1.45vw, 21px); }
   .sf-prod__item { width: clamp(220px, 19.3vw, 278px); }
-  @media (hover: none) { .sf-prod:hover .sf-prod__arrows { display: none; } }
+  @media (hover: none) { .sf-prod__arrows { display: none; } }
   @media (max-width: 749px) {
     .sf-prod__item { width: 64vw; }
     .sf-prod__head { margin-bottom: 16px; }
+    .sf-prod__arrows { display: none; }
   }
 {% endstylesheet %}
 

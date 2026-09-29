@@ -9,12 +9,12 @@
 
 {% stylesheet %}
   .sf-ann { background: var(--ann-bg); color: var(--ann-fg); }
-  .sf-ann__in { min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 10px;
+  .sf-ann__in { min-height: 39px; display: flex; align-items: center; justify-content: center; gap: 10px;
     padding: 6px 16px; text-align: center; }
-  .sf-ann__txt { font-size: 12.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  .sf-ann__txt { font-size: 12.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
     text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-  .sf-ann__pill { background: #fff; color: var(--ann-bg); font-size: 11.5px; font-weight: 700; line-height: 1;
-    padding: 5px 9px; border-radius: 5px; white-space: nowrap; }
+  .sf-ann__pill { background: #fff; color: var(--ann-bg); font-size: 12px; font-weight: 700; line-height: 1;
+    padding: 5px 10px; border-radius: 5px; white-space: nowrap; }
   @media (max-width: 749px) { .sf-ann__txt { font-size: 11px; } .sf-ann__pill { font-size: 10.5px; } }
 {% endstylesheet %}
 
@@ -25,7 +25,7 @@
   "class": "sf-section-ann",
   "settings": [
     { "type": "text", "id": "text", "label": "Texte", "default": "SELF-CARE MONTH OFFER" },
-    { "type": "text", "id": "pill", "label": "Pastille", "default": "Save up to 70%" },
+    { "type": "text", "id": "pill", "label": "Pastille", "default": "Buy 1 Get 1 FREE" },
     { "type": "url", "id": "link", "label": "Lien" },
     { "type": "color", "id": "bg", "label": "Fond", "default": "#6B2441" },
     { "type": "color", "id": "fg", "label": "Texte", "default": "#FFFFFF" }

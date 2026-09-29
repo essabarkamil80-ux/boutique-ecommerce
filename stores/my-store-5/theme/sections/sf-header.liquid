@@ -10,7 +10,7 @@
         {%- assign lstyle = 'width:' | append: lw | append: 'px;height:auto' -%}
         {{ section.settings.logo | image_url: width: 600 | image_tag: width: lw, style: lstyle, alt: shop.name, loading: 'eager' }}
       {%- else -%}
-        <span class="sf-hd__word">{{ section.settings.logo_text | default: shop.name }}</span>
+        <span class="sf-hd__word">{{ section.settings.logo_text | default: shop.name | escape }}</span>
       {%- endif -%}
     </a>
 
@@ -45,7 +45,7 @@
   <div class="sf-hd__drawer" data-sf-drawer hidden>
     <div class="sf-hd__panel" role="dialog" aria-modal="true" aria-label="Menu">
       <div class="sf-hd__phead">
-        <span class="sf-hd__word">{{ section.settings.logo_text | default: shop.name }}</span>
+        <span class="sf-hd__word">{{ section.settings.logo_text | default: shop.name | escape }}</span>
         <button type="button" class="sf-hd__icon" data-sf-close aria-label="Fermer">{%- render 'sf-icon', name: 'close' -%}</button>
       </div>
       <ul class="sf-hd__mlist">
@@ -104,15 +104,15 @@
   .sf-hd { background: #fff; position: relative; z-index: 20; }
   .sf-hd--sticky { position: sticky; top: 0; box-shadow: 0 1px 0 rgba(19, 7, 46, .06); }
   .sf-hd__in { max-width: calc(var(--sf-max) + 2 * var(--sf-gutter)); margin: 0 auto; padding: 0 var(--sf-gutter);
-    min-height: 50px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; }
+    min-height: 51px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; }
   .sf-hd__burger { display: none; width: 40px; height: 40px; place-items: center; }
   .sf-hd__burger svg { width: 24px; height: 24px; }
   .sf-hd__logo { justify-self: start; display: inline-flex; align-items: center; }
-  .sf-hd__word { font-family: var(--sf-serif); font-size: 25px; line-height: 1; letter-spacing: -.01em; color: var(--sf-ink); white-space: nowrap; }
-  .sf-hd__nav ul { display: flex; align-items: center; gap: 26px; }
+  .sf-hd__word { font-family: var(--sf-serif); font-size: 26px; line-height: 1; letter-spacing: -.01em; color: var(--sf-ink); white-space: nowrap; }
+  .sf-hd__nav ul { display: flex; align-items: center; gap: 22px; }
   .sf-hd__item { position: relative; }
   .sf-hd__nav > ul > li > a { display: inline-flex; align-items: center; gap: 4px; padding: 15px 0;
-    font-size: 14px; font-weight: 600; color: var(--sf-ink); white-space: nowrap; }
+    font-size: 14.3px; font-weight: 500; letter-spacing: .005em; color: var(--sf-ink); white-space: nowrap; }
   .sf-hd__nav > ul > li > a:hover, .sf-hd__nav a[aria-current] { color: var(--sf-plum); }
   .sf-hd__chev svg { width: 13px; height: 13px; }
   .sf-hd__sub { position: absolute; top: 100%; left: -16px; min-width: 200px; background: #fff; padding: 10px 0;

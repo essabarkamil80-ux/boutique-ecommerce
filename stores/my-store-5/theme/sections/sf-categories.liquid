@@ -46,11 +46,11 @@
   .sf-cat__media { display: block; width: 100%; aspect-ratio: 1 / 1; border-radius: 12px; }
   .sf-cat__media img, .sf-cat__media > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
   .sf-cat__card:hover .sf-cat__media img { transform: scale(1.04); }
-  .sf-cat__name { margin-top: 10px; font-size: 15px; font-weight: 700; color: var(--sf-ink); }
-  .sf-cat__sub { margin-top: 2px; font-size: 12px; color: var(--sf-muted); }
+  .sf-cat__name { margin-top: 12px; font-size: clamp(15px, 1.39vw, 20px); font-weight: 700; line-height: 1.2; color: var(--sf-ink); }
+  .sf-cat__sub { margin-top: 3px; font-size: 13px; color: var(--sf-muted); }
   @media (max-width: 749px) {
     .sf-cat__grid { grid-template-columns: repeat(2, 1fr); gap: 10px 10px; }
-    .sf-cat__name { font-size: 14px; }
+    .sf-cat__name { font-size: 15px; }
   }
 {% endstylesheet %}
 

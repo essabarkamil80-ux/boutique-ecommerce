@@ -22,13 +22,13 @@
   .sf-trust__row { display: grid; grid-template-columns: repeat(var(--trust-n), 1fr); gap: 20px; }
   .sf-trust__item { display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center; }
   .sf-trust__ico { display: inline-flex; min-height: 20px; align-items: center; }
-  .sf-trust__ico > svg { width: 22px; height: 22px; }
+  .sf-trust__ico > svg { width: 23px; height: 23px; }
   .sf-trust__ico .sf-tp { font-size: 15px; }
-  .sf-trust__txt { font-size: 13.5px; color: rgba(255, 255, 255, .88); }
+  .sf-trust__txt { font-size: clamp(12.5px, 1.11vw, 16px); line-height: 1.25; color: rgba(255, 255, 255, .9); }
   .sf-trust__txt b { color: #fff; font-weight: 700; }
   @media (max-width: 749px) {
     .sf-trust__row { grid-template-columns: repeat(2, 1fr); gap: 22px 12px; }
-    .sf-trust__txt { font-size: 12.5px; }
+    .sf-trust__txt { font-size: 13px; }
   }
 {% endstylesheet %}
 

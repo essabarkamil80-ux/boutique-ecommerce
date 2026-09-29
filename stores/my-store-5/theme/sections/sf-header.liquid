@@ -33,9 +33,11 @@
       {%- if section.settings.show_account and shop.customer_accounts_enabled -%}
         <a class="sf-hd__icon" href="{{ routes.account_url }}" aria-label="Compte">{%- render 'sf-icon', name: 'account' -%}</a>
       {%- endif -%}
-      <a class="sf-hd__icon sf-hd__cart" href="{{ routes.cart_url }}" aria-label="Panier ({{ cart.item_count }})">
+      {%- comment -%} Si le theme est en mode "tiroir", l'icone ouvre le tiroir panier d'Horizon
+         (#cart-drawer) au lieu d'aller sur /cart. Sans JS ou sans tiroir : le lien /cart reste valable. {%- endcomment -%}
+      <a class="sf-hd__icon sf-hd__cart" href="{{ routes.cart_url }}" aria-label="Panier"{% if settings.cart_type == 'drawer' %} aria-controls="cart-drawer" data-sf-cart{% endif %}>
         {%- render 'sf-icon', name: 'cart' -%}
-        {%- if cart.item_count > 0 -%}<span class="sf-hd__count">{{ cart.item_count }}</span>{%- endif -%}
+        <span class="sf-hd__count" data-sf-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
       </a>
     </div>
   </div>
@@ -75,6 +77,26 @@
     hd.querySelector('[data-sf-close]').addEventListener('click', close);
     drawer.addEventListener('click', function (e) { if (e.target === drawer) close(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !drawer.hidden) close(); });
+
+    /* Panier : ouvre le tiroir Horizon, et garde la pastille a jour. */
+    var cartLink = hd.querySelector('[data-sf-cart]'), badge = hd.querySelector('[data-sf-count]');
+    function setCount(n) { if (!badge) return; badge.textContent = n; badge.hidden = !(n > 0); }
+    function refreshCount() {
+      if (!window.fetch) return;
+      fetch('/cart.js', { headers: { Accept: 'application/json' }, credentials: 'same-origin' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (c) { if (c && typeof c.item_count === 'number') setCount(c.item_count); })
+        .catch(function () {});
+    }
+    if (cartLink) {
+      cartLink.addEventListener('click', function (e) {
+        var d = document.getElementById('cart-drawer');
+        if (d && typeof d.open === 'function') { e.preventDefault(); d.open(); }
+      });
+    }
+    document.addEventListener('theme-drawer:close', refreshCount);
+    document.addEventListener('theme-drawer:open', refreshCount);
+    window.addEventListener('pageshow', function (e) { if (e.persisted) refreshCount(); });
   })();
 </script>
 
@@ -102,6 +124,7 @@
   .sf-hd__icons { justify-self: end; display: flex; align-items: center; gap: 14px; }
   .sf-hd__icon { position: relative; width: 36px; height: 36px; display: grid; place-items: center; color: var(--sf-ink); }
   .sf-hd__icon svg { width: 22px; height: 22px; }
+  .sf-hd__count[hidden] { display: none; }
   .sf-hd__count { position: absolute; top: 1px; right: -1px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px;
     background: var(--sf-plum); color: #fff; font-size: 10.5px; font-weight: 700; line-height: 17px; text-align: center; }
 

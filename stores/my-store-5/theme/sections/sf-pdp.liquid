@@ -24,6 +24,21 @@
     assign rating_num = s.rating_manual | times: 1.0
     assign rating_cnt = s.rating_count
   endif
+  assign size_pos = 0
+  assign opt_label = ''
+  for opt in p.options_with_values
+    assign on2 = opt.name | downcase
+    if on2 == 'size' or on2 == 'taille' or on2 == 'taglia' or on2 == 'talla' or on2 == 'größe' or on2 == 'grösse'
+      assign size_pos = opt.position
+    endif
+    if forloop.first
+      assign opt_label = opt.name
+    else
+      assign opt_label = opt_label | append: ', ' | append: opt.name
+    endif
+  endfor
+  assign size_blocks = section.blocks | where: 'type', 'size'
+  assign nrows_default = 1
   assign rating_pct = rating_num | times: 100.0 | divided_by: rating_max
   assign main_alt = p.title
   assign form_id = 'sf-pdp-form-' | append: section.id
@@ -110,7 +125,7 @@
               <span class="sf-pdp__helpchips">{%- for c in hc -%}<i>{{ c | strip }}</i>{%- endfor -%}</span>
             {%- endif -%}
           </div>
-          {%- if s.help_btn_label != blank -%}<a class="sf-pdp__helpbtn" href="{{ s.help_btn_link | default: '/pages/contact' }}">{{ s.help_btn_label }}</a>{%- endif -%}
+          {%- if s.help_btn_label != blank -%}<button type="button" class="sf-pdp__helpbtn" data-sf-size-open aria-haspopup="dialog">{{ s.help_btn_label }}</button>{%- endif -%}
         </div>
       {%- endif -%}
       {%- if s.helper_left != blank or s.helper_link != blank -%}
@@ -120,29 +135,27 @@
       {%- form 'product', p, id: form_id, class: 'sf-pdp__form' -%}
         <input type="hidden" name="id" value="{{ cur.id }}" data-sf-id>
 
-        {%- comment -%} Variantes (une rangee par option) {%- endcomment -%}
-        {%- unless p.has_only_default_variant -%}
+        {%- assign tiers = section.blocks | where: 'type', 'tier' -%}
+        {%- comment -%} Sans lots : une rangee de pastilles par option. Avec lots : couleur / taille se choisissent dans le lot. {%- endcomment -%}
+        {%- if tiers.size == 0 and p.has_only_default_variant == false -%}
           {%- for opt in p.options_with_values -%}
             <fieldset class="sf-pdp__opt" data-sf-opt="{{ opt.position }}">
               <legend>{{ opt.name }}: <b data-sf-optval>{{ cur.options[forloop.index0] }}</b></legend>
               <div class="sf-pdp__pills">
                 {%- for ov in opt.values -%}
-                  {%- assign is_col = false -%}
-                  {%- if opt.position == color_pos -%}{%- assign is_col = true -%}{%- endif -%}
                   <button type="button" class="sf-pill{% if ov.selected %} is-active{% endif %}" data-val="{{ ov | escape }}" aria-pressed="{{ ov.selected }}">
-                    {%- if is_col -%}<i class="sf-dot" style="background: {% render 'sf-swatch', value: ov, swatch: ov.swatch.color %}"></i>{%- endif -%}
+                    {%- if opt.position == color_pos -%}<i class="sf-dot" style="background: {% render 'sf-swatch', value: ov, swatch: ov.swatch.color %}"></i>{%- endif -%}
                     <span>{{ ov }}</span>
                   </button>
                 {%- endfor -%}
               </div>
             </fieldset>
           {%- endfor -%}
-        {%- endunless -%}
+        {%- endif -%}
 
         {%- comment -%} Offre en lots {%- endcomment -%}
-        {%- assign tiers = section.blocks | where: 'type', 'tier' -%}
         {%- if tiers.size > 0 -%}
-          <div class="sf-offer" data-sf-offer>
+          <div class="sf-offer" data-sf-offer data-per-piece="{{ s.per_piece }}">
             <div class="sf-offer__head">
               <span class="sf-offer__ttl"><em>{{ s.offer_title_1 }}</em> <b>{{ s.offer_title_2 }}</b></span>
               {%- if s.offer_sub != blank -%}<span class="sf-offer__sub">{{ s.offer_sub }}</span>{%- endif -%}
@@ -152,6 +165,8 @@
               {%- assign sel = false -%}
               {%- if forloop.index == s.default_tier -%}{%- assign sel = true -%}{%- endif -%}
               {%- if forloop.last and s.default_tier > tiers.size -%}{%- assign sel = true -%}{%- endif -%}
+              {%- assign nrows = 1 -%}
+              {%- if s.per_piece -%}{%- assign nrows = ts.quantity -%}{%- endif -%}
               <div class="sf-tier{% if sel %} is-selected{% endif %}" data-sf-tier data-q="{{ ts.quantity }}" {{ t.shopify_attributes }}>
                 {%- if ts.badge != blank -%}<span class="sf-tier__badge">{{ ts.badge }}</span>{%- endif -%}
                 <label class="sf-tier__top">
@@ -162,24 +177,28 @@
                     <span class="sf-tier__save" data-save></span>
                     {%- if ts.note != blank -%}<span class="sf-tier__note">{{ ts.note }}</span>{%- endif -%}
                   </span>
+                  <span class="sf-tier__pill" data-perpiece hidden></span>
                   <span class="sf-tier__price"><b data-price></b><s data-compare></s></span>
                 </label>
-                <div class="sf-tier__rows{% if ts.quantity == 1 %} is-solo{% endif %}">
-                  {%- for i in (1..ts.quantity) -%}
-                    <div class="sf-row" data-row>
-                      <span class="sf-row__img"><img alt="" data-row-img loading="lazy" width="40" height="40"{% if fm != blank %} src="{{ fm | image_url: width: 120 }}"{% endif %}></span>
-                      <label class="sf-sel"><i class="sf-dot" data-dot></i>
-                        <select data-var aria-label="Variant">
-                          {%- for v in p.variants -%}<option value="{{ v.id }}"{% if v.id == cur.id %} selected{% endif %}>{{ v.title }}</option>{%- endfor -%}
-                        </select>
-                      </label>
-                      <label class="sf-sel sf-sel--qty"><select data-qty aria-label="Quantity">
-                        {%- for q in (1..9) -%}<option value="{{ q }}">{{ q }}</option>{%- endfor -%}
-                      </select></label>
-                    </div>
-                  {%- endfor -%}
-                </div>
-                {%- if s.offer_ship != blank -%}<div class="sf-tier__ship">{{ s.offer_ship }}</div>{%- endif -%}
+                {%- unless p.has_only_default_variant -%}
+                  <div class="sf-tier__opts">
+                    <p class="sf-tier__optlabel">{{ opt_label }}</p>
+                    {%- for i in (1..nrows) -%}
+                      <div class="sf-row" data-row>
+                        <span class="sf-row__img"><img alt="" data-row-img loading="lazy" width="44" height="44"{% if fm != blank %} src="{{ fm | image_url: width: 120 }}"{% endif %}></span>
+                        {%- for opt in p.options_with_values -%}
+                          <label class="sf-sel{% if opt.position == color_pos %} sf-sel--color{% endif %}">
+                            {%- if opt.position == color_pos -%}<i class="sf-dot" data-dot></i>{%- endif -%}
+                            <select data-opt="{{ opt.position }}" aria-label="{{ opt.name | escape }}">
+                              {%- for ov in opt.values -%}<option value="{{ ov | escape }}"{% if ov.selected %} selected{% endif %}>{{ ov }}</option>{%- endfor -%}
+                            </select>
+                          </label>
+                        {%- endfor -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                {%- endunless -%}
+                {%- if s.offer_ship != blank -%}<div class="sf-tier__ship"><span class="sf-tier__gift">{%- render 'sf-icon', name: 'gift' -%}</span>{{ s.offer_ship }}</div>{%- endif -%}
               </div>
             {%- endfor -%}
           </div>
@@ -226,20 +245,21 @@
               </div>
               {%- if rs.label != blank -%}<div class="sf-res__label">{{ rs.label }}</div>{%- endif -%}
               <div class="sf-res__info">
-                {%- if rs.rating > 0 -%}
-                  {%- assign rp = rs.rating | times: 20 -%}
-                  <span class="sf-rate sf-res__stars"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rp }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>
-                {%- endif -%}
-                {%- if rs.highlight != blank -%}<p class="sf-res__hl">{{ rs.highlight }}</p>{%- endif -%}
-                {%- if rs.quote != blank -%}<p class="sf-res__quote">“{{ rs.quote }}”</p>{%- endif -%}
+                {%- assign rp = rs.rating | times: 20 -%}
+                <div class="sf-res__top">
+                  <span class="sf-rate sf-res__stars" aria-label="{{ rs.rating }} / 5"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rp }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>
+                  {%- if rs.badge != blank -%}<span class="sf-res__badge">{%- render 'sf-icon', name: 'verified' -%}{{ rs.badge }}</span>{%- endif -%}
+                </div>
+                {%- if rs.title != blank -%}<p class="sf-res__ttl">{{ rs.title }}</p>{%- endif -%}
+                {%- if rs.quote != blank -%}<p class="sf-res__quote">« {{ rs.quote }} »</p>{%- endif -%}
                 {%- if rs.b1_label != blank -%}
                   <ul class="sf-res__bars">
                     {%- for n in (1..3) -%}
                       {%- assign kl = 'b' | append: n | append: '_label' -%}
                       {%- assign kv = 'b' | append: n | append: '_value' -%}
                       {%- if rs[kl] != blank -%}
-                        {%- assign bp = rs[kv] | times: 10 -%}
-                        <li><span>{{ rs[kl] }}</span><i><em style="left: {{ bp }}%; width: {{ bp }}%"></em></i><b>{{ rs[kv] }}/10</b></li>
+                        {%- assign bp = rs[kv] | times: 20 -%}
+                        <li><span>{{ rs[kl] }}</span><i><em style="width: {{ bp }}%"></em></i><b>{% if rs[kv] > 0 %}{{ rs[kv] }}/5{% else %}—{% endif %}</b></li>
                       {%- endif -%}
                     {%- endfor -%}
                   </ul>
@@ -266,6 +286,41 @@
     </div>
   </div>
 
+  {%- comment -%} Fenetre "See in your size" {%- endcomment -%}
+  <div class="sf-size" data-sf-size hidden>
+    <div class="sf-size__overlay" data-sf-size-close></div>
+    <div class="sf-size__modal" role="dialog" aria-modal="true" aria-labelledby="sf-size-t-{{ section.id }}" tabindex="-1">
+      <div class="sf-size__head">
+        <h2 class="sf-size__title" id="sf-size-t-{{ section.id }}">{{ s.size_title }}</h2>
+        <button type="button" class="sf-size__x" data-sf-size-close aria-label="Close">{%- render 'sf-icon', name: 'close' -%}</button>
+      </div>
+      <div class="sf-size__body">
+        <div class="sf-size__pic sf-media" data-size-pic>
+          {%- if s.size_image != blank -%}
+            {{ s.size_image | image_url: width: 900 | image_tag: widths: '450, 700, 900', sizes: '(min-width: 750px) 380px, 90vw', alt: s.size_title, loading: 'lazy' }}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'sf-ph' }}
+          {%- endif -%}
+        </div>
+        <div class="sf-size__side">
+          {%- if s.size_text != blank -%}<p class="sf-size__txt">{{ s.size_text }}</p>{%- endif -%}
+          <p class="sf-size__lbl">{{ s.size_label }}</p>
+          <div class="sf-size__circles" data-size-circles role="radiogroup" aria-label="{{ s.size_label | escape }}"></div>
+          <p class="sf-size__empty" data-size-empty hidden>{{ s.size_empty }}</p>
+          <div class="sf-size__meas" data-size-meas>
+            <div class="sf-size__mhead">
+              <b>{{ s.meas_title }}</b>
+              <span class="sf-size__unit" role="group" aria-label="Unit"><button type="button" data-unit="cm" class="is-on">CM</button><button type="button" data-unit="in">IN</button></span>
+            </div>
+            <ul class="sf-size__list" data-size-list></ul>
+          </div>
+          <button type="button" class="sf-size__cta" data-size-cta>{{ s.size_cta }}</button>
+          {%- if s.size_note != blank -%}<p class="sf-size__note">{{ s.size_note }}</p>{%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script type="application/json" data-sf-data>
   {
     "current": {{ cur.id }},
@@ -273,7 +328,31 @@
     "locale": {{ request.locale.iso_code | json }},
     "cartAdd": {{ routes.cart_add_url | json }},
     "colorPos": {{ color_pos }},
-    "labels": { "add": {{ s.atc_label | json }}, "sold": {{ s.sold_label | json }}, "adding": {{ s.adding_label | json }}, "save": {{ s.save_label | json }} },
+    "sizePos": {{ size_pos }},
+    "labels": { "add": {{ s.atc_label | json }}, "sold": {{ s.sold_label | json }}, "adding": {{ s.adding_label | json }}, "save": {{ s.save_label | json }}, "perPiece": {{ s.perpiece_label | json }}, "cta": {{ s.size_cta | json }} },
+    "meas": [ {{ s.m1_label | json }}, {{ s.m2_label | json }}, {{ s.m3_label | json }} ],
+    "sizes": [
+      {%- if size_pos > 0 -%}
+        {%- assign first_s = true -%}
+        {%- for opt in p.options_with_values -%}
+          {%- if opt.position == size_pos -%}
+            {%- for ov in opt.values -%}
+              {%- assign ovs = ov | append: '' -%}
+              {%- assign m = blank -%}
+              {%- for sb in size_blocks -%}{%- if sb.settings.label == ovs -%}{%- assign m = sb.settings -%}{%- endif -%}{%- endfor -%}
+              {%- unless forloop.first -%},{%- endunless -%}
+              { "label": {{ ovs | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "img": {% if m.model_image != blank %}{{ m.model_image | image_url: width: 900 | json }}{% else %}""{% endif %} }
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for sb in size_blocks -%}
+          {%- assign m = sb.settings -%}
+          {%- unless forloop.first -%},{%- endunless -%}
+          { "label": {{ m.label | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "img": {% if m.model_image != blank %}{{ m.model_image | image_url: width: 900 | json }}{% else %}""{% endif %} }
+        {%- endfor -%}
+      {%- endif -%}
+    ],
     "variants": [
       {%- for v in p.variants -%}
         {%- assign dot = '#cbbfb8' -%}
@@ -301,9 +380,10 @@
     var D = JSON.parse(root.querySelector('[data-sf-data]').textContent), V = D.variants;
     var $ = function (s, r) { return (r || root).querySelector(s); }, $$ = function (s, r) { return Array.prototype.slice.call((r || root).querySelectorAll(s)); };
     var byId = {}; V.forEach(function (v) { byId[v.id] = v; });
-    var cur = byId[D.current] || V[0];
     var fmt; try { fmt = new Intl.NumberFormat(D.locale || undefined, { style: 'currency', currency: D.currency || 'EUR' }); } catch (e) { fmt = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'EUR' }); }
     function money(c) { return fmt.format(c / 100); }
+    var offer = $('[data-sf-offer]'), perPiece = !!offer && offer.dataset.perPiece === 'true';
+    var SEL = (byId[D.current] || V[0]).options.slice(), cur = byId[D.current] || V[0];
 
     /* ---------- galerie ---------- */
     var main = $('.sf-pdp__stage img'), thumbs = $$('[data-sf-thumb]'), idx = 0;
@@ -321,67 +401,48 @@
     if (nx) nx.addEventListener('click', function () { showThumb(idx + 1); });
 
     /* ---------- variantes ---------- */
-    var idInput = $('[data-sf-id]'), fieldsets = $$('[data-sf-opt]');
-    function selectedOptions() { return fieldsets.map(function (f) { var a = $('.sf-pill.is-active', f); return a ? a.dataset.val : null; }); }
-    function findVariant(opts) {
-      return V.filter(function (v) { return opts.every(function (o, i) { return o === null || v.options[i] === o; }); })[0];
-    }
-    function refreshPills() {
-      var opts = selectedOptions();
-      fieldsets.forEach(function (f, fi) {
-        $$('.sf-pill', f).forEach(function (b) {
-          var test = opts.slice(); test[fi] = b.dataset.val;
-          var v = findVariant(test);
-          b.classList.toggle('is-soldout', !v || !v.available);
-          b.setAttribute('aria-pressed', b.classList.contains('is-active') ? 'true' : 'false');
-        });
-        var lab = $('[data-sf-optval]', f), a = $('.sf-pill.is-active', f); if (lab && a) lab.textContent = a.dataset.val;
-      });
-    }
-    fieldsets.forEach(function (f) {
-      $$('.sf-pill', f).forEach(function (b) {
-        b.addEventListener('click', function () {
-          $$('.sf-pill', f).forEach(function (x) { x.classList.toggle('is-active', x === b); });
-          var v = findVariant(selectedOptions()) || cur; setVariant(v, true);
-        });
-      });
-    });
-    function setVariant(v, fromUser) {
-      cur = v; idInput.value = v.id;
-      $$('[data-var]').forEach(function (s) { s.value = v.id; });
-      if (fromUser && window.history && history.replaceState) { try { var u = new URL(location.href); u.searchParams.set('variant', v.id); history.replaceState(null, '', u); } catch (e) {} }
-      if (v.media) { var k = thumbs.findIndex(function (t) { return t.dataset.media == v.media; }); if (k > -1) showThumb(k); }
-      fieldsets.forEach(function (f, i) { $$('.sf-pill', f).forEach(function (b) { b.classList.toggle('is-active', b.dataset.val === v.options[i]); }); });
-      refreshPills(); recalc();
-    }
-
-    /* ---------- offre en lots ---------- */
-    var tiers = $$('[data-sf-tier]'), atc = $('[data-sf-atc]'), err = $('[data-sf-err]');
+    var idInput = $('[data-sf-id]'), fieldsets = $$('[data-sf-opt]'), tiers = $$('[data-sf-tier]'), atc = $('[data-sf-atc]'), err = $('[data-sf-err]');
+    function findVariant(opts) { return V.filter(function (v) { return opts.every(function (o, i) { return o === null || v.options[i] === o; }); })[0]; }
+    function rowOpts(r) { var o = SEL.slice(); $$('select[data-opt]', r).forEach(function (s) { o[parseInt(s.dataset.opt, 10) - 1] = s.value; }); return o; }
+    function rowVariant(r) { return findVariant(rowOpts(r)) || V[0]; }
     function rowsOf(t) { return $$('[data-row]', t); }
-    function rowState(r) { var v = byId[$('[data-var]', r).value] || cur, q = parseInt($('[data-qty]', r).value, 10) || 1; return { v: v, q: q }; }
+    function rowQty(t) { return perPiece ? 1 : (parseInt(t.dataset.q, 10) || 1); }
     function tierTotals(t) {
-      var price = 0, compare = 0, count = 0, ok = true;
-      rowsOf(t).forEach(function (r) {
-        var st = rowState(r);
-        price += st.v.price * st.q; compare += (st.v.compare > st.v.price ? st.v.compare : st.v.price) * st.q; count += st.q;
-        if (!st.v.available) ok = false;
+      var rs = rowsOf(t), price = 0, compare = 0, count = 0, ok = true;
+      var items = rs.length ? rs.map(function (r) { return { v: rowVariant(r), q: rowQty(t) }; }) : [{ v: cur, q: parseInt(t.dataset.q, 10) || 1 }];
+      items.forEach(function (it) {
+        price += it.v.price * it.q; compare += (it.v.compare > it.v.price ? it.v.compare : it.v.price) * it.q; count += it.q; if (!it.v.available) ok = false;
       });
       return { price: price, compare: compare, count: count, ok: ok };
     }
     function recalc() {
+      cur = findVariant(SEL) || cur; idInput.value = cur.id;
+      fieldsets.forEach(function (f, fi) {
+        $$('.sf-pill', f).forEach(function (b) {
+          var test = SEL.slice(); test[fi] = b.dataset.val; var v = findVariant(test);
+          b.classList.toggle('is-active', b.dataset.val === SEL[fi]); b.classList.toggle('is-soldout', !v || !v.available);
+          b.setAttribute('aria-pressed', b.dataset.val === SEL[fi] ? 'true' : 'false');
+        });
+        var lab = $('[data-sf-optval]', f); if (lab) lab.textContent = SEL[fi];
+      });
       tiers.forEach(function (t) {
         rowsOf(t).forEach(function (r) {
-          var st = rowState(r), img = $('[data-row-img]', r), dot = $('[data-dot]', r);
-          if (dot) dot.style.background = st.v.dot;
-          if (img && st.v.thumb) img.src = st.v.thumb;
-          $$('option', $('[data-var]', r)).forEach(function (o) { var v = byId[o.value]; o.disabled = !!(v && !v.available); });
+          var v = rowVariant(r), img = $('[data-row-img]', r), dot = $('[data-dot]', r), opts = rowOpts(r);
+          if (dot) dot.style.background = v.dot;
+          if (img && v.thumb) img.src = v.thumb;
+          $$('select[data-opt]', r).forEach(function (s) {
+            var pos = parseInt(s.dataset.opt, 10) - 1;
+            $$('option', s).forEach(function (o) { var test = opts.slice(); test[pos] = o.value; var w = findVariant(test); o.disabled = !!(o.value !== s.value && (!w || !w.available)); });
+          });
         });
         var T = tierTotals(t);
         $('[data-count]', t).textContent = T.count;
         $('[data-price]', t).textContent = money(T.price);
-        var cmp = $('[data-compare]', t), sv = $('[data-save]', t);
+        var cmp = $('[data-compare]', t), sv = $('[data-save]', t), pp = $('[data-perpiece]', t);
         cmp.textContent = T.compare > T.price ? money(T.compare) : '';
         sv.textContent = T.compare > T.price ? D.labels.save.replace('{amount}', money(T.compare - T.price)) : '';
+        var per = Math.round(T.price / T.count);
+        if (pp) { var show = T.count > 1 && per < cur.price; pp.hidden = !show; pp.textContent = show ? D.labels.perPiece.replace('{amount}', money(per)) : ''; }
         t.classList.toggle('is-out', !T.ok);
       });
       var sel = tiers.filter(function (t) { return t.classList.contains('is-selected'); })[0], price, compare, ok;
@@ -391,11 +452,21 @@
       $('[data-atc-compare]').textContent = compare > price ? money(compare) : '';
       atc.disabled = !ok; $('[data-atc-label]').textContent = ok ? D.labels.add : D.labels.sold;
     }
+    function applySel(fromUser) {
+      cur = findVariant(SEL) || cur;
+      if (!perPiece) $$('[data-row] select[data-opt]').forEach(function (s) { s.value = SEL[parseInt(s.dataset.opt, 10) - 1]; });
+      if (fromUser && window.history && history.replaceState) { try { var u = new URL(location.href); u.searchParams.set('variant', cur.id); history.replaceState(null, '', u); } catch (e) {} }
+      if (cur.media) { var k = thumbs.findIndex(function (t) { return t.dataset.media == cur.media; }); if (k > -1) showThumb(k); }
+      recalc();
+    }
+    fieldsets.forEach(function (f, fi) {
+      $$('.sf-pill', f).forEach(function (b) { b.addEventListener('click', function () { SEL[fi] = b.dataset.val; applySel(true); }); });
+    });
+    $$('[data-row] select[data-opt]').forEach(function (s) {
+      s.addEventListener('change', function () { if (!perPiece) SEL[parseInt(s.dataset.opt, 10) - 1] = s.value; applySel(true); });
+    });
     tiers.forEach(function (t) {
-      $('.sf-tier__radio', t).addEventListener('change', function () {
-        tiers.forEach(function (x) { x.classList.toggle('is-selected', x === t); }); recalc();
-      });
-      $$('select', t).forEach(function (s) { s.addEventListener('change', recalc); });
+      $('.sf-tier__radio', t).addEventListener('change', function () { tiers.forEach(function (x) { x.classList.toggle('is-selected', x === t); }); recalc(); });
     });
 
     /* ---------- carte avant / apres ---------- */
@@ -407,12 +478,52 @@
       });
     });
 
+    /* ---------- fenetre "See in your size" ---------- */
+    var box = $('[data-sf-size]'), opener = $('[data-sf-size-open]');
+    if (box && opener) {
+      var modal = $('.sf-size__modal', box), circ = $('[data-size-circles]', box), list = $('[data-size-list]', box), cta = $('[data-size-cta]', box),
+          pic = $('[data-size-pic]', box), emptyMsg = $('[data-size-empty]', box), measBox = $('[data-size-meas]', box), unit = 'cm', chosen = 0, lastFocus = null, defaultPic = pic.innerHTML;
+      var Z = D.sizes || [];
+      function fmtVal(v) { if (v === null || v === undefined || String(v).trim() === '') return '—'; var n = parseFloat(String(v).replace(',', '.')); if (isNaN(n)) return v; return unit === 'in' ? (Math.round(n / 2.54 * 10) / 10) + ' in' : n + ' cm'; }
+      function drawSize() {
+        var z = Z[chosen]; if (!z) return;
+        $$('button', circ).forEach(function (b, i) { b.classList.toggle('is-on', i === chosen); b.setAttribute('aria-checked', i === chosen ? 'true' : 'false'); });
+        list.innerHTML = ''; D.meas.forEach(function (name, i) { if (!name) return; var li = document.createElement('li'); var a = document.createElement('span'); a.textContent = name; var b = document.createElement('b'); b.textContent = fmtVal(z.v[i]); li.appendChild(a); li.appendChild(b); list.appendChild(li); });
+        if (z.img) { pic.innerHTML = '<img alt="" src="' + z.img + '">'; } else { pic.innerHTML = defaultPic; }
+        cta.textContent = D.labels.cta.replace('{size}', z.label);
+      }
+      function drawCircles() {
+        circ.innerHTML = '';
+        Z.forEach(function (z, i) { var b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'radio'); b.textContent = z.label; b.addEventListener('click', function () { chosen = i; drawSize(); }); circ.appendChild(b); });
+        var has = Z.length > 0; emptyMsg.hidden = has; measBox.hidden = !has; cta.hidden = !has; circ.hidden = !has;
+        if (has) { var k = D.sizePos ? Z.findIndex(function (z) { return z.label === SEL[D.sizePos - 1]; }) : -1; chosen = k > -1 ? k : 0; drawSize(); }
+      }
+      $$('[data-unit]', box).forEach(function (b) { b.addEventListener('click', function () { unit = b.dataset.unit; $$('[data-unit]', box).forEach(function (x) { x.classList.toggle('is-on', x === b); }); drawSize(); }); });
+      function openBox() { lastFocus = document.activeElement; drawCircles(); box.hidden = false; requestAnimationFrame(function () { box.classList.add('is-open'); }); document.documentElement.style.overflow = 'hidden'; modal.focus(); }
+      function closeBox() { box.classList.remove('is-open'); document.documentElement.style.overflow = ''; setTimeout(function () { box.hidden = true; }, 200); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+      opener.addEventListener('click', openBox);
+      $$('[data-sf-size-close]', box).forEach(function (b) { b.addEventListener('click', closeBox); });
+      document.addEventListener('keydown', function (e) {
+        if (box.hidden) return;
+        if (e.key === 'Escape') closeBox();
+        if (e.key === 'Tab') { var f = $$('button', box).filter(function (b) { return !b.hidden && b.offsetParent !== null; }); if (!f.length) return; var a = f[0], z = f[f.length - 1]; if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); } }
+      });
+      cta.addEventListener('click', function () {
+        var z = Z[chosen];
+        if (z && D.sizePos) { SEL[D.sizePos - 1] = z.label; applySel(true); }
+        closeBox();
+        var b = $('.sf-atc'); if (b && b.scrollIntoView) setTimeout(function () { b.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 220);
+      });
+    }
+
     /* ---------- ajout au panier : meme mecanique que le formulaire du theme (evenement + sections) ---------- */
     var busy = false;
     function lines() {
       var sel = tiers.filter(function (t) { return t.classList.contains('is-selected'); })[0], map = {}, order = [];
       if (!sel) return [{ id: cur.id, quantity: 1 }];
-      rowsOf(sel).forEach(function (r) { var st = rowState(r); if (!map[st.v.id]) { map[st.v.id] = 0; order.push(st.v.id); } map[st.v.id] += st.q; });
+      var rs = rowsOf(sel);
+      if (!rs.length) return [{ id: cur.id, quantity: parseInt(sel.dataset.q, 10) || 1 }];
+      rs.forEach(function (r) { var v = rowVariant(r); if (!map[v.id]) { map[v.id] = 0; order.push(v.id); } map[v.id] += rowQty(sel); });
       return order.map(function (id) { return { id: id, quantity: map[id] }; });
     }
     function showErr(m) { err.textContent = m; err.hidden = !m; }
@@ -445,7 +556,7 @@
     }
     root.querySelector('form').addEventListener('submit', add);
 
-    refreshPills(); recalc();
+    applySel(false);
   })();
 </script>
 
@@ -485,8 +596,8 @@
   .sf-pdp__rate .sf-rate { font-size: 15px; }
   .sf-pdp__ben { margin-top: 16px; }
   .sf-pdp__ben li { display: flex; align-items: center; gap: 14px; min-height: 44px; font-size: 14.5px; line-height: 1.3; color: var(--sf-ink); }
-  .sf-pdp__benico { flex: 0 0 auto; width: 28px; height: 28px; display: inline-grid; place-items: center; color: var(--sf-plum); }
-  .sf-pdp__benico svg { width: 22px; height: 22px; }
+  .sf-pdp__benico { flex: 0 0 auto; width: 30px; height: 30px; display: inline-grid; place-items: center; color: var(--sf-plum); }
+  .sf-pdp__benico svg { width: 28px; height: 28px; }
   .sf-pdp__help { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 10px 12px; border-radius: 10px; background: var(--sf-plum); color: #fff; }
   .sf-pdp__helpico svg { width: 24px; height: 24px; color: #F4C9D6; }
   .sf-pdp__helptxt { flex: 1; display: flex; flex-direction: column; gap: 2px; font-size: 11.5px; line-height: 1.3; }
@@ -494,7 +605,7 @@
   .sf-pdp__helptxt span { opacity: .85; }
   .sf-pdp__helpchips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 3px; }
   .sf-pdp__helpchips i { font-style: normal; font-size: 10px; padding: 3px 7px; border-radius: 4px; background: rgba(255, 255, 255, .16); opacity: 1 !important; }
-  .sf-pdp__helpbtn { flex: 0 0 auto; display: inline-flex; align-items: center; height: 34px; padding: 0 16px; border-radius: 8px; background: #fff; color: var(--sf-plum) !important;
+  .sf-pdp__helpbtn { flex: 0 0 auto; display: inline-flex; align-items: center; height: 34px; padding: 0 16px; border-radius: 8px; background: #fff; color: var(--sf-plum);cursor: pointer;
     font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
   .sf-pdp__helper { display: flex; justify-content: space-between; margin-top: 10px; font-size: 11.5px; color: #5f5654; }
   .sf-pdp__helper a { text-decoration: underline; text-underline-offset: 3px; }
@@ -518,36 +629,42 @@
   .sf-offer__ttl em { font-style: italic; }
   .sf-offer__ttl b { font-family: var(--sf-sans); font-weight: 800; letter-spacing: .06em; font-size: 16px; }
   .sf-offer__sub { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: #8b8280; }
-  .sf-tier { position: relative; margin-top: 12px; padding: 14px 14px 0; border: 1.5px solid #E7DEDA; border-radius: 12px; background: #FAF7F5; overflow: hidden; }
+  .sf-tier { position: relative; margin-top: 12px; padding: 16px 16px 0; border: 1.5px solid #E7DEDA; border-radius: 12px; background: #FAF7F5; overflow: hidden; }
   .sf-offer__head + .sf-tier { margin-top: 0; }
-  .sf-tier.is-selected { border-color: var(--sf-plum); background: #FBF3EE; }
-  .sf-tier__badge { position: absolute; top: 0; right: 16px; padding: 5px 9px; border-radius: 0 0 6px 6px; background: var(--sf-plum); color: #fff; font-size: 9.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; line-height: 1; }
-  .sf-tier__top { display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center; cursor: pointer; padding-bottom: 14px; }
+  .sf-tier.is-selected { border: 2px solid var(--sf-plum); padding: 15px 15px 0; background: #FBF3EE; }
+  .sf-tier__badge { position: absolute; top: 0; right: 16px; padding: 6px 10px; border-radius: 0 0 6px 6px; background: var(--sf-plum); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; line-height: 1; }
+  .sf-tier__top { display: grid; grid-template-columns: 24px 1fr auto auto; gap: 8px 12px; align-items: center; cursor: pointer; padding-bottom: 16px; }
   .sf-tier__radio { position: absolute; opacity: 0; pointer-events: none; }
-  .sf-tier__mark { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #C9BDB8; background: #fff; display: grid; place-items: center; }
+  .sf-tier__mark { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid #C9BDB8; background: #fff; display: grid; place-items: center; }
   .sf-tier.is-selected .sf-tier__mark { border-color: var(--sf-plum); }
-  .sf-tier.is-selected .sf-tier__mark::after { content: ''; width: 12px; height: 12px; border-radius: 50%; background: var(--sf-plum); }
+  .sf-tier.is-selected .sf-tier__mark::after { content: ''; width: 13px; height: 13px; border-radius: 50%; background: var(--sf-plum); }
   .sf-tier__radio:focus-visible + .sf-tier__mark { outline: 2px solid var(--sf-indigo); outline-offset: 2px; }
-  .sf-tier__txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .sf-tier__name { font-size: 14.5px; font-weight: 700; line-height: 1.25; color: var(--sf-ink); }
-  .sf-tier__save { font-size: 12.5px; font-weight: 700; color: var(--sf-plum); }
+  .sf-tier__txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .sf-tier__name { font-size: 15.5px; font-weight: 700; line-height: 1.25; color: var(--sf-ink); }
+  .sf-tier__save { font-size: 14px; font-weight: 700; font-style: italic; color: var(--sf-plum); }
   .sf-tier__save:empty { display: none; }
-  .sf-tier__note { font-size: 11.5px; color: #6f6664; }
+  .sf-tier__note { font-size: 12.5px; font-style: italic; color: #6f6664; }
+  .sf-tier__pill { padding: 6px 10px; border-radius: 8px; background: #F3DCE3; color: var(--sf-plum); font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .sf-tier__pill[hidden] { display: none; }
   .sf-tier__price { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; white-space: nowrap; }
-  .sf-tier__price b { font-size: 15.5px; font-weight: 700; color: var(--sf-ink); }
-  .sf-tier__price s { font-size: 12px; color: #9a9290; } .sf-tier__price s:empty { display: none; }
-  .sf-tier__rows { display: none; padding: 0 0 14px 34px; }
-  .sf-tier.is-selected .sf-tier__rows:not(.is-solo) { display: grid; gap: 8px; }
-  .sf-row { display: grid; grid-template-columns: 40px 1fr 72px; gap: 8px; align-items: center; }
-  .sf-row__img { width: 40px; height: 40px; border-radius: 6px; overflow: hidden; background: #EEF0F1; }
+  .sf-tier__price b { font-size: 18px; font-weight: 700; color: var(--sf-ink); }
+  .sf-tier__price s { font-size: 13.5px; font-weight: 600; color: #9a9290; } .sf-tier__price s:empty { display: none; }
+  .sf-tier__opts { display: none; padding: 0 0 16px 36px; }
+  .sf-tier.is-selected .sf-tier__opts { display: block; }
+  .sf-tier__optlabel { margin-bottom: 8px; font-size: 12.5px; font-weight: 600; color: var(--sf-plum); }
+  .sf-tier__opts .sf-row + .sf-row { margin-top: 8px; }
+  .sf-row { display: flex; align-items: center; gap: 8px; }
+  .sf-row__img { flex: 0 0 auto; width: 44px; height: 44px; border-radius: 6px; overflow: hidden; background: #EEF0F1; }
   .sf-row__img img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .sf-sel { position: relative; display: flex; align-items: center; height: 36px; border: 1px solid #E2D8D3; border-radius: 8px; background: #fff; }
-  .sf-sel .sf-dot { position: absolute; left: 10px; width: 14px; height: 14px; pointer-events: none; }
-  .sf-sel select { width: 100%; height: 100%; padding: 0 26px 0 32px; border: 0; background: transparent; font: inherit; font-size: 13px; color: var(--sf-ink); appearance: none; -webkit-appearance: none; cursor: pointer;
-    background-image: linear-gradient(45deg, transparent 50%, #6f6664 50%), linear-gradient(135deg, #6f6664 50%, transparent 50%); background-position: calc(100% - 15px) 15px, calc(100% - 10px) 15px; background-size: 5px 5px; background-repeat: no-repeat; }
-  .sf-sel--qty select { padding-left: 12px; }
-  .sf-tier__ship { margin: 0 -14px; padding: 9px 14px; background: #E9E4E1; color: #4d4543; font-size: 11px; font-weight: 700; letter-spacing: .04em; }
-  .sf-tier.is-selected .sf-tier__ship { background: var(--sf-plum); color: #fff; }
+  .sf-sel { position: relative; display: flex; align-items: center; flex: 1 1 0; min-width: 0; max-width: 220px; height: 40px; border: 1px solid #E2D8D3; border-radius: 8px; background: #fff; }
+  .sf-sel .sf-dot { position: absolute; left: 11px; width: 15px; height: 15px; pointer-events: none; }
+  .sf-sel select { width: 100%; height: 100%; padding: 0 28px 0 14px; border: 0; background: transparent; font: inherit; font-size: 14px; color: var(--sf-ink); appearance: none; -webkit-appearance: none; cursor: pointer;
+    background-image: linear-gradient(45deg, transparent 50%, #6f6664 50%), linear-gradient(135deg, #6f6664 50%, transparent 50%); background-position: calc(100% - 16px) 17px, calc(100% - 11px) 17px; background-size: 5px 5px; background-repeat: no-repeat; }
+  .sf-sel--color select { padding-left: 34px; }
+  .sf-tier__ship { display: flex; align-items: center; gap: 12px; margin: 0 -16px; padding: 12px 16px; background: #E9E4E1; color: #3f3735; font-size: 14px; font-weight: 700; }
+  .sf-tier.is-selected .sf-tier__ship { margin: 0 -15px; background: var(--sf-plum); color: #fff; }
+  .sf-tier__gift { display: inline-flex; color: var(--sf-plum); } .sf-tier__gift svg { width: 22px; height: 22px; }
+  .sf-tier.is-selected .sf-tier__gift { color: #F4C9D6; }
   .sf-tier.is-out .sf-tier__price b { color: #9a9290; }
   /* bouton d'achat */
   .sf-atc { display: flex; align-items: center; justify-content: center; gap: 14px; width: 100%; height: 60px; margin-top: 16px; padding: 0 20px; border-radius: 10px; background: var(--sf-plum); color: #fff;
@@ -587,17 +704,55 @@
   .sf-res__empty { position: absolute; inset: 10px; border: 1.5px dashed #CDBFB9; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #9d908a; }
   .sf-res__empty svg { width: 24px; height: 24px; } .sf-res__empty em { font-style: normal; font-size: 11px; }
   .sf-res__label { padding: 10px; background: var(--sf-plum); color: #fff; text-align: center; font-size: 17px; font-weight: 700; letter-spacing: -.005em; }
-  .sf-res__info { padding: 12px 12px 14px; background: #fff; border-radius: 0 0 10px 10px; }
-  .sf-res__info:empty { display: none; }
-  .sf-res__stars { font-size: 14px; }
-  .sf-res__hl { margin-top: 8px; font-size: 12.5px; font-weight: 600; color: var(--sf-plum); }
-  .sf-res__quote { margin-top: 6px; font-size: 12px; line-height: 1.5; font-style: italic; color: #4d4543; }
-  .sf-res__bars { margin-top: 10px; padding-top: 10px; border-top: 1px solid #F0E9E5; display: grid; gap: 8px; }
-  .sf-res__bars li { display: grid; grid-template-columns: 84px 1fr 30px; gap: 8px; align-items: center; font-size: 11px; color: #4d4543; }
-  .sf-res__bars i { position: relative; height: 3px; border-radius: 3px; background: #E6EFEB; }
-  .sf-res__bars em { position: absolute; left: 0; top: 0; bottom: 0; background: var(--sf-green); border-radius: 3px; }
-  .sf-res__bars em::after { content: ''; position: absolute; right: -4px; top: -3px; width: 9px; height: 9px; border-radius: 50%; background: var(--sf-green); }
-  .sf-res__bars b { font-size: 10.5px; font-weight: 400; text-align: right; color: #8b8280; }
+  .sf-res__info { padding: 14px 14px 16px; background: #fff; border-radius: 0 0 10px 10px; }
+  .sf-res__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .sf-res__stars { font-size: 15px; }
+  .sf-res__badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border: 1px solid #E7DEDA; border-radius: 999px; font-size: 11px; color: #5f5654; }
+  .sf-res__badge svg { width: 12px; height: 12px; color: var(--sf-plum); }
+  .sf-res__ttl { margin-top: 10px; font-size: 16px; font-weight: 500; line-height: 1.3; color: #3a2a45; }
+  .sf-res__quote { margin-top: 8px; font-size: 12.8px; line-height: 1.55; font-style: italic; color: #4d4543; }
+  .sf-res__bars { margin-top: 12px; padding-top: 12px; border-top: 1px solid #EFE9E5; display: grid; gap: 10px; }
+  .sf-res__bars li { display: grid; grid-template-columns: 96px 1fr 34px; gap: 10px; align-items: center; font-size: 13px; color: var(--sf-ink); }
+  .sf-res__bars i { position: relative; height: 4px; border-radius: 4px; background: #E9E4E1; }
+  .sf-res__bars em { position: absolute; left: 0; top: 0; bottom: 0; background: var(--sf-green); border-radius: 4px; min-width: 0; }
+  .sf-res__bars em::after { content: ''; position: absolute; right: -5px; top: -3px; width: 10px; height: 10px; border-radius: 50%; background: var(--sf-green); }
+  .sf-res__bars b { font-size: 11.5px; font-weight: 400; text-align: right; color: #6f6664; }
+  /* fenetre "See in your size" */
+  .sf-size { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 20px; }
+  .sf-size[hidden] { display: none; }
+  .sf-size__overlay { position: absolute; inset: 0; background: rgba(19, 7, 46, .38); -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px); opacity: 0; transition: opacity .2s; }
+  .sf-size.is-open .sf-size__overlay { opacity: 1; }
+  .sf-size__modal { position: relative; width: min(880px, 100%); max-height: min(92vh, 760px); overflow: auto; border-radius: 20px; background: #fff; box-shadow: 0 30px 80px -20px rgba(19, 7, 46, .5); outline: 0;
+    opacity: 0; transform: translateY(12px) scale(.985); transition: opacity .2s, transform .2s; }
+  .sf-size.is-open .sf-size__modal { opacity: 1; transform: none; }
+  .sf-size__head { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 16px; border-bottom: 1px solid #F0E9E5; }
+  .sf-size__title { font-family: var(--sf-sans); font-size: 16px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--sf-ink); }
+  .sf-size__x { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: #F6EFEB; color: var(--sf-ink); }
+  .sf-size__x svg { width: 16px; height: 16px; }
+  .sf-size__body { display: grid; grid-template-columns: minmax(0, 380fr) minmax(0, 440fr); gap: 28px; padding: 22px 24px 26px; }
+  .sf-size__pic { aspect-ratio: 3 / 4; border-radius: 14px; background: var(--sf-card); overflow: hidden; }
+  .sf-size__pic img, .sf-size__pic > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-size__side { display: flex; flex-direction: column; min-width: 0; }
+  .sf-size__txt { font-size: 14px; line-height: 1.5; color: #5f5654; }
+  .sf-size__lbl { margin-top: 16px; font-size: 13px; font-weight: 700; color: var(--sf-ink); }
+  .sf-size__circles { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+  .sf-size__circles[hidden] { display: none; }
+  .sf-size__circles button { min-width: 48px; height: 48px; padding: 0 6px; border-radius: 50%; border: 1.5px solid #DCD1CC; background: #fff; font-size: 14px; font-weight: 700; color: var(--sf-ink); transition: background .15s, border-color .15s, color .15s; }
+  .sf-size__circles button:hover { border-color: var(--sf-plum); }
+  .sf-size__circles button.is-on { background: var(--sf-plum); border-color: var(--sf-plum); color: #fff; }
+  .sf-size__empty { margin-top: 12px; padding: 14px; border-radius: 10px; background: #FBF3EE; font-size: 13.5px; color: #5f5654; }
+  .sf-size__empty[hidden], .sf-size__meas[hidden], .sf-size__cta[hidden] { display: none; }
+  .sf-size__meas { margin-top: 20px; padding: 16px; border-radius: 12px; background: #FBF6F2; border: 1px solid #F0E6E1; }
+  .sf-size__mhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: var(--sf-ink); }
+  .sf-size__unit { display: inline-flex; padding: 3px; border-radius: 999px; background: #EFE4DF; }
+  .sf-size__unit button { padding: 5px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: .06em; color: #6f6664; }
+  .sf-size__unit button.is-on { background: #fff; color: var(--sf-plum); box-shadow: 0 1px 3px rgba(0, 0, 0, .1); }
+  .sf-size__list li { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #F0E6E1; font-size: 14px; color: #5f5654; }
+  .sf-size__list li:first-child { border-top: 0; }
+  .sf-size__list b { color: var(--sf-ink); font-weight: 700; }
+  .sf-size__cta { margin-top: 20px; height: 54px; border-radius: 10px; background: var(--sf-plum); color: #fff; font-size: 14px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; transition: filter .15s; }
+  .sf-size__cta:hover { filter: brightness(1.12); }
+  .sf-size__note { margin-top: 10px; text-align: center; font-size: 12px; color: #8b8280; }
   /* accordeons */
   .sf-acc { margin-top: 10px; }
   .sf-acc__item { border-bottom: 1px solid #EFE7E3; }
@@ -626,6 +781,15 @@
     .sf-tier__ship { margin: 0 -10px; padding: 9px 10px; }
     .sf-atc { height: 58px; font-size: 14px; gap: 10px; }
     .sf-res__label { font-size: 15px; }
+    .sf-tier__top { grid-template-columns: 24px 1fr auto; }
+    .sf-tier__pill { grid-column: 2 / -1; justify-self: start; }
+    .sf-tier__opts { padding-left: 0; }
+    .sf-sel { max-width: none; }
+    .sf-size { padding: 0; align-items: end; }
+    .sf-size__modal { width: 100%; max-height: 94vh; border-radius: 20px 20px 0 0; }
+    .sf-size__body { grid-template-columns: 1fr; gap: 18px; padding: 16px 16px 22px; }
+    .sf-size__pic { aspect-ratio: 4 / 3.4; }
+    .sf-size__head { padding: 16px 16px 14px; }
     .sf-res__tab small { display: none; }
     .sf-pdp__help { flex-wrap: wrap; }
   }
@@ -637,56 +801,358 @@
   "tag": "section",
   "class": "sf-section-pdp",
   "settings": [
-    { "type": "header", "content": "Petits éléments au-dessus du titre" },
-    { "type": "text", "id": "chip_1", "label": "Étiquette 1 (contour)", "default": "Self-care Month Offer" },
-    { "type": "text", "id": "chip_2", "label": "Étiquette 2 (pleine)", "default": "Free returns" },
-    { "type": "text", "id": "eyebrow", "label": "Sur-titre", "default": "Sculpting 3D texture" },
-    { "type": "text", "id": "highlight", "label": "Bandeau jaune sous le titre", "default": "Free shipping on every order, no minimum" },
-    { "type": "header", "content": "Avis (affichés seulement si renseignés)" },
-    { "type": "paragraph", "content": "La note vient du metafield reviews.rating (Judge.me, etc.). Sinon, renseignez votre note réelle ici. Vide = masqué." },
-    { "type": "text", "id": "rating_manual", "label": "Note réelle (ex. 4.8)" },
-    { "type": "text", "id": "rating_count", "label": "Texte à côté (ex. 120 reviews)" },
-    { "type": "header", "content": "Bandeau d'aide au choix" },
-    { "type": "text", "id": "help_title", "label": "Titre (vide = masqué)", "default": "Not sure of your size?" },
-    { "type": "text", "id": "help_text", "label": "Texte", "default": "Our team will help you choose." },
-    { "type": "text", "id": "help_chips", "label": "Pastilles (séparées par des virgules)" },
-    { "type": "text", "id": "help_btn_label", "label": "Bouton", "default": "Contact us" },
-    { "type": "url", "id": "help_btn_link", "label": "Lien du bouton (vide = page contact)" },
-    { "type": "text", "id": "helper_left", "label": "Ligne d'info (gauche)" },
-    { "type": "text", "id": "helper_link_label", "label": "Lien (droite) : texte", "default": "Size guide" },
-    { "type": "url", "id": "helper_link", "label": "Lien (droite) : URL (vide = masqué)" },
-    { "type": "header", "content": "Offre en lots" },
-    { "type": "paragraph", "content": "Chaque lot ajoute au panier le nombre de pièces indiqué, au prix normal du produit. Pour une vraie remise (ex. 2e à −50 %), créez-la dans Shopify (Réductions → automatique) : le prix affiché ici est le prix avant remise." },
-    { "type": "text", "id": "offer_title_1", "label": "Titre (italique)", "default": "Self-care" },
-    { "type": "text", "id": "offer_title_2", "label": "Titre (gras)", "default": "MONTH" },
-    { "type": "text", "id": "offer_sub", "label": "Sous-titre", "default": "Choose your bundle" },
-    { "type": "range", "id": "default_tier", "min": 1, "max": 3, "step": 1, "label": "Lot sélectionné par défaut", "default": 1 },
-    { "type": "text", "id": "offer_ship", "label": "Bandeau bas de chaque lot", "default": "+ FREE Shipping" },
-    { "type": "text", "id": "save_label", "label": "Texte d'économie ({amount} = montant)", "default": "You save {amount}" },
-    { "type": "header", "content": "Bouton d'achat" },
-    { "type": "text", "id": "atc_label", "label": "Texte", "default": "Add to cart" },
-    { "type": "text", "id": "sold_label", "label": "Texte si épuisé", "default": "Sold out" },
-    { "type": "text", "id": "adding_label", "label": "Texte pendant l'ajout", "default": "Adding…" },
-    { "type": "header", "content": "Réassurance sous le bouton" },
-    { "type": "text", "id": "r1_title", "label": "Bloc 1 : titre", "default": "Free shipping" },
-    { "type": "text", "id": "r1_text", "label": "Bloc 1 : texte", "default": "No minimum" },
-    { "type": "text", "id": "r2_title", "label": "Bloc 2 : titre", "default": "Secure payment" },
-    { "type": "text", "id": "r2_text", "label": "Bloc 2 : texte", "default": "Encrypted checkout" },
-    { "type": "header", "content": "Carte avant / après" },
-    { "type": "paragraph", "content": "Squelette vide : ajoutez uniquement de vraies photos de vraies clientes, avec leur accord." },
-    { "type": "text", "id": "results_title", "label": "Titre de la carte", "default": "Before & after: from our customers" }
+    {
+      "type": "header",
+      "content": "Petits éléments au-dessus du titre"
+    },
+    {
+      "type": "text",
+      "id": "chip_1",
+      "label": "Étiquette 1 (contour)",
+      "default": "Self-care Month Offer"
+    },
+    {
+      "type": "text",
+      "id": "chip_2",
+      "label": "Étiquette 2 (pleine)",
+      "default": "Free returns"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "default": "Sculpting 3D texture"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Bandeau jaune sous le titre",
+      "default": "Free shipping on every order, no minimum"
+    },
+    {
+      "type": "header",
+      "content": "Avis (affichés seulement si renseignés)"
+    },
+    {
+      "type": "paragraph",
+      "content": "La note vient du metafield reviews.rating (Judge.me, etc.). Sinon, renseignez votre note réelle ici. Vide = masqué."
+    },
+    {
+      "type": "text",
+      "id": "rating_manual",
+      "label": "Note réelle (ex. 4.8)"
+    },
+    {
+      "type": "text",
+      "id": "rating_count",
+      "label": "Texte à côté (ex. 120 reviews)"
+    },
+    {
+      "type": "header",
+      "content": "Bandeau d'aide au choix"
+    },
+    {
+      "type": "text",
+      "id": "help_title",
+      "label": "Titre (vide = masqué)",
+      "default": "Not sure of your size?"
+    },
+    {
+      "type": "text",
+      "id": "help_text",
+      "label": "Texte",
+      "default": "See the measurements of each size."
+    },
+    {
+      "type": "text",
+      "id": "help_chips",
+      "label": "Pastilles (séparées par des virgules)"
+    },
+    {
+      "type": "text",
+      "id": "help_btn_label",
+      "label": "Bouton (ouvre la fenêtre des tailles)",
+      "default": "View in my size"
+    },
+    {
+      "type": "text",
+      "id": "helper_left",
+      "label": "Ligne d'info (gauche)"
+    },
+    {
+      "type": "text",
+      "id": "helper_link_label",
+      "label": "Lien (droite) : texte",
+      "default": "Size guide"
+    },
+    {
+      "type": "url",
+      "id": "helper_link",
+      "label": "Lien (droite) : URL (vide = masqué)"
+    },
+    {
+      "type": "header",
+      "content": "Fenêtre « See in your size »"
+    },
+    {
+      "type": "text",
+      "id": "size_title",
+      "label": "Titre",
+      "default": "See in your size"
+    },
+    {
+      "type": "text",
+      "id": "size_text",
+      "label": "Texte d'introduction",
+      "default": "Choose a size to see its measurements."
+    },
+    {
+      "type": "text",
+      "id": "size_label",
+      "label": "Libellé des tailles",
+      "default": "Select your size"
+    },
+    {
+      "type": "image_picker",
+      "id": "size_image",
+      "label": "Image par défaut (mannequin / guide)"
+    },
+    {
+      "type": "text",
+      "id": "meas_title",
+      "label": "Titre du bloc mesures",
+      "default": "My measurements"
+    },
+    {
+      "type": "text",
+      "id": "m1_label",
+      "label": "Mesure 1",
+      "default": "Height"
+    },
+    {
+      "type": "text",
+      "id": "m2_label",
+      "label": "Mesure 2",
+      "default": "Waist"
+    },
+    {
+      "type": "text",
+      "id": "m3_label",
+      "label": "Mesure 3",
+      "default": "Hips"
+    },
+    {
+      "type": "text",
+      "id": "size_cta",
+      "label": "Bouton du bas ({size} = taille choisie)",
+      "default": "Select size {size}"
+    },
+    {
+      "type": "text",
+      "id": "size_note",
+      "label": "Petite note sous le bouton"
+    },
+    {
+      "type": "text",
+      "id": "size_empty",
+      "label": "Message si aucune taille n'est définie",
+      "default": "The size chart will be available soon."
+    },
+    {
+      "type": "paragraph",
+      "content": "Les tailles viennent de l'option « Size / Taille / Taglia » du produit. Sans cette option, ajoutez des blocs « Taille » ci-dessous. Mesures en cm."
+    },
+    {
+      "type": "header",
+      "content": "Offre en lots"
+    },
+    {
+      "type": "paragraph",
+      "content": "Chaque lot ajoute au panier le nombre de pièces indiqué, au prix normal du produit. Pour une vraie remise (ex. 2e à −50 %), créez-la dans Shopify (Réductions → automatique) : le prix affiché ici est le prix avant remise."
+    },
+    {
+      "type": "text",
+      "id": "offer_title_1",
+      "label": "Titre (italique)",
+      "default": "Self-care"
+    },
+    {
+      "type": "text",
+      "id": "offer_title_2",
+      "label": "Titre (gras)",
+      "default": "MONTH"
+    },
+    {
+      "type": "text",
+      "id": "offer_sub",
+      "label": "Sous-titre",
+      "default": "Choose your bundle"
+    },
+    {
+      "type": "range",
+      "id": "default_tier",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Lot sélectionné par défaut",
+      "default": 1
+    },
+    {
+      "type": "text",
+      "id": "offer_ship",
+      "label": "Bandeau bas de chaque lot",
+      "default": "+ FREE Shipping"
+    },
+    {
+      "type": "text",
+      "id": "save_label",
+      "label": "Texte d'économie ({amount} = montant)",
+      "default": "You save {amount}"
+    },
+    {
+      "type": "text",
+      "id": "perpiece_label",
+      "label": "Pastille prix par pièce ({amount})",
+      "default": "Only {amount} per piece"
+    },
+    {
+      "type": "checkbox",
+      "id": "per_piece",
+      "label": "Choisir couleur / taille pièce par pièce (sinon un seul choix par lot)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Bouton d'achat"
+    },
+    {
+      "type": "text",
+      "id": "atc_label",
+      "label": "Texte",
+      "default": "Add to cart"
+    },
+    {
+      "type": "text",
+      "id": "sold_label",
+      "label": "Texte si épuisé",
+      "default": "Sold out"
+    },
+    {
+      "type": "text",
+      "id": "adding_label",
+      "label": "Texte pendant l'ajout",
+      "default": "Adding…"
+    },
+    {
+      "type": "header",
+      "content": "Réassurance sous le bouton"
+    },
+    {
+      "type": "text",
+      "id": "r1_title",
+      "label": "Bloc 1 : titre",
+      "default": "Free shipping"
+    },
+    {
+      "type": "text",
+      "id": "r1_text",
+      "label": "Bloc 1 : texte",
+      "default": "No minimum"
+    },
+    {
+      "type": "text",
+      "id": "r2_title",
+      "label": "Bloc 2 : titre",
+      "default": "Secure payment"
+    },
+    {
+      "type": "text",
+      "id": "r2_text",
+      "label": "Bloc 2 : texte",
+      "default": "Encrypted checkout"
+    },
+    {
+      "type": "header",
+      "content": "Carte avant / après"
+    },
+    {
+      "type": "paragraph",
+      "content": "Squelette vide : ajoutez uniquement de vraies photos de vraies clientes, avec leur accord."
+    },
+    {
+      "type": "text",
+      "id": "results_title",
+      "label": "Titre de la carte",
+      "default": "Before & after: from our customers"
+    }
   ],
   "blocks": [
     {
       "type": "benefit",
       "name": "Avantage",
       "settings": [
-        { "type": "select", "id": "icon", "label": "Icône", "default": "sparkle", "options": [
-          { "value": "sparkle", "label": "Étincelle" }, { "value": "feather", "label": "Plume" }, { "value": "heart", "label": "Cœur" },
-          { "value": "check", "label": "Coche" }, { "value": "shield", "label": "Bouclier" }, { "value": "ruler", "label": "Mètre" },
-          { "value": "truck", "label": "Livraison" }, { "value": "trend", "label": "Courbe" }
-        ] },
-        { "type": "text", "id": "text", "label": "Texte", "default": "Benefit" }
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "default": "sparkle",
+          "options": [
+            {
+              "value": "texture",
+              "label": "Texture 3D"
+            },
+            {
+              "value": "skin",
+              "label": "Peau"
+            },
+            {
+              "value": "waist",
+              "label": "Taille haute"
+            },
+            {
+              "value": "comfort",
+              "label": "Confort"
+            },
+            {
+              "value": "sparkle",
+              "label": "Étincelle"
+            },
+            {
+              "value": "feather",
+              "label": "Plume"
+            },
+            {
+              "value": "heart",
+              "label": "Cœur"
+            },
+            {
+              "value": "check",
+              "label": "Coche"
+            },
+            {
+              "value": "shield",
+              "label": "Bouclier"
+            },
+            {
+              "value": "ruler",
+              "label": "Mètre"
+            },
+            {
+              "value": "truck",
+              "label": "Livraison"
+            },
+            {
+              "value": "trend",
+              "label": "Courbe"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Benefit"
+        }
       ]
     },
     {
@@ -694,9 +1160,25 @@
       "name": "Lot",
       "limit": 3,
       "settings": [
-        { "type": "range", "id": "quantity", "min": 1, "max": 6, "step": 1, "label": "Nombre de pièces", "default": 1 },
-        { "type": "text", "id": "badge", "label": "Étiquette (coin haut droit)" },
-        { "type": "text", "id": "note", "label": "Petit texte sous le titre" }
+        {
+          "type": "range",
+          "id": "quantity",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "label": "Nombre de pièces",
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Étiquette (coin haut droit)"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Petit texte sous le titre"
+        }
       ]
     },
     {
@@ -704,32 +1186,166 @@
       "name": "Avant / après",
       "limit": 4,
       "settings": [
-        { "type": "text", "id": "name", "label": "Prénom + initiale", "default": "Customer name" },
-        { "type": "text", "id": "meta", "label": "Info (taille · âge)", "default": "Size M · 46" },
-        { "type": "image_picker", "id": "before", "label": "Photo avant" },
-        { "type": "image_picker", "id": "after", "label": "Photo après" },
-        { "type": "text", "id": "label", "label": "Bandeau prune sous les photos" },
-        { "type": "range", "id": "rating", "min": 0, "max": 5, "step": 1, "label": "Étoiles (0 = masquées)", "default": 0 },
-        { "type": "text", "id": "highlight", "label": "Phrase en prune" },
-        { "type": "textarea", "id": "quote", "label": "Témoignage réel" },
-        { "type": "text", "id": "b1_label", "label": "Jauge 1 : nom (vide = pas de jauges)" },
-        { "type": "range", "id": "b1_value", "min": 0, "max": 10, "step": 1, "label": "Jauge 1 : note", "default": 0 },
-        { "type": "text", "id": "b2_label", "label": "Jauge 2 : nom" },
-        { "type": "range", "id": "b2_value", "min": 0, "max": 10, "step": 1, "label": "Jauge 2 : note", "default": 0 },
-        { "type": "text", "id": "b3_label", "label": "Jauge 3 : nom" },
-        { "type": "range", "id": "b3_value", "min": 0, "max": 10, "step": 1, "label": "Jauge 3 : note", "default": 0 }
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Prénom + initiale",
+          "default": "Customer name"
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "Info (taille · âge)",
+          "default": "Size M · 46"
+        },
+        {
+          "type": "image_picker",
+          "id": "before",
+          "label": "Photo avant"
+        },
+        {
+          "type": "image_picker",
+          "id": "after",
+          "label": "Photo après"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Bandeau prune sous les photos"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "label": "Étoiles (0 = masquées)",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge (ex. avis non rémunéré)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre de l'avis",
+          "default": "Review title"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Témoignage réel",
+          "default": "Paste a real customer review here."
+        },
+        {
+          "type": "text",
+          "id": "b1_label",
+          "label": "Jauge 1 : nom (vide = pas de jauges)",
+          "default": "Comfort"
+        },
+        {
+          "type": "range",
+          "id": "b1_value",
+          "min": 0,
+          "max": 5,
+          "step": 0.1,
+          "label": "Jauge 1 : note /5",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "b2_label",
+          "label": "Jauge 2 : nom",
+          "default": "Fit"
+        },
+        {
+          "type": "range",
+          "id": "b2_value",
+          "min": 0,
+          "max": 5,
+          "step": 0.1,
+          "label": "Jauge 2 : note /5",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "b3_label",
+          "label": "Jauge 3 : nom",
+          "default": "Quality"
+        },
+        {
+          "type": "range",
+          "id": "b3_value",
+          "min": 0,
+          "max": 5,
+          "step": 0.1,
+          "label": "Jauge 3 : note /5",
+          "default": 0
+        }
       ]
     },
     {
       "type": "accordion",
       "name": "Accordéon",
       "settings": [
-        { "type": "text", "id": "title", "label": "Titre", "default": "Details" },
-        { "type": "checkbox", "id": "use_description", "label": "Afficher la description du produit", "default": false },
-        { "type": "richtext", "id": "content", "label": "Contenu" }
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Details"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_description",
+          "label": "Afficher la description du produit",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Contenu"
+        }
+      ]
+    },
+    {
+      "type": "size",
+      "name": "Taille (guide)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Taille (ex. S, M, L)",
+          "default": "M"
+        },
+        {
+          "type": "text",
+          "id": "v1",
+          "label": "Mesure 1 (cm)"
+        },
+        {
+          "type": "text",
+          "id": "v2",
+          "label": "Mesure 2 (cm)"
+        },
+        {
+          "type": "text",
+          "id": "v3",
+          "label": "Mesure 3 (cm)"
+        },
+        {
+          "type": "image_picker",
+          "id": "model_image",
+          "label": "Photo pour cette taille (optionnelle)"
+        }
       ]
     }
   ],
-  "presets": [ { "name": "SF · Produit" } ]
+  "presets": [
+    {
+      "name": "SF · Produit"
+    }
+  ]
 }
 {% endschema %}

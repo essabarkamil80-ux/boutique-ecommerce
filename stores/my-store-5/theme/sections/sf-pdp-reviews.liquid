@@ -7,8 +7,15 @@
       <h2 class="sf-h2 sf-prev__title">{{ s.title_1 }} <em>{{ s.title_2 }}</em></h2>
     </div>
 
+    {%- assign rv = product.metafields.reviews.rating.value -%}
+    {%- assign ov_pct = 0 -%}
+    {%- if rv != blank -%}{%- assign ov_pct = rv.rating | times: 100.0 | divided_by: rv.scale_max -%}{%- endif -%}
     {%- if s.g1_label != blank -%}
       <div class="sf-prev__gauges">
+        <div class="sf-prev__overall">
+          <span class="sf-rate sf-prev__stars"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ ov_pct }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>
+          <span>{% if rv != blank %}{{ rv.rating | round: 1 }}/{{ rv.scale_max | round }}{% assign rc = product.metafields.reviews.rating_count.value %}{% if rc != blank %} · {{ rc }}{% endif %}{% else %}—{% endif %}</span>
+        </div>
         <ul>
           {%- for n in (1..4) -%}
             {%- assign kl = 'g' | append: n | append: '_label' -%}
@@ -69,6 +76,8 @@
   .sf-prev .sf-prev__title { margin-top: 14px; }
   .sf-prev__title em { font-style: normal; color: var(--sf-plum); }
   .sf-prev__gauges { max-width: 400px; margin: clamp(20px, 2.4vw, 34px) auto 0; padding: 14px 18px 12px; border-radius: 10px; background: #fff; box-shadow: 0 8px 26px -20px rgba(19, 7, 46, .35); }
+  .sf-prev__overall { display: flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 8px; margin-bottom: 4px; border-bottom: 1px solid #F2EBE7; font-size: 12.5px; color: #5f5654; }
+  .sf-prev__overall .sf-prev__stars { font-size: 15px; }
   .sf-prev__gauges li { display: grid; grid-template-columns: 96px 1fr 34px; gap: 12px; align-items: center; padding: 6px 0; font-size: 12px; color: #4d4543; }
   .sf-prev__gauges i { position: relative; height: 3px; border-radius: 3px; background: linear-gradient(90deg, #BFE7D8, #F2DDE2); }
   .sf-prev__gauges em { position: absolute; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--sf-green); }

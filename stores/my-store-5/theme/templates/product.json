@@ -6,28 +6,28 @@
         "pdp-1": {
           "type": "benefit",
           "settings": {
-            "icon": "sparkle",
+            "icon": "texture",
             "text": "3D sculpting texture, designed to sculpt your silhouette"
           }
         },
         "pdp-2": {
           "type": "benefit",
           "settings": {
-            "icon": "feather",
+            "icon": "skin",
             "text": "A smoother, more even-looking skin"
           }
         },
         "pdp-3": {
           "type": "benefit",
           "settings": {
-            "icon": "heart",
+            "icon": "waist",
             "text": "High-waist design that gently wraps your waist"
           }
         },
         "pdp-4": {
           "type": "benefit",
           "settings": {
-            "icon": "check",
+            "icon": "comfort",
             "text": "Comfortable, flattering fit for everyday wear"
           }
         },
@@ -42,7 +42,7 @@
           "settings": {
             "quantity": 2,
             "badge": "Bundle",
-            "note": "Choose the color of each piece"
+            "note": "Free shipping included"
           }
         },
         "pdp-7": {
@@ -50,7 +50,7 @@
           "settings": {
             "quantity": 3,
             "badge": "Bundle",
-            "note": "Choose the color of each piece"
+            "note": "Free shipping included"
           }
         },
         "pdp-8": {
@@ -58,7 +58,12 @@
           "settings": {
             "name": "Customer 1",
             "meta": "Size M · 46",
-            "label": "Result label"
+            "label": "Result label",
+            "title": "Review title",
+            "quote": "Paste a real customer review here.",
+            "b1_label": "Comfort",
+            "b2_label": "Fit",
+            "b3_label": "Quality"
           }
         },
         "pdp-9": {
@@ -66,7 +71,12 @@
           "settings": {
             "name": "Customer 2",
             "meta": "Size M · 46",
-            "label": "Result label"
+            "label": "Result label",
+            "title": "Review title",
+            "quote": "Paste a real customer review here.",
+            "b1_label": "Comfort",
+            "b2_label": "Fit",
+            "b3_label": "Quality"
           }
         },
         "pdp-10": {
@@ -74,7 +84,12 @@
           "settings": {
             "name": "Customer 3",
             "meta": "Size M · 46",
-            "label": "Result label"
+            "label": "Result label",
+            "title": "Review title",
+            "quote": "Paste a real customer review here.",
+            "b1_label": "Comfort",
+            "b2_label": "Fit",
+            "b3_label": "Quality"
           }
         },
         "pdp-11": {
@@ -82,7 +97,12 @@
           "settings": {
             "name": "Customer 4",
             "meta": "Size M · 46",
-            "label": "Result label"
+            "label": "Result label",
+            "title": "Review title",
+            "quote": "Paste a real customer review here.",
+            "b1_label": "Comfort",
+            "b2_label": "Fit",
+            "b3_label": "Quality"
           }
         },
         "pdp-12": {
@@ -337,13 +357,45 @@
             "w_sc_before": 0,
             "w_sc_now": 0
           }
+        },
+        "review-5": {
+          "type": "review",
+          "settings": {
+            "name": "Customer name",
+            "verified": true,
+            "meta": "Size M · 46 · City",
+            "badge": "X weeks",
+            "quote": "Paste a real customer review here, with her permission.",
+            "widget": "compare",
+            "w_before": "What she tried before",
+            "w_after": "Her result, in her words"
+          }
+        },
+        "review-6": {
+          "type": "review",
+          "settings": {
+            "name": "Customer name",
+            "verified": true,
+            "meta": "Size M · 46 · City",
+            "badge": "X weeks",
+            "quote": "Paste a real customer review here, with her permission.",
+            "widget": "stats",
+            "w_s1_val": "00",
+            "w_s1_lbl": "weeks of use",
+            "w_s2_val": "0x",
+            "w_s2_lbl": "times a week",
+            "w_s3_val": "00",
+            "w_s3_lbl": "her result"
+          }
         }
       },
       "block_order": [
         "review-1",
         "review-2",
         "review-3",
-        "review-4"
+        "review-4",
+        "review-5",
+        "review-6"
       ],
       "settings": {
         "pill_label": ""

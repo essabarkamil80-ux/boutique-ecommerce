@@ -33,11 +33,23 @@ L'API Shopify refuse d'écrire sur le thème publié. Procédure :
 1. Dupliquer le thème Horizon → brouillon (`themeDuplicate`).
 2. Envoyer **d'abord** les snippets puis les sections `.liquid`, **ensuite seulement** `header-group.json` et
    `index.json` (un JSON qui référence une section pas encore présente est ignoré sans erreur).
-3. Envoi des gros fichiers : `stagedUploadsCreate` → POST multipart vers GCS → `themeFilesUpsert` avec
+3. **Méthode la plus simple (vérifiée le 29/09/2026)** : le dépôt étant public, `themeFilesUpsert` accepte directement
+   `body: {type: URL, value: "https://raw.githubusercontent.com/<compte>/<depot>/<branche>/stores/my-store-5/theme/<fichier>"}`.
+   Pousser la branche d'abord, puis envoyer les URL (plusieurs fichiers par appel). Aucune signature à recopier. Le MD5 côté
+   Shopify a coïncidé avec le MD5 local pour les 14 fichiers `.liquid`. Attendre ~5 s après le push si l'ancienne version est servie.
+   Alternative si le dépôt devient privé — envoi des gros fichiers : `stagedUploadsCreate` → POST multipart vers GCS → `themeFilesUpsert` avec
    `body: {type: URL}`. Une URL de transfert déjà utilisée ou expirée est ignorée sans erreur : en créer une neuve.
 4. **Vérifier chaque fichier** après envoi : `checksumMd5` identique au MD5 local pour les `.liquid` ; relire le
    contenu pour les `.json` (Shopify les normalise). Un `userErrors: []` vide ne prouve rien.
 5. Pour publier : dupliquer le brouillon et publier **la copie**, pour que le brouillon reste modifiable.
+
+## Pièges rencontrés avec Horizon
+
+- Horizon stylise les éléments nus (`h1`-`h6` : marges 1,5–2,5 rem, casse ; `ul`/`ol` : retrait 1,5 em ; `blockquote` : bordure).
+  Les remises à zéro du socle sont donc en `:where(.sf) h1, …` (spécificité d'élément, gagnent à égalité car chargées plus tard dans
+  le `<body>`), et `.sf-wrap` / `.sf-rail` sont de vraies classes. `tools/horizon-globals.css` + `tools/probe.js` rejouent ces règles.
+- L'icône panier de l'en-tête ouvre le tiroir Horizon (`document.getElementById('cart-drawer').open()`) si `settings.cart_type == 'drawer'`.
+- La duplication d'un thème est asynchrone : attendre `processing: false` avant d'écrire dedans.
 
 ## Tester en local
 
@@ -46,6 +58,8 @@ sh tools/fetch-fonts.sh        # une fois
 python3 tools/validate.py      # règles des schémas Shopify
 sh tools/build.sh 1            # rend tools/out.html avec des images factices
 PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node tools/shot.js out.html 1440 tools/d1440.png
+sh tools/build.sh 1 horizon    # idem, avec les règles globales d'Horizon injectées
+PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node tools/probe.js out.html   # marges / retraits / casse mesurés
 ```
 
 `tools/render.js` rend les vraies sections avec LiquidJS en émulant les objets et filtres Shopify

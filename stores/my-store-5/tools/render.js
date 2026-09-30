@@ -4,7 +4,7 @@ const { Liquid, Tag, Hash } = require('liquidjs');
 const fs = require('fs'), path = require('path');
 const T = path.join(__dirname, '..', 'theme');
 const withImg = process.argv[2] === '1';
-const MODE = process.argv[4] === 'product' ? 'product' : 'index';
+const MODE = ['product', 'page'].includes(process.argv[4]) ? process.argv[4] : 'index';
 
 const CSS = [];
 const engine = new Liquid({ root: [path.join(T, 'snippets')], extname: '.liquid', strictFilters: true,
@@ -69,7 +69,7 @@ function defaults(list) { const o = {}; for (const s of list || []) if (s.id) o[
 const IMGKEYS = new Set(['image', 'photo', 'logo_img']);
 function injectImages(type, settings, label) {
   if (!withImg) return;
-  if (MODE === 'product') { for (const k of Object.keys(settings)) if (settings[k] === '' && /^(image|photo|before|after|avatar_\d)$/.test(k)) settings[k] = fakeImg(k + ' ' + type, 900, 900); }
+  if (MODE !== 'index') { for (const k of Object.keys(settings)) if (settings[k] === '' && /^(image|photo|before|after|avatar_\d)$/.test(k)) settings[k] = fakeImg(k + ' ' + type, 900, 900); }
   if (type === 'sf-hero') settings.image = fakeImg('hero photo', 1200, 1200);
   if (type === 'sf-promo') settings.image = fakeImg('promo photo', 2000, 760);
 }
@@ -95,8 +95,8 @@ async function renderSection(id, conf, ctxBase) {
   const blocks = (conf.block_order || []).map((k) => {
     const b = conf.blocks[k]; const def = (schema.blocks || []).find((x) => x.type === b.type);
     const st = Object.assign(defaults(def && def.settings), b.settings || {});
-    if (withImg && MODE === 'product') { for (const k of Object.keys(st)) if (st[k] === '' && /^(image|photo|before|after)$/.test(k)) st[k] = fakeImg((st.name || st.title || b.type) + ' ' + k, 700, 900); }
-    if (withImg && MODE !== 'product' && (b.type === 'category' || b.type === 'color' || b.type === 'review')) {
+    if (withImg && MODE !== 'index') { for (const k of Object.keys(st)) if (st[k] === '' && /^(image|photo|before|after)$/.test(k)) st[k] = fakeImg((st.name || st.title || b.type) + ' ' + k, 700, 900); }
+    if (withImg && MODE === 'index' && (b.type === 'category' || b.type === 'color' || b.type === 'review')) {
       const key = b.type === 'review' ? 'photo' : 'image';
       st[key] = fakeImg(st.label || st.name || b.type, 900, b.type === 'review' ? 506 : 900);
     }
@@ -104,6 +104,7 @@ async function renderSection(id, conf, ctxBase) {
   });
   const ctx = Object.assign({}, ctxBase, { section: { id, settings, blocks } });
   if (MODE === 'product') ctx.product = PRODUCT;
+  for (const d of schema.settings || []) if (d.type === 'product' && settings[d.id]) settings[d.id] = PRODUCT;
   const out = await engine.parseAndRender(src, ctx);
   return `<div class="shopify-section" id="shopify-section-${id}">${out}</div>`;
 }
@@ -118,7 +119,7 @@ async function renderSection(id, conf, ctxBase) {
   // menu de demo : resolu via le reglage link_list
   const menu = { links: ['3D Leggings', '3D Shorts', '3D T-shirts', '3D Sleeves', 'Contact', 'Track Your Order'].map((t) => ({ title: t, url: '#', links: [] })) };
   const hg = JSON.parse(fs.readFileSync(path.join(T, 'sections/header-group.json'), 'utf8'));
-  const idx = JSON.parse(fs.readFileSync(path.join(T, MODE === 'product' ? 'templates/product.json' : 'templates/index.json'), 'utf8'));
+  const idx = JSON.parse(fs.readFileSync(path.join(T, MODE === 'product' ? 'templates/product.json' : MODE === 'page' ? 'templates/page.sostieni-george.json' : 'templates/index.json'), 'utf8'));
   let html = '';
   for (const k of hg.order) {
     const conf = JSON.parse(JSON.stringify(hg.sections[k]));

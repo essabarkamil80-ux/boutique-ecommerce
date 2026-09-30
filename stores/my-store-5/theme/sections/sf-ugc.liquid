@@ -1,0 +1,101 @@
+{%- assign s = section.settings -%}
+<section class="sf sf-ugc" id="sf-ugc-{{ section.id }}" style="--ugc-bg: {{ s.bg }};">
+  <div class="sf-ugc__wrap">
+    {%- if s.eyebrow != blank -%}<p class="sf-ugc__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+    <h2 class="sf-ugc__title">{{ s.title }}</h2>
+    <ul class="sf-ugc__grid">
+      {%- for b in section.blocks -%}
+        {%- assign bs = b.settings -%}
+        {%- assign vsrc = '' -%}
+        {%- if bs.video != blank -%}
+          {%- for so in bs.video.sources -%}{%- if so.format == 'mp4' and vsrc == '' -%}{%- assign vsrc = so.url -%}{%- endif -%}{%- endfor -%}
+        {%- endif -%}
+        {%- assign poster = bs.image -%}
+        {%- if poster == blank and bs.video != blank -%}{%- assign poster = bs.video.preview_image -%}{%- endif -%}
+        <li {{ b.shopify_attributes }}>
+          <button type="button" class="sf-ugc__card sf-media"{% if vsrc != '' %} data-video="{{ vsrc }}" aria-label="Play video"{% else %} tabindex="-1" aria-disabled="true"{% endif %}>
+            {%- if poster != blank -%}
+              {{ poster | image_url: width: 700 | image_tag: widths: '350, 500, 700', sizes: '(min-width: 990px) 300px, 70vw', alt: bs.caption, loading: 'lazy' }}
+            {%- else -%}
+              <span class="sf-ugc__empty">{%- render 'sf-icon', name: 'camera' -%}<em>Customer video</em></span>
+            {%- endif -%}
+            {%- if vsrc != '' -%}<span class="sf-ugc__play">{%- render 'sf-icon', name: 'play' -%}</span>{%- endif -%}
+            {%- if bs.caption != blank -%}<span class="sf-ugc__cap">{{ bs.caption }}</span>{%- endif -%}
+          </button>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  <div class="sf-ugc__lb" data-lb hidden><button type="button" class="sf-ugc__x" data-lb-close aria-label="Close">{%- render 'sf-icon', name: 'close' -%}</button><div data-lb-slot></div></div>
+</section>
+<script>
+  (function () {
+    var root = document.getElementById('sf-ugc-{{ section.id }}'); if (!root || root.dataset.ready) return; root.dataset.ready = '1';
+    var lb = root.querySelector('[data-lb]'), slot = root.querySelector('[data-lb-slot]');
+    function close() { lb.hidden = true; slot.innerHTML = ''; document.documentElement.style.overflow = ''; }
+    root.querySelectorAll('[data-video]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = document.createElement('video'); v.src = b.dataset.video; v.controls = true; v.autoplay = true; v.playsInline = true; slot.appendChild(v);
+        lb.hidden = false; document.documentElement.style.overflow = 'hidden';
+      });
+    });
+    lb.addEventListener('click', function (e) { if (e.target === lb || e.target.closest('[data-lb-close]')) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) close(); });
+  })();
+</script>
+
+{% stylesheet %}
+  .sf-ugc { background: var(--ugc-bg); padding: clamp(32px, 4vw, 56px) 0; }
+  .sf-ugc__wrap { max-width: calc(1328px + 2 * clamp(16px, 3.9vw, 56px)); margin: 0 auto; padding-inline: clamp(16px, 3.9vw, 56px); }
+  .sf-ugc__eyebrow { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8b8280; }
+  .sf-ugc__title { margin-top: 8px; font-family: var(--sf-serif); font-weight: 400; font-size: clamp(26px, 2.6vw, 38px); line-height: 1.1; letter-spacing: -.015em; color: var(--sf-ink); }
+  .sf-ugc__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(10px, 1.4vw, 20px); margin-top: clamp(18px, 2.2vw, 30px); }
+  .sf-ugc__card { position: relative; display: block; width: 100%; aspect-ratio: 264 / 415; padding: 0; border-radius: 4px; overflow: hidden; background: var(--sf-card); text-align: left; cursor: pointer; }
+  .sf-ugc__card[aria-disabled="true"] { cursor: default; }
+  .sf-ugc__card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-ugc__card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(19, 7, 46, .35) 0%, rgba(19, 7, 46, 0) 40%); pointer-events: none; }
+  .sf-ugc__card[aria-disabled="true"]::after { display: none; }
+  .sf-ugc__empty { position: absolute; inset: 12px; border: 1.5px dashed #CDBFB9; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: #9d908a; }
+  .sf-ugc__empty svg { width: 28px; height: 28px; } .sf-ugc__empty em { font-style: normal; font-size: 12px; }
+  .sf-ugc__play { position: absolute; left: 50%; top: 40%; z-index: 1; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; background: rgba(19, 7, 46, .55); color: #fff; display: grid; place-items: center; transition: transform .15s, background .15s; }
+  .sf-ugc__play svg { width: 22px; height: 22px; margin-left: 3px; }
+  .sf-ugc__card:hover .sf-ugc__play { transform: scale(1.08); background: rgba(107, 36, 65, .85); }
+  .sf-ugc__cap { position: absolute; left: 14px; right: 14px; bottom: 14px; z-index: 1; color: #fff; font-size: 12px; line-height: 1.35; }
+  .sf-ugc__lb { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; padding: 24px; background: rgba(19, 7, 46, .88); }
+  .sf-ugc__lb[hidden] { display: none; }
+  .sf-ugc__lb video { max-width: min(92vw, 420px); max-height: 88vh; background: #000; }
+  .sf-ugc__x { position: absolute; top: 16px; right: 16px; width: 40px; height: 40px; border-radius: 50%; background: #fff; display: grid; place-items: center; }
+  .sf-ugc__x svg { width: 16px; height: 16px; }
+  @media (max-width: 749px) {
+    .sf-ugc__grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(-1 * clamp(16px, 3.9vw, 56px)); padding-inline: 16px; }
+    .sf-ugc__grid::-webkit-scrollbar { display: none; }
+    .sf-ugc__grid > li { flex: 0 0 64vw; scroll-snap-align: start; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Vidéos clientes",
+  "tag": "section",
+  "class": "sf-section-ugc",
+  "settings": [
+    { "type": "paragraph", "content": "Uniquement de vraies vidéos de vraies clientes, avec leur accord. Sans vidéo ni image, une carte vide en pointillés s'affiche." },
+    { "type": "color", "id": "bg", "label": "Fond", "default": "#FFFFFF" },
+    { "type": "text", "id": "eyebrow", "label": "Petit titre", "default": "From the community" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "See it for real" }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Vidéo",
+      "limit": 8,
+      "settings": [
+        { "type": "video", "id": "video", "label": "Vidéo (hébergée par Shopify)" },
+        { "type": "image_picker", "id": "image", "label": "Image de couverture (optionnelle)" },
+        { "type": "text", "id": "caption", "label": "Légende" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Vidéos clientes", "blocks": [ { "type": "video" }, { "type": "video" }, { "type": "video" }, { "type": "video" } ] } ]
+}
+{% endschema %}

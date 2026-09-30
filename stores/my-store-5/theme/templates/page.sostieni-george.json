@@ -1,0 +1,246 @@
+{
+  "sections": {
+    "main": {
+      "type": "sf-shop-main",
+      "blocks": {
+        "m-1": {
+          "type": "usp",
+          "settings": {
+            "icon": "texture",
+            "text": "3D sculpting texture"
+          }
+        },
+        "m-2": {
+          "type": "usp",
+          "settings": {
+            "icon": "skin",
+            "text": "Smoother-looking skin"
+          }
+        },
+        "m-3": {
+          "type": "usp",
+          "settings": {
+            "icon": "waist",
+            "text": "High-waist design"
+          }
+        },
+        "m-4": {
+          "type": "usp",
+          "settings": {
+            "icon": "comfort",
+            "text": "Comfortable, flattering fit"
+          }
+        },
+        "m-5": {
+          "type": "usp",
+          "settings": {
+            "icon": "heart",
+            "text": "Designed to flatter your curves"
+          }
+        },
+        "m-6": {
+          "type": "usp",
+          "settings": {
+            "icon": "check",
+            "text": "Ideal for everyday wear"
+          }
+        },
+        "m-7": {
+          "type": "usp",
+          "settings": {
+            "icon": "truck",
+            "text": "Free shipping, no minimum"
+          }
+        },
+        "m-8": {
+          "type": "usp",
+          "settings": {
+            "icon": "shield",
+            "text": "Free returns within 30 days"
+          }
+        },
+        "m-9": {
+          "type": "look",
+          "settings": {}
+        },
+        "m-10": {
+          "type": "look",
+          "settings": {}
+        },
+        "m-11": {
+          "type": "accordion",
+          "settings": {
+            "icon": "ruler",
+            "title": "Size guide",
+            "content": "<p>Add your size guide here.</p>"
+          }
+        },
+        "m-12": {
+          "type": "accordion",
+          "settings": {
+            "icon": "feather",
+            "title": "Material & care",
+            "content": "<p>Add the fabric composition and care instructions here.</p>"
+          }
+        },
+        "m-13": {
+          "type": "accordion",
+          "settings": {
+            "icon": "sparkle",
+            "title": "Description",
+            "use_description": true
+          }
+        },
+        "m-14": {
+          "type": "accordion",
+          "settings": {
+            "icon": "truck",
+            "title": "Delivery & returns",
+            "content": "<p>Free shipping on every order, no minimum. Free returns within 30 days.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "m-1",
+        "m-2",
+        "m-3",
+        "m-4",
+        "m-5",
+        "m-6",
+        "m-7",
+        "m-8",
+        "m-9",
+        "m-10",
+        "m-11",
+        "m-12",
+        "m-13",
+        "m-14"
+      ],
+      "settings": {
+        "product": "essabar-co-sculpt-3d-leggings"
+      }
+    },
+    "ugc": {
+      "type": "sf-ugc",
+      "blocks": {
+        "v-1": {
+          "type": "video",
+          "settings": {}
+        },
+        "v-2": {
+          "type": "video",
+          "settings": {}
+        },
+        "v-3": {
+          "type": "video",
+          "settings": {}
+        },
+        "v-4": {
+          "type": "video",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "v-1",
+        "v-2",
+        "v-3",
+        "v-4"
+      ],
+      "settings": {}
+    },
+    "related": {
+      "type": "sf-pdp-related",
+      "settings": {
+        "columns": 4,
+        "wide": true,
+        "title": "You might also like"
+      }
+    },
+    "reviews": {
+      "type": "sf-rv-list",
+      "blocks": {
+        "x-1": {
+          "type": "photo",
+          "settings": {}
+        },
+        "x-2": {
+          "type": "photo",
+          "settings": {}
+        },
+        "x-3": {
+          "type": "photo",
+          "settings": {}
+        },
+        "x-4": {
+          "type": "photo",
+          "settings": {}
+        },
+        "x-5": {
+          "type": "photo",
+          "settings": {}
+        },
+        "x-6": {
+          "type": "photo",
+          "settings": {}
+        },
+        "x-7": {
+          "type": "photo",
+          "settings": {}
+        },
+        "x-8": {
+          "type": "photo",
+          "settings": {}
+        },
+        "x-9": {
+          "type": "photo",
+          "settings": {}
+        },
+        "x-10": {
+          "type": "review",
+          "settings": {}
+        },
+        "x-11": {
+          "type": "review",
+          "settings": {}
+        },
+        "x-12": {
+          "type": "review",
+          "settings": {}
+        },
+        "x-13": {
+          "type": "review",
+          "settings": {}
+        },
+        "x-14": {
+          "type": "review",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "x-1",
+        "x-2",
+        "x-3",
+        "x-4",
+        "x-5",
+        "x-6",
+        "x-7",
+        "x-8",
+        "x-9",
+        "x-10",
+        "x-11",
+        "x-12",
+        "x-13",
+        "x-14"
+      ],
+      "settings": {
+        "product": "essabar-co-sculpt-3d-leggings"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "ugc",
+    "related",
+    "reviews"
+  ]
+}

@@ -9,3 +9,5 @@ tools/out-product*.html
 tools/p*.png
 tools/pdp-*.png
 tools/d*.png
+tools/out-page*.html
+tools/g*.png

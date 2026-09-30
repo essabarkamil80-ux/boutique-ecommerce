@@ -11,7 +11,7 @@ const {chromium}=require('/opt/node22/lib/node_modules/playwright');
     return {secs, fonts:[...document.fonts].filter(f=>f.status==='loaded').map(f=>f.family+' '+f.weight),
       heroTitle:r('.sf-hero__title'), heroBtn:r('.sf-hero__btn'), card:r('.sf-prod__item'), cardImg:r('.sf-card__media'),
       cat:r('.sf-cat__media'), rev:r('.sf-rev__card'), revPhoto:r('.sf-rev__photo'), col:r('.sf-col__media'), news:r('.sf-news__media'),
-      h2:getComputedStyle(document.querySelector('.sf-h2')).fontSize, hscroll: document.documentElement.scrollWidth > innerWidth,
+      h2:(document.querySelector('.sf-h2')?getComputedStyle(document.querySelector('.sf-h2')).fontSize:null), hscroll: document.documentElement.scrollWidth > innerWidth,
       page: document.documentElement.scrollHeight};
   });
   console.log(JSON.stringify(m));

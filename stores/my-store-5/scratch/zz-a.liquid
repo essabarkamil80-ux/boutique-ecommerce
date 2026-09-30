@@ -1,0 +1,262 @@
+{%- liquid
+  assign s = section.settings
+  assign revs = section.blocks | where: 'type', 'review'
+  assign photos = section.blocks | where: 'type', 'photo'
+  assign p = s.product | default: product
+  assign rv = p.metafields.reviews.rating.value
+  assign rating_num = 0
+  assign rating_max = 5
+  assign rcount = s.count
+  if rv != blank
+    assign rating_num = rv.rating | times: 1.0
+    assign rating_max = rv.scale_max | default: 5
+    assign rcount = p.metafields.reviews.rating_count.value
+  elsif s.rating != blank
+    assign rating_num = s.rating | times: 1.0
+  endif
+  assign rating_pct = rating_num | times: 100.0 | divided_by: rating_max
+-%}
+<section class="sf sf-rl" id="sf-rl-{{ section.id }}" data-per="{{ s.per_page }}">
+  <div class="sf-rl__wrap">
+
+    <div class="sf-rl__sum">
+      <div class="sf-rl__score">
+        <p class="sf-rl__num">
+          <b>{% if rating_num > 0 %}{{ rating_num | round: 2 }}{% else %}—{% endif %}</b>
+          <span class="sf-rate" aria-hidden="true"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rating_pct }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>
+        </p>
+        <p class="sf-rl__based">{% if rcount != blank %}{{ s.based_label | replace: '{count}', rcount }}{% else %}{{ s.no_reviews_label }}{% endif %}</p>
+      </div>
+      {%- for n in (1..2) -%}
+        {%- assign kl = 'c' | append: n | append: '_label' -%}
+        {%- assign kv = 'c' | append: n | append: '_value' -%}
+        {%- assign ka = 'c' | append: n | append: '_a' -%}
+        {%- assign km = 'c' | append: n | append: '_b' -%}
+        {%- assign kz = 'c' | append: n | append: '_c' -%}
+        {%- if s[kl] != blank -%}
+          {%- assign cp = s[kv] | times: 20 -%}
+          <div class="sf-rl__crit">
+            <p>{{ s[kl] }}</p>
+            <i class="sf-rl__track">{% if s[kv] > 0 %}<em style="left: {{ cp }}%"></em>{% endif %}</i>
+            <span class="sf-rl__caps"><small>{{ s[ka] }}</small><small>{{ s[km] }}</small><small>{{ s[kz] }}</small></span>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if s.write_label != blank -%}
+        <a class="sf-rl__write" href="{{ s.write_link | default: '/pages/contact' }}">{{ s.write_label }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if photos.size > 0 -%}
+      <div class="sf-rl__strip" data-strip>
+        <ul>
+          {%- for ph in photos -%}
+            <li {{ ph.shopify_attributes }}>
+              <span class="sf-rl__ph sf-media">
+                {%- if ph.settings.image != blank -%}{{ ph.settings.image | image_url: width: 300 | image_tag: widths: '150, 300', sizes: '100px', alt: '', loading: 'lazy' }}{%- else -%}<span class="sf-rl__phe">{%- render 'sf-icon', name: 'camera' -%}</span>{%- endif -%}
+                {%- if ph.settings.is_video and ph.settings.image != blank -%}<span class="sf-rl__phplay">{%- render 'sf-icon', name: 'play' -%}</span>{%- endif -%}
+              </span>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <button type="button" class="sf-rl__next" data-strip-next aria-label="Next">{%- render 'sf-icon', name: 'arrow-right' -%}</button>
+      </div>
+    {%- endif -%}
+
+    <div class="sf-rl__bar">
+      <div class="sf-rl__tools">
+        <label class="sf-rl__sort"><select data-sort aria-label="{{ s.sort_label | escape }}">
+          <option value="new">{{ s.sort_label }}: {{ s.sort_new }}</option>
+          <option value="high">{{ s.sort_label }}: {{ s.sort_high }}</option>
+          <option value="low">{{ s.sort_label }}: {{ s.sort_low }}</option>
+        </select></label>
+        <label class="sf-rl__search">{%- render 'sf-icon', name: 'search' -%}<input type="search" data-q placeholder="{{ s.search_label | escape }}" aria-label="{{ s.search_label | escape }}"></label>
+      </div>
+      <div class="sf-rl__tabs" role="tablist">
+        <button type="button" role="tab" class="is-on" data-tab="r" aria-selected="true">{{ s.tab_reviews }}</button>
+        <button type="button" role="tab" data-tab="q" aria-selected="false">{{ s.tab_questions }}</button>
+      </div>
+    </div>
+
+    <div data-pane="r">
+      <ul class="sf-rl__list" data-list>
+        {%- for r in revs -%}
+          {%- assign rs = r.settings -%}
+          {%- assign rp = rs.rating | times: 20 -%}
+          <li class="sf-rl__item" data-rating="{{ rs.rating }}" {{ r.shopify_attributes }}>
+            <div class="sf-rl__who">
+              <i class="sf-rl__av">{{ rs.name | slice: 0, 2 }}</i>
+              {%- if rs.verified -%}<p class="sf-rl__ver">{%- render 'sf-icon', name: 'verified' -%}<small>{{ s.verified_label }}</small></p>{%- endif -%}
+              <p class="sf-rl__name">{{ rs.name }}</p>
+              {%- if rs.recommends -%}<p class="sf-rl__rec">{%- render 'sf-icon', name: 'heart' -%}<small>{{ s.recommends_label }}</small></p>{%- endif -%}
+            </div>
+            <div class="sf-rl__body">
+              <span class="sf-rate sf-rl__stars" aria-label="{{ rs.rating }} / 5"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rp }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>
+              <h3 class="sf-rl__t">{{ rs.title }}</h3>
+              <p class="sf-rl__x">{{ rs.text }}</p>
+              {%- if s.c1_label != blank or s.c2_label != blank -%}
+                <div class="sf-rl__crits">
+                  {%- for n in (1..2) -%}
+                    {%- assign kl = 'c' | append: n | append: '_label' -%}
+                    {%- assign kv = 'c' | append: n | append: '_value' -%}
+                    {%- assign ka = 'c' | append: n | append: '_a' -%}
+                    {%- assign km = 'c' | append: n | append: '_b' -%}
+                    {%- assign kz = 'c' | append: n | append: '_c' -%}
+                    {%- assign rcv = rs[kv] | times: 20 -%}
+                    {%- if s[kl] != blank -%}
+                      <div><p>{{ s[kl] }}</p><i class="sf-rl__track">{% if rs[kv] > 0 %}<em style="left: {{ rcv }}%"></em>{% endif %}</i><span class="sf-rl__caps"><small>{{ s[ka] }}</small><small>{{ s[km] }}</small><small>{{ s[kz] }}</small></span></div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+              {%- if rs.photo != blank -%}<span class="sf-rl__photo sf-media">{{ rs.photo | image_url: width: 400 | image_tag: widths: '200, 400', sizes: '120px', alt: rs.title, loading: 'lazy' }}</span>{%- endif -%}
+              <div class="sf-rl__foot">
+                <p>{{ s.helpful_label }} <button type="button" data-vote>{{ s.yes_label }}</button><button type="button" data-vote>{{ s.no_label }}</button></p>
+                <small>{{ rs.date }}</small>
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <nav class="sf-rl__pager" data-pager aria-label="Reviews pages" hidden></nav>
+    </div>
+    <div data-pane="q" hidden><p class="sf-rl__noq">{{ s.no_questions }}</p></div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sf-rl { background: #fff; padding: clamp(28px, 3.6vw, 52px) 0 clamp(36px, 4.4vw, 64px); }
+  .sf-rl__wrap { max-width: calc(1328px + 2 * clamp(16px, 3.9vw, 56px)); margin: 0 auto; padding-inline: clamp(16px, 3.9vw, 56px); }
+  .sf-rl__sum { display: flex; align-items: flex-start; gap: clamp(20px, 3.3vw, 48px); flex-wrap: wrap; }
+  .sf-rl__num { display: flex; align-items: center; gap: 10px; }
+  .sf-rl__num b { font-size: clamp(26px, 2.4vw, 34px); font-weight: 700; line-height: 1; color: var(--sf-ink); }
+  .sf-rl .sf-rate { font-size: 17px; }
+  .sf-rl__based { margin-top: 6px; font-size: 12.5px; line-height: 1.35; color: #6f6664; max-width: 150px; }
+  .sf-rl__crit { width: 200px; font-size: 12.5px; }
+  .sf-rl__crit p, .sf-rl__crits p { font-weight: 700; color: var(--sf-ink); }
+  .sf-rl__track { position: relative; display: block; height: 3px; margin: 11px 0 7px; border-radius: 3px; background: #E7E1DE; }
+  .sf-rl__track em { position: absolute; top: 50%; width: 9px; height: 14px; margin: -7px 0 0 -4px; border-radius: 2px; background: var(--sf-ink); }
+  .sf-rl__caps { display: flex; justify-content: space-between; gap: 6px; }
+  .sf-rl__caps small { flex: 1; font-size: 10.5px; color: #8b8280; text-align: center; } .sf-rl__caps small:first-child { text-align: left; } .sf-rl__caps small:last-child { text-align: right; }
+  .sf-rl__write { margin-left: auto; display: inline-flex; align-items: center; justify-content: center; min-width: 160px; height: 52px; padding: 0 22px; border-radius: 4px; background: var(--sf-plum); color: #fff !important;
+    font-size: 12.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; text-align: center; line-height: 1.25; transition: filter .15s; }
+  .sf-rl__write:hover { filter: brightness(1.12); }
+  .sf-rl__strip { position: relative; margin-top: 22px; }
+  .sf-rl__strip ul { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; padding-right: 40px; }
+  .sf-rl__strip ul::-webkit-scrollbar { display: none; }
+  .sf-rl__strip li { flex: 0 0 auto; }
+  .sf-rl__ph { display: block; width: clamp(72px, 6.6vw, 96px); aspect-ratio: 1; background: var(--sf-card); }
+  .sf-rl__ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-rl__phe { position: absolute; inset: 6px; border: 1.5px dashed #D2C4BE; display: grid; place-items: center; color: #a89b95; } .sf-rl__phe svg { width: 20px; height: 20px; }
+  .sf-rl__phplay { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; } .sf-rl__phplay svg { width: 26px; height: 26px; filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .5)); }
+  .sf-rl__next { position: absolute; right: 0; top: 0; bottom: 0; width: 36px; display: grid; place-items: center; background: linear-gradient(90deg, rgba(255, 255, 255, 0), #fff 40%); color: var(--sf-ink); }
+  .sf-rl__next svg { width: 16px; height: 16px; }
+  .sf-rl__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 22px; padding-bottom: 14px; border-bottom: 1px solid #F0E9E5; }
+  .sf-rl__tools { display: flex; align-items: center; gap: 20px; }
+  .sf-rl__sort select { border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 600; color: var(--sf-ink); cursor: pointer; padding-right: 4px; }
+  .sf-rl__search { display: flex; align-items: center; gap: 6px; color: #8b8280; } .sf-rl__search svg { width: 16px; height: 16px; }
+  .sf-rl__search input { width: 120px; border: 0; background: transparent; font: inherit; font-size: 13px; color: var(--sf-ink); outline: 0; }
+  .sf-rl__tabs { display: flex; gap: 22px; }
+  .sf-rl__tabs button { padding: 4px 0 10px; margin-bottom: -15px; font-size: 13px; font-weight: 700; color: #8b8280; border-bottom: 2px solid transparent; }
+  .sf-rl__tabs button.is-on { color: var(--sf-ink); border-bottom-color: var(--sf-ink); }
+  .sf-rl__item { display: grid; grid-template-columns: clamp(130px, 12.5vw, 180px) 1fr; column-gap: clamp(16px, 2.2vw, 32px); padding: 34px 0 30px; border-bottom: 1px solid #F0E9E5; }
+  .sf-rl__item[hidden] { display: none; }
+  .sf-rl__av { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: #EEEAE7; font-style: normal; font-size: 14px; font-weight: 700; color: #6f6664; text-transform: uppercase; }
+  .sf-rl__ver, .sf-rl__rec { display: flex; align-items: center; gap: 6px; margin-top: 12px; } .sf-rl__rec { margin-top: 14px; }
+  .sf-rl__ver svg { width: 13px; height: 13px; color: var(--sf-ink); } .sf-rl__rec svg { width: 13px; height: 13px; color: var(--sf-ink); }
+  .sf-rl__ver small, .sf-rl__rec small { font-size: 10.5px; color: #8b8280; line-height: 1.3; }
+  .sf-rl__name { margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--sf-ink); }
+  .sf-rl__stars { font-size: 16px; }
+  .sf-rl__t { margin-top: 12px; font-family: var(--sf-sans); font-size: 14.5px; font-weight: 700; line-height: 1.3; color: var(--sf-ink); }
+  .sf-rl__x { margin-top: 6px; font-size: 13.5px; line-height: 1.55; color: #4d4543; max-width: 820px; }
+  .sf-rl__crits { display: flex; gap: clamp(20px, 3vw, 44px); flex-wrap: wrap; margin-top: 18px; font-size: 12px; } .sf-rl__crits > div { width: 200px; }
+  .sf-rl__photo { display: block; width: 120px; height: 120px; margin-top: 16px; border-radius: 4px; } .sf-rl__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-rl__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 26px; font-size: 11.5px; color: #6f6664; }
+  .sf-rl__foot p { font-weight: 700; color: var(--sf-ink); }
+  .sf-rl__foot button { margin-left: 10px; font-size: 11.5px; font-weight: 400; color: #8b8280; text-decoration: underline; text-underline-offset: 3px; } .sf-rl__foot button.is-on { color: var(--sf-plum); font-weight: 700; }
+  .sf-rl__foot small { color: #8b8280; }
+  .sf-rl__pager { display: flex; justify-content: center; gap: 6px; margin-top: 28px; }
+  .sf-rl__pager[hidden] { display: none; }
+  .sf-rl__pager button { min-width: 30px; height: 30px; padding: 0 6px; border-radius: 50%; font-size: 12.5px; color: #6f6664; }
+  .sf-rl__pager button:disabled { opacity: .35; cursor: default; } .sf-rl__pager button.is-on { background: var(--sf-ink); color: #fff; font-weight: 700; }
+  .sf-rl__noq { padding: 40px 0; text-align: center; color: #8b8280; font-size: 14px; }
+  @media (max-width: 749px) {
+    .sf-rl__sum { gap: 18px; } .sf-rl__crit { width: 100%; } .sf-rl__write { margin-left: 0; width: 100%; }
+    .sf-rl__item { grid-template-columns: 1fr; row-gap: 14px; padding: 26px 0 22px; }
+    .sf-rl__who { display: grid; grid-template-columns: 54px 1fr; column-gap: 12px; align-items: center; }
+    .sf-rl__who .sf-rl__av { grid-row: 1 / span 3; } .sf-rl__ver, .sf-rl__rec { margin-top: 2px; } .sf-rl__name { margin-top: 0; }
+    .sf-rl__crits > div { width: 100%; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Avis (liste)",
+  "tag": "section",
+  "class": "sf-section-rl",
+  "settings": [
+    { "type": "paragraph", "content": "Squelette prêt à remplir : uniquement de vrais avis, avec l'accord des clientes. Note et nombre viennent du metafield reviews.rating s'il existe, sinon renseignez vos vraies valeurs." },
+    { "type": "product", "id": "product", "label": "Produit (pour la note automatique)" },
+    { "type": "text", "id": "rating", "label": "Note réelle (ex. 4.8)" },
+    { "type": "text", "id": "count", "label": "Nombre d'avis réel" },
+    { "type": "text", "id": "based_label", "label": "Texte sous la note ({count})", "default": "Based on {count} reviews" },
+    { "type": "text", "id": "no_reviews_label", "label": "Texte sans avis", "default": "No reviews yet" },
+    { "type": "header", "content": "Critères (curseurs)" },
+    { "type": "text", "id": "c1_label", "label": "Critère 1", "default": "Fit" },
+    { "type": "range", "id": "c1_value", "min": 0, "max": 5, "step": 0.1, "label": "Critère 1 : valeur réelle moyenne (0 = masqué)", "default": 0 },
+    { "type": "text", "id": "c1_a", "label": "Critère 1 : gauche", "default": "Runs small" },
+    { "type": "text", "id": "c1_b", "label": "Critère 1 : milieu", "default": "True to size" },
+    { "type": "text", "id": "c1_c", "label": "Critère 1 : droite", "default": "Runs large" },
+    { "type": "text", "id": "c2_label", "label": "Critère 2", "default": "Comfort" },
+    { "type": "range", "id": "c2_value", "min": 0, "max": 5, "step": 0.1, "label": "Critère 2 : valeur réelle moyenne (0 = masqué)", "default": 0 },
+    { "type": "text", "id": "c2_a", "label": "Critère 2 : gauche", "default": "Not comfortable" },
+    { "type": "text", "id": "c2_b", "label": "Critère 2 : milieu", "default": "Comfortable" },
+    { "type": "text", "id": "c2_c", "label": "Critère 2 : droite", "default": "Very comfortable" },
+    { "type": "header", "content": "Textes de l'interface" },
+    { "type": "text", "id": "write_label", "label": "Bouton « écrire un avis »", "default": "Write a review" },
+    { "type": "url", "id": "write_link", "label": "Lien du bouton (vide = page contact ; mettez le formulaire de votre appli d'avis)" },
+    { "type": "text", "id": "sort_label", "label": "Tri : libellé", "default": "Sort by" },
+    { "type": "text", "id": "sort_new", "label": "Tri : récents", "default": "Most recent" },
+    { "type": "text", "id": "sort_high", "label": "Tri : meilleures notes", "default": "Highest rating" },
+    { "type": "text", "id": "sort_low", "label": "Tri : notes les plus basses", "default": "Lowest rating" },
+    { "type": "text", "id": "search_label", "label": "Recherche", "default": "Search" },
+    { "type": "text", "id": "tab_reviews", "label": "Onglet avis", "default": "Product reviews" },
+    { "type": "text", "id": "tab_questions", "label": "Onglet questions", "default": "Questions" },
+    { "type": "text", "id": "no_questions", "label": "Message sans question", "default": "No questions yet." },
+    { "type": "text", "id": "verified_label", "label": "Libellé achat vérifié", "default": "Verified purchase" },
+    { "type": "text", "id": "recommends_label", "label": "Libellé recommandation", "default": "Recommends this product" },
+    { "type": "text", "id": "helpful_label", "label": "Question « utile ? »", "default": "Was this review helpful?" },
+    { "type": "text", "id": "yes_label", "label": "Oui", "default": "Yes" },
+    { "type": "text", "id": "no_label", "label": "Non", "default": "No" },
+    { "type": "range", "id": "per_page", "min": 3, "max": 10, "step": 1, "label": "Avis par page", "default": 5 }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo de la bande",
+      "limit": 16,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo de cliente" },
+        { "type": "checkbox", "id": "is_video", "label": "Afficher l'icône vidéo", "default": false }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Avis",
+      "settings": [
+        { "type": "range", "id": "rating", "min": 0, "max": 5, "step": 1, "label": "Étoiles", "default": 0 },
+        { "type": "text", "id": "name", "label": "Nom", "default": "Customer name" },
+        { "type": "checkbox", "id": "verified", "label": "Achat vérifié (seulement si c'est réel)", "default": false },
+        { "type": "checkbox", "id": "recommends", "label": "Recommande le produit", "default": false },
+        { "type": "text", "id": "title", "label": "Titre de l'avis", "default": "Review title" },
+        { "type": "textarea", "id": "text", "label": "Texte de l'avis", "default": "Paste a real customer review here." },
+        { "type": "range", "id": "c1_value", "min": 0, "max": 5, "step": 0.1, "label": "Critère 1 (0 = pas de curseur)", "default": 0 },
+        { "type": "range", "id": "c2_value", "min": 0, "max": 5, "step": 0.1, "label": "Critère 2 (0 = pas de curseur)", "default": 0 },
+        { "type": "image_picker", "id": "photo", "label": "Photo (optionnelle)" },
+        { "type": "text", "id": "date", "label": "Date (ex. il y a 3 jours)" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Avis (liste)", "blocks": [ { "type": "review" }, { "type": "review" }, { "type": "review" } ] } ]
+}
+{% endschema %}

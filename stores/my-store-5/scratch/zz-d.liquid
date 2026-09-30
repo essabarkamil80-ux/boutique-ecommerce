@@ -1,0 +1,128 @@
+{%- liquid
+  assign s = section.settings
+  assign revs = section.blocks | where: 'type', 'review'
+  assign photos = section.blocks | where: 'type', 'photo'
+  assign p = s.product | default: product
+  assign rv = p.metafields.reviews.rating.value
+  assign rating_num = 0
+  assign rating_max = 5
+  assign rcount = s.count
+  if rv != blank
+    assign rating_num = rv.rating | times: 1.0
+    assign rating_max = rv.scale_max | default: 5
+    assign rcount = p.metafields.reviews.rating_count.value
+  elsif s.rating != blank
+    assign rating_num = s.rating | times: 1.0
+  endif
+  assign rating_pct = rating_num | times: 100.0 | divided_by: rating_max
+-%}
+<section class="sf sf-rl" id="sf-rl-{{ section.id }}" data-per="{{ s.per_page }}">
+  <div class="sf-rl__wrap">
+
+    <div class="sf-rl__sum">
+      <div class="sf-rl__score">
+        <p class="sf-rl__num">
+          <b>{% if rating_num > 0 %}{{ rating_num | round: 2 }}{% else %}—{% endif %}</b>
+          <span class="sf-rate" aria-hidden="true"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rating_pct }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>
+        </p>
+        <p class="sf-rl__based">{% if rcount != blank %}{{ s.based_label | replace: '{count}', rcount }}{% else %}{{ s.no_reviews_label }}{% endif %}</p>
+      </div>
+      {%- for n in (1..2) -%}
+        {%- assign kl = 'c' | append: n | append: '_label' -%}
+        {%- assign kv = 'c' | append: n | append: '_value' -%}
+        {%- assign ka = 'c' | append: n | append: '_a' -%}
+        {%- assign km = 'c' | append: n | append: '_b' -%}
+        {%- assign kz = 'c' | append: n | append: '_c' -%}
+        {%- if s[kl] != blank -%}
+          {%- assign cp = s[kv] | times: 20 -%}
+          <div class="sf-rl__crit">
+            <p>{{ s[kl] }}</p>
+            <i class="sf-rl__track">{% if s[kv] > 0 %}<em style="left: {{ cp }}%"></em>{% endif %}</i>
+            <span class="sf-rl__caps"><small>{{ s[ka] }}</small><small>{{ s[km] }}</small><small>{{ s[kz] }}</small></span>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if s.write_label != blank -%}
+        <a class="sf-rl__write" href="{{ s.write_link | default: '/pages/contact' }}">{{ s.write_label }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if photos.size > 0 -%}
+      <div class="sf-rl__strip" data-strip>
+        <ul>
+          {%- for ph in photos -%}
+            <li {{ ph.shopify_attributes }}>
+              <span class="sf-rl__ph sf-media">
+                {%- if ph.settings.image != blank -%}{{ ph.settings.image | image_url: width: 300 | image_tag: widths: '150, 300', sizes: '100px', alt: '', loading: 'lazy' }}{%- else -%}<span class="sf-rl__phe">{%- render 'sf-icon', name: 'camera' -%}</span>{%- endif -%}
+                {%- if ph.settings.is_video and ph.settings.image != blank -%}<span class="sf-rl__phplay">{%- render 'sf-icon', name: 'play' -%}</span>{%- endif -%}
+              </span>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <button type="button" class="sf-rl__next" data-strip-next aria-label="Next">{%- render 'sf-icon', name: 'arrow-right' -%}</button>
+      </div>
+    {%- endif -%}
+
+    <div class="sf-rl__bar">
+      <div class="sf-rl__tools">
+        <label class="sf-rl__sort"><select data-sort aria-label="{{ s.sort_label | escape }}">
+          <option value="new">{{ s.sort_label }}: {{ s.sort_new }}</option>
+          <option value="high">{{ s.sort_label }}: {{ s.sort_high }}</option>
+          <option value="low">{{ s.sort_label }}: {{ s.sort_low }}</option>
+        </select></label>
+        <label class="sf-rl__search">{%- render 'sf-icon', name: 'search' -%}<input type="search" data-q placeholder="{{ s.search_label | escape }}" aria-label="{{ s.search_label | escape }}"></label>
+      </div>
+      <div class="sf-rl__tabs" role="tablist">
+        <button type="button" role="tab" class="is-on" data-tab="r" aria-selected="true">{{ s.tab_reviews }}</button>
+        <button type="button" role="tab" data-tab="q" aria-selected="false">{{ s.tab_questions }}</button>
+      </div>
+    </div>
+
+    <div data-pane="r">
+      <ul class="sf-rl__list" data-list>
+        {%- for r in revs -%}
+          {%- assign rs = r.settings -%}
+          {%- assign rp = rs.rating | times: 20 -%}
+          <li class="sf-rl__item" data-rating="{{ rs.rating }}" {{ r.shopify_attributes }}>
+            <div class="sf-rl__who">
+              <i class="sf-rl__av">{{ rs.name | slice: 0, 2 }}</i>
+              {%- if rs.verified -%}<p class="sf-rl__ver">{%- render 'sf-icon', name: 'verified' -%}<small>{{ s.verified_label }}</small></p>{%- endif -%}
+              <p class="sf-rl__name">{{ rs.name }}</p>
+              {%- if rs.recommends -%}<p class="sf-rl__rec">{%- render 'sf-icon', name: 'heart' -%}<small>{{ s.recommends_label }}</small></p>{%- endif -%}
+            </div>
+            <div class="sf-rl__body">
+              <span class="sf-rate sf-rl__stars" aria-label="{{ rs.rating }} / 5"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rp }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>
+              <h3 class="sf-rl__t">{{ rs.title }}</h3>
+              <p class="sf-rl__x">{{ rs.text }}</p>
+              {%- if s.c1_label != blank or s.c2_label != blank -%}
+                <div class="sf-rl__crits">
+                  {%- for n in (1..2) -%}
+                    {%- assign kl = 'c' | append: n | append: '_label' -%}
+                    {%- assign kv = 'c' | append: n | append: '_value' -%}
+                    {%- assign ka = 'c' | append: n | append: '_a' -%}
+                    {%- assign km = 'c' | append: n | append: '_b' -%}
+                    {%- assign kz = 'c' | append: n | append: '_c' -%}
+                    {%- assign rcv = rs[kv] | times: 20 -%}
+                    {%- if s[kl] != blank -%}
+                      <div><p>{{ s[kl] }}</p><i class="sf-rl__track">{% if rs[kv] > 0 %}<em style="left: {{ rcv }}%"></em>{% endif %}</i><span class="sf-rl__caps"><small>{{ s[ka] }}</small><small>{{ s[km] }}</small><small>{{ s[kz] }}</small></span></div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+              {%- if rs.photo != blank -%}<span class="sf-rl__photo sf-media">{{ rs.photo | image_url: width: 400 | image_tag: widths: '200, 400', sizes: '120px', alt: rs.title, loading: 'lazy' }}</span>{%- endif -%}
+              <div class="sf-rl__foot">
+                <p>{{ s.helpful_label }} <button type="button" data-vote>{{ s.yes_label }}</button><button type="button" data-vote>{{ s.no_label }}</button></p>
+                <small>{{ rs.date }}</small>
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <nav class="sf-rl__pager" data-pager aria-label="Reviews pages" hidden></nav>
+    </div>
+    <div data-pane="q" hidden><p class="sf-rl__noq">{{ s.no_questions }}</p></div>
+  </div>
+</section>
+
+
+{% schema %}{"name":"ZZ D","settings":[]}{% endschema %}

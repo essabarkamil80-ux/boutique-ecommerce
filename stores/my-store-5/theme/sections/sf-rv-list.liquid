@@ -25,7 +25,7 @@
           <b>{% if rating_num > 0 %}{{ rating_num | round: 2 }}{% else %}—{% endif %}</b>
           <span class="sf-rate" aria-hidden="true"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rating_pct }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>
         </p>
-        <p class="sf-rl__based">{% if rcount != blank %}{{ s.based_label | replace: '{count}', rcount }}{% else %}{{ s.no_reviews_label }}{% endif %}</p>
+        <p class="sf-rl__based">{% if rcount != blank %}{{ s.based_label | replace: '[count]', rcount }}{% else %}{{ s.no_reviews_label }}{% endif %}</p>
       </div>
       {%- for n in (1..2) -%}
         {%- assign kl = 'c' | append: n | append: '_label' -%}
@@ -234,7 +234,7 @@
     { "type": "product", "id": "product", "label": "Produit (pour la note automatique)" },
     { "type": "text", "id": "rating", "label": "Note réelle (ex. 4.8)" },
     { "type": "text", "id": "count", "label": "Nombre d'avis réel" },
-    { "type": "text", "id": "based_label", "label": "Texte sous la note ({count})", "default": "Based on {count} reviews" },
+    { "type": "text", "id": "based_label", "label": "Texte sous la note ([count])", "default": "Based on [count] reviews" },
     { "type": "text", "id": "no_reviews_label", "label": "Texte sans avis", "default": "No reviews yet" },
     { "type": "header", "content": "Critères (curseurs)" },
     { "type": "text", "id": "c1_label", "label": "Critère 1", "default": "Fit" },

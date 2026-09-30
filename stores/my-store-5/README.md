@@ -90,3 +90,11 @@ Test local : `OUT=out-product.html sh tools/build.sh 1 horizon product` puis `no
 (variantes, lots, galerie, ajout panier avec réseau simulé).
 L'ajout au panier envoie `{items:[…], sections}` à `/cart/add.js` puis déclenche l'évènement `CartLinesUpdateEvent` d'Horizon
 (importé via `@shopify/events`) pour que le tiroir se rafraîchisse ; sans cet import, retour à `/cart`.
+
+## Pièges d'envoi Shopify (à retenir)
+
+- `themeFilesUpsert` avec `body: {type: URL}` **avale les erreurs** : `userErrors: []` et `upsertedThemeFiles: []` même si le fichier est refusé.
+  Toujours relire `checksumMd5` après envoi. En cas de doute, renvoyer le fichier en `type: TEXT` : la réponse contient alors l'erreur exacte.
+- Épingler l'URL sur le SHA du commit (`raw.githubusercontent.com/<compte>/<depot>/<sha>/...`) évite le cache de la branche.
+- Libellés de réglages : 70 caractères maximum. Pas d'accolades `{…}` dans une chaîne Liquid (`replace: '{x}'` casse l'analyseur) : utiliser `[x]`.
+- Un thème publié n'est plus modifiable par l'API : dupliquer, écrire dans la copie, publier la copie.

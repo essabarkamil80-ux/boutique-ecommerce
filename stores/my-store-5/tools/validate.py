@@ -23,6 +23,8 @@ for f in sorted(glob.glob(os.path.join(root, 'sections', '*.liquid'))):
         for x in sets:
             t = x['type']
             if x.get('default') == '': err(f, where, x.get('id'), 'default vide')
+            if len(x.get('label', '')) > 70: err(f, where, x.get('id'), 'label > 70 car.')
+            if len(x.get('info', '')) > 300: err(f, where, x.get('id'), 'info trop long')
             if t == 'header' and len(x['content']) > 50: err(f, where, 'header > 50')
             if t == 'range' and (x['max'] - x['min']) / x['step'] > 101: err(f, x['id'], 'range > 101 pas')
             if t == 'select' and x.get('default') not in [o['value'] for o in x['options']]: err(f, x['id'], 'select')

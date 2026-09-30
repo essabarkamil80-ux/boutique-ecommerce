@@ -52,7 +52,7 @@
     { "type": "text", "id": "title", "label": "Titre", "default": "You may also like" },
     { "type": "collection", "id": "collection", "label": "Collection (vide = recommandations Shopify)" },
     { "type": "range", "id": "limit", "min": 3, "max": 12, "step": 1, "label": "Nombre de produits", "default": 6 },
-    { "type": "range", "id": "columns", "min": 3, "max": 4, "step": 1, "label": "Produits visibles (ordinateur)", "default": 3 },
+    { "type": "select", "id": "columns", "label": "Produits visibles (ordinateur)", "default": "3", "options": [ { "value": "3", "label": "3" }, { "value": "4", "label": "4" } ] },
     { "type": "checkbox", "id": "wide", "label": "Conteneur large (comme la fiche boutique)", "default": false }
   ],
   "presets": [ { "name": "SF · Produits liés" } ]

@@ -4,7 +4,7 @@ const { Liquid, Tag, Hash } = require('liquidjs');
 const fs = require('fs'), path = require('path');
 const T = path.join(__dirname, '..', 'theme');
 const withImg = process.argv[2] === '1';
-const MODE = ['product', 'page'].includes(process.argv[4]) ? process.argv[4] : 'index';
+const MODE = ['product', 'page', 'contact'].includes(process.argv[4]) ? process.argv[4] : 'index';
 
 const CSS = [];
 const engine = new Liquid({ root: [path.join(T, 'snippets')], extname: '.liquid', strictFilters: true,
@@ -53,6 +53,8 @@ f('image_tag', function (src, ...args) {
 });
 f('placeholder_svg_tag', (name, cls) => `<svg class="${cls || ''}" viewBox="0 0 525 525" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="525" height="525" fill="none"/><path d="M190 180h145v165H190z" opacity=".6"/><circle cx="262" cy="150" r="30" opacity=".6"/></svg>`);
 f('money', (c) => '€' + (Number(c) / 100).toFixed(2).replace('.', ','));
+f('payment_type_svg_tag', (t, cls) => `<svg class="${(cls && cls[1]) || ''}" viewBox="0 0 40 26"><rect width="40" height="26" rx="3" fill="#fff" stroke="#ddd"/><text x="20" y="16" font-size="7" text-anchor="middle">${t}</text></svg>`);
+f('default_errors', () => 'errors');
 f('time_tag', (d) => 'September 25, 2026');
 f('at_least', (a, b) => Math.max(Number(a), Number(b)));
 f('handleize', (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-'));
@@ -111,7 +113,7 @@ async function renderSection(id, conf, ctxBase) {
 
 (async () => {
   const ctxBase = {
-    shop: { name: 'My Store 5', customer_accounts_enabled: true },
+    shop: { name: 'My Store 5', customer_accounts_enabled: true, email: 'hello@example.com', shipping_policy: { url: '/policies/shipping-policy' }, refund_policy: { url: '/policies/refund-policy' }, privacy_policy: { url: '/policies/privacy-policy' }, terms_of_service: { url: '/policies/terms-of-service' }, enabled_payment_types: ['visa', 'master', 'paypal', 'apple_pay', 'google_pay', 'shopify_pay'] }, form: { 'posted_successfully?': process.env.POSTED === '1', errors: false, email: '' }, customer: null,
     routes: { root_url: '/', cart_add_url: '/cart/add.js', cart_url: '/cart', account_url: '/account', all_products_collection_url: '/collections/all' },
     cart: { item_count: 2, currency: { iso_code: 'EUR' } }, request: { locale: { iso_code: 'en' }, design_mode: process.env.DM === '1' }, recommendations: { products: [] }, settings: {},
     linklists: {}, product: null,
@@ -119,7 +121,7 @@ async function renderSection(id, conf, ctxBase) {
   // menu de demo : resolu via le reglage link_list
   const menu = { links: ['3D Leggings', '3D Shorts', '3D T-shirts', '3D Sleeves', 'Contact', 'Track Your Order'].map((t) => ({ title: t, url: '#', links: [] })) };
   const hg = JSON.parse(fs.readFileSync(path.join(T, 'sections/header-group.json'), 'utf8'));
-  const idx = JSON.parse(fs.readFileSync(path.join(T, MODE === 'product' ? 'templates/product.json' : MODE === 'page' ? 'templates/page.sostieni-george.json' : 'templates/index.json'), 'utf8'));
+  const idx = JSON.parse(fs.readFileSync(path.join(T, MODE === 'product' ? 'templates/product.json' : MODE === 'page' ? 'templates/page.sostieni-george.json' : MODE === 'contact' ? 'templates/page.contact.json' : 'templates/index.json'), 'utf8'));
   let html = '';
   for (const k of hg.order) {
     const conf = JSON.parse(JSON.stringify(hg.sections[k]));
@@ -129,6 +131,7 @@ async function renderSection(id, conf, ctxBase) {
   html += '<main>';
   for (const k of idx.order) html += await renderSection(k, idx.sections[k], ctxBase);
   html += '</main>';
+  if (MODE !== 'index') { const fg = JSON.parse(fs.readFileSync(path.join(T, 'sections/footer-group.json'), 'utf8')); for (const k of fg.order) html += await renderSection(k, JSON.parse(JSON.stringify(fg.sections[k])), ctxBase); }
   const HG = process.argv[3] === 'horizon' ? fs.readFileSync(path.join(__dirname, 'horizon-globals.css'), 'utf8') : '';
   process.stdout.write(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0}</style><style>${HG}</style><style>${CSS.join('\n')}</style></head><body>${html}</body></html>`);
 })().catch((e) => { console.error('ERREUR :', e.message); process.exit(1); });

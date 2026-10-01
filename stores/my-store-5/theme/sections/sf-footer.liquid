@@ -1,0 +1,125 @@
+{%- liquid
+  assign s = section.settings
+  assign links = section.blocks | where: 'type', 'link'
+-%}
+<footer class="sf sf-ft" style="--ft-bg: {{ s.bg }};">
+  <div class="sf-wrap">
+    <div class="sf-ft__grid">
+      <div class="sf-ft__brand">
+        <p class="sf-ft__logo">{{ s.logo_text | default: shop.name | escape }}</p>
+        {%- if s.tagline != blank -%}<p class="sf-ft__tag">{{ s.tagline }}</p>{%- endif -%}
+      </div>
+
+      {%- for col in (1..2) -%}
+        {%- assign col_key = 'help' -%}
+        {%- assign col_title = s.help_title -%}
+        {%- if col == 2 -%}{%- assign col_key = 'legal' -%}{%- assign col_title = s.legal_title -%}{%- endif -%}
+        <nav class="sf-ft__col" aria-label="{{ col_title | escape }}">
+          <h2 class="sf-ft__h">{{ col_title }}</h2>
+          <ul>
+            {%- for l in links -%}
+              {%- if l.settings.column == col_key -%}
+                {%- assign href = l.settings.url -%}
+                {%- case l.settings.policy -%}
+                  {%- when 'shipping' -%}{%- assign href = shop.shipping_policy.url -%}
+                  {%- when 'refund' -%}{%- assign href = shop.refund_policy.url -%}
+                  {%- when 'privacy' -%}{%- assign href = shop.privacy_policy.url -%}
+                  {%- when 'terms' -%}{%- assign href = shop.terms_of_service.url -%}
+                  {%- when 'contact' -%}{%- assign href = '/pages/contact' -%}
+                {%- endcase -%}
+                {%- if href != blank -%}<li {{ l.shopify_attributes }}><a href="{{ href }}">{{ l.settings.label }}</a></li>{%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if col_key == 'help' and s.show_email and shop.email != blank -%}<li><a href="mailto:{{ shop.email }}">{{ shop.email }}</a></li>{%- endif -%}
+          </ul>
+        </nav>
+      {%- endfor -%}
+
+      <div class="sf-ft__news">
+        <h2 class="sf-ft__h">{{ s.news_title }}</h2>
+        {%- if s.news_text != blank -%}<p class="sf-ft__ntxt">{{ s.news_text }}</p>{%- endif -%}
+        {%- form 'customer', id: 'sf-ft-news', class: 'sf-ft__form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="sf-ft__ok" role="status">{{ s.news_ok }}</p>
+          {%- else -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input type="email" name="contact[email]" required autocomplete="email" placeholder="{{ s.news_placeholder | escape }}" aria-label="{{ s.news_placeholder | escape }}">
+            <button type="submit">{{ s.news_button }}</button>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+
+    <div class="sf-ft__bottom">
+      <ul class="sf-ft__pay" aria-label="Payment methods">
+        {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'sf-ft__paysvg' }}</li>{%- endfor -%}
+      </ul>
+      <p class="sf-ft__copy">© {{ 'now' | date: '%Y' }} {{ s.logo_text | default: shop.name | escape }} · {{ s.rights }}</p>
+    </div>
+  </div>
+</footer>
+
+{% stylesheet %}
+  .sf-ft { background: var(--ft-bg); padding: clamp(36px, 4vw, 56px) 0 clamp(28px, 3vw, 40px); color: var(--sf-ink); }
+  .sf-ft__grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, .8fr) minmax(0, .8fr) minmax(0, 1.5fr); column-gap: clamp(20px, 2vw, 32px); align-items: start; padding-bottom: clamp(44px, 5.6vw, 80px); border-bottom: 1px solid #E9DFD9; }
+  .sf-ft__logo { font-family: var(--sf-serif); font-size: clamp(30px, 2.6vw, 38px); line-height: 1; letter-spacing: -.01em; }
+  .sf-ft__tag { margin-top: 12px; max-width: 300px; font-size: 14.5px; line-height: 1.4; color: #2a2230; }
+  .sf-ft__h { font-family: var(--sf-serif); font-weight: 400; font-size: clamp(22px, 1.9vw, 27px); line-height: 1.1; letter-spacing: -.03em; color: var(--sf-ink); }
+  .sf-ft__col ul { margin-top: 12px; }
+  .sf-ft__col li + li { margin-top: 12px; }
+  .sf-ft__col a { font-size: 14.5px; color: #2a2230; } .sf-ft__col a:hover { color: var(--sf-plum); text-decoration: underline; text-underline-offset: 3px; }
+  .sf-ft__ntxt { margin-top: 10px; max-width: 420px; font-size: 14px; line-height: 1.4; color: #2a2230; }
+  .sf-ft__form { display: flex; align-items: center; gap: 14px; margin-top: 38px; }
+  .sf-ft__form input { flex: 1; min-width: 0; height: 44px; padding: 0 18px; border: 1px solid #CFC6C1; border-radius: 999px; background: #fff; font: inherit; font-size: 16px; color: var(--sf-ink); outline: 0; }
+  .sf-ft__form input:focus { border-color: var(--sf-plum); box-shadow: 0 0 0 3px rgba(107, 36, 65, .12); }
+  .sf-ft__form button { flex: 0 0 auto; height: 44px; padding: 0 22px; border-radius: 999px; background: var(--sf-plum); color: #fff; font-size: 15px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; transition: filter .15s; }
+  .sf-ft__form button:hover { filter: brightness(1.12); }
+  .sf-ft__ok { margin-top: 2px; font-size: 14px; color: #14573f; }
+  .sf-ft__bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding-top: clamp(28px, 3.4vw, 48px); }
+  .sf-ft__pay { display: flex; flex-wrap: wrap; gap: 10px; max-width: 600px; }
+  .sf-ft__paysvg { display: block; width: 40px; height: 26px; }
+  .sf-ft__copy { font-size: 12.5px; color: #2a2230; }
+  @media (max-width: 989px) {
+    .sf-ft__grid { grid-template-columns: 1fr 1fr; row-gap: 32px; }
+    .sf-ft__brand, .sf-ft__news { grid-column: 1 / -1; }
+  }
+  @media (max-width: 749px) { .sf-ft__form { margin-top: 18px; } .sf-ft__bottom { flex-direction: column; align-items: flex-start; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Pied de page",
+  "tag": "footer",
+  "class": "sf-section-ft",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Fond", "default": "#F9F3EE" },
+    { "type": "text", "id": "logo_text", "label": "Nom (vide = nom de la boutique)" },
+    { "type": "textarea", "id": "tagline", "label": "Phrase de présentation", "default": "3D sculpting leggings designed for comfort and a flattering fit, every day." },
+    { "type": "text", "id": "help_title", "label": "Colonne 1 : titre", "default": "Help" },
+    { "type": "checkbox", "id": "show_email", "label": "Afficher l'email de la boutique dans la colonne 1", "default": true },
+    { "type": "text", "id": "legal_title", "label": "Colonne 2 : titre", "default": "Legal" },
+    { "type": "text", "id": "news_title", "label": "Newsletter : titre", "default": "Join our email list" },
+    { "type": "text", "id": "news_text", "label": "Newsletter : texte", "default": "Get exclusive deals and early access to new products." },
+    { "type": "text", "id": "news_placeholder", "label": "Newsletter : champ", "default": "Email" },
+    { "type": "text", "id": "news_button", "label": "Newsletter : bouton", "default": "Send" },
+    { "type": "text", "id": "news_ok", "label": "Newsletter : message après envoi", "default": "Thanks for subscribing!" },
+    { "type": "text", "id": "rights", "label": "Fin du copyright", "default": "All rights reserved." }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Lien",
+      "settings": [
+        { "type": "select", "id": "column", "label": "Colonne", "default": "help", "options": [ { "value": "help", "label": "Colonne 1 (Help)" }, { "value": "legal", "label": "Colonne 2 (Legal)" } ] },
+        { "type": "text", "id": "label", "label": "Texte", "default": "Link" },
+        { "type": "select", "id": "policy", "label": "Cible", "default": "custom", "options": [
+          { "value": "custom", "label": "URL ci-dessous" }, { "value": "contact", "label": "Page contact" }, { "value": "shipping", "label": "Politique d'expédition" },
+          { "value": "refund", "label": "Politique de retour" }, { "value": "privacy", "label": "Politique de confidentialité" }, { "value": "terms", "label": "Conditions générales" }
+        ] },
+        { "type": "url", "id": "url", "label": "URL (si cible = URL ci-dessous)" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Pied de page" } ]
+}
+{% endschema %}

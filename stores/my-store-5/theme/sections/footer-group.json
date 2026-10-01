@@ -1,0 +1,64 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "sf_footer": {
+      "type": "sf-footer",
+      "blocks": {
+        "l-1": {
+          "type": "link",
+          "settings": {
+            "column": "help",
+            "label": "Contact us",
+            "policy": "contact"
+          }
+        },
+        "l-2": {
+          "type": "link",
+          "settings": {
+            "column": "help",
+            "label": "Shipping policy",
+            "policy": "shipping"
+          }
+        },
+        "l-3": {
+          "type": "link",
+          "settings": {
+            "column": "help",
+            "label": "Return policy",
+            "policy": "refund"
+          }
+        },
+        "l-4": {
+          "type": "link",
+          "settings": {
+            "column": "legal",
+            "label": "Privacy policy",
+            "policy": "privacy"
+          }
+        },
+        "l-5": {
+          "type": "link",
+          "settings": {
+            "column": "legal",
+            "label": "Terms & conditions",
+            "policy": "terms"
+          }
+        }
+      },
+      "block_order": [
+        "l-1",
+        "l-2",
+        "l-3",
+        "l-4",
+        "l-5"
+      ],
+      "settings": {
+        "logo_text": "Essabar&Co."
+      }
+    }
+  },
+  "order": [
+    "sf_footer"
+  ]
+}

@@ -1,0 +1,213 @@
+{%- liquid
+  assign s = section.settings
+  assign items = section.blocks | where: 'type', 'faq'
+  assign shipping_url = s.link_3_url | default: shop.shipping_policy.url
+  assign returns_url = s.link_2_url | default: shop.refund_policy.url
+  assign track_url = s.link_1_url | default: routes.account_url
+  assign reasons = s.reasons | newline_to_br | strip_newlines | split: '<br />'
+-%}
+<section class="sf sf-ct">
+  <div class="sf-ct__hero{% if s.image != blank %} has-img{% endif %}" style="--ct-bg: {{ s.hero_bg }};">
+    <div class="sf-ct__heroin sf-wrap">
+      <div class="sf-ct__herotxt">
+        <h1 class="sf-ct__title">{{ s.title }} <em>{{ s.title_hi }}</em></h1>
+        {%- if s.sub != blank -%}<p class="sf-ct__sub">{{ s.sub }}</p>{%- endif -%}
+      </div>
+    </div>
+    <div class="sf-ct__heroimg sf-media" aria-hidden="true">
+      {%- if s.image != blank -%}{{ s.image | image_url: width: 1400 | image_tag: widths: '700, 1000, 1400', sizes: '(min-width: 990px) 60vw, 100vw', alt: '', loading: 'eager' }}{%- endif -%}
+    </div>
+  </div>
+
+  <div class="sf-ct__body">
+    <div class="sf-wrap sf-ct__grid">
+
+      <div class="sf-ct__left">
+        <h2 class="sf-ct__h2">{{ s.faq_title }}</h2>
+        <div class="sf-ct__faq" data-faq>
+          {%- for b in items -%}
+            <div class="sf-ct__q{% if b.settings.open %} is-open{% endif %}" {{ b.shopify_attributes }}>
+              <button type="button" class="sf-ct__qb" aria-expanded="{% if b.settings.open %}true{% else %}false{% endif %}">
+                <span>{{ b.settings.question }}</span><i aria-hidden="true"></i>
+              </button>
+              <div class="sf-ct__qa"{% unless b.settings.open %} hidden{% endunless %}><p>{{ b.settings.answer }}</p></div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <ul class="sf-ct__links">
+          {%- if s.link_1_label != blank and track_url != blank -%}<li><a href="{{ track_url }}">{%- render 'sf-icon', name: 'truckline' -%}<span>{{ s.link_1_label }}</span></a></li>{%- endif -%}
+          {%- if s.link_2_label != blank and returns_url != blank -%}<li><a href="{{ returns_url }}">{%- render 'sf-icon', name: 'return' -%}<span>{{ s.link_2_label }}</span></a></li>{%- endif -%}
+          {%- if s.link_3_label != blank and shipping_url != blank -%}<li><a href="{{ shipping_url }}">{%- render 'sf-icon', name: 'clock' -%}<span>{{ s.link_3_label }}</span></a></li>{%- endif -%}
+        </ul>
+      </div>
+
+      <div class="sf-ct__card" id="contact">
+        <h2 class="sf-ct__h2">{{ s.form_title }}</h2>
+        {%- if s.form_sub != blank -%}<p class="sf-ct__fsub">{{ s.form_sub }}</p>{%- endif -%}
+        {%- form 'contact', id: 'sf-contact-form', class: 'sf-ct__form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="sf-ct__ok" role="status">{{ s.success_text }}</p>
+          {%- else -%}
+            {%- if form.errors -%}<p class="sf-ct__err" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+            <div class="sf-ct__seg" role="group" aria-label="{{ s.toggle_label | escape }}">
+              <button type="button" class="is-on" data-has="yes" aria-pressed="true">{{ s.toggle_yes }}</button>
+              <button type="button" data-has="no" aria-pressed="false">{{ s.toggle_no }}</button>
+            </div>
+            <input type="hidden" name="contact[Has an order]" value="yes" data-has-input>
+            <label class="sf-ct__f" data-order-field><span>{{ s.order_label }}</span>
+              <input type="text" name="contact[Order number]" placeholder="{{ s.order_placeholder | escape }}" autocomplete="off">
+            </label>
+            <label class="sf-ct__f"><span>{{ s.reason_label }}</span>
+              <select name="contact[Reason]" class="sf-ct__sel">
+                <option value="">{{ s.reason_placeholder }}</option>
+                {%- for r in reasons -%}{%- assign rr = r | strip -%}{%- if rr != blank -%}<option value="{{ rr | escape }}">{{ rr }}</option>{%- endif -%}{%- endfor -%}
+              </select>
+            </label>
+            <label class="sf-ct__f"><span>{{ s.email_label }}</span>
+              <input type="email" name="contact[email]" required autocomplete="email" value="{{ form.email | default: customer.email }}">
+            </label>
+            <label class="sf-ct__f"><span>{{ s.message_label }}</span>
+              <textarea name="contact[body]" rows="6" required></textarea>
+            </label>
+            <button type="submit" class="sf-ct__send">{{ s.send_label }}</button>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  (function () {
+    var root = document.querySelector('.sf-ct'); if (!root || root.dataset.ready) return; root.dataset.ready = '1';
+    var faq = root.querySelector('[data-faq]');
+    if (faq) faq.addEventListener('click', function (e) {
+      var b = e.target.closest('.sf-ct__qb'); if (!b) return;
+      var item = b.parentNode, open = !item.classList.contains('is-open');
+      [].slice.call(faq.children).forEach(function (q) {
+        var on = q === item && open; q.classList.toggle('is-open', on);
+        q.querySelector('.sf-ct__qb').setAttribute('aria-expanded', on ? 'true' : 'false'); q.querySelector('.sf-ct__qa').hidden = !on;
+      });
+    });
+    var seg = root.querySelector('.sf-ct__seg');
+    if (seg) seg.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-has]'); if (!b) return;
+      [].slice.call(seg.querySelectorAll('[data-has]')).forEach(function (x) { var on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+      root.querySelector('[data-has-input]').value = b.dataset.has;
+      root.querySelector('[data-order-field]').hidden = b.dataset.has === 'no';
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .sf-ct { background: var(--sf-cream); }
+  .sf-ct__hero { position: relative; overflow: hidden; background: var(--ct-bg); min-height: clamp(260px, 22vw, 322px); display: flex; align-items: center; }
+  .sf-ct__heroin { position: relative; z-index: 1; width: 100%; padding-block: 48px; }
+  .sf-ct__herotxt { max-width: 400px; }
+  .sf-ct__title { font-family: var(--sf-serif); font-weight: 400; font-size: clamp(44px, 4.4vw, 64px); line-height: .98; letter-spacing: -.03em; color: #fff; }
+  .sf-ct__title em { font-style: normal; color: #F2D98B; }
+  .sf-ct__sub { margin-top: 14px; font-size: 16px; line-height: 1.45; color: rgba(255, 255, 255, .92); }
+  .sf-ct__heroimg { position: absolute; top: 0; right: 0; bottom: 0; width: 62%; }
+  .sf-ct__heroimg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 30%; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%); mask-image: linear-gradient(90deg, transparent 0, #000 22%); }
+  .sf-ct__body { padding: clamp(36px, 3.5vw, 51px) 0 clamp(48px, 5.6vw, 84px); }
+  .sf-ct__grid { display: grid; grid-template-columns: minmax(0, 674fr) minmax(0, 522fr); column-gap: clamp(24px, 3.5vw, 51px); align-items: start; }
+  .sf-ct__h2 { font-family: var(--sf-sans); font-size: clamp(26px, 2.2vw, 32px); font-weight: 500; line-height: 1.15; letter-spacing: -.005em; color: var(--sf-ink); }
+  .sf-ct__left .sf-ct__h2 { margin-top: 4px; margin-bottom: 18px; }
+  .sf-ct__faq { background: #fff; border: 1px solid #F0E8E2; border-radius: 14px; overflow: hidden; }
+  .sf-ct__q + .sf-ct__q { border-top: 1px solid #F0E8E2; }
+  .sf-ct__qb { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; min-height: 60px; padding: 16px 26px; text-align: left; font-size: 16px; font-weight: 500; color: var(--sf-ink); }
+  .sf-ct__qb i { position: relative; flex: 0 0 auto; width: 16px; height: 16px; }
+  .sf-ct__qb i::before, .sf-ct__qb i::after { content: ''; position: absolute; left: 50%; top: 50%; width: 14px; height: 1.6px; margin: -.8px 0 0 -7px; background: currentColor; transition: transform .2s; }
+  .sf-ct__qb i::after { transform: rotate(90deg); }
+  .sf-ct__q.is-open .sf-ct__qb i::before { transform: rotate(45deg); }
+  .sf-ct__q.is-open .sf-ct__qb i::after { transform: rotate(-45deg); }
+  .sf-ct__q.is-open .sf-ct__qb { font-weight: 400; }
+  .sf-ct__qa { padding: 0 26px 26px; }
+  .sf-ct__qa[hidden] { display: none; }
+  .sf-ct__qa p { font-size: 16px; line-height: 1.5; color: #2a2230; max-width: 600px; }
+  .sf-ct__links { display: flex; flex-wrap: wrap; gap: 14px 26px; margin-top: 20px; }
+  .sf-ct__links a { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; color: var(--sf-ink); }
+  .sf-ct__links a span { text-decoration: underline; text-underline-offset: 3px; }
+  .sf-ct__links svg { width: 20px; height: 20px; color: var(--sf-plum); }
+  .sf-ct__card { padding: clamp(20px, 2vw, 29px); border-radius: 20px; background: #fff; border: 1px solid #F3EBE6; box-shadow: 0 18px 50px -34px rgba(19, 7, 46, .35); }
+  .sf-ct__fsub { margin-top: 14px; font-size: 16px; line-height: 1.45; color: #6f6664; }
+  .sf-ct__seg { display: inline-flex; gap: 4px; margin-top: 20px; padding: 5px; border-radius: 999px; background: #F1ECE9; }
+  .sf-ct__seg button { padding: 9px 18px; border-radius: 999px; font-size: 15px; color: #6f6664; transition: background .15s, color .15s; }
+  .sf-ct__seg button.is-on { background: #fff; color: var(--sf-plum); box-shadow: 0 1px 4px rgba(0, 0, 0, .1); }
+  .sf-ct__f { display: block; margin-top: 18px; }
+  .sf-ct__f[hidden] { display: none; }
+  .sf-ct__f > span { display: block; margin-bottom: 8px; font-size: 15px; font-weight: 600; color: var(--sf-ink); }
+  .sf-ct__f input, .sf-ct__f textarea, .sf-ct__sel { display: block; width: 100%; padding: 0 20px; border: 1px solid #EAE2DD; border-radius: 14px; background: #fff; font: inherit; font-size: 15.5px; color: var(--sf-ink); outline: 0; transition: border-color .15s, box-shadow .15s; }
+  .sf-ct__f input, .sf-ct__sel { height: 56px; }
+  .sf-ct__f textarea { height: 145px; padding: 16px 20px; resize: vertical; }
+  .sf-ct__f input::placeholder { color: #9a9290; }
+  .sf-ct__f input:focus, .sf-ct__f textarea:focus, .sf-ct__sel:focus { border-color: var(--sf-plum); box-shadow: 0 0 0 3px rgba(107, 36, 65, .12); }
+  .sf-ct__send { display: inline-flex; align-items: center; justify-content: center; min-width: 90px; height: 56px; margin-top: 20px; padding: 0 28px; border-radius: 16px; background: var(--sf-plum); color: #fff; font-size: 16px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; transition: filter .15s, transform .15s; }
+  .sf-ct__send:hover { filter: brightness(1.12); transform: translateY(-1px); }
+  .sf-ct__ok { margin-top: 20px; padding: 18px 20px; border-radius: 14px; background: #EAF6F0; color: #14573f; font-size: 15.5px; line-height: 1.5; }
+  .sf-ct__err { margin-top: 16px; padding: 12px 16px; border-radius: 12px; background: #FBEAEE; color: #8a1230; font-size: 14px; }
+  @media (max-width: 989px) {
+    .sf-ct__grid { grid-template-columns: 1fr; row-gap: 32px; }
+    .sf-ct__heroimg { width: 80%; }
+  }
+  @media (max-width: 749px) {
+    .sf-ct__hero { min-height: 0; align-items: flex-end; }
+    .sf-ct__hero.has-img { padding-top: 190px; }
+    .sf-ct__heroimg { width: 100%; height: 200px; bottom: auto; }
+    .sf-ct__heroimg img { -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent); mask-image: linear-gradient(180deg, #000 55%, transparent); object-position: 60% 20%; }
+    .sf-ct__heroin { padding-block: 20px 28px; }
+    .sf-ct__qb { padding: 14px 18px; } .sf-ct__qa { padding: 0 18px 22px; }
+    .sf-ct__links { gap: 12px 20px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Contact",
+  "tag": "section",
+  "class": "sf-section-ct",
+  "settings": [
+    { "type": "header", "content": "Bandeau du haut" },
+    { "type": "color", "id": "hero_bg", "label": "Fond du bandeau", "default": "#5B1B3D" },
+    { "type": "image_picker", "id": "image", "label": "Image (à droite, personnes détourées ou photo de groupe)" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Need" },
+    { "type": "text", "id": "title_hi", "label": "Titre : partie en doré", "default": "help?" },
+    { "type": "text", "id": "sub", "label": "Texte", "default": "Most answers are right here. If not, send us a message and a real person will reply by email." },
+    { "type": "header", "content": "Réponses rapides" },
+    { "type": "text", "id": "faq_title", "label": "Titre", "default": "Quick answers" },
+    { "type": "text", "id": "link_1_label", "label": "Lien 1 : texte", "default": "Track my order" },
+    { "type": "url", "id": "link_1_url", "label": "Lien 1 : URL (vide = compte client)" },
+    { "type": "text", "id": "link_2_label", "label": "Lien 2 : texte", "default": "Returns" },
+    { "type": "url", "id": "link_2_url", "label": "Lien 2 : URL (vide = politique de retour)" },
+    { "type": "text", "id": "link_3_label", "label": "Lien 3 : texte", "default": "Shipping" },
+    { "type": "url", "id": "link_3_url", "label": "Lien 3 : URL (vide = politique d'expédition)" },
+    { "type": "header", "content": "Formulaire de contact" },
+    { "type": "text", "id": "form_title", "label": "Titre", "default": "Still need us?" },
+    { "type": "text", "id": "form_sub", "label": "Texte", "default": "A real person reads every message and replies by email." },
+    { "type": "text", "id": "toggle_label", "label": "Choix commande (accessibilité)", "default": "Do you have an order?" },
+    { "type": "text", "id": "toggle_yes", "label": "Choix : oui", "default": "I have an order" },
+    { "type": "text", "id": "toggle_no", "label": "Choix : non", "default": "Not yet" },
+    { "type": "text", "id": "order_label", "label": "Champ numéro de commande", "default": "Order number" },
+    { "type": "text", "id": "order_placeholder", "label": "Exemple dans le champ", "default": "e.g. #1001" },
+    { "type": "text", "id": "reason_label", "label": "Champ motif", "default": "What is it about?" },
+    { "type": "text", "id": "reason_placeholder", "label": "Motif : texte par défaut", "default": "Choose a reason" },
+    { "type": "textarea", "id": "reasons", "label": "Motifs (un par ligne)", "default": "Where is my order?\nChange or cancel an order\nReturn or exchange\nSizing question\nProduct question\nOther" },
+    { "type": "text", "id": "email_label", "label": "Champ email", "default": "Email" },
+    { "type": "text", "id": "message_label", "label": "Champ message", "default": "Message" },
+    { "type": "text", "id": "send_label", "label": "Bouton", "default": "Send" },
+    { "type": "text", "id": "success_text", "label": "Message après envoi", "default": "Thank you! Your message has been sent. We will reply by email." }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Question",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Question" },
+        { "type": "textarea", "id": "answer", "label": "Réponse" },
+        { "type": "checkbox", "id": "open", "label": "Ouverte au chargement", "default": false }
+      ]
+    }
+  ],
+  "presets": [ { "name": "SF · Contact" } ]
+}
+{% endschema %}

@@ -1,0 +1,101 @@
+{
+  "sections": {
+    "main": {
+      "type": "sf-contact",
+      "blocks": {
+        "q-1": {
+          "type": "faq",
+          "settings": {
+            "question": "Where is my order?",
+            "answer": "Answer coming soon. In the meantime, send us a message below."
+          }
+        },
+        "q-2": {
+          "type": "faq",
+          "settings": {
+            "question": "How long does delivery take?",
+            "answer": "Orders are delivered in 6 to 10 days."
+          }
+        },
+        "q-3": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I change or cancel my order?",
+            "answer": "Send us a message as soon as possible with your order number and we will do our best to help."
+          }
+        },
+        "q-4": {
+          "type": "faq",
+          "settings": {
+            "question": "How do returns work?",
+            "answer": "Free returns within 30 days. Send us a message and we will email you the instructions."
+          }
+        },
+        "q-5": {
+          "type": "faq",
+          "settings": {
+            "question": "Which size should I choose?",
+            "answer": "Send us your measurements and we will help you choose.",
+            "open": true
+          }
+        }
+      },
+      "block_order": [
+        "q-1",
+        "q-2",
+        "q-3",
+        "q-4",
+        "q-5"
+      ],
+      "settings": {}
+    },
+    "trust": {
+      "type": "sf-trust",
+      "blocks": {
+        "item-1": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "bold": "Secure",
+            "text": "checkout"
+          }
+        },
+        "item-2": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "bold": "Free shipping",
+            "text": "no minimum"
+          }
+        },
+        "item-3": {
+          "type": "item",
+          "settings": {
+            "icon": "ruler",
+            "bold": "Fit guaranteed",
+            "text": "from S to 5XL"
+          }
+        },
+        "item-4": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "bold": "Free returns",
+            "text": "within 30 days"
+          }
+        }
+      },
+      "block_order": [
+        "item-1",
+        "item-2",
+        "item-3",
+        "item-4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "trust"
+  ]
+}

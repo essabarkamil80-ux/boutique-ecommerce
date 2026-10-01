@@ -4,7 +4,7 @@ const { Liquid, Tag, Hash } = require('liquidjs');
 const fs = require('fs'), path = require('path');
 const T = path.join(__dirname, '..', 'theme');
 const withImg = process.argv[2] === '1';
-const MODE = ['product', 'page', 'contact'].includes(process.argv[4]) ? process.argv[4] : 'index';
+const MODE = ['product', 'page', 'contact', 'article'].includes(process.argv[4]) ? process.argv[4] : 'index';
 
 const CSS = [];
 const engine = new Liquid({ root: [path.join(T, 'snippets')], extname: '.liquid', strictFilters: true,
@@ -55,6 +55,7 @@ f('placeholder_svg_tag', (name, cls) => `<svg class="${cls || ''}" viewBox="0 0 
 f('money', (c) => '€' + (Number(c) / 100).toFixed(2).replace('.', ','));
 f('payment_type_svg_tag', (t, cls) => `<svg class="${(cls && cls[1]) || ''}" viewBox="0 0 40 26"><rect width="40" height="26" rx="3" fill="#fff" stroke="#ddd"/><text x="20" y="16" font-size="7" text-anchor="middle">${t}</text></svg>`);
 f('default_errors', () => 'errors');
+f('url_encode', (x) => encodeURIComponent(x));
 f('time_tag', (d) => 'September 25, 2026');
 f('at_least', (a, b) => Math.max(Number(a), Number(b)));
 f('handleize', (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-'));
@@ -90,6 +91,10 @@ const PRODUCT = { id: 11190618194257, title: 'Essabar&Co Sculpt 3D Leggings', ur
   options_with_values: [{ name: 'Couleur', position: 1, values: COLORS.map((c, i) => new OV(c, i === 0)) }].concat(SZ ? [{ name: 'Size', position: 2, values: SZ.map((z, i) => new OV(z, i === 0)) }] : []),
   description: '<p>Scolpisci la tua silhouette.</p>', metafields: {}, available: true, price: 4999, compare_at_price: 5999, price_min: 4999, price_varies: false };
 
+const ARTICLE = { title: 'How to reduce cellulite on your thighs: what works, ranked by evidence', url: '/blogs/news/x', excerpt: 'Short answer: add a short answer here.', published_at: '2026-09-25', image: fakeImg('article image', 1200, 600),
+  excerpt_or_content: 'Short excerpt of the article for the news cards.',
+  content: '<p>Intro paragraph of the article.</p><h2>First section</h2><p>Some text here with a <a href="#">link</a>.</p><ul><li>First point</li><li>Second point</li></ul><h2>Second section</h2><p>More text.</p><h2>Third section</h2><p>More text.</p><table><tr><th>Treatment</th><th>What it does</th></tr><tr><td>One</td><td>Two</td></tr></table><h2>Fourth section</h2><p>Final text.</p><p><em>This article is informational.</em></p>' };
+
 async function renderSection(id, conf, ctxBase) {
   const { src, schema } = schemaOf(conf.type);
   const settings = Object.assign(defaults(schema.settings), conf.settings || {});
@@ -106,6 +111,7 @@ async function renderSection(id, conf, ctxBase) {
   });
   const ctx = Object.assign({}, ctxBase, { section: { id, settings, blocks } });
   if (MODE === 'product') ctx.product = PRODUCT;
+  if (MODE === 'article') ctx.article = ARTICLE, ctx.blog = { url: '/blogs/news', title: 'News', articles_count: 1, articles: [ARTICLE] };
   for (const d of schema.settings || []) if (d.type === 'product' && settings[d.id]) settings[d.id] = PRODUCT;
   const out = await engine.parseAndRender(src, ctx);
   return `<div class="shopify-section" id="shopify-section-${id}">${out}</div>`;
@@ -121,7 +127,7 @@ async function renderSection(id, conf, ctxBase) {
   // menu de demo : resolu via le reglage link_list
   const menu = { links: ['3D Leggings', '3D Shorts', '3D T-shirts', '3D Sleeves', 'Contact', 'Track Your Order'].map((t) => ({ title: t, url: '#', links: [] })) };
   const hg = JSON.parse(fs.readFileSync(path.join(T, 'sections/header-group.json'), 'utf8'));
-  const idx = JSON.parse(fs.readFileSync(path.join(T, MODE === 'product' ? 'templates/product.json' : MODE === 'page' ? 'templates/page.sostieni-george.json' : MODE === 'contact' ? 'templates/page.contact.json' : 'templates/index.json'), 'utf8'));
+  const idx = JSON.parse(fs.readFileSync(path.join(T, MODE === 'product' ? 'templates/product.json' : MODE === 'page' ? 'templates/page.sostieni-george.json' : MODE === 'contact' ? 'templates/page.contact.json' : MODE === 'article' ? 'templates/article.json' : 'templates/index.json'), 'utf8'));
   let html = '';
   for (const k of hg.order) {
     const conf = JSON.parse(JSON.stringify(hg.sections[k]));

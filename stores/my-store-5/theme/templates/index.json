@@ -329,7 +329,7 @@
       "type": "sf-news",
       "settings": {
         "title": "News",
-        "blog": "",
+        "blog": "news",
         "limit": 3,
         "words": 34,
         "view_all_label": "",
@@ -338,27 +338,15 @@
       "blocks": {
         "post-1": {
           "type": "post",
-          "settings": {
-            "title": "Your blog post title",
-            "date": "",
-            "excerpt": "Add an image, a title and a short excerpt for each article."
-          }
+          "settings": {}
         },
         "post-2": {
           "type": "post",
-          "settings": {
-            "title": "Your blog post title",
-            "date": "",
-            "excerpt": "Add an image, a title and a short excerpt for each article."
-          }
+          "settings": {}
         },
         "post-3": {
           "type": "post",
-          "settings": {
-            "title": "Your blog post title",
-            "date": "",
-            "excerpt": "Add an image, a title and a short excerpt for each article."
-          }
+          "settings": {}
         }
       },
       "block_order": [

@@ -1,0 +1,237 @@
+{%- liquid
+  assign s = section.settings
+  assign prod = s.product
+  if prod == blank and collections.all.products_count > 0
+    assign prod = collections.all.products.first
+  endif
+  assign rv = prod.metafields.reviews.rating.value
+  assign rating_pct = 0
+  if rv != blank
+    assign rating_pct = rv.rating | times: 100.0 | divided_by: rv.scale_max
+  endif
+  assign usps = section.blocks | where: 'type', 'usp'
+-%}
+<article class="sf sf-art" id="sf-art-{{ section.id }}" data-after-a="{{ s.card_after_a }}" data-after-b="{{ s.card_after_b }}">
+
+  <header class="sf-art__head">
+    <div class="sf-art__wrap">
+      <nav class="sf-art__crumbs" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">{{ s.crumb_home }}</a><span>›</span>
+        <a href="{{ blog.url }}">{{ s.crumb_blog }}</a><span>›</span>
+        <span aria-current="page">{{ article.title }}</span>
+      </nav>
+      <div class="sf-art__top">
+        <div class="sf-art__intro">
+          <h1 class="sf-art__title">{{ article.title }}</h1>
+          {%- if article.excerpt != blank -%}<p class="sf-art__lead">{{ article.excerpt | strip_html }}</p>{%- endif -%}
+          <p class="sf-art__date">{{ s.published_label }} {{ article.published_at | date: '%B %d, %Y' }}</p>
+        </div>
+        {%- if article.image != blank -%}
+          <div class="sf-art__hero sf-media">{{ article.image | image_url: width: 1000 | image_tag: widths: '500, 750, 1000', sizes: '(min-width: 990px) 480px, 100vw', alt: article.image.alt | default: article.title, loading: 'eager', fetchpriority: 'high' }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </header>
+
+  {%- if usps.size > 0 -%}
+    <ul class="sf-art__strip">
+      {%- for u in usps -%}<li {{ u.shopify_attributes }}>{%- render 'sf-icon', name: u.settings.icon -%}<span>{{ u.settings.text }}</span></li>{%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  <div class="sf-art__wrap sf-art__grid">
+    <aside class="sf-art__toc" data-toc hidden>
+      <p class="sf-art__toch">{{ s.toc_title }}</p>
+      <ol data-toc-list></ol>
+    </aside>
+
+    <div class="sf-art__main">
+      <div class="sf-art__body" data-body>{{ article.content }}</div>
+      {%- if prod != blank -%}
+        <template data-card-tpl>
+          <div class="sf-art__card">
+            <a class="sf-art__cardimg sf-media" href="{{ prod.url }}">{%- if prod.featured_media != blank -%}{{ prod.featured_media | image_url: width: 500 | image_tag: widths: '250, 400, 500', sizes: '200px', alt: prod.title, loading: 'lazy' }}{%- endif -%}</a>
+            <div class="sf-art__cardtxt">
+              <p class="sf-art__cardt">{{ prod.title }}</p>
+              {%- if rv != blank -%}<span class="sf-rate sf-art__stars"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rating_pct }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>{%- endif -%}
+              <p class="sf-art__cardp"><b>{{ prod.price | money }}</b>{% if prod.compare_at_price > prod.price %} <s>{{ prod.compare_at_price | money }}</s>{% endif %}</p>
+              <a class="sf-art__btn" href="{{ prod.url }}">{{ s.card_btn }}</a>
+            </div>
+          </div>
+        </template>
+      {%- endif -%}
+    </div>
+
+    <aside class="sf-art__side">
+      {%- if prod != blank -%}
+        <div class="sf-art__sticky">
+          {%- if s.show_summary -%}
+            <div class="sf-art__sum">
+              <p class="sf-art__sumh">{{ s.summary_title }}</p>
+              <div class="sf-art__share">
+                <button type="button" data-copy aria-label="{{ s.copy_label | escape }}">{%- render 'sf-icon', name: 'link' -%}</button>
+                <a href="mailto:?subject={{ article.title | url_encode }}&amp;body={{ shop.url | append: article.url | url_encode }}" aria-label="Email">{%- render 'sf-icon', name: 'mail' -%}</a>
+              </div>
+              <p class="sf-art__copied" data-copied hidden>{{ s.copied_label }}</p>
+            </div>
+          {%- endif -%}
+          <div class="sf-art__prod">
+            <a class="sf-art__prodimg sf-media" href="{{ prod.url }}">{%- if prod.featured_media != blank -%}{{ prod.featured_media | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '300px', alt: prod.title, loading: 'lazy' }}{%- endif -%}</a>
+            {%- if rv != blank -%}<span class="sf-rate sf-art__stars"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rating_pct }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>{%- endif -%}
+            <p class="sf-art__prodt">{{ prod.title }}</p>
+            <p class="sf-art__prodp"><b>{{ prod.price | money }}</b>{% if prod.compare_at_price > prod.price %} <s>{{ prod.compare_at_price | money }}</s>{% endif %}</p>
+            <a class="sf-art__btn" href="{{ prod.url }}">{{ s.side_btn }}</a>
+          </div>
+        </div>
+      {%- endif -%}
+    </aside>
+  </div>
+</article>
+<script>
+  (function () {
+    var root = document.getElementById('sf-art-{{ section.id }}'); if (!root || root.dataset.ready) return; root.dataset.ready = '1';
+    var body = root.querySelector('[data-body]'), toc = root.querySelector('[data-toc]'), list = root.querySelector('[data-toc-list]');
+    var heads = [].slice.call(body.querySelectorAll('h2'));
+    heads.forEach(function (h, i) { if (!h.id) h.id = 'sec-' + (i + 1); });
+    if (heads.length > 1) {
+      heads.forEach(function (h) { var li = document.createElement('li'), a = document.createElement('a'); a.href = '#' + h.id; a.textContent = h.textContent; li.appendChild(a); list.appendChild(li); });
+      toc.hidden = false;
+      if ('IntersectionObserver' in window) {
+        var links = [].slice.call(list.querySelectorAll('a')), cur = null;
+        var io = new IntersectionObserver(function (es) {
+          es.forEach(function (e) { if (e.isIntersecting) { cur = e.target.id; links.forEach(function (a) { a.parentNode.classList.toggle('is-on', a.getAttribute('href') === '#' + cur); }); } });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        heads.forEach(function (h) { io.observe(h); });
+        if (links[0]) links[0].parentNode.classList.add('is-on');
+      }
+    } else { root.classList.add('no-toc'); }
+    var tpl = root.querySelector('[data-card-tpl]');
+    if (tpl) [root.dataset.afterA, root.dataset.afterB].forEach(function (n) {
+      n = parseInt(n, 10); if (!n || !heads[n]) return;
+      heads[n].parentNode.insertBefore(tpl.content.firstElementChild.cloneNode(true), heads[n]);
+    });
+    var cp = root.querySelector('[data-copy]'), msg = root.querySelector('[data-copied]');
+    if (cp) cp.addEventListener('click', function () {
+      var done = function () { if (msg) { msg.hidden = false; setTimeout(function () { msg.hidden = true; }, 2200); } };
+      if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(done, done); else done();
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .sf-art { background: #fff; color: var(--sf-ink); }
+  .sf-art__wrap { max-width: calc(1328px + 2 * clamp(16px, 3.9vw, 56px)); margin: 0 auto; padding-inline: clamp(16px, 3.9vw, 56px); }
+  .sf-art__head { padding: 22px 0 clamp(26px, 3vw, 44px); }
+  .sf-art__crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11.5px; color: #8b8280; }
+  .sf-art__crumbs a:hover { color: var(--sf-plum); text-decoration: underline; }
+  .sf-art__crumbs [aria-current] { color: #6f6664; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60ch; }
+  .sf-art__top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 480px); gap: clamp(20px, 4vw, 64px); align-items: center; margin-top: 22px; }
+  .sf-art__top:not(:has(.sf-art__hero)) { grid-template-columns: 1fr; }
+  .sf-art__title { font-family: var(--sf-serif); font-weight: 400; font-size: clamp(28px, 3.3vw, 48px); line-height: 1.06; letter-spacing: -.02em; color: var(--sf-ink); max-width: 760px; }
+  .sf-art__lead { margin-top: 16px; max-width: 640px; font-size: 15px; line-height: 1.55; color: #3a3140; }
+  .sf-art__date { margin-top: 12px; font-size: 11.5px; color: #8b8280; }
+  .sf-art__hero { aspect-ratio: 16 / 7; border-radius: 6px; background: var(--sf-card); }
+  .sf-art__hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+  .sf-art__strip { display: flex; flex-wrap: wrap; justify-content: space-evenly; gap: 8px 24px; padding: 14px 16px; background: var(--sf-plum); color: #fff; }
+  .sf-art__strip li { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
+  .sf-art__strip svg { width: 16px; height: 16px; color: #F4C9D6; }
+  .sf-art__grid { display: grid; grid-template-columns: minmax(150px, 190px) minmax(0, 1fr) minmax(250px, 300px); column-gap: clamp(24px, 4vw, 64px); align-items: start; padding-block: clamp(32px, 4vw, 56px) clamp(48px, 5vw, 80px); }
+  .sf-art.no-toc .sf-art__grid { grid-template-columns: minmax(0, 1fr) minmax(250px, 300px); }
+  .sf-art.no-toc .sf-art__toc { display: none; }
+  .sf-art__toc { position: sticky; top: 24px; }
+  .sf-art__toch { margin-bottom: 14px; font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #8b8280; }
+  .sf-art__toc ol { border-left: 1px solid #ECE4DF; }
+  .sf-art__toc li { margin-left: -1px; padding: 5px 0 5px 12px; border-left: 2px solid transparent; }
+  .sf-art__toc li.is-on { border-left-color: var(--sf-plum); }
+  .sf-art__toc a { font-size: 12px; line-height: 1.35; color: #6f6664; display: block; }
+  .sf-art__toc li.is-on a { color: var(--sf-ink); font-weight: 600; }
+  .sf-art__main { max-width: 640px; margin-inline: auto; width: 100%; }
+  .sf-art__body { font-size: 15px; line-height: 1.65; color: #2f2735; }
+  .sf-art__body > * + * { margin-top: 16px; }
+  .sf-art__body h2 { margin-top: 38px; font-family: var(--sf-serif); font-weight: 400; font-size: clamp(22px, 2vw, 28px); line-height: 1.15; letter-spacing: -.01em; color: var(--sf-ink); scroll-margin-top: 24px; }
+  .sf-art__body h3 { margin-top: 26px; font-family: var(--sf-sans); font-size: 16.5px; font-weight: 700; color: var(--sf-ink); }
+  .sf-art__body p, .sf-art__body li { font-size: 15px; line-height: 1.65; }
+  .sf-art__body strong, .sf-art__body b { color: var(--sf-ink); }
+  .sf-art__body ul, .sf-art__body ol { padding-left: 22px; }
+  .sf-art__body ul { list-style: disc; } .sf-art__body ol { list-style: decimal; }
+  .sf-art__body li + li { margin-top: 8px; }
+  .sf-art__body a { color: var(--sf-plum); text-decoration: underline; text-underline-offset: 3px; }
+  .sf-art__body img { display: block; max-width: 100%; height: auto; margin-inline: auto; border-radius: 6px; }
+  .sf-art__body blockquote { margin: 22px 0; padding: 4px 0 4px 18px; border-left: 3px solid var(--sf-plum); font-style: italic; color: #4d4543; }
+  .sf-art__body table { width: 100%; border-collapse: collapse; font-size: 13.5px; display: block; overflow-x: auto; }
+  .sf-art__body th, .sf-art__body td { padding: 10px 12px; border-bottom: 1px solid #ECE4DF; text-align: left; vertical-align: top; }
+  .sf-art__body th { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #8b8280; border-bottom-color: var(--sf-ink); }
+  .sf-art__body > p:last-child em, .sf-art__body > p > em:only-child { font-size: 12.5px; color: #6f6664; }
+  .sf-art__card { display: grid; grid-template-columns: 160px 1fr; gap: 18px; align-items: center; margin-block: 30px; padding: 12px; border: 1px solid #EFE7E2; border-radius: 10px; box-shadow: 0 12px 30px -24px rgba(19, 7, 46, .4); background: #fff; }
+  .sf-art__cardimg { display: block; aspect-ratio: 1; border-radius: 6px; background: var(--sf-card); overflow: hidden; }
+  .sf-art__cardimg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-art__cardt, .sf-art__prodt { font-family: var(--sf-serif); font-size: 18px; line-height: 1.15; color: var(--sf-ink); }
+  .sf-art__cardp, .sf-art__prodp { margin-top: 6px; font-size: 14px; } .sf-art__cardp s, .sf-art__prodp s { color: #9a9290; font-size: 12.5px; } .sf-art__cardp b, .sf-art__prodp b { color: var(--sf-ink); }
+  .sf-art__stars { display: inline-flex; margin-top: 6px; font-size: 13px; }
+  .sf-art__btn { display: flex; align-items: center; justify-content: center; height: 46px; margin-top: 12px; border-radius: 8px; background: var(--sf-plum); color: #fff !important; font-size: 12.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; text-decoration: none !important; transition: filter .15s; }
+  .sf-art__btn:hover { filter: brightness(1.12); }
+  .sf-art__sticky { position: sticky; top: 24px; display: grid; gap: 18px; }
+  .sf-art__sum { padding: 14px 16px; border: 1px solid #EFE7E2; border-radius: 10px; }
+  .sf-art__sumh { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #8b8280; }
+  .sf-art__share { display: flex; gap: 10px; margin-top: 10px; }
+  .sf-art__share button, .sf-art__share a { width: 34px; height: 34px; border: 1px solid #E7DEDA; border-radius: 8px; display: grid; place-items: center; color: var(--sf-ink); }
+  .sf-art__share svg { width: 16px; height: 16px; }
+  .sf-art__copied { margin-top: 8px; font-size: 11.5px; color: #1f8f5f; }
+  .sf-art__prod { padding: 14px; border: 1px solid #EFE7E2; border-radius: 10px; box-shadow: 0 12px 30px -24px rgba(19, 7, 46, .4); }
+  .sf-art__prodimg { display: block; aspect-ratio: 4 / 5; margin-bottom: 12px; border-radius: 6px; background: var(--sf-card); overflow: hidden; }
+  .sf-art__prodimg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 989px) {
+    .sf-art__top { grid-template-columns: 1fr; }
+    .sf-art__grid, .sf-art.no-toc .sf-art__grid { grid-template-columns: minmax(0, 1fr); row-gap: 28px; }
+    .sf-art__toc { position: static; order: -1; }
+    .sf-art__toc ol { display: flex; flex-wrap: wrap; gap: 6px 14px; border-left: 0; }
+    .sf-art__toc li { padding: 0; border: 0; } .sf-art__toc li.is-on a { color: var(--sf-plum); }
+    .sf-art__side { order: 3; } .sf-art__sticky { position: static; }
+    .sf-art__prod { display: grid; grid-template-columns: 120px 1fr; column-gap: 14px; align-items: start; }
+    .sf-art__prodimg { grid-row: 1 / span 4; margin: 0; aspect-ratio: 1; }
+  }
+  @media (max-width: 749px) {
+    .sf-art__card { grid-template-columns: 110px 1fr; gap: 12px; }
+    .sf-art__strip { justify-content: flex-start; padding-inline: 16px; gap: 8px 18px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Article",
+  "tag": "section",
+  "class": "sf-section-art",
+  "settings": [
+    { "type": "paragraph", "content": "Le titre, le résumé (extrait), l'image et le texte viennent de l'article créé dans Contenu → Articles de blog." },
+    { "type": "product", "id": "product", "label": "Produit mis en avant (vide = votre premier produit)" },
+    { "type": "header", "content": "Textes" },
+    { "type": "text", "id": "crumb_home", "label": "Fil d'Ariane : accueil", "default": "Home" },
+    { "type": "text", "id": "crumb_blog", "label": "Fil d'Ariane : blog", "default": "Blog" },
+    { "type": "text", "id": "published_label", "label": "Avant la date", "default": "Published on" },
+    { "type": "text", "id": "toc_title", "label": "Titre du sommaire", "default": "Summary" },
+    { "type": "text", "id": "card_btn", "label": "Bouton des cartes produit", "default": "Shop now" },
+    { "type": "text", "id": "side_btn", "label": "Bouton du produit à droite", "default": "Shop now" },
+    { "type": "header", "content": "Cartes produit dans le texte" },
+    { "type": "range", "id": "card_after_a", "min": 0, "max": 8, "step": 1, "label": "Carte 1 avant le titre n° (0 = aucune)", "default": 1 },
+    { "type": "range", "id": "card_after_b", "min": 0, "max": 8, "step": 1, "label": "Carte 2 avant le titre n° (0 = aucune)", "default": 3 },
+    { "type": "header", "content": "Partage" },
+    { "type": "checkbox", "id": "show_summary", "label": "Afficher le bloc partage", "default": true },
+    { "type": "text", "id": "summary_title", "label": "Titre du bloc partage", "default": "Share this article" },
+    { "type": "text", "id": "copy_label", "label": "Bouton copier le lien (accessibilité)", "default": "Copy link" },
+    { "type": "text", "id": "copied_label", "label": "Message après copie", "default": "Link copied" }
+  ],
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "Bandeau : atout",
+      "limit": 4,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icône", "default": "truck", "options": [
+          { "value": "truck", "label": "Livraison" }, { "value": "shield", "label": "Bouclier" }, { "value": "lock", "label": "Cadenas" },
+          { "value": "check", "label": "Coche" }, { "value": "heart", "label": "Cœur" }, { "value": "sparkle", "label": "Étincelle" } ] },
+        { "type": "text", "id": "text", "label": "Texte", "default": "Free shipping, no minimum" }
+      ]
+    }
+  ]
+}
+{% endschema %}

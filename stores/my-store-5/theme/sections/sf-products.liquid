@@ -1,10 +1,26 @@
-{%- assign coll = section.settings.collection -%}
+{%- liquid
+  assign coll = section.settings.collection
+  assign src = section.settings.product
+  if src == blank and section.settings.by_variant
+    if coll != blank
+      if coll.products_count == 1
+        assign src = coll.products.first
+      endif
+    elsif collections.all.products_count == 1
+      assign src = collections.all.products.first
+    endif
+  endif
+  assign variant_mode = false
+  if src != blank and section.settings.by_variant
+    assign variant_mode = true
+  endif
+-%}
 <section class="sf sf-prod" id="sf-prod-{{ section.id }}" style="--prod-bg: {{ section.settings.bg }};">
   <div class="sf-wrap sf-prod__head">
     <h2 class="sf-h2">{{ section.settings.title }}</h2>
     <div class="sf-prod__tools">
       {%- if section.settings.view_all_label != blank -%}
-        <a class="sf-prod__all" href="{{ section.settings.view_all_link | default: coll.url | default: routes.all_products_collection_url }}">{{ section.settings.view_all_label }}</a>
+        <a class="sf-prod__all" href="{{ section.settings.view_all_link | default: coll.url | default: src.url | default: routes.all_products_collection_url }}">{{ section.settings.view_all_label }}</a>
       {%- endif -%}
       <div class="sf-arrows sf-prod__arrows">
         <button type="button" class="sf-arrow" data-sf-prev aria-label="Précédent">{%- render 'sf-icon', name: 'arrow-left' -%}</button>
@@ -13,7 +29,11 @@
     </div>
   </div>
   <ul class="sf-rail sf-prod__rail">
-    {%- if coll != blank and coll.products_count > 0 -%}
+    {%- if variant_mode -%}
+      {%- for v in src.variants limit: section.settings.limit -%}
+        <li class="sf-prod__item">{%- render 'sf-card', card_product: src, card_variant: v -%}</li>
+      {%- endfor -%}
+    {%- elsif coll != blank and coll.products_count > 0 -%}
       {%- for product in coll.products limit: section.settings.limit -%}
         <li class="sf-prod__item">{%- render 'sf-card', card_product: product -%}</li>
       {%- endfor -%}
@@ -52,6 +72,8 @@
   "settings": [
     { "type": "text", "id": "title", "label": "Titre", "default": "Best Sellers" },
     { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "product", "id": "product", "label": "Produit (vide = collection, ou votre produit s'il est seul)" },
+    { "type": "checkbox", "id": "by_variant", "label": "Une carte par variante (couleur) avec son prix et son lien", "default": true },
     { "type": "range", "id": "limit", "min": 4, "max": 16, "step": 1, "label": "Nombre de produits", "default": 8 },
     { "type": "text", "id": "view_all_label", "label": "Lien « voir tout »", "default": "View all" },
     { "type": "url", "id": "view_all_link", "label": "URL « voir tout » (vide = la collection)" },

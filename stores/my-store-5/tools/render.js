@@ -82,13 +82,13 @@ const COLORS = ['Gray', 'Black', 'Beige', 'Blue', 'Purple', 'Pink', 'Brown'];
 const mkMedia = (id, n) => Object.assign(fakeImg('product ' + n, 1254, 1254), { id, alt: n === 1 ? 'Sculpt leggings' : '' });
 const MEDIA = [mkMedia(101, 1), mkMedia(102, 2), mkMedia(103, 3), mkMedia(104, 4), mkMedia(105, 5)];
 const SZ = process.env.SIZES === '1' ? ['S', 'M', 'L'] : null;
-const VARIANTS = []; COLORS.forEach((c, i) => (SZ || [null]).forEach((z, k) => VARIANTS.push({ id: 5000 + i * 10 + k, title: z ? c + ' / ' + z : c, options: z ? [c, z] : [c], price: 4999, compare_at_price: 5999,
+const VARIANTS = []; COLORS.forEach((c, i) => (SZ || [null]).forEach((z, k) => VARIANTS.push({ id: 5000 + i * 10 + k, title: z ? c + ' / ' + z : c, url: '/products/x?variant=' + (5000 + i * 10 + k), options: z ? [c, z] : [c], price: 4999, compare_at_price: 5999,
   available: !(c === 'Brown' || (c === 'Gray' && z === 'L')), featured_media: c === 'Black' ? MEDIA[1] : (c === 'Beige' ? MEDIA[2] : null) })));
 class OV { constructor(n, sel) { this.n = n; this.selected = sel; this.swatch = { color: null }; } toString() { return this.n; } }
 const PRODUCT = { id: 11190618194257, title: 'Essabar&Co Sculpt 3D Leggings', url: '/products/x', handle: 'x', tags: [], media: MEDIA, featured_media: MEDIA[0],
   variants: VARIANTS, selected_or_first_available_variant: VARIANTS[0], has_only_default_variant: false,
   options_with_values: [{ name: 'Couleur', position: 1, values: COLORS.map((c, i) => new OV(c, i === 0)) }].concat(SZ ? [{ name: 'Size', position: 2, values: SZ.map((z, i) => new OV(z, i === 0)) }] : []),
-  description: '<p>Scolpisci la tua silhouette.</p>', metafields: {}, price: 4999, compare_at_price: 5999, price_min: 4999, price_varies: false };
+  description: '<p>Scolpisci la tua silhouette.</p>', metafields: {}, available: true, price: 4999, compare_at_price: 5999, price_min: 4999, price_varies: false };
 
 async function renderSection(id, conf, ctxBase) {
   const { src, schema } = schemaOf(conf.type);
@@ -115,7 +115,7 @@ async function renderSection(id, conf, ctxBase) {
   const ctxBase = {
     shop: { name: 'My Store 5', customer_accounts_enabled: true, email: 'hello@example.com', shipping_policy: { url: '/policies/shipping-policy' }, refund_policy: { url: '/policies/refund-policy' }, privacy_policy: { url: '/policies/privacy-policy' }, terms_of_service: { url: '/policies/terms-of-service' }, enabled_payment_types: ['visa', 'master', 'paypal', 'apple_pay', 'google_pay', 'shopify_pay'] }, form: { 'posted_successfully?': process.env.POSTED === '1', errors: false, email: '' }, customer: null,
     routes: { root_url: '/', cart_add_url: '/cart/add.js', cart_url: '/cart', account_url: '/account', all_products_collection_url: '/collections/all' },
-    cart: { item_count: 2, currency: { iso_code: 'EUR' } }, request: { locale: { iso_code: 'en' }, design_mode: process.env.DM === '1' }, recommendations: { products: [] }, settings: {},
+    cart: { item_count: 2, currency: { iso_code: 'EUR' } }, request: { locale: { iso_code: 'en' }, design_mode: process.env.DM === '1' }, recommendations: { products: [] }, collections: { all: { products_count: 1, products: [PRODUCT] } }, settings: {},
     linklists: {}, product: null,
   };
   // menu de demo : resolu via le reglage link_list

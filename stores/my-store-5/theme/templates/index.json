@@ -2,7 +2,19 @@
   "sections": {
     "hero": {
       "type": "sf-hero",
-      "settings": {}
+      "settings": {
+        "image": "shopify://shop_images/leonie_banner.webp",
+        "bg": "#f9f3ee",
+        "pill": "Self-care Month Offer",
+        "title": "Cellulite care made for <em>every body</em>",
+        "offer_prefix": "Up to",
+        "offer_pill": "70% OFF",
+        "offer_suffix": "the whole collection",
+        "sub": "Plus <strong>FREE SHIPPING</strong> on every order, no minimum",
+        "btn_label": "Shop the 3D leggings",
+        "btn_link": "",
+        "proof_text": ""
+      }
     },
     "press": {
       "type": "sf-press",
@@ -10,36 +22,42 @@
         "logo-1": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/womenshealth-leonieandco.svg",
             "name": "Press logo"
           }
         },
         "logo-2": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/cosmopolitan-leonieandco.svg",
             "name": "Press logo"
           }
         },
         "logo-3": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/glamour-leonieandco.svg",
             "name": "Press logo"
           }
         },
         "logo-4": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/goodhousekeeping-leonieandco.svg",
             "name": "Press logo"
           }
         },
         "logo-5": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/vogue-leonieandco.svg",
             "name": "Press logo"
           }
         },
         "logo-6": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/shape-magazine.svg",
             "name": "Press logo"
           }
         }
@@ -52,12 +70,22 @@
         "logo-5",
         "logo-6"
       ],
-      "settings": {}
+      "settings": {
+        "label": "As seen in",
+        "bg": "#6b2441",
+        "speed": 40
+      }
     },
     "bestsellers": {
       "type": "sf-products",
       "settings": {
-        "title": "Best Sellers"
+        "title": "Best Sellers",
+        "collection": "",
+        "limit": 8,
+        "view_all_label": "View all",
+        "view_all_link": "",
+        "bg": "#ffffff",
+        "by_variant": true
       }
     },
     "promo": {
@@ -90,7 +118,21 @@
         "tile-2",
         "tile-3"
       ],
-      "settings": {}
+      "settings": {
+        "image": "shopify://shop_images/Screenshot_2026-10-01_18.34.22.png",
+        "image_width": 62,
+        "image_x": 100,
+        "image_y": 50,
+        "fade": 20,
+        "bg": "#6b2441",
+        "shade": 20,
+        "show_tag": true,
+        "title": "70% Off",
+        "title_2": "On Full Outfits",
+        "text": "One draining 3D knit, 4 pieces, from your arms to your ankles. Wear one, or wear them all.",
+        "btn_label": "Shop now",
+        "btn_link": ""
+      }
     },
     "categories": {
       "type": "sf-categories",
@@ -98,39 +140,41 @@
         "cat-1": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "3D Leggings",
-            "sub": "13 colors"
+            "sub": "13 colors",
+            "link": ""
           }
         },
         "cat-2": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "3D Shorts",
-            "sub": "11 colors"
+            "sub": "11 colors",
+            "link": ""
           }
         },
         "cat-3": {
           "type": "category",
           "settings": {
+            "collection": "",
             "label": "3D T-shirts",
-            "sub": "3 colors"
-          }
-        },
-        "cat-4": {
-          "type": "category",
-          "settings": {
-            "label": "3D Sleeves",
-            "sub": "2 colors"
+            "sub": "3 colors",
+            "link": ""
           }
         }
       },
       "block_order": [
         "cat-1",
         "cat-2",
-        "cat-3",
-        "cat-4"
+        "cat-3"
       ],
-      "settings": {}
+      "settings": {
+        "title": "Popular Categories",
+        "cols": 3,
+        "bg": "#ffffff"
+      }
     },
     "reviews": {
       "type": "sf-reviews",
@@ -138,57 +182,132 @@
         "review-1": {
           "type": "review",
           "settings": {
+            "photo": "shopify://shop_images/nicole-4.webp",
             "name": "Customer name",
             "verified": true,
             "meta": "Size M · 46 · City",
             "badge": "X weeks",
             "quote": "Paste a real customer review here, with her permission.",
             "widget": "compare",
+            "w_before_label": "Before",
             "w_before": "What she tried before",
-            "w_after": "Her result, in her words"
+            "w_after_label": "After",
+            "w_after": "Her result, in her words",
+            "w_s1_val": "",
+            "w_s1_lbl": "",
+            "w_s2_val": "",
+            "w_s2_lbl": "",
+            "w_s3_val": "",
+            "w_s3_lbl": "",
+            "w_p_title": "",
+            "w_p_hi": "",
+            "w_p1": "Day 1",
+            "w_p2": "Week 2",
+            "w_p3": "Week 6",
+            "w_sc_title": "Her own",
+            "w_sc_hi": "",
+            "w_sc_before_lbl": "Before",
+            "w_sc_before": 2,
+            "w_sc_now_lbl": "Now",
+            "w_sc_now": 9
           }
         },
         "review-2": {
           "type": "review",
           "settings": {
+            "photo": "shopify://shop_images/natalia-1.jpg",
             "name": "Customer name",
             "verified": true,
             "meta": "Size M · 46 · City",
             "badge": "X weeks",
             "quote": "Paste a real customer review here, with her permission.",
             "widget": "stats",
+            "w_before_label": "Before",
+            "w_before": "",
+            "w_after_label": "After",
+            "w_after": "",
             "w_s1_val": "00",
             "w_s1_lbl": "weeks of use",
             "w_s2_val": "0x",
             "w_s2_lbl": "times a week",
             "w_s3_val": "00",
-            "w_s3_lbl": "her result"
+            "w_s3_lbl": "her result",
+            "w_p_title": "",
+            "w_p_hi": "",
+            "w_p1": "Day 1",
+            "w_p2": "Week 2",
+            "w_p3": "Week 6",
+            "w_sc_title": "Her own",
+            "w_sc_hi": "",
+            "w_sc_before_lbl": "Before",
+            "w_sc_before": 2,
+            "w_sc_now_lbl": "Now",
+            "w_sc_now": 9
           }
         },
         "review-3": {
           "type": "review",
           "settings": {
+            "photo": "shopify://shop_images/hannah-1.webp",
             "name": "Customer name",
             "verified": true,
             "meta": "Size M · 46 · City",
             "badge": "X weeks",
             "quote": "Paste a real customer review here, with her permission.",
             "widget": "progress",
+            "w_before_label": "Before",
+            "w_before": "",
+            "w_after_label": "After",
+            "w_after": "",
+            "w_s1_val": "",
+            "w_s1_lbl": "",
+            "w_s2_val": "",
+            "w_s2_lbl": "",
+            "w_s3_val": "",
+            "w_s3_lbl": "",
             "w_p_title": "Result",
-            "w_p_hi": "from week 0"
+            "w_p_hi": "from week 0",
+            "w_p1": "Day 1",
+            "w_p2": "Week 2",
+            "w_p3": "Week 6",
+            "w_sc_title": "Her own",
+            "w_sc_hi": "",
+            "w_sc_before_lbl": "Before",
+            "w_sc_before": 2,
+            "w_sc_now_lbl": "Now",
+            "w_sc_now": 9
           }
         },
         "review-4": {
           "type": "review",
           "settings": {
+            "photo": "shopify://shop_images/priya-4.webp",
             "name": "Customer name",
             "verified": true,
             "meta": "Size M · 46 · City",
             "badge": "X weeks",
             "quote": "Paste a real customer review here, with her permission.",
             "widget": "score",
+            "w_before_label": "Before",
+            "w_before": "",
+            "w_after_label": "After",
+            "w_after": "",
+            "w_s1_val": "",
+            "w_s1_lbl": "",
+            "w_s2_val": "",
+            "w_s2_lbl": "",
+            "w_s3_val": "",
+            "w_s3_lbl": "",
+            "w_p_title": "",
+            "w_p_hi": "",
+            "w_p1": "Day 1",
+            "w_p2": "Week 2",
+            "w_p3": "Week 6",
+            "w_sc_title": "Her own",
             "w_sc_hi": "rating",
+            "w_sc_before_lbl": "Before",
             "w_sc_before": 0,
+            "w_sc_now_lbl": "Now",
             "w_sc_now": 0
           }
         }
@@ -199,55 +318,54 @@
         "review-3",
         "review-4"
       ],
-      "settings": {}
+      "settings": {
+        "pill_label": "Excellent",
+        "pill_rating": "",
+        "title": "Reviews from women like you",
+        "bg": "#6b2441"
+      }
     },
-    "colors": {
-      "type": "sf-colors",
+    "news": {
+      "type": "sf-news",
+      "settings": {
+        "title": "News",
+        "blog": "",
+        "limit": 3,
+        "words": 34,
+        "view_all_label": "",
+        "bg": "#f9f3ee"
+      },
       "blocks": {
-        "color-1": {
-          "type": "color",
+        "post-1": {
+          "type": "post",
           "settings": {
-            "label": "Black"
+            "title": "Your blog post title",
+            "date": "",
+            "excerpt": "Add an image, a title and a short excerpt for each article."
           }
         },
-        "color-2": {
-          "type": "color",
+        "post-2": {
+          "type": "post",
           "settings": {
-            "label": "Beige"
+            "title": "Your blog post title",
+            "date": "",
+            "excerpt": "Add an image, a title and a short excerpt for each article."
           }
         },
-        "color-3": {
-          "type": "color",
+        "post-3": {
+          "type": "post",
           "settings": {
-            "label": "Grey"
-          }
-        },
-        "color-4": {
-          "type": "color",
-          "settings": {
-            "label": "Blue"
-          }
-        },
-        "color-5": {
-          "type": "color",
-          "settings": {
-            "label": "Browse all",
-            "dots": "#111111, #8b3a5b, #12808a, #d7c3a6, #f2b6c6, #999999"
+            "title": "Your blog post title",
+            "date": "",
+            "excerpt": "Add an image, a title and a short excerpt for each article."
           }
         }
       },
       "block_order": [
-        "color-1",
-        "color-2",
-        "color-3",
-        "color-4",
-        "color-5"
-      ],
-      "settings": {}
-    },
-    "news": {
-      "type": "sf-news",
-      "settings": {}
+        "post-1",
+        "post-2",
+        "post-3"
+      ]
     },
     "trust": {
       "type": "sf-trust",
@@ -291,7 +409,9 @@
         "item-3",
         "item-4"
       ],
-      "settings": {}
+      "settings": {
+        "bg": "#6b2441"
+      }
     }
   },
   "order": [
@@ -301,7 +421,6 @@
     "promo",
     "categories",
     "reviews",
-    "colors",
     "news",
     "trust"
   ]

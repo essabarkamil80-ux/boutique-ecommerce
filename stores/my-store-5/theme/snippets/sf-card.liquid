@@ -1,6 +1,7 @@
 {%- comment -%}
   Carte produit.
   - card_product : objet produit (sinon carte d'exemple, avec placeholder: index)
+  - card_variant : (optionnel) variante : la carte montre alors l'image, le prix et le lien de cette variante
   - Pastille : tag produit "badge:Best seller" ou "badge:New"
   - Sous-titre : metafield custom.subtitle
   - Note : metafield reviews.rating / reviews.rating_count (rempli par les applis d'avis).
@@ -8,6 +9,7 @@
 {%- endcomment -%}
 {%- if card_product != blank -%}
   {%- assign product = card_product -%}
+  {%- assign cv = card_variant -%}
   {%- liquid
     assign badge = ''
     for tag in product.tags
@@ -28,24 +30,57 @@
     assign rating = product.metafields.reviews.rating.value
     assign rating_count = product.metafields.reviews.rating_count.value
     assign img2 = product.media[1]
+    assign main_media = product.featured_media
+    assign href = product.url
+    assign card_title = product.title
+    assign pr = product.price
+    assign cmp = product.compare_at_price
+    assign is_out = false
+    if product.available == false
+      assign is_out = true
+    endif
+    if cv != blank
+      assign img2 = blank
+      assign href = cv.url
+      assign card_title = product.title | append: ' | ' | append: cv.title
+      assign pr = cv.price
+      assign cmp = cv.compare_at_price
+      if cv.featured_media != blank
+        assign main_media = cv.featured_media
+      endif
+      assign is_out = false
+      if cv.available == false
+        assign is_out = true
+      endif
+    endif
   -%}
   <div class="sf-card">
-    <a class="sf-card__media sf-media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
-      {%- if product.featured_media != blank -%}
-        {%- assign calt = product.featured_media.alt | default: product.title -%}
-        {{ product.featured_media | image_url: width: 800 | image_tag: widths: '300, 450, 600, 800', sizes: '(min-width: 990px) 280px, 62vw', alt: calt, loading: 'lazy', class: 'sf-card__img' }}
+    <a class="sf-card__media sf-media" href="{{ href }}" aria-label="{{ card_title | escape }}">
+      {%- if main_media != blank -%}
+        {%- assign calt = main_media.alt | default: card_title -%}
+        {{ main_media | image_url: width: 800 | image_tag: widths: '300, 450, 600, 800', sizes: '(min-width: 990px) 280px, 62vw', alt: calt, loading: 'lazy', class: 'sf-card__img' }}
         {%- if img2 != blank and img2.media_type == 'image' -%}
           {{ img2 | image_url: width: 800 | image_tag: widths: '300, 450, 600, 800', sizes: '(min-width: 990px) 280px, 62vw', alt: '', loading: 'lazy', class: 'sf-card__img sf-card__img--2' }}
         {%- endif -%}
       {%- else -%}
         {{ 'product-apparel-1' | placeholder_svg_tag: 'sf-ph' }}
       {%- endif -%}
-      {%- if badge != '' -%}
+      {%- if is_out -%}
+        <span class="sf-card__badge sf-card__badge--out">Sold out</span>
+      {%- elsif badge != '' -%}
         <span class="sf-card__badge{% if badge_dc == 'new' or badge_dc == 'nouveau' %} sf-card__badge--new{% endif %}">{{ badge }}</span>
       {%- endif -%}
     </a>
 
-    {%- if color_opt != blank -%}
+    {%- if cv != blank and color_opt != blank -%}
+      {%- assign ci = color_opt.position | minus: 1 -%}
+      <ul class="sf-card__sw sf-card__sw--links" aria-label="{{ color_opt.name | escape }}">
+        {%- for vv in product.variants limit: 8 -%}
+          {%- assign vcol = vv.options[ci] -%}
+          <li{% if vv.id == cv.id %} class="is-current"{% endif %}><a href="{{ vv.url }}" title="{{ vcol | escape }}" aria-label="{{ vcol | escape }}" style="background: {% render 'sf-swatch', value: vcol %}"></a></li>
+        {%- endfor -%}
+      </ul>
+    {%- elsif color_opt != blank -%}
       <ul class="sf-card__sw" aria-label="{{ color_opt.name | escape }}">
         {%- for v in color_opt.values limit: 5 -%}
           {%- assign swc = v.swatch.color -%}
@@ -67,10 +102,10 @@
     {%- endif -%}
 
     <div class="sf-card__row">
-      <a class="sf-card__title" href="{{ product.url }}">{{ product.title }}</a>
+      <a class="sf-card__title" href="{{ href }}">{{ card_title }}</a>
       <div class="sf-card__price">
-        {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
-        <span>{%- if product.price_varies -%}{{ product.price_min | money }}+{%- else -%}{{ product.price | money }}{%- endif -%}</span>
+        {%- if cmp > pr -%}<s>{{ cmp | money }}</s>{%- endif -%}
+        <span>{%- if product.price_varies and cv == blank -%}{{ product.price_min | money }}+{%- else -%}{{ pr | money }}{%- endif -%}</span>
       </div>
     </div>
     {%- if product.metafields.custom.subtitle != blank -%}<p class="sf-card__sub">{{ product.metafields.custom.subtitle }}</p>{%- endif -%}

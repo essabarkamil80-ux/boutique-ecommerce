@@ -8,7 +8,25 @@
       {%- endif -%}
     </div>
     <ul class="sf-news__grid">
-      {%- if blog != blank and blog.articles_count > 0 -%}
+      {%- assign posts = section.blocks | where: 'type', 'post' -%}
+      {%- if posts.size > 0 -%}
+        {%- for post in posts -%}
+          {%- assign ps = post.settings -%}
+          {%- assign phref = ps.link | default: blog.url -%}
+          <li class="sf-news__card" {{ post.shopify_attributes }}>
+            <a class="sf-news__media sf-media" href="{{ phref | default: '#' }}" aria-label="{{ ps.title | escape }}">
+              {%- if ps.image != blank -%}
+                {{ ps.image | image_url: width: 900 | image_tag: widths: '400, 600, 800, 900', sizes: '(min-width: 990px) 400px, 88vw', alt: ps.title, loading: 'lazy' }}
+              {%- else -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'sf-ph' }}
+              {%- endif -%}
+            </a>
+            <h3 class="sf-news__title"><a href="{{ phref | default: '#' }}">{{ ps.title }}</a></h3>
+            {%- if ps.date != blank -%}<p class="sf-news__date">{{ ps.date }}</p>{%- endif -%}
+            {%- if ps.excerpt != blank -%}<p class="sf-news__ex">{{ ps.excerpt }}</p>{%- endif -%}
+          </li>
+        {%- endfor -%}
+      {%- elsif blog != blank and blog.articles_count > 0 -%}
         {%- for article in blog.articles limit: section.settings.limit -%}
           <li class="sf-news__card">
             <a class="sf-news__media sf-media" href="{{ article.url }}" aria-label="{{ article.title | escape }}">
@@ -60,13 +78,90 @@
   "tag": "section",
   "class": "sf-section-news",
   "settings": [
-    { "type": "text", "id": "title", "label": "Titre", "default": "News" },
-    { "type": "blog", "id": "blog", "label": "Blog" },
-    { "type": "range", "id": "limit", "min": 2, "max": 6, "step": 1, "label": "Nombre d'articles", "default": 3 },
-    { "type": "range", "id": "words", "min": 12, "max": 60, "step": 2, "label": "Longueur de l'extrait (mots)", "default": 34 },
-    { "type": "text", "id": "view_all_label", "label": "Lien « tout voir »" },
-    { "type": "color", "id": "bg", "label": "Fond", "default": "#F9F3EE" }
+    {
+      "type": "paragraph",
+      "content": "Ajoutez des blocs « Article manuel » pour choisir vous-même les images et les textes. Sans bloc, les articles du blog choisi s'affichent."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "News"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Nombre d'articles",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "words",
+      "min": 12,
+      "max": 60,
+      "step": 2,
+      "label": "Longueur de l'extrait (mots)",
+      "default": 34
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "Lien « tout voir »"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Fond",
+      "default": "#F9F3EE"
+    }
   ],
-  "presets": [ { "name": "SF · Articles" } ]
+  "presets": [
+    {
+      "name": "SF · Articles"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "post",
+      "name": "Article manuel",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Your blog post title"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date (ex. 25 septembre 2026)"
+        },
+        {
+          "type": "textarea",
+          "id": "excerpt",
+          "label": "Court extrait"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien de l'article (vide = le blog)"
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

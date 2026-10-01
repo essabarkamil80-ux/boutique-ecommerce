@@ -69,9 +69,13 @@
   .sf-card__badge { position: absolute; top: 10px; right: 10px; z-index: 1; background: var(--sf-indigo); color: #fff;
     font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; line-height: 1; padding: 5px 8px; border-radius: 4px; }
   .sf-card__badge--new { background: #111; }
+  .sf-card__badge--out { background: #6f6664; }
   .sf-card__badge--new::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #fff; margin-right: 5px; vertical-align: 1px; }
   .sf-card__sw { display: flex; align-items: center; gap: 6px; margin-top: 13px; }
   .sf-card__sw li { width: 13px; height: 13px; border-radius: 50%; background: var(--sf-card); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .14); }
+  .sf-card__sw--links a { display: block; width: 100%; height: 100%; border-radius: 50%; }
+  .sf-card__sw--links li { width: 16px; height: 16px; }
+  .sf-card__sw--links li.is-current { box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px var(--sf-ink); }
   .sf-card__sw .sf-card__more { width: auto; height: auto; background: none; box-shadow: none; font-size: 11px; color: #9a9290; }
   .sf-card__rate { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 11px; color: #6d6664; }
   .sf-rate { position: relative; display: inline-flex; font-size: 12px; line-height: 1; }

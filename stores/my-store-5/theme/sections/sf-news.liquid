@@ -13,6 +13,7 @@
         {%- for post in posts -%}
           {%- assign ps = post.settings -%}
           {%- assign art = ps.article -%}
+          {%- if art == blank and blog != blank -%}{%- assign art = blog.articles[forloop.index0] -%}{%- endif -%}
           {%- assign phref = ps.link | default: art.url | default: blog.url -%}
           {%- assign ptitle = ps.title | default: art.title | default: 'Article title' -%}
           {%- assign pimg = ps.image | default: art.image -%}
@@ -83,7 +84,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Dans chaque bloc « Article manuel », choisissez un article du blog : l'image, le titre, la date et le lien se remplissent seuls (et vous pouvez les remplacer). Sans bloc, les articles du blog choisi s'affichent."
+      "content": "Chaque bloc « Article manuel » prend automatiquement l'article du blog correspondant (1er bloc = article le plus récent). Vous pouvez aussi choisir un article précis, ou remplacer l'image, le titre, la date et le lien. Sans bloc, les articles du blog choisi s'affichent."
     },
     {
       "type": "text",

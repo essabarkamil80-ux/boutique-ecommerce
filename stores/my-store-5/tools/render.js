@@ -73,7 +73,7 @@ function injectImages(type, settings, label) {
   if (!withImg) return;
   if (MODE !== 'index') { for (const k of Object.keys(settings)) if (settings[k] === '' && /^(image|photo|before|after|avatar_\d)$/.test(k)) settings[k] = fakeImg(k + ' ' + type, 900, 900); }
   if (type === 'sf-hero') settings.image = fakeImg('hero photo', 1200, 1200);
-  if (type === 'sf-promo') settings.image = fakeImg('promo photo', 2000, 760);
+  if (type === 'sf-promo') { settings.image = fakeImg('promo photo', 2000, 760); if (process.env.PROMO_IMG) settings.image.src = 'data:image/webp;base64,' + fs.readFileSync(process.env.PROMO_IMG).toString('base64'); }
 }
 
 

@@ -1,5 +1,5 @@
 {%- assign s = section.settings -%}
-<section class="sf sf-promo" style="--promo-bg: {{ s.bg }}; --promo-shade: {{ s.shade | divided_by: 100.0 }};">
+<section class="sf sf-promo" style="--promo-bg: {{ s.bg }}; --promo-shade: {{ s.shade | divided_by: 100.0 }}; --promo-img-w: {{ s.image_width }}%; --promo-img-x: {{ s.image_x }}%; --promo-img-y: {{ s.image_y }}%; --promo-fade: {{ s.fade }}%;">
   <div class="sf-promo__media">
     {%- if s.image != blank -%}
       {%- if s.image_mobile != blank -%}
@@ -39,8 +39,9 @@
 {% stylesheet %}
   .sf-promo { position: relative; background: var(--promo-bg); color: #fff; overflow: hidden;
     min-height: clamp(460px, 39.7vw, 640px); display: flex; align-items: center; }
-  .sf-promo__media { position: absolute; inset: 0; }
-  .sf-promo__media img, .sf-promo__media picture { width: 100%; height: 100%; object-fit: cover; object-position: 70% center; }
+  .sf-promo__media { position: absolute; top: 0; right: 0; bottom: 0; width: var(--promo-img-w); }
+  .sf-promo__media img, .sf-promo__media picture { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--promo-img-x) var(--promo-img-y); }
+  .sf-promo__media { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--promo-fade)); mask-image: linear-gradient(90deg, transparent 0, #000 var(--promo-fade)); }
   .sf-promo__media::after { content: ''; position: absolute; inset: 0;
     background: linear-gradient(90deg, rgba(40, 10, 24, var(--promo-shade)) 0%, rgba(40, 10, 24, 0) 55%); }
   .sf-promo__wrap { position: relative; z-index: 1; padding-top: 48px; padding-bottom: 48px; }
@@ -62,7 +63,8 @@
   .sf-promo__btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .45); }
   @media (max-width: 749px) {
     .sf-promo { flex-direction: column; align-items: stretch; min-height: 0; }
-    .sf-promo__media { position: relative; aspect-ratio: 4 / 3; }
+    .sf-promo__media { position: relative; width: 100%; aspect-ratio: 4 / 3; -webkit-mask-image: none; mask-image: none; }
+    .sf-promo__media img, .sf-promo__media picture { object-position: 60% center; }
     .sf-promo__media::after { background: linear-gradient(0deg, var(--promo-bg) 0%, rgba(0, 0, 0, 0) 35%); }
     .sf-promo__wrap { padding-top: 22px; padding-bottom: 34px; }
     .sf-promo__tiles { gap: 8px; }
@@ -76,16 +78,111 @@
   "tag": "section",
   "class": "sf-section-promo",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Image de fond (sujet à droite)" },
-    { "type": "image_picker", "id": "image_mobile", "label": "Image mobile (optionnelle)" },
-    { "type": "color", "id": "bg", "label": "Couleur de fond", "default": "#6B2441" },
-    { "type": "range", "id": "shade", "min": 0, "max": 80, "step": 5, "unit": "%", "label": "Assombrir derrière le texte", "default": 20 },
-    { "type": "checkbox", "id": "show_tag", "label": "Icône étiquette avant le titre", "default": true },
-    { "type": "text", "id": "title", "label": "Titre (ligne 1)", "default": "70% Off" },
-    { "type": "text", "id": "title_2", "label": "Titre (ligne 2)", "default": "On Full Outfits" },
-    { "type": "text", "id": "text", "label": "Texte", "default": "One draining 3D knit, 4 pieces, from your arms to your ankles. Wear one, or wear them all." },
-    { "type": "text", "id": "btn_label", "label": "Bouton", "default": "Shop now" },
-    { "type": "url", "id": "btn_link", "label": "Lien du bouton" }
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image de fond (sujet à droite)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image mobile (optionnelle)"
+    },
+    {
+      "type": "header",
+      "content": "Placement de l'image sur ordinateur"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "min": 40,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "label": "Largeur de l'image (100 = toute la bande)",
+      "default": 62
+    },
+    {
+      "type": "range",
+      "id": "image_x",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Cadrage horizontal (0 = gauche, 100 = droite)",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "image_y",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Cadrage vertical (0 = haut, 100 = bas)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "fade",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "%",
+      "label": "Fondu sur le bord gauche de l'image",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Couleur de fond (idéalement celle du fond de la photo)",
+      "default": "#5A1C3A"
+    },
+    {
+      "type": "range",
+      "id": "shade",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Assombrir derrière le texte",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tag",
+      "label": "Icône étiquette avant le titre",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre (ligne 1)",
+      "default": "70% Off"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Titre (ligne 2)",
+      "default": "On Full Outfits"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Texte",
+      "default": "One draining 3D knit, 4 pieces, from your arms to your ankles. Wear one, or wear them all."
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Bouton",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Lien du bouton"
+    }
   ],
   "blocks": [
     {
@@ -93,18 +190,74 @@
       "name": "Atout",
       "limit": 3,
       "settings": [
-        { "type": "select", "id": "icon", "label": "Icône", "default": "feather", "options": [
-          { "value": "feather", "label": "Plume" }, { "value": "heart", "label": "Cœur" }, { "value": "sparkle", "label": "Étincelle" },
-          { "value": "check", "label": "Coche" }, { "value": "shield", "label": "Bouclier" }, { "value": "truck", "label": "Livraison" }
-        ] },
-        { "type": "text", "id": "label", "label": "Texte", "default": "Benefit" }
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "default": "feather",
+          "options": [
+            {
+              "value": "feather",
+              "label": "Plume"
+            },
+            {
+              "value": "heart",
+              "label": "Cœur"
+            },
+            {
+              "value": "sparkle",
+              "label": "Étincelle"
+            },
+            {
+              "value": "check",
+              "label": "Coche"
+            },
+            {
+              "value": "shield",
+              "label": "Bouclier"
+            },
+            {
+              "value": "truck",
+              "label": "Livraison"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texte",
+          "default": "Benefit"
+        }
       ]
     }
   ],
-  "presets": [ { "name": "SF · Bandeau promo", "blocks": [
-    { "type": "tile", "settings": { "icon": "feather", "label": "Smooths and lifts" } },
-    { "type": "tile", "settings": { "icon": "heart", "label": "Seamless 3D knit" } },
-    { "type": "tile", "settings": { "icon": "sparkle", "label": "No routine to keep" } }
-  ] } ]
+  "presets": [
+    {
+      "name": "SF · Bandeau promo",
+      "blocks": [
+        {
+          "type": "tile",
+          "settings": {
+            "icon": "feather",
+            "label": "Smooths and lifts"
+          }
+        },
+        {
+          "type": "tile",
+          "settings": {
+            "icon": "heart",
+            "label": "Seamless 3D knit"
+          }
+        },
+        {
+          "type": "tile",
+          "settings": {
+            "icon": "sparkle",
+            "label": "No routine to keep"
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

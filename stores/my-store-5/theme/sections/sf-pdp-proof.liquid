@@ -33,9 +33,8 @@
         {%- if s.btn_label != blank -%}<a class="sf-proof__btn" href="{{ s.btn_link | default: '#sf-pdp-top' }}">{{ s.btn_label }}</a>{%- endif -%}
         {%- if s.note != blank -%}<p class="sf-proof__note"><i></i>{{ s.note }}</p>{%- endif -%}
       </div>
-      {%- assign pb = section.blocks | where: 'type', 'photo' | first -%}
-      <div class="sf-proof__media" {{ pb.shopify_attributes }}>
-        {%- assign pimg = pb.settings.image -%}
+      <div class="sf-proof__media">
+        {%- assign pimg = s.image -%}
         {%- assign pm = '' -%}
         {%- if pimg == blank and s.product_media > 0 and product.media.size > 0 -%}
           {%- assign pi = s.product_media | minus: 1 -%}
@@ -94,6 +93,10 @@
   "tag": "section",
   "class": "sf-section-proof",
   "settings": [
+    { "type": "header", "content": "Photo à droite" },
+    { "type": "image_picker", "id": "image", "label": "Photo (PNG détouré, sans fond, conseillé)" },
+    { "type": "range", "id": "product_media", "min": 0, "max": 8, "step": 1, "default": 1, "label": "Sans photo : n° photo du produit (0 = aucune)" },
+    { "type": "header", "content": "Chiffre et textes" },
     { "type": "paragraph", "content": "Le grand chiffre doit être un nombre réel et vérifiable (clientes, commandes…). « 00,000+ » est un repère à remplacer." },
     { "type": "color", "id": "bg", "label": "Fond", "default": "#F9F3EE" },
     { "type": "image_picker", "id": "avatar_1", "label": "Avatar 1" },
@@ -103,21 +106,11 @@
     { "type": "text", "id": "head_1", "label": "Titre : début", "default": "women wearing their" },
     { "type": "text", "id": "head_hi", "label": "Titre : partie en prune", "default": "3D leggings all day" },
     { "type": "text", "id": "head_2", "label": "Titre : fin", "default": "without thinking about it" },
-    { "type": "range", "id": "product_media", "min": 0, "max": 8, "step": 1, "default": 1, "label": "Sans photo : n° photo du produit (0 = aucune)" },
     { "type": "text", "id": "btn_label", "label": "Bouton", "default": "Shop the 3D leggings" },
     { "type": "url", "id": "btn_link", "label": "Lien du bouton (vide = haut de page)" },
     { "type": "text", "id": "note", "label": "Petite ligne sous le bouton", "default": "Free returns within 30 days" }
   ],
   "blocks": [
-    {
-      "type": "photo",
-      "name": "Photo à droite",
-      "limit": 1,
-      "settings": [
-        { "type": "paragraph", "content": "Cliquez sur « Sélectionner » pour mettre la photo de votre choix (un PNG détouré, sans fond, rend très bien)." },
-        { "type": "image_picker", "id": "image", "label": "Photo" }
-      ]
-    },
     {
       "type": "card",
       "name": "Carte",
@@ -138,8 +131,7 @@
     { "type": "card", "settings": { "icon": "sparkle", "title": "Sculpted Look", "text": "A 3D texture that flatters your shape from every angle." } },
     { "type": "card", "settings": { "icon": "heart", "title": "High-Waist Support", "text": "Gently wraps your waist and highlights your curves." } },
     { "type": "card", "settings": { "icon": "plume", "title": "Smoother On Sight", "text": "A more even-looking finish under every outfit." } },
-    { "type": "card", "settings": { "icon": "shield", "title": "Comfort All Day", "text": "Designed for a comfortable fit, all day long." } },
-    { "type": "photo" }
+    { "type": "card", "settings": { "icon": "shield", "title": "Comfort All Day", "text": "Designed for a comfortable fit, all day long." } }
   ] } ]
 }
 {% endschema %}

@@ -219,27 +219,18 @@
             "title": "Comfort All Day",
             "text": "Designed for a comfortable fit, all day long."
           }
-        },
-        "photo-1": {
-          "type": "photo",
-          "settings": {}
         }
       },
       "block_order": [
         "card-1",
         "card-2",
         "card-3",
-        "card-4",
-        "photo-1"
+        "card-4"
       ]
     },
     "features": {
       "type": "sf-pdp-features",
       "blocks": {
-        "media-1": {
-          "type": "media",
-          "settings": {}
-        },
         "f-1": {
           "type": "chip",
           "settings": {
@@ -290,7 +281,6 @@
         }
       },
       "block_order": [
-        "media-1",
         "f-1",
         "f-2",
         "f-3",

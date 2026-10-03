@@ -1,11 +1,10 @@
 {%- assign s = section.settings -%}
 <section class="sf sf-feat" style="--feat-bg: {{ s.bg }};">
   <div class="sf-wrap sf-feat__grid">
-    {%- assign mb = section.blocks | where: 'type', 'media' | first -%}
-    {%- assign mset = mb.settings -%}
+    {%- assign mset = section.settings -%}
     {%- assign vid = mset.video -%}
     {%- assign ext = mset.video_url -%}
-    <div class="sf-feat__media sf-media{% if vid == blank and ext != blank %} sf-feat__media--ext{% endif %}" {{ mb.shopify_attributes }}>
+    <div class="sf-feat__media sf-media{% if vid == blank and ext != blank %} sf-feat__media--ext{% endif %}">
       {%- if vid != blank -%}
         {%- if mset.controls -%}
           {{ vid | video_tag: image_size: '1200x', autoplay: mset.autoplay, loop: mset.loop, muted: mset.autoplay, controls: true, class: 'sf-feat__vid' }}
@@ -88,26 +87,20 @@
   "tag": "section",
   "class": "sf-section-feat",
   "settings": [
+    { "type": "header", "content": "Grand média à gauche (vidéo OU photo)" },
+    { "type": "video", "id": "video", "label": "Vidéo : choisir un fichier (mp4)" },
+    { "type": "video_url", "id": "video_url", "label": "ou lien YouTube / Vimeo", "accept": ["youtube", "vimeo"] },
+    { "type": "image_picker", "id": "image", "label": "Photo (si pas de vidéo)" },
+    { "type": "checkbox", "id": "autoplay", "label": "Lecture auto sans son (lien YouTube / Vimeo)", "default": true },
+    { "type": "checkbox", "id": "controls", "label": "Afficher les commandes (pause, son)", "default": false },
+    { "type": "checkbox", "id": "loop", "label": "Lecture en boucle (si commandes affichées)", "default": true },
+    { "type": "header", "content": "Textes et fond" },
     { "type": "color", "id": "bg", "label": "Fond", "default": "#FFFFFF" },
     { "type": "text", "id": "title_1", "label": "Titre : ligne 1", "default": "A 3D texture designed" },
     { "type": "text", "id": "title_2", "label": "Titre : ligne 2 (prune)", "default": "to sculpt your silhouette" },
     { "type": "text", "id": "sub", "label": "Sous-titre", "default": "Comfort, support and a flattering fit, every day." }
   ],
   "blocks": [
-    {
-      "type": "media",
-      "name": "Photo ou vidéo (gauche)",
-      "limit": 1,
-      "settings": [
-        { "type": "paragraph", "content": "Choisissez une vidéo (idéal : fichier mp4 ajouté ici, elle se lance toute seule en boucle, sans son) ou une photo. La vidéo passe avant la photo." },
-        { "type": "video", "id": "video", "label": "Vidéo Shopify (fichier)" },
-        { "type": "video_url", "id": "video_url", "label": "ou lien YouTube / Vimeo", "accept": ["youtube", "vimeo"] },
-        { "type": "image_picker", "id": "image", "label": "Photo (si pas de vidéo)" },
-        { "type": "checkbox", "id": "autoplay", "label": "Lecture automatique, sans son (lien YouTube / Vimeo)", "default": true },
-        { "type": "checkbox", "id": "controls", "label": "Afficher les commandes (pause, son)", "default": false },
-        { "type": "checkbox", "id": "loop", "label": "Lecture en boucle (si commandes affichées)", "default": true }
-      ]
-    },
     {
       "type": "chip",
       "name": "Étiquette",
@@ -132,7 +125,6 @@
     }
   ],
   "presets": [ { "name": "SF · Atouts produit", "blocks": [
-    { "type": "media" },
     { "type": "chip", "settings": { "icon": "sparkle", "text": "3D texture" } },
     { "type": "chip", "settings": { "icon": "heart", "text": "High waist" } },
     { "type": "chip", "settings": { "icon": "check", "text": "Everyday wear" } },

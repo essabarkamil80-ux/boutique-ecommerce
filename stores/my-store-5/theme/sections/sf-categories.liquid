@@ -17,6 +17,16 @@
           if href == blank and c != blank
             assign href = c.url
           endif
+          if href == blank and c == blank and label != blank
+            assign auto_handle = label | handleize
+            assign auto_coll = collections[auto_handle]
+            if auto_coll.title != blank
+              assign href = auto_coll.url
+              if img == blank
+                assign img = auto_coll.featured_image
+              endif
+            endif
+          endif
         -%}
         <li {{ block.shopify_attributes }}>
           <a class="sf-cat__card" href="{{ href | default: '#' }}">

@@ -1,0 +1,197 @@
+{%- liquid
+  assign s = section.settings
+  assign total = 0
+-%}
+<section class="sf sf-coll" id="sf-coll-{{ section.id }}">
+  <header class="sf-coll__hero" style="--coll-bg: {{ s.hero_bg }};">
+    {%- if s.eyebrow != blank -%}<p class="sf-coll__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+    <h1 class="sf-coll__title">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}<div class="sf-coll__desc">{{ collection.description }}</div>{%- endif -%}
+  </header>
+
+  <div class="sf-coll__wrap">
+    <div class="sf-coll__bar">
+      <div class="sf-coll__filters">
+        <details class="sf-coll__dd" data-dd>
+          <summary>{{ s.avail_label }}{%- render 'sf-icon', name: 'chevron' -%}</summary>
+          <div class="sf-coll__panel">
+            <label><input type="checkbox" data-f-avail value="1"> {{ s.in_stock_label }}</label>
+            <label><input type="checkbox" data-f-avail value="0"> {{ s.out_stock_label }}</label>
+          </div>
+        </details>
+        <details class="sf-coll__dd" data-dd>
+          <summary>{{ s.price_label }}{%- render 'sf-icon', name: 'chevron' -%}</summary>
+          <div class="sf-coll__panel sf-coll__panel--price">
+            <label>{{ s.from_label }} <input type="number" min="0" step="1" inputmode="numeric" data-f-min placeholder="0"></label>
+            <label>{{ s.to_label }} <input type="number" min="0" step="1" inputmode="numeric" data-f-max placeholder="∞"></label>
+          </div>
+        </details>
+        <details class="sf-coll__dd" data-dd data-color-dd hidden>
+          <summary>{{ s.color_label }}{%- render 'sf-icon', name: 'chevron' -%}</summary>
+          <div class="sf-coll__panel" data-color-list></div>
+        </details>
+      </div>
+      <div class="sf-coll__tools">
+        <span class="sf-coll__count"><span data-count>0</span> {{ s.items_label }}</span>
+        <label class="sf-coll__sort"><span>{{ s.sort_label }}</span>
+          <select data-sort aria-label="{{ s.sort_label | escape }}">
+            <option value="">{{ s.sort_default }}</option>
+            <option value="plh">{{ s.sort_plh }}</option>
+            <option value="phl">{{ s.sort_phl }}</option>
+            <option value="az">{{ s.sort_az }}</option>
+          </select>
+        </label>
+        <div class="sf-coll__view" role="group" aria-label="Grid">
+          <button type="button" class="is-on" data-cols="4" aria-label="4 columns"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 1h6v6H1zM9 1h6v6H9zM1 9h6v6H1zM9 9h6v6H9z"/></svg></button>
+          <button type="button" data-cols="2" aria-label="2 columns"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 1h14v6H1zM1 9h14v6H1z"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    {%- paginate collection.products by s.per_page -%}
+      <ul class="sf-coll__grid" data-grid>
+        {%- for product in collection.products -%}
+          {%- assign cpos = 0 -%}
+          {%- for opt in product.options_with_values -%}
+            {%- assign on = opt.name | downcase -%}
+            {%- if on == 'color' or on == 'colour' or on == 'couleur' or on == 'colore' or on == 'farbe' -%}{%- assign cpos = opt.position -%}{%- endif -%}
+          {%- endfor -%}
+          {%- for v in product.variants -%}
+            {%- assign color = '' -%}
+            {%- if cpos > 0 -%}{%- assign ci = cpos | minus: 1 -%}{%- assign color = v.options[ci] -%}{%- endif -%}
+            {%- assign av = 0 -%}{%- if v.available -%}{%- assign av = 1 -%}{%- endif -%}
+            {%- assign total = total | plus: 1 -%}
+            <li class="sf-coll__item" data-color="{{ color | escape }}" data-price="{{ v.price }}" data-avail="{{ av }}" data-name="{{ product.title | append: ' ' | append: v.title | escape }}" data-order="{{ total }}">
+              {%- render 'sf-card', card_product: product, card_variant: v -%}
+            </li>
+          {%- endfor -%}
+        {%- endfor -%}
+      </ul>
+      {%- if total == 0 -%}<p class="sf-coll__empty">{{ s.empty_text }}</p>{%- endif -%}
+      <p class="sf-coll__none" data-none hidden>{{ s.none_text }}</p>
+      {%- if paginate.pages > 1 -%}
+        <nav class="sf-coll__pager" aria-label="Pagination">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">‹</a>{%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>{%- elsif part.title == paginate.current_page -%}<span class="is-on">{{ part.title }}</span>{%- else -%}<span>{{ part.title }}</span>{%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">›</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+<script>
+  (function () {
+    var root = document.getElementById('sf-coll-{{ section.id }}'); if (!root || root.dataset.ready) return; root.dataset.ready = '1';
+    var grid = root.querySelector('[data-grid]'); if (!grid) return;
+    var items = [].slice.call(grid.children), none = root.querySelector('[data-none]'), cnt = root.querySelector('[data-count]');
+    var colors = []; items.forEach(function (li) { var c = li.dataset.color; if (c && colors.indexOf(c) < 0) colors.push(c); });
+    var cdd = root.querySelector('[data-color-dd]'), clist = root.querySelector('[data-color-list]');
+    if (colors.length > 1) { colors.forEach(function (c) { var l = document.createElement('label'), i = document.createElement('input'); i.type = 'checkbox'; i.value = c; i.setAttribute('data-f-color', ''); l.appendChild(i); l.appendChild(document.createTextNode(' ' + c)); clist.appendChild(l); }); cdd.hidden = false; }
+    var state = { av: [], col: [], min: null, max: null, sort: '' };
+    function apply() {
+      var shown = 0, arr = items.slice();
+      if (state.sort) arr.sort(function (a, b) { return state.sort === 'plh' ? a.dataset.price - b.dataset.price : state.sort === 'phl' ? b.dataset.price - a.dataset.price : a.dataset.name.localeCompare(b.dataset.name); });
+      else arr.sort(function (a, b) { return a.dataset.order - b.dataset.order; });
+      arr.forEach(function (li) {
+        var p = li.dataset.price / 100, ok = (!state.av.length || state.av.indexOf(li.dataset.avail) > -1) && (!state.col.length || state.col.indexOf(li.dataset.color) > -1) && (state.min === null || p >= state.min) && (state.max === null || p <= state.max);
+        li.hidden = !ok; if (ok) shown++; grid.appendChild(li);
+      });
+      cnt.textContent = shown; none.hidden = shown !== 0 || !items.length;
+    }
+    root.addEventListener('change', function (e) {
+      var t = e.target;
+      if (t.hasAttribute('data-f-avail')) state.av = [].slice.call(root.querySelectorAll('[data-f-avail]:checked')).map(function (x) { return x.value; });
+      else if (t.hasAttribute('data-f-color')) state.col = [].slice.call(root.querySelectorAll('[data-f-color]:checked')).map(function (x) { return x.value; });
+      else if (t.hasAttribute('data-sort')) state.sort = t.value;
+      else return; apply();
+    });
+    root.addEventListener('input', function (e) {
+      var t = e.target; if (t.hasAttribute('data-f-min')) state.min = t.value === '' ? null : parseFloat(t.value); else if (t.hasAttribute('data-f-max')) state.max = t.value === '' ? null : parseFloat(t.value); else return; apply();
+    });
+    [].slice.call(root.querySelectorAll('[data-cols]')).forEach(function (b) { b.addEventListener('click', function () {
+      grid.classList.toggle('is-big', b.dataset.cols === '2');
+      [].slice.call(root.querySelectorAll('[data-cols]')).forEach(function (x) { x.classList.toggle('is-on', x === b); });
+    }); });
+    document.addEventListener('click', function (e) { [].slice.call(root.querySelectorAll('[data-dd][open]')).forEach(function (d) { if (!d.contains(e.target)) d.open = false; }); });
+    apply();
+  })();
+</script>
+
+{% stylesheet %}
+  .sf-coll { background: #fff; color: var(--sf-ink); }
+  .sf-coll__hero { padding: clamp(28px, 3.9vw, 56px) 16px clamp(28px, 3.7vw, 53px); background: var(--coll-bg); text-align: center; }
+  .sf-coll__eyebrow { font-size: 12px; font-weight: 600; font-style: italic; letter-spacing: .12em; text-transform: uppercase; color: var(--sf-plum); }
+  .sf-coll__title { margin-top: 8px; font-family: var(--sf-serif); font-weight: 400; font-size: clamp(34px, 3.9vw, 56px); line-height: 1.05; letter-spacing: -.025em; color: var(--sf-ink); }
+  .sf-coll__desc { max-width: 560px; margin: 12px auto 0; font-size: 14.5px; line-height: 1.5; color: #4d4543; }
+  .sf-coll__wrap { max-width: calc(1328px + 2 * clamp(16px, 3.9vw, 56px)); margin: 0 auto; padding: 0 clamp(16px, 3.9vw, 56px) clamp(40px, 5vw, 72px); }
+  .sf-coll__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 22px 0 22px; }
+  .sf-coll__filters { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+  .sf-coll__dd { position: relative; }
+  .sf-coll__dd[hidden] { display: none; }
+  .sf-coll__dd summary { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; color: var(--sf-ink); cursor: pointer; list-style: none; }
+  .sf-coll__dd summary::-webkit-details-marker { display: none; }
+  .sf-coll__dd summary svg { width: 13px; height: 13px; transition: transform .15s; } .sf-coll__dd[open] summary svg { transform: rotate(180deg); }
+  .sf-coll__panel { position: absolute; z-index: 5; top: calc(100% + 10px); left: -12px; min-width: 190px; max-height: 280px; overflow: auto; display: grid; gap: 10px; padding: 14px 16px; background: #fff; border: 1px solid #ECE4DF; border-radius: 10px; box-shadow: 0 16px 40px -18px rgba(19, 7, 46, .3); }
+  .sf-coll__panel label { display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer; }
+  .sf-coll__panel input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--sf-plum); }
+  .sf-coll__panel--price label { justify-content: space-between; } .sf-coll__panel--price input { width: 80px; height: 34px; padding: 0 10px; border: 1px solid #DDD3CE; border-radius: 6px; font: inherit; font-size: 13.5px; }
+  .sf-coll__tools { display: flex; align-items: center; gap: 22px; }
+  .sf-coll__count { font-size: 13.5px; color: #6f6664; }
+  .sf-coll__sort { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; }
+  .sf-coll__sort select { border: 0; background: transparent; font: inherit; font-size: 14px; color: var(--sf-ink); cursor: pointer; }
+  .sf-coll__view { display: inline-flex; gap: 8px; }
+  .sf-coll__view button { width: 22px; height: 22px; padding: 0; color: #b8aea9; } .sf-coll__view button.is-on { color: var(--sf-ink); }
+  .sf-coll__view svg { width: 100%; height: 100%; fill: currentColor; }
+  .sf-coll__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(18px, 2.2vw, 32px) clamp(12px, 1.5vw, 22px); }
+  .sf-coll__grid.is-big { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sf-coll__item[hidden] { display: none; }
+  .sf-coll .sf-card__sw { display: none; }
+  .sf-coll .sf-card__row { margin-top: 10px; }
+  .sf-coll__empty, .sf-coll__none { padding: 60px 0; text-align: center; color: #8b8280; font-size: 15px; } .sf-coll__none[hidden] { display: none; }
+  .sf-coll__pager { display: flex; justify-content: center; gap: 6px; margin-top: 36px; }
+  .sf-coll__pager a, .sf-coll__pager span { min-width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; font-size: 14px; color: #6f6664; }
+  .sf-coll__pager .is-on { background: var(--sf-ink); color: #fff; font-weight: 700; }
+  @media (max-width: 989px) { .sf-coll__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 749px) {
+    .sf-coll__grid, .sf-coll__grid.is-big { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sf-coll__view { display: none; }
+    .sf-coll__bar { gap: 12px; } .sf-coll__tools { gap: 14px; width: 100%; justify-content: space-between; }
+    .sf-coll .sf-card__title { font-size: 16px; }
+    .sf-coll .sf-card__row { flex-direction: column; gap: 4px; }
+    .sf-coll .sf-card__price { align-items: flex-start; flex-direction: row; gap: 8px; }
+    .sf-coll__panel { left: 0; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SF · Collection",
+  "tag": "section",
+  "class": "sf-section-coll",
+  "settings": [
+    { "type": "paragraph", "content": "Une carte par couleur (variante) de chaque produit de la collection, avec son prix et un lien vers cette couleur." },
+    { "type": "color", "id": "hero_bg", "label": "Fond du bandeau", "default": "#F9F3EE" },
+    { "type": "text", "id": "eyebrow", "label": "Petit texte au-dessus du titre", "default": "Sculpting 3D texture" },
+    { "type": "range", "id": "per_page", "min": 12, "max": 50, "step": 2, "label": "Produits par page", "default": 24 },
+    { "type": "header", "content": "Textes des filtres" },
+    { "type": "text", "id": "avail_label", "label": "Disponibilité", "default": "Availability" },
+    { "type": "text", "id": "in_stock_label", "label": "En stock", "default": "In stock" },
+    { "type": "text", "id": "out_stock_label", "label": "Épuisé", "default": "Out of stock" },
+    { "type": "text", "id": "price_label", "label": "Prix", "default": "Price" },
+    { "type": "text", "id": "from_label", "label": "De", "default": "From" },
+    { "type": "text", "id": "to_label", "label": "À", "default": "To" },
+    { "type": "text", "id": "color_label", "label": "Couleur", "default": "Color" },
+    { "type": "text", "id": "items_label", "label": "Mot après le nombre", "default": "items" },
+    { "type": "text", "id": "sort_label", "label": "Tri", "default": "Sort" },
+    { "type": "text", "id": "sort_default", "label": "Tri : par défaut", "default": "Featured" },
+    { "type": "text", "id": "sort_plh", "label": "Tri : prix croissant", "default": "Price, low to high" },
+    { "type": "text", "id": "sort_phl", "label": "Tri : prix décroissant", "default": "Price, high to low" },
+    { "type": "text", "id": "sort_az", "label": "Tri : A à Z", "default": "Alphabetically, A-Z" },
+    { "type": "text", "id": "empty_text", "label": "Message collection vide", "default": "No products in this collection yet." },
+    { "type": "text", "id": "none_text", "label": "Message sans résultat", "default": "No products match these filters." }
+  ],
+  "presets": [ { "name": "SF · Collection" } ]
+}
+{% endschema %}

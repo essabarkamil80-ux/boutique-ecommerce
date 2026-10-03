@@ -4,7 +4,7 @@ const { Liquid, Tag, Hash } = require('liquidjs');
 const fs = require('fs'), path = require('path');
 const T = path.join(__dirname, '..', 'theme');
 const withImg = process.argv[2] === '1';
-const MODE = ['product', 'page', 'contact', 'article'].includes(process.argv[4]) ? process.argv[4] : 'index';
+const MODE = ['product', 'page', 'contact', 'article', 'collection'].includes(process.argv[4]) ? process.argv[4] : 'index';
 
 const CSS = [];
 const engine = new Liquid({ root: [path.join(T, 'snippets')], extname: '.liquid', strictFilters: true,
@@ -21,6 +21,13 @@ for (const name of ['schema', 'javascript', 'stylesheet']) {
   });
 }
 
+// {% paginate x by n %} : une seule page
+engine.registerTag('paginate', class extends Tag {
+  constructor(token, remain, liquid) { super(token, remain, liquid); this.tpls = [];
+    const stream = this.liquid.parser.parseStream(remain).on('tag:endpaginate', () => stream.stop()).on('template', (t) => this.tpls.push(t)).on('end', () => { throw new Error('paginate non ferme'); });
+    stream.start(); }
+  * render(ctx, emitter) { yield this.liquid.renderer.renderTemplates(this.tpls, ctx, emitter); }
+});
 // {% form 'product', product, id: x, class: y %}
 engine.registerTag('form', class extends Tag {
   constructor(token, remain, liquid) { super(token, remain, liquid); this.args = token.args; this.tpls = [];
@@ -111,6 +118,7 @@ async function renderSection(id, conf, ctxBase) {
   });
   const ctx = Object.assign({}, ctxBase, { section: { id, settings, blocks } });
   if (MODE === 'product') ctx.product = PRODUCT;
+  if (MODE === 'collection') { ctx.collection = { title: '3D Leggings', description: '', products: [PRODUCT, Object.assign({}, PRODUCT, { title: 'Second product', variants: PRODUCT.variants.slice(0, 3) })] }; ctx.paginate = { pages: 1, parts: [], previous: null, next: null }; }
   if (MODE === 'article') ctx.article = ARTICLE, ctx.blog = { url: '/blogs/news', title: 'News', articles_count: 1, articles: [ARTICLE] };
   for (const d of schema.settings || []) if (d.type === 'product' && settings[d.id]) settings[d.id] = PRODUCT;
   const out = await engine.parseAndRender(src, ctx);
@@ -127,7 +135,7 @@ async function renderSection(id, conf, ctxBase) {
   // menu de demo : resolu via le reglage link_list
   const menu = { links: ['3D Leggings', '3D Shorts', '3D T-shirts', '3D Sleeves', 'Contact', 'Track Your Order'].map((t) => ({ title: t, url: '#', links: [] })) };
   const hg = JSON.parse(fs.readFileSync(path.join(T, 'sections/header-group.json'), 'utf8'));
-  const idx = JSON.parse(fs.readFileSync(path.join(T, MODE === 'product' ? 'templates/product.json' : MODE === 'page' ? 'templates/page.sostieni-george.json' : MODE === 'contact' ? 'templates/page.contact.json' : MODE === 'article' ? 'templates/article.json' : 'templates/index.json'), 'utf8'));
+  const idx = JSON.parse(fs.readFileSync(path.join(T, MODE === 'product' ? 'templates/product.json' : MODE === 'page' ? 'templates/page.sostieni-george.json' : MODE === 'contact' ? 'templates/page.contact.json' : MODE === 'article' ? 'templates/article.json' : MODE === 'collection' ? 'templates/collection.json' : 'templates/index.json'), 'utf8'));
   let html = '';
   for (const k of hg.order) {
     const conf = JSON.parse(JSON.stringify(hg.sections[k]));

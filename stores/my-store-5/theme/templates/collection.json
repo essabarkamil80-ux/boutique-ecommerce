@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "main": {
+      "type": "sf-collection",
+      "settings": {}
+    },
+    "trust": {
+      "type": "sf-trust",
+      "blocks": {
+        "item-1": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "bold": "Secure",
+            "text": "checkout"
+          }
+        },
+        "item-2": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "bold": "Free shipping",
+            "text": "no minimum"
+          }
+        },
+        "item-3": {
+          "type": "item",
+          "settings": {
+            "icon": "ruler",
+            "bold": "Fit guaranteed",
+            "text": "from S to 5XL"
+          }
+        },
+        "item-4": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "bold": "Free returns",
+            "text": "within 30 days"
+          }
+        }
+      },
+      "block_order": [
+        "item-1",
+        "item-2",
+        "item-3",
+        "item-4"
+      ],
+      "settings": {
+        "bg": "#6b2441"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "trust"
+  ]
+}

@@ -1,0 +1,20 @@
+const {chromium}=require('/opt/node22/lib/node_modules/playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await b.newPage({viewport:{width:1440,height:900}}); const errs=[]; p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+__dirname+'/out-collection.html'); await p.waitForTimeout(400);
+const T=async(n,f)=>console.log(n.padEnd(22),JSON.stringify(await p.evaluate(f)));
+const vis=()=>[...document.querySelectorAll('.sf-coll__item')].filter(x=>!x.hidden).map(x=>x.dataset.color+':'+x.dataset.avail);
+await p.evaluate(s=>{window.vis=eval('('+s+')')},vis.toString());
+await T('initial',()=>({n:document.querySelector('[data-count]').textContent,v:vis()}));
+await p.click('[data-color-dd] summary'); await p.check('[data-f-color][value="Black"]'); await T('color Black',()=>({n:document.querySelector('[data-count]').textContent,v:vis()}));
+await p.uncheck('[data-f-color][value="Black"]');
+await p.click('.sf-coll__dd:nth-child(1) summary'); await p.check('[data-f-avail][value="1"]'); await T('in stock only',()=>({n:document.querySelector('[data-count]').textContent}));
+await p.uncheck('[data-f-avail][value="1"]');
+await p.click('.sf-coll__dd:nth-child(2) summary'); await p.fill('[data-f-min]','60'); await T('min 60 (none)',()=>({n:document.querySelector('[data-count]').textContent,none:!document.querySelector('[data-none]').hidden})); await p.fill('[data-f-min]','');
+await p.selectOption('[data-sort]','az'); await T('sort az',()=>({first:document.querySelector('.sf-coll__item').dataset.name}));
+await p.click('[data-cols="2"]'); await T('2 cols',()=>({big:document.querySelector('[data-grid]').classList.contains('is-big')}));
+await p.click('[data-cols="4"]');
+await T('card link',()=>({href:document.querySelector('.sf-coll__item a.sf-card__title').getAttribute('href'),title:document.querySelector('.sf-coll__item a.sf-card__title').textContent}));
+for(const w of [1024,390]){await p.setViewportSize({width:w,height:900});await p.waitForTimeout(150);await T('overflow @'+w,()=>({h:document.documentElement.scrollWidth>innerWidth}));}
+await p.screenshot({path:'k390.png',fullPage:true}); await p.setViewportSize({width:1440,height:900}); await p.waitForTimeout(150); await p.screenshot({path:'k1440.png',fullPage:true});
+console.log('errors',JSON.stringify(errs)); await b.close();})();

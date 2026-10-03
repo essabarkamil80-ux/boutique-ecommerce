@@ -59,6 +59,7 @@ f('image_tag', function (src, ...args) {
   return `<img src="${src}" ${attrs}>`;
 });
 f('placeholder_svg_tag', (name, cls) => `<svg class="${cls || ''}" viewBox="0 0 525 525" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="525" height="525" fill="none"/><path d="M190 180h145v165H190z" opacity=".6"/><circle cx="262" cy="150" r="30" opacity=".6"/></svg>`);
+f('video_tag', (v, o) => '<video class="' + ((o && o.class) || '') + '" src="x.mp4" autoplay muted loop playsinline></video>');
 f('money', (c) => '€' + (Number(c) / 100).toFixed(2).replace('.', ','));
 f('payment_type_svg_tag', (t, cls) => `<svg class="${(cls && cls[1]) || ''}" viewBox="0 0 40 26"><rect width="40" height="26" rx="3" fill="#fff" stroke="#ddd"/><text x="20" y="16" font-size="7" text-anchor="middle">${t}</text></svg>`);
 f('default_errors', () => 'errors');
@@ -88,7 +89,7 @@ function injectImages(type, settings, label) {
 // --- faux produit (7 couleurs, une image) ------------------------------------------
 const COLORS = ['Gray', 'Black', 'Beige', 'Blue', 'Purple', 'Pink', 'Brown'];
 const mkMedia = (id, n) => Object.assign(fakeImg('product ' + n, 1254, 1254), { id, alt: n === 1 ? 'Sculpt leggings' : '' });
-const MEDIA = [mkMedia(101, 1), mkMedia(102, 2), mkMedia(103, 3), mkMedia(104, 4), mkMedia(105, 5)];
+const MEDIA = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => mkMedia(100 + n, n));
 const SZ = process.env.SIZES === '1' ? ['S', 'M', 'L'] : null;
 const VARIANTS = []; COLORS.forEach((c, i) => (SZ || [null]).forEach((z, k) => VARIANTS.push({ id: 5000 + i * 10 + k, title: z ? c + ' / ' + z : c, url: '/products/x?variant=' + (5000 + i * 10 + k), options: z ? [c, z] : [c], price: 4999, compare_at_price: 5999,
   available: !(c === 'Brown' || (c === 'Gray' && z === 'L')), featured_media: c === 'Black' ? MEDIA[1] : (c === 'Beige' ? MEDIA[2] : null) })));

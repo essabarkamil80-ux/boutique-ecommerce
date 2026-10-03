@@ -21,24 +21,28 @@
       <div class="sf-proof__left">
         <ul class="sf-proof__cards">
           {%- for block in section.blocks -%}
+            {%- if block.type == 'card' -%}
             <li class="sf-proof__card" {{ block.shopify_attributes }}>
               <span class="sf-proof__ico">{%- render 'sf-icon', name: block.settings.icon -%}</span>
               <h3>{{ block.settings.title }}</h3>
               <p>{{ block.settings.text }}</p>
             </li>
+            {%- endif -%}
           {%- endfor -%}
         </ul>
         {%- if s.btn_label != blank -%}<a class="sf-proof__btn" href="{{ s.btn_link | default: '#sf-pdp-top' }}">{{ s.btn_label }}</a>{%- endif -%}
         {%- if s.note != blank -%}<p class="sf-proof__note"><i></i>{{ s.note }}</p>{%- endif -%}
       </div>
-      <div class="sf-proof__media">
+      {%- assign pb = section.blocks | where: 'type', 'photo' | first -%}
+      <div class="sf-proof__media" {{ pb.shopify_attributes }}>
+        {%- assign pimg = pb.settings.image -%}
         {%- assign pm = '' -%}
-        {%- if s.image == blank and s.product_media > 0 and product.media.size > 0 -%}
+        {%- if pimg == blank and s.product_media > 0 and product.media.size > 0 -%}
           {%- assign pi = s.product_media | minus: 1 -%}
           {%- assign pm = product.media[pi] | default: product.featured_media -%}
         {%- endif -%}
-        {%- if s.image != blank -%}
-          {{ s.image | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 54vw, 92vw', alt: s.image.alt, loading: 'lazy' }}
+        {%- if pimg != blank -%}
+          {{ pimg | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 54vw, 92vw', alt: pimg.alt, loading: 'lazy' }}
         {%- elsif pm != blank -%}
           {{ pm | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '(min-width: 990px) 54vw, 92vw', alt: pm.alt | default: product.title, loading: 'lazy' }}
         {%- else -%}
@@ -99,13 +103,21 @@
     { "type": "text", "id": "head_1", "label": "Titre : début", "default": "women wearing their" },
     { "type": "text", "id": "head_hi", "label": "Titre : partie en prune", "default": "3D leggings all day" },
     { "type": "text", "id": "head_2", "label": "Titre : fin", "default": "without thinking about it" },
-    { "type": "image_picker", "id": "image", "label": "Photo à droite (PNG détouré conseillé)" },
-    { "type": "range", "id": "product_media", "min": 0, "max": 8, "step": 1, "default": 1, "label": "Sinon : n° photo du produit (0 = aucune)" },
+    { "type": "range", "id": "product_media", "min": 0, "max": 8, "step": 1, "default": 1, "label": "Sans photo : n° photo du produit (0 = aucune)" },
     { "type": "text", "id": "btn_label", "label": "Bouton", "default": "Shop the 3D leggings" },
     { "type": "url", "id": "btn_link", "label": "Lien du bouton (vide = haut de page)" },
     { "type": "text", "id": "note", "label": "Petite ligne sous le bouton", "default": "Free returns within 30 days" }
   ],
   "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo à droite",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Cliquez sur « Sélectionner » pour mettre la photo de votre choix (un PNG détouré, sans fond, rend très bien)." },
+        { "type": "image_picker", "id": "image", "label": "Photo" }
+      ]
+    },
     {
       "type": "card",
       "name": "Carte",
@@ -126,7 +138,8 @@
     { "type": "card", "settings": { "icon": "sparkle", "title": "Sculpted Look", "text": "A 3D texture that flatters your shape from every angle." } },
     { "type": "card", "settings": { "icon": "heart", "title": "High-Waist Support", "text": "Gently wraps your waist and highlights your curves." } },
     { "type": "card", "settings": { "icon": "plume", "title": "Smoother On Sight", "text": "A more even-looking finish under every outfit." } },
-    { "type": "card", "settings": { "icon": "shield", "title": "Comfort All Day", "text": "Designed for a comfortable fit, all day long." } }
+    { "type": "card", "settings": { "icon": "shield", "title": "Comfort All Day", "text": "Designed for a comfortable fit, all day long." } },
+    { "type": "photo" }
   ] } ]
 }
 {% endschema %}

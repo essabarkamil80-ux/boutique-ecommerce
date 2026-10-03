@@ -1,9 +1,25 @@
 {%- assign s = section.settings -%}
 <section class="sf sf-feat" style="--feat-bg: {{ s.bg }};">
   <div class="sf-wrap sf-feat__grid">
-    <div class="sf-feat__media sf-media">
-      {%- if s.image != blank -%}
-        {{ s.image | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '(min-width: 990px) 607px, 92vw', alt: s.image.alt, loading: 'lazy' }}
+    {%- assign mb = section.blocks | where: 'type', 'media' | first -%}
+    {%- assign mset = mb.settings -%}
+    {%- assign vid = mset.video -%}
+    {%- assign ext = mset.video_url -%}
+    <div class="sf-feat__media sf-media{% if vid == blank and ext != blank %} sf-feat__media--ext{% endif %}" {{ mb.shopify_attributes }}>
+      {%- if vid != blank -%}
+        {%- if mset.controls -%}
+          {{ vid | video_tag: image_size: '1200x', autoplay: mset.autoplay, loop: mset.loop, muted: mset.autoplay, controls: true, class: 'sf-feat__vid' }}
+        {%- else -%}
+          {{ vid | video_tag: image_size: '1200x', autoplay: true, loop: true, muted: true, controls: false, class: 'sf-feat__vid' }}
+        {%- endif -%}
+      {%- elsif ext != blank -%}
+        {%- if ext.type == 'youtube' -%}
+          <iframe class="sf-feat__vid" src="https://www.youtube-nocookie.com/embed/{{ ext.id }}?autoplay={% if mset.autoplay %}1{% else %}0{% endif %}&amp;mute={% if mset.autoplay %}1{% else %}0{% endif %}&amp;loop=1&amp;playlist={{ ext.id }}&amp;controls={% if mset.controls %}1{% else %}0{% endif %}&amp;playsinline=1&amp;rel=0&amp;modestbranding=1" title="Video" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+        {%- elsif ext.type == 'vimeo' -%}
+          <iframe class="sf-feat__vid" src="https://player.vimeo.com/video/{{ ext.id }}?autoplay={% if mset.autoplay %}1{% else %}0{% endif %}&amp;muted={% if mset.autoplay %}1{% else %}0{% endif %}&amp;loop=1&amp;playsinline=1{% unless mset.controls %}&amp;background=1{% endunless %}" title="Video" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        {%- endif -%}
+      {%- elsif mset.image != blank -%}
+        {{ mset.image | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '(min-width: 990px) 607px, 92vw', alt: mset.image.alt, loading: 'lazy' }}
       {%- else -%}
         {{ 'lifestyle-2' | placeholder_svg_tag: 'sf-ph' }}
       {%- endif -%}
@@ -41,7 +57,8 @@
   .sf-feat { background: var(--feat-bg); padding: clamp(40px, 4.4vw, 64px) 0 clamp(40px, 4.6vw, 66px); }
   .sf-feat__grid { display: grid; grid-template-columns: minmax(0, 607fr) minmax(0, 572fr); column-gap: clamp(24px, 3.2vw, 45px); align-items: center; }
   .sf-feat__media { aspect-ratio: 607 / 708; border-radius: 14px; background: #F1F0EF; }
-  .sf-feat__media img, .sf-feat__media > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sf-feat__media img, .sf-feat__media > svg, .sf-feat__media video, .sf-feat__media iframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; }
+  .sf-feat__media--ext { aspect-ratio: 16 / 9; }
   .sf-feat__chips { display: flex; flex-wrap: wrap; gap: 8px 16px; }
   .sf-feat__chips li { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #6f6664; }
   .sf-feat__chips svg { width: 14px; height: 14px; color: var(--sf-plum); }
@@ -60,6 +77,7 @@
   @media (max-width: 749px) {
     .sf-feat__grid { grid-template-columns: 1fr; row-gap: 24px; }
     .sf-feat__media { aspect-ratio: 1 / 1; }
+    .sf-feat__media--ext { aspect-ratio: 16 / 9; }
     .sf-feat__row { grid-template-columns: 76px 1fr; gap: 14px; }
   }
 {% endstylesheet %}
@@ -71,12 +89,25 @@
   "class": "sf-section-feat",
   "settings": [
     { "type": "color", "id": "bg", "label": "Fond", "default": "#FFFFFF" },
-    { "type": "image_picker", "id": "image", "label": "Grande image (à gauche)" },
     { "type": "text", "id": "title_1", "label": "Titre : ligne 1", "default": "A 3D texture designed" },
     { "type": "text", "id": "title_2", "label": "Titre : ligne 2 (prune)", "default": "to sculpt your silhouette" },
     { "type": "text", "id": "sub", "label": "Sous-titre", "default": "Comfort, support and a flattering fit, every day." }
   ],
   "blocks": [
+    {
+      "type": "media",
+      "name": "Photo ou vidéo (gauche)",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Choisissez une vidéo (idéal : fichier mp4 ajouté ici, elle se lance toute seule en boucle, sans son) ou une photo. La vidéo passe avant la photo." },
+        { "type": "video", "id": "video", "label": "Vidéo Shopify (fichier)" },
+        { "type": "video_url", "id": "video_url", "label": "ou lien YouTube / Vimeo", "accept": ["youtube", "vimeo"] },
+        { "type": "image_picker", "id": "image", "label": "Photo (si pas de vidéo)" },
+        { "type": "checkbox", "id": "autoplay", "label": "Lecture automatique, sans son (lien YouTube / Vimeo)", "default": true },
+        { "type": "checkbox", "id": "controls", "label": "Afficher les commandes (pause, son)", "default": false },
+        { "type": "checkbox", "id": "loop", "label": "Lecture en boucle (si commandes affichées)", "default": true }
+      ]
+    },
     {
       "type": "chip",
       "name": "Étiquette",
@@ -101,6 +132,7 @@
     }
   ],
   "presets": [ { "name": "SF · Atouts produit", "blocks": [
+    { "type": "media" },
     { "type": "chip", "settings": { "icon": "sparkle", "text": "3D texture" } },
     { "type": "chip", "settings": { "icon": "heart", "text": "High waist" } },
     { "type": "chip", "settings": { "icon": "check", "text": "Everyday wear" } },

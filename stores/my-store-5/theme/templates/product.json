@@ -219,18 +219,27 @@
             "title": "Comfort All Day",
             "text": "Designed for a comfortable fit, all day long."
           }
+        },
+        "photo-1": {
+          "type": "photo",
+          "settings": {}
         }
       },
       "block_order": [
         "card-1",
         "card-2",
         "card-3",
-        "card-4"
+        "card-4",
+        "photo-1"
       ]
     },
     "features": {
       "type": "sf-pdp-features",
       "blocks": {
+        "media-1": {
+          "type": "media",
+          "settings": {}
+        },
         "f-1": {
           "type": "chip",
           "settings": {
@@ -257,7 +266,8 @@
           "settings": {
             "title": "3D sculpting texture",
             "tag": "Texture",
-            "text": "An innovative 3D texture designed to sculpt your silhouette."
+            "text": "An innovative 3D texture designed to sculpt your silhouette.",
+            "image": "shopify://shop_images/feature-3.avif"
           }
         },
         "f-5": {
@@ -265,7 +275,8 @@
           "settings": {
             "title": "High-waist design",
             "tag": "Fit",
-            "text": "Gently wraps your waist and highlights your curves."
+            "text": "Gently wraps your waist and highlights your curves.",
+            "image": "shopify://shop_images/feature-1bis.avif"
           }
         },
         "f-6": {
@@ -273,11 +284,13 @@
           "settings": {
             "title": "A smoother, more even look",
             "tag": "Look",
-            "text": "The 3D texture helps create a smoother-looking skin."
+            "text": "The 3D texture helps create a smoother-looking skin.",
+            "image": "shopify://shop_images/feature-3bis.avif"
           }
         }
       },
       "block_order": [
+        "media-1",
         "f-1",
         "f-2",
         "f-3",

@@ -6,29 +6,29 @@
         "pdp-1": {
           "type": "benefit",
           "settings": {
-            "icon": "texture",
-            "text": "3D sculpting texture, designed to sculpt your silhouette"
+            "icon": "bum",
+            "text": "Smoother-looking skin under every outfit"
           }
         },
         "pdp-2": {
           "type": "benefit",
           "settings": {
-            "icon": "skin",
-            "text": "A smoother, more even-looking skin"
+            "icon": "legs",
+            "text": "Streamlined legs, supported all day"
           }
         },
         "pdp-3": {
           "type": "benefit",
           "settings": {
-            "icon": "waist",
-            "text": "High-waist design that gently wraps your waist"
+            "icon": "lift",
+            "text": "Flattering lift & shape for your curves"
           }
         },
         "pdp-4": {
           "type": "benefit",
           "settings": {
-            "icon": "comfort",
-            "text": "Comfortable, flattering fit for everyday wear"
+            "icon": "figure",
+            "text": "A sleeker silhouette, effortlessly comfortable"
           }
         },
         "pdp-5": {
@@ -56,48 +56,10 @@
         "pdp-8": {
           "type": "result",
           "settings": {
-            "name": "Customer 1",
-            "meta": "Size M · 46",
-            "label": "Result label",
-            "title": "Review title",
-            "quote": "Paste a real customer review here.",
-            "b1_label": "Comfort",
-            "b2_label": "Fit",
-            "b3_label": "Quality"
-          }
-        },
-        "pdp-9": {
-          "type": "result",
-          "settings": {
-            "name": "Customer 2",
-            "meta": "Size M · 46",
-            "label": "Result label",
-            "title": "Review title",
-            "quote": "Paste a real customer review here.",
-            "b1_label": "Comfort",
-            "b2_label": "Fit",
-            "b3_label": "Quality"
-          }
-        },
-        "pdp-10": {
-          "type": "result",
-          "settings": {
-            "name": "Customer 3",
-            "meta": "Size M · 46",
-            "label": "Result label",
-            "title": "Review title",
-            "quote": "Paste a real customer review here.",
-            "b1_label": "Comfort",
-            "b2_label": "Fit",
-            "b3_label": "Quality"
-          }
-        },
-        "pdp-11": {
-          "type": "result",
-          "settings": {
-            "name": "Customer 4",
-            "meta": "Size M · 46",
-            "label": "Result label",
+            "name": "Customer",
+            "meta": "",
+            "label": "",
+            "rating": 0,
             "title": "Review title",
             "quote": "Paste a real customer review here.",
             "b1_label": "Comfort",
@@ -136,14 +98,16 @@
         "pdp-6",
         "pdp-7",
         "pdp-8",
-        "pdp-9",
-        "pdp-10",
-        "pdp-11",
         "pdp-12",
         "pdp-13",
         "pdp-14"
       ],
-      "settings": {}
+      "settings": {
+        "chip_1": "Self-care Month Offer",
+        "chip_2": "Free returns",
+        "eyebrow": "Sculpting 3D texture",
+        "highlight": "Free shipping on every order, no minimum"
+      }
     },
     "press": {
       "type": "sf-press",
@@ -197,7 +161,13 @@
     },
     "proof": {
       "type": "sf-pdp-proof",
-      "settings": {},
+      "settings": {
+        "bg": "#f9f3ee",
+        "avatar_1": "shopify://shop_images/lp-advertorial-41-911b4ffc.webp",
+        "avatar_2": "shopify://shop_images/lp-advertorial-40-e468ec98.webp",
+        "avatar_3": "shopify://shop_images/lp-advertorial-39-73acc112.webp",
+        "number": "100,000+"
+      },
       "blocks": {
         "card-1": {
           "type": "card",

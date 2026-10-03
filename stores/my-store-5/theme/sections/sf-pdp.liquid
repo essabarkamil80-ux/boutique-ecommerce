@@ -92,8 +92,14 @@
       {%- endif -%}
       {%- if s.eyebrow != blank -%}<p class="sf-pdp__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
       <h1 class="sf-pdp__title">{{ p.title }}</h1>
+      {%- if s.badge_text != blank -%}
+        <p class="sf-pdp__award"><span>{%- render 'sf-icon', name: 'laurel' -%}</span>{{ s.badge_text }}</p>
+      {%- endif -%}
       {%- if s.highlight != blank -%}
         <p class="sf-pdp__hl"><span>{%- render 'sf-icon', name: 'check' -%}</span>{{ s.highlight }}</p>
+      {%- endif -%}
+      {%- if s.proof_text != blank -%}
+        <p class="sf-pdp__gproof"><span class="sf-pdp__gstars" aria-hidden="true">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span>{{ s.proof_text }}</p>
       {%- endif -%}
       {%- if rating_num > 0 -%}
         <div class="sf-pdp__rate">
@@ -158,7 +164,19 @@
           <div class="sf-offer" data-sf-offer data-per-piece="{{ s.per_piece }}">
             <div class="sf-offer__head">
               <span class="sf-offer__ttl"><em>{{ s.offer_title_1 }}</em> <b>{{ s.offer_title_2 }}</b></span>
-              {%- if s.offer_sub != blank -%}<span class="sf-offer__sub">{{ s.offer_sub }}</span>{%- endif -%}
+              {%- liquid
+                assign tz = 'now' | date: '%z'
+                assign tz_h = tz | slice: 0, 3
+                assign tz_m = tz | slice: 3, 2
+                assign end_iso = ''
+                if s.timer_end != blank
+                  assign end_iso = s.timer_end | strip | replace: ' ', 'T' | append: ':00' | append: tz_h | append: ':' | append: tz_m
+                endif
+              -%}
+              {%- if end_iso != '' -%}
+                <span class="sf-offer__timer" data-timer data-end="{{ end_iso }}" hidden>{%- render 'sf-icon', name: 'hourglass' -%}<span>{{ s.timer_label }}</span> <b data-t>00:00:00</b></span>
+              {%- endif -%}
+              {%- if s.offer_sub != blank -%}<span class="sf-offer__sub" data-sub>{{ s.offer_sub }}</span>{%- endif -%}
             </div>
             {%- for t in tiers -%}
               {%- assign ts = t.settings -%}
@@ -224,7 +242,7 @@
       {%- if results.size > 0 -%}
         <div class="sf-res" data-sf-res>
           <div class="sf-res__head"><b>{{ s.results_title }}</b><span aria-hidden="true">{%- render 'sf-icon', name: 'chevron' -%}</span></div>
-          <div class="sf-res__tabs" role="tablist">
+          <div class="sf-res__tabs" role="tablist"{% if results.size < 2 %} hidden{% endif %}>
             {%- for r in results -%}
               <button type="button" role="tab" class="sf-res__tab{% if forloop.first %} is-active{% endif %}" data-tab="{{ forloop.index0 }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
                 <i class="sf-res__av">{{ r.settings.name | slice: 0 }}</i>
@@ -235,6 +253,11 @@
           {%- for r in results -%}
             {%- assign rs = r.settings -%}
             <div class="sf-res__panel" data-panel="{{ forloop.index0 }}"{% unless forloop.first %} hidden{% endunless %} {{ r.shopify_attributes }}>
+              {%- if rs.image != blank -%}
+                <div class="sf-res__pics sf-res__pics--one"><div class="sf-res__pic sf-res__pic--one">{{ rs.image | image_url: width: 1000 | image_tag: widths: '400, 700, 1000', sizes: '500px', alt: rs.label | default: 'Customer result', loading: 'lazy' }}</div></div>
+              {%- elsif rs.before == blank and rs.after == blank -%}
+                <div class="sf-res__pics sf-res__pics--one"><div class="sf-res__pic sf-res__pic--one sf-res__pic--empty"><span class="sf-res__empty">{%- render 'sf-icon', name: 'camera' -%}<em>Customer photo</em></span></div></div>
+              {%- else -%}
               <div class="sf-res__pics">
                 <div class="sf-res__pic sf-media">
                   {%- if rs.before != blank -%}{{ rs.before | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '250px', alt: 'Before', loading: 'lazy' }}{%- else -%}<span class="sf-res__empty">{%- render 'sf-icon', name: 'camera' -%}<em>Before photo</em></span>{%- endif -%}
@@ -243,6 +266,7 @@
                   {%- if rs.after != blank -%}{{ rs.after | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '250px', alt: 'After', loading: 'lazy' }}{%- else -%}<span class="sf-res__empty">{%- render 'sf-icon', name: 'camera' -%}<em>After photo</em></span>{%- endif -%}
                 </div>
               </div>
+              {%- endif -%}
               {%- if rs.label != blank -%}<div class="sf-res__label">{{ rs.label }}</div>{%- endif -%}
               <div class="sf-res__info">
                 {%- assign rp = rs.rating | times: 20 -%}
@@ -469,6 +493,21 @@
       $('.sf-tier__radio', t).addEventListener('change', function () { tiers.forEach(function (x) { x.classList.toggle('is-selected', x === t); }); recalc(); });
     });
 
+    /* ---------- compte a rebours (date de fin reelle fixee dans l'editeur) ---------- */
+    var tm = $('[data-timer]'), subEl = $('[data-sub]');
+    if (tm) {
+      var endAt = Date.parse(tm.dataset.end), tEl = $('[data-t]', tm);
+      function pad(n) { return (n < 10 ? '0' : '') + n; }
+      function tick() {
+        var left = Math.floor((endAt - Date.now()) / 1000);
+        if (isNaN(endAt) || left <= 0) { tm.hidden = true; if (subEl) subEl.hidden = false; return false; }
+        var d = Math.floor(left / 86400), h = Math.floor(left % 86400 / 3600), m = Math.floor(left % 3600 / 60), sec = left % 60;
+        tEl.textContent = (d > 0 ? d + 'd ' : '') + pad(h) + ':' + pad(m) + ':' + pad(sec);
+        tm.hidden = false; if (subEl) subEl.hidden = true; return true;
+      }
+      if (tick()) { var iv = setInterval(function () { if (!tick()) clearInterval(iv); }, 1000); }
+    }
+
     /* ---------- carte avant / apres ---------- */
     var res = $('[data-sf-res]');
     if (res) $$('.sf-res__tab', res).forEach(function (b) {
@@ -590,6 +629,10 @@
   .sf-pdp__chip--fill svg { color: #fff; }
   .sf-pdp__eyebrow { margin-top: 14px; font-size: 10.5px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; color: var(--sf-plum); }
   .sf-pdp__title { margin-top: 8px; font-family: var(--sf-serif); font-weight: 400; font-size: clamp(27px, 2.3vw, 33px); line-height: 1.1; letter-spacing: -.01em; color: var(--sf-ink); }
+  .sf-pdp__award { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; padding: 6px 14px 6px 10px; border-radius: 8px; background: linear-gradient(90deg, #FBF4DA, rgba(251, 244, 218, 0)); font-size: 13.5px; color: #6b5a1e; }
+  .sf-pdp__award span { display: inline-flex; color: #B8902A; } .sf-pdp__award svg { width: 26px; height: 26px; }
+  .sf-pdp__gproof { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 15px; color: var(--sf-ink); }
+  .sf-pdp__gstars { display: inline-flex; gap: 2px; color: var(--sf-green); } .sf-pdp__gstars svg { width: 20px; height: 20px; }
   .sf-pdp__hl { display: inline-flex; align-items: center; gap: 7px; margin-top: 12px; padding: 5px 10px 5px 7px; border-radius: 6px; background: #FBF4DA; font-size: 12px; color: #5b4d17; }
   .sf-pdp__hl span { display: inline-flex; color: #b28a10; } .sf-pdp__hl svg { width: 13px; height: 13px; }
   .sf-pdp__rate { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12.5px; color: #5f5654; }
@@ -628,6 +671,9 @@
   .sf-offer__ttl::before, .sf-offer__ttl::after { content: ''; flex: 1; height: 1px; background: #E8DDD8; }
   .sf-offer__ttl em { font-style: italic; }
   .sf-offer__ttl b { font-family: var(--sf-sans); font-weight: 800; letter-spacing: .06em; font-size: 16px; }
+  .sf-offer__timer { display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sf-plum); }
+  .sf-offer__timer[hidden], .sf-offer__sub[hidden] { display: none; }
+  .sf-offer__timer svg { width: 14px; height: 14px; } .sf-offer__timer b { font-variant-numeric: tabular-nums; letter-spacing: .06em; }
   .sf-offer__sub { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: #8b8280; }
   .sf-tier { position: relative; margin-top: 12px; padding: 16px 16px 0; border: 1.5px solid #E7DEDA; border-radius: 12px; background: #FAF7F5; overflow: hidden; }
   .sf-offer__head + .sf-tier { margin-top: 0; }
@@ -699,6 +745,11 @@
   .sf-res__tab small { font-size: 9.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sf-res__panel[hidden] { display: none; }
   .sf-res__pics { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border-radius: 10px 10px 0 0; overflow: hidden; }
+  .sf-res__tabs[hidden] { display: none; }
+  .sf-res__pics--one { grid-template-columns: 1fr; gap: 0; }
+  .sf-res__pic--one { aspect-ratio: auto; background: #ECE4E0; position: relative; }
+  .sf-res__pic--one img { position: static; display: block; width: 100%; height: auto; }
+  .sf-res__pic--empty { aspect-ratio: 10 / 9; }
   .sf-res__pic { aspect-ratio: 249 / 452; background: #ECE4E0; }
   .sf-res__pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .sf-res__empty { position: absolute; inset: 10px; border: 1.5px dashed #CDBFB9; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #9d908a; }
@@ -828,6 +879,16 @@
       "id": "highlight",
       "label": "Bandeau jaune sous le titre",
       "default": "Free shipping on every order, no minimum"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge à lauriers sous le titre (texte réel)"
+    },
+    {
+      "type": "text",
+      "id": "proof_text",
+      "label": "Étoiles vertes + texte (chiffre réel)"
     },
     {
       "type": "header",
@@ -1011,6 +1072,22 @@
     },
     {
       "type": "text",
+      "id": "timer_end",
+      "label": "Fin de l'offre (AAAA-MM-JJ HH:MM)",
+      "default": "2026-10-10 23:59"
+    },
+    {
+      "type": "text",
+      "id": "timer_label",
+      "label": "Texte du compte à rebours",
+      "default": "Offer ends in"
+    },
+    {
+      "type": "paragraph",
+      "content": "Le compte à rebours s'arrête à la date indiquée puis disparaît. Il ne se relance pas tout seul : n'indiquez qu'une vraie date de fin d'offre."
+    },
+    {
+      "type": "text",
       "id": "perpiece_label",
       "label": "Pastille prix par pièce ({amount})",
       "default": "Only {amount} per piece"
@@ -1097,6 +1174,22 @@
           "label": "Icône",
           "default": "sparkle",
           "options": [
+            {
+              "value": "bum",
+              "label": "Hanches"
+            },
+            {
+              "value": "legs",
+              "label": "Jambes"
+            },
+            {
+              "value": "lift",
+              "label": "Galbe (flèche)"
+            },
+            {
+              "value": "figure",
+              "label": "Silhouette"
+            },
             {
               "value": "texture",
               "label": "Texture 3D"
@@ -1202,6 +1295,11 @@
           "type": "image_picker",
           "id": "before",
           "label": "Photo avant"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image unique (avant/après dans la même image)"
         },
         {
           "type": "image_picker",

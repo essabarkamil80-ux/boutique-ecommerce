@@ -55,7 +55,10 @@ const SIZES = process.env.SIZES === '1';
   console.log('POST items :', JSON.stringify(added));
   await T('log', () => window.__log); await T('header badge', () => document.querySelector('[data-sf-count]').textContent);
   await p.click('[data-sf-thumb][data-media="104"]'); await T('thumb 4', () => st());
-  await p.click('.sf-res__tab[data-tab="2"]'); await T('result tab 3', () => ({ shown: [...document.querySelectorAll('.sf-res__panel')].map((x) => !x.hidden) }));
+  await T('result card', () => ({ panels: document.querySelectorAll('.sf-res__panel').length, tabsHidden: getComputedStyle(document.querySelector('.sf-res__tabs')).display === 'none', singleImg: !!document.querySelector('.sf-res__pics--one') }));
+  await T('timer', () => { const t = document.querySelector('[data-timer]'); return { exists: !!t, hidden: t && t.hidden, text: t && t.querySelector('[data-t]').textContent, subHidden: document.querySelector('[data-sub]').hidden }; });
+  await T('benefits', () => [...document.querySelectorAll('.sf-pdp__ben li')].map((l) => l.querySelector('svg') ? l.textContent.trim() : 'NO ICON'));
+  await T('badge/proof (empty by default)', () => ({ award: !!document.querySelector('.sf-pdp__award'), proof: !!document.querySelector('.sf-pdp__gproof') }));
   await T('cards in reviews', () => ({ n: document.querySelectorAll('.sf-rev__card').length }));
   for (const w of [1024, 390]) { await p.setViewportSize({ width: w, height: 900 }); await p.waitForTimeout(200); await T('overflow @' + w, () => ({ hscroll: document.documentElement.scrollWidth > innerWidth })); }
   console.log('errors:', JSON.stringify(errs)); await b.close();

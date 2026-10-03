@@ -34,7 +34,10 @@
         "pdp-5": {
           "type": "tier",
           "settings": {
-            "quantity": 1
+            "quantity": 1,
+            "ship": false,
+            "gift": false,
+            "note": ""
           }
         },
         "pdp-6": {
@@ -42,15 +45,19 @@
           "settings": {
             "quantity": 2,
             "badge": "Bundle",
-            "note": "Free shipping included"
+            "note": "One to wear, one in the wash",
+            "ship": true,
+            "gift": false
           }
         },
         "pdp-7": {
           "type": "tier",
           "settings": {
             "quantity": 3,
-            "badge": "Bundle",
-            "note": "Free shipping included"
+            "badge": "Best offer",
+            "note": "Your perfect rotation",
+            "ship": true,
+            "gift": true
           }
         },
         "pdp-8": {
@@ -64,7 +71,8 @@
             "quote": "Paste a real customer review here.",
             "b1_label": "Comfort",
             "b2_label": "Fit",
-            "b3_label": "Quality"
+            "b3_label": "Quality",
+            "image": "shopify://shop_images/watermark_removed.png"
           }
         },
         "pdp-12": {
@@ -106,7 +114,16 @@
         "chip_1": "Self-care Month Offer",
         "chip_2": "Free returns",
         "eyebrow": "Sculpting 3D texture",
-        "highlight": "Free shipping on every order, no minimum"
+        "highlight": "",
+        "badge_text": "award-winning 2026 Innovation.Anti cellulite",
+        "proof_text": "50,000+ happy women",
+        "per_piece": true,
+        "offer_ship": "FREE Shipping",
+        "gift_text": "FREE Pair of Arm Sleeves",
+        "gift_colors": "Black, Beige, Gray",
+        "gift_value": "",
+        "fallback_sizes": "S, M, L, XL, 2XL, 3XL, 4XL, 5XL",
+        "fallback_size_name": "Size"
       }
     },
     "press": {
@@ -166,39 +183,41 @@
         "avatar_1": "shopify://shop_images/lp-advertorial-41-911b4ffc.webp",
         "avatar_2": "shopify://shop_images/lp-advertorial-40-e468ec98.webp",
         "avatar_3": "shopify://shop_images/lp-advertorial-39-73acc112.webp",
-        "number": "100,000+"
+        "number": "100,000+",
+        "product_media": 1,
+        "btn_label": "Shop the 3D leggings"
       },
       "blocks": {
         "card-1": {
           "type": "card",
           "settings": {
             "icon": "sparkle",
-            "title": "3D sculpting texture",
-            "text": "Designed to sculpt your silhouette."
+            "title": "Sculpted Look",
+            "text": "A 3D texture that flatters your shape from every angle."
           }
         },
         "card-2": {
           "type": "card",
           "settings": {
             "icon": "heart",
-            "title": "High-waist design",
+            "title": "High-Waist Support",
             "text": "Gently wraps your waist and highlights your curves."
           }
         },
         "card-3": {
           "type": "card",
           "settings": {
-            "icon": "feather",
-            "title": "Smoother look",
-            "text": "The 3D texture helps create a more even-looking skin."
+            "icon": "plume",
+            "title": "Smoother On Sight",
+            "text": "A more even-looking finish under every outfit."
           }
         },
         "card-4": {
           "type": "card",
           "settings": {
-            "icon": "check",
-            "title": "Comfort all day",
-            "text": "A comfortable, flattering fit for everyday wear."
+            "icon": "shield",
+            "title": "Comfort All Day",
+            "text": "Designed for a comfortable fit, all day long."
           }
         }
       },

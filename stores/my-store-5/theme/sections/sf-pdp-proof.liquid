@@ -31,11 +31,18 @@
         {%- if s.btn_label != blank -%}<a class="sf-proof__btn" href="{{ s.btn_link | default: '#sf-pdp-top' }}">{{ s.btn_label }}</a>{%- endif -%}
         {%- if s.note != blank -%}<p class="sf-proof__note"><i></i>{{ s.note }}</p>{%- endif -%}
       </div>
-      <div class="sf-proof__media sf-media">
+      <div class="sf-proof__media">
+        {%- assign pm = '' -%}
+        {%- if s.image == blank and s.product_media > 0 and product.media.size > 0 -%}
+          {%- assign pi = s.product_media | minus: 1 -%}
+          {%- assign pm = product.media[pi] | default: product.featured_media -%}
+        {%- endif -%}
         {%- if s.image != blank -%}
-          {{ s.image | image_url: width: 1100 | image_tag: widths: '500, 750, 1100', sizes: '(min-width: 990px) 500px, 92vw', alt: s.image.alt, loading: 'lazy' }}
+          {{ s.image | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 54vw, 92vw', alt: s.image.alt, loading: 'lazy' }}
+        {%- elsif pm != blank -%}
+          {{ pm | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '(min-width: 990px) 54vw, 92vw', alt: pm.alt | default: product.title, loading: 'lazy' }}
         {%- else -%}
-          {{ 'lifestyle-1' | placeholder_svg_tag: 'sf-ph' }}
+          <div class="sf-proof__ph sf-media">{{ 'lifestyle-1' | placeholder_svg_tag: 'sf-ph' }}</div>
         {%- endif -%}
       </div>
     </div>
@@ -43,35 +50,37 @@
 </section>
 
 {% stylesheet %}
-  .sf-proof { background: var(--proof-bg); padding: clamp(40px, 5vw, 73px) 0 clamp(36px, 4vw, 40px); }
+  .sf-proof { background: var(--proof-bg); padding: clamp(40px, 5vw, 73px) 0 clamp(36px, 4vw, 48px); }
   .sf-proof__head { text-align: center; }
-  .sf-proof__num { display: inline-flex; align-items: center; gap: 14px; }
+  .sf-proof__num { display: inline-flex; align-items: center; gap: 16px; }
   .sf-proof__avs { display: inline-flex; }
-  .sf-proof__avs img { width: clamp(30px, 3.3vw, 48px); height: clamp(30px, 3.3vw, 48px); border-radius: 50%; object-fit: cover; border: 2px solid var(--proof-bg); margin-left: -12px; }
+  .sf-proof__avs img { width: clamp(34px, 4vw, 58px); height: clamp(34px, 4vw, 58px); border-radius: 50%; object-fit: cover; border: 2px solid var(--proof-bg); margin-left: -14px; }
   .sf-proof__avs img:first-child { margin-left: 0; }
-  .sf-proof__big { font-size: clamp(46px, 5vw, 72px); line-height: 1; font-weight: 700; letter-spacing: -.01em;
+  .sf-proof__big { font-size: clamp(50px, 6.2vw, 90px); line-height: 1; font-weight: 700; letter-spacing: -.01em;
     background: linear-gradient(180deg, #E5C55B 0%, #B8902A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
-  .sf-proof__title { margin-top: 10px; font-family: var(--sf-sans); font-weight: 700; font-size: clamp(21px, 2.75vw, 40px); line-height: 1.32; letter-spacing: -.005em; color: var(--sf-ink); text-wrap: balance; }
+  .sf-proof__title { max-width: 1100px; margin: 12px auto 0; font-family: var(--sf-sans); font-weight: 700; font-size: clamp(23px, 3.4vw, 50px); line-height: 1.28; letter-spacing: -.01em; color: var(--sf-ink); text-wrap: balance; }
   .sf-proof__title em { font-style: normal; color: var(--sf-plum); }
-  .sf-proof__body { display: grid; grid-template-columns: minmax(0, 572fr) minmax(0, 500fr); column-gap: clamp(24px, 6.7vw, 96px); align-items: center; margin-top: clamp(32px, 5.6vw, 80px); }
-  .sf-proof__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .sf-proof__card { padding: 22px 20px 20px; border-radius: 12px; background: #fff; box-shadow: 0 1px 0 rgba(19, 7, 46, .04), 0 10px 24px -20px rgba(19, 7, 46, .35); min-height: clamp(120px, 10.3vw, 148px); }
-  .sf-proof__ico { display: inline-flex; color: var(--sf-plum); } .sf-proof__ico svg { width: 24px; height: 24px; }
-  .sf-proof__card h3 { margin-top: 12px; font-family: var(--sf-sans); font-size: 16px; font-weight: 700; line-height: 1.2; color: var(--sf-plum); }
-  .sf-proof__card p { margin-top: 5px; font-size: 12.5px; line-height: 1.4; color: #6f6664; }
-  .sf-proof__btn { display: flex; align-items: center; justify-content: center; min-height: 56px; margin-top: 16px; border-radius: 10px; background: var(--sf-plum); color: #fff !important;
-    font-size: 14px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; transition: filter .15s, transform .15s; }
+  .sf-proof__body { display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); column-gap: clamp(20px, 3vw, 44px); align-items: center; margin-top: clamp(28px, 4vw, 56px); }
+  .sf-proof__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sf-proof__card { padding: 24px 22px 22px; border-radius: 14px; background: #fff; box-shadow: 0 1px 0 rgba(19, 7, 46, .03); min-height: clamp(150px, 13vw, 200px); }
+  .sf-proof__ico { display: inline-flex; color: var(--sf-plum); } .sf-proof__ico svg { width: clamp(28px, 2.5vw, 38px); height: clamp(28px, 2.5vw, 38px); }
+  .sf-proof__card h3 { margin-top: 14px; font-family: var(--sf-sans); font-size: clamp(18px, 1.75vw, 25px); font-weight: 700; line-height: 1.15; letter-spacing: -.01em; color: var(--sf-plum); }
+  .sf-proof__card p { margin-top: 8px; font-size: clamp(14px, 1.2vw, 17px); line-height: 1.4; color: #3f3735; }
+  .sf-proof__btn { display: flex; align-items: center; justify-content: center; min-height: clamp(56px, 5.2vw, 74px); margin-top: 12px; border-radius: 12px; background: var(--sf-plum); color: #fff !important;
+    font-size: clamp(14px, 1.2vw, 17px); font-weight: 700; letter-spacing: .03em; text-transform: uppercase; transition: filter .15s, transform .15s; }
   .sf-proof__btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
-  .sf-proof__note { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 12px; font-size: 12px; color: #5f5654; }
-  .sf-proof__note i { width: 7px; height: 7px; border-radius: 50%; background: var(--sf-green); }
-  .sf-proof__media { aspect-ratio: 500 / 486; border-radius: 14px; overflow: hidden; }
-  .sf-proof__media img, .sf-proof__media > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
+  .sf-proof__note { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; font-size: clamp(13px, 1.05vw, 15px); color: #3f3735; }
+  .sf-proof__note i { width: 14px; height: 14px; border-radius: 50%; background: var(--sf-green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3.6 7.3l2.2 2.2 4.6-4.8' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat; flex: 0 0 auto; }
+  .sf-proof__media { align-self: end; }
+  .sf-proof__media img { display: block; width: 100%; height: auto; border-radius: 14px; }
+  .sf-proof__ph { aspect-ratio: 500 / 486; border-radius: 14px; }
+  .sf-proof__ph > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   @media (max-width: 749px) {
-    .sf-proof__body { grid-template-columns: 1fr; row-gap: 24px; }
-    .sf-proof__media { order: -1; aspect-ratio: 4 / 3.6; }
+    .sf-proof__body { grid-template-columns: 1fr; row-gap: 22px; }
+    .sf-proof__media { order: -1; align-self: auto; }
     .sf-proof__cards { gap: 8px; }
     .sf-proof__card { padding: 16px 14px; min-height: 0; }
-    .sf-proof__card h3 { font-size: 14.5px; } .sf-proof__card p { font-size: 12px; }
+    .sf-proof__card h3 { font-size: 16.5px; } .sf-proof__card p { font-size: 13.5px; }
   }
 {% endstylesheet %}
 
@@ -90,7 +99,8 @@
     { "type": "text", "id": "head_1", "label": "Titre : début", "default": "women wearing their" },
     { "type": "text", "id": "head_hi", "label": "Titre : partie en prune", "default": "3D leggings all day" },
     { "type": "text", "id": "head_2", "label": "Titre : fin", "default": "without thinking about it" },
-    { "type": "image_picker", "id": "image", "label": "Image (à droite)" },
+    { "type": "image_picker", "id": "image", "label": "Photo à droite (PNG détouré conseillé)" },
+    { "type": "range", "id": "product_media", "min": 0, "max": 8, "step": 1, "default": 1, "label": "Sinon : n° photo du produit (0 = aucune)" },
     { "type": "text", "id": "btn_label", "label": "Bouton", "default": "Shop the 3D leggings" },
     { "type": "url", "id": "btn_link", "label": "Lien du bouton (vide = haut de page)" },
     { "type": "text", "id": "note", "label": "Petite ligne sous le bouton", "default": "Free returns within 30 days" }
@@ -104,7 +114,8 @@
         { "type": "select", "id": "icon", "label": "Icône", "default": "sparkle", "options": [
           { "value": "sparkle", "label": "Étincelle" }, { "value": "feather", "label": "Plume" }, { "value": "heart", "label": "Cœur" },
           { "value": "check", "label": "Coche" }, { "value": "shield", "label": "Bouclier" }, { "value": "ruler", "label": "Mètre" },
-          { "value": "trend", "label": "Courbe" }, { "value": "clock", "label": "Horloge" }
+          { "value": "trend", "label": "Courbe" }, { "value": "clock", "label": "Horloge" },
+          { "value": "plume", "label": "Plume pleine" }, { "value": "drop", "label": "Goutte" }
         ] },
         { "type": "text", "id": "title", "label": "Titre", "default": "Benefit" },
         { "type": "text", "id": "text", "label": "Texte", "default": "Short description." }
@@ -112,10 +123,10 @@
     }
   ],
   "presets": [ { "name": "SF · Preuve sociale", "blocks": [
-    { "type": "card", "settings": { "icon": "sparkle", "title": "3D sculpting texture", "text": "Designed to sculpt your silhouette." } },
-    { "type": "card", "settings": { "icon": "heart", "title": "High-waist design", "text": "Gently wraps your waist and highlights your curves." } },
-    { "type": "card", "settings": { "icon": "feather", "title": "Smoother look", "text": "The 3D texture helps create a more even-looking skin." } },
-    { "type": "card", "settings": { "icon": "check", "title": "Comfort all day", "text": "A comfortable, flattering fit for everyday wear." } }
+    { "type": "card", "settings": { "icon": "sparkle", "title": "Sculpted Look", "text": "A 3D texture that flatters your shape from every angle." } },
+    { "type": "card", "settings": { "icon": "heart", "title": "High-Waist Support", "text": "Gently wraps your waist and highlights your curves." } },
+    { "type": "card", "settings": { "icon": "plume", "title": "Smoother On Sight", "text": "A more even-looking finish under every outfit." } },
+    { "type": "card", "settings": { "icon": "shield", "title": "Comfort All Day", "text": "Designed for a comfortable fit, all day long." } }
   ] } ]
 }
 {% endschema %}

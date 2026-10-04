@@ -88,20 +88,42 @@
         {%- form 'product', p, id: 'sf-shop-form', class: 'sf-shop__form' -%}
           <input type="hidden" name="id" value="{{ cur.id }}" data-sf-id>
           {%- unless p.has_only_default_variant -%}
+            {%- assign g1 = s.group1_values | downcase | split: ',' -%}
             {%- for opt in p.options_with_values -%}
               {%- assign is_col = false -%}
               {%- if opt.position == color_pos -%}{%- assign is_col = true -%}{%- endif -%}
+              {%- assign row1 = '' -%}
+              {%- assign row2 = '' -%}
+              {%- if is_col -%}
+                {%- for ov in opt.values -%}
+                  {%- capture swhtml -%}<button type="button" class="sf-sw{% if ov.selected %} is-active{% endif %}" data-val="{{ ov | escape }}" aria-label="{{ ov | escape }}" title="{{ ov | escape }}" aria-pressed="{{ ov.selected }}"><i style="background: {% render 'sf-swatch', value: ov, swatch: ov.swatch.color %}{% if ov.swatch.image != blank %} url('{{ ov.swatch.image | image_url: width: 90 }}') center / cover{% endif %}"></i></button>{%- endcapture -%}
+                  {%- assign in1 = false -%}
+                  {%- assign ovn = ov | downcase | strip -%}
+                  {%- for g in g1 -%}{%- assign gt = g | strip -%}{%- if gt == ovn -%}{%- assign in1 = true -%}{%- endif -%}{%- endfor -%}
+                  {%- if in1 -%}{%- assign row1 = row1 | append: swhtml -%}{%- else -%}{%- assign row2 = row2 | append: swhtml -%}{%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+              {%- assign grouped = false -%}
+              {%- if row1 != blank and row2 != blank -%}{%- assign grouped = true -%}{%- endif -%}
               <fieldset class="sf-shop__opt" data-sf-opt="{{ opt.position }}">
-                <legend>{{ opt.name }}: <b data-sf-optval>{{ cur.options[forloop.index0] }}</b></legend>
-                <div class="{% if is_col %}sf-shop__sw{% else %}sf-shop__sizes{% endif %}">
-                  {%- for ov in opt.values -%}
-                    {%- if is_col -%}
-                      <button type="button" class="sf-sw{% if ov.selected %} is-active{% endif %}" data-val="{{ ov | escape }}" aria-label="{{ ov | escape }}" title="{{ ov | escape }}" aria-pressed="{{ ov.selected }}"><i style="background: {% render 'sf-swatch', value: ov, swatch: ov.swatch.color %}"></i></button>
-                    {%- else -%}
-                      <button type="button" class="sf-size{% if ov.selected %} is-active{% endif %}" data-val="{{ ov | escape }}" aria-pressed="{{ ov.selected }}">{{ ov }}</button>
-                    {%- endif -%}
-                  {%- endfor -%}
-                </div>
+                {%- if grouped -%}
+                  <legend class="sf-shop__sr">{{ opt.name }}</legend>
+                  <p class="sf-shop__grp">{{ s.group1_title }}</p>
+                  <div class="sf-shop__sw">{{ row1 }}</div>
+                  <p class="sf-shop__grp">{{ s.group2_title }}: <b data-sf-optval>{{ cur.options[forloop.index0] }}</b></p>
+                  <div class="sf-shop__sw">{{ row2 }}</div>
+                {%- else -%}
+                  <legend>{{ opt.name }}: <b data-sf-optval>{{ cur.options[forloop.index0] }}</b></legend>
+                  {%- if is_col -%}
+                    <div class="sf-shop__sw">{{ row1 }}{{ row2 }}</div>
+                  {%- else -%}
+                    <div class="sf-shop__sizes">
+                      {%- for ov in opt.values -%}
+                        <button type="button" class="sf-size{% if ov.selected %} is-active{% endif %}" data-val="{{ ov | escape }}" aria-pressed="{{ ov.selected }}">{{ ov }}</button>
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+                {%- endif -%}
               </fieldset>
             {%- endfor -%}
           {%- endunless -%}
@@ -280,6 +302,7 @@
   .sf-shop__empty { padding: 40px 0; text-align: center; color: #8b8280; }
   .sf-shop__wrap { max-width: calc(1328px + 2 * clamp(16px, 3.9vw, 56px)); margin: 0 auto; padding-inline: clamp(16px, 3.9vw, 56px); }
   .sf-shop__grid { display: grid; grid-template-columns: minmax(0, 732fr) minmax(0, 542fr); column-gap: clamp(24px, 3.75vw, 54px); align-items: start; }
+  .sf-shop__gal, .sf-shop__buy { min-width: 0; }
   .sf-shop__gal { position: sticky; top: 20px; }
   .sf-shop__stage { aspect-ratio: 1 / 1; background: #F7F5F3; }
   .sf-shop__stage img, .sf-shop__stage > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -305,12 +328,14 @@
   .sf-shop__opt { margin: 20px 0 0; padding: 0; border: 0; min-width: 0; }
   .sf-shop__opt legend { padding: 0; margin-bottom: 10px; font-size: 13px; color: #6f6664; }
   .sf-shop__opt legend b { color: var(--sf-ink); font-weight: 700; }
-  .sf-shop__sw { display: flex; flex-wrap: wrap; gap: 12px; }
-  .sf-sw { position: relative; width: 34px; height: 34px; padding: 0; border-radius: 50%; border: 1.5px solid transparent; display: grid; place-items: center; }
-  .sf-sw i { width: 26px; height: 26px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15); }
+  .sf-shop__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .sf-shop__grp { margin: 18px 0 10px; font-size: 15px; color: var(--sf-ink); } .sf-shop__grp b { font-weight: 400; }
+  .sf-shop__sw { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+  .sf-sw { position: relative; width: 46px; height: 46px; padding: 0; border-radius: 50%; border: 1.5px solid transparent; display: grid; place-items: center; }
+  .sf-sw i { width: 38px; height: 38px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15); }
   .sf-sw:hover { border-color: #cfc4bf; }
   .sf-sw.is-active { border-color: var(--sf-ink); }
-  .sf-sw.is-soldout::after { content: ''; position: absolute; left: 50%; top: 4px; bottom: 4px; width: 1.5px; background: var(--sf-ink); transform: rotate(45deg); opacity: .65; }
+  .sf-sw.is-soldout::after { content: ''; position: absolute; left: 50%; top: 5px; bottom: 5px; width: 1.5px; background: var(--sf-ink); transform: rotate(45deg); opacity: .65; }
   .sf-shop__sizes { display: flex; flex-wrap: wrap; gap: 8px; }
   .sf-size { min-width: 66px; height: 42px; padding: 0 14px; border: 1px solid #DDD3CE; background: #fff; font-size: 13.5px; font-weight: 600; color: var(--sf-ink); transition: background .15s, color .15s, border-color .15s; }
   .sf-size:hover { border-color: var(--sf-ink); }
@@ -361,7 +386,7 @@
   .sf-shop__lbx { position: absolute; top: 16px; right: 16px; width: 40px; height: 40px; border-radius: 50%; background: #fff; display: grid; place-items: center; }
   .sf-shop__lbx svg { width: 16px; height: 16px; }
   @media (max-width: 989px) {
-    .sf-shop__grid { grid-template-columns: 1fr; row-gap: 24px; }
+    .sf-shop__grid { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
     .sf-shop__gal { position: static; }
   }
   @media (max-width: 749px) {
@@ -381,6 +406,11 @@
   "settings": [
     { "type": "product", "id": "product", "label": "Produit (vide = produit de la page)" },
     { "type": "text", "id": "label", "label": "Petite ligne au-dessus du titre" },
+    { "type": "header", "content": "Pastilles de couleur en deux rangées" },
+    { "type": "text", "id": "group1_title", "label": "Titre de la 1re rangée", "default": "Classic" },
+    { "type": "text", "id": "group1_values", "label": "Couleurs de la 1re rangée (noms séparés par des virgules)", "info": "Les autres couleurs vont dans la 2e rangée. Vide = une seule rangée." },
+    { "type": "text", "id": "group2_title", "label": "Titre de la 2e rangée (suivi du nom de la couleur)", "default": "Color" },
+    { "type": "header", "content": "Textes" },
     { "type": "header", "content": "Avis (affichés seulement si réels)" },
     { "type": "text", "id": "rating_manual", "label": "Note réelle (ex. 4.8) — sinon metafield reviews.rating" },
     { "type": "text", "id": "rating_count", "label": "Nombre d'avis réel (ex. 120)" },

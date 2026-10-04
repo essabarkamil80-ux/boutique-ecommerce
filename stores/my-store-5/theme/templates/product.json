@@ -185,7 +185,8 @@
         "avatar_3": "shopify://shop_images/lp-advertorial-39-73acc112.webp",
         "number": "100,000+",
         "product_media": 1,
-        "btn_label": "Shop the 3D leggings"
+        "btn_label": "Shop the 3D leggings",
+        "image": "shopify://shop_images/leonie_cellu.webp"
       },
       "blocks": {
         "card-1": {
@@ -288,7 +289,13 @@
         "f-5",
         "f-6"
       ],
-      "settings": {}
+      "settings": {
+        "video": "shopify://files/videos/e1640ac3c19c44a7984a367e0d1daafd.HD-720p-1.6Mbps-93379473.mp4",
+        "video_url": "",
+        "autoplay": true,
+        "controls": false,
+        "loop": true
+      }
     },
     "reviews": {
       "type": "sf-reviews",
@@ -399,10 +406,10 @@
         "q-1": {
           "type": "item",
           "settings": {
-            "tag": "Good to know",
-            "icon": "clock",
-            "question": "What should I expect from my leggings?",
-            "answer": "<p>Add a short introduction here.</p>",
+            "tag": "Results",
+            "icon": "trend",
+            "question": "When will I actually notice something?",
+            "answer": "<p>The first thing you notice is the fit: the 3D texture and the high waist smooth and support your shape the moment you put them on. Anything beyond that depends on your body, your size and how you wear them, so we don't promise a timeline. Here is a simple way to get to know your leggings:</p>",
             "open": true,
             "show_steps": true
           }
@@ -410,76 +417,110 @@
         "q-2": {
           "type": "step",
           "settings": {
-            "label": "Step 1"
+            "caption": "You put them on and check your size.",
+            "label": "Day 1"
           }
         },
         "q-3": {
           "type": "step",
           "settings": {
-            "label": "Step 2"
+            "caption": "You wear them out for the first time.",
+            "label": "Day 3"
           }
         },
         "q-4": {
           "type": "step",
           "settings": {
-            "label": "Step 3"
+            "caption": "You start building outfits around them.",
+            "label": "Day 7"
           }
         },
         "q-5": {
           "type": "step",
           "settings": {
-            "label": "Step 4"
+            "caption": "They become your go-to leggings.",
+            "label": "Day 14"
           }
         },
         "q-6": {
           "type": "step",
           "settings": {
-            "label": "Step 5"
+            "caption": "Not for you? Returns are free within 30 days.",
+            "label": "Day 30"
           }
         },
         "q-7": {
           "type": "item",
           "settings": {
-            "tag": "3D texture",
+            "tag": "How it works",
             "icon": "sparkle",
-            "question": "Why choose a 3D texture legging?",
-            "answer": "<p>Add your answer here.</p>"
+            "question": "Why would a legging change anything about cellulite?",
+            "answer": "<p>A legging cannot remove cellulite, and we would never say it can. What it does is change how your silhouette looks while you wear it: the 3D texture and the high-waist fit gently smooth and support the area, so your skin looks more even under your clothes.</p>",
+            "open": false,
+            "show_steps": false
           }
         },
         "q-8": {
           "type": "item",
           "settings": {
-            "tag": "Comfort",
-            "icon": "heart",
-            "question": "Are they comfortable for everyday wear?",
-            "answer": "<p>They are designed for a comfortable, flattering fit for everyday wear.</p>"
+            "tag": "Daily wear",
+            "icon": "clock",
+            "question": "Can I wear them all day, every day?",
+            "answer": "<p>Yes. They are designed for everyday comfort, from errands to the office to a lazy weekend. Choose the size that feels snug but never restrictive, and wash them between wears like any other leggings.</p>",
+            "open": false,
+            "show_steps": false
           }
         },
         "q-9": {
           "type": "item",
           "settings": {
-            "tag": "Sizing",
-            "icon": "ruler",
-            "question": "How do I choose my size?",
-            "answer": "<p>Add your size advice here.</p>"
+            "tag": "Cellulite types",
+            "icon": "search",
+            "question": "Will it do anything for my kind of cellulite?",
+            "answer": "<p>Cellulite comes in different forms and most women have a mix. A legging does not treat any of them: it gives the same smoothing look to all of them while you wear it.</p><p><strong>The honest part:</strong> if you are looking for a treatment, talk to a health professional. If you want leggings that make you feel good in your clothes every day, that is exactly what these are for. Here is how they compare with the usual options:</p>",
+            "open": false,
+            "show_steps": false,
+            "table_cols": "Essabar&Co., Anti-cellulite cream, Salon massage, Standard leggings",
+            "table_rows": "Works without an appointment | yes, yes, no, yes\nNo extra time in your day | yes, no, no, yes\nWear it anywhere, all day | yes, no, no, yes\n3D texture knit | yes, no, no, no\nOne-off cost | yes, no, no, yes"
           }
         },
         "q-10": {
           "type": "item",
           "settings": {
-            "tag": "Care",
-            "icon": "check",
-            "question": "How do I care for them?",
-            "answer": "<p>Add your care instructions here.</p>"
+            "tag": "Life changes",
+            "icon": "heart",
+            "question": "Pregnancy, menopause, weight changes: still relevant?",
+            "answer": "<p>Our sizes run from S to 5XL, so you can pick the size that fits you today and change it later if your body changes. Free returns within 30 days make it easy to find the right one.</p><p>These are everyday leggings, not maternity or medical garments. If you are pregnant or have a medical condition (circulation, skin), ask your doctor before wearing any shaping garment.</p>",
+            "open": false,
+            "show_steps": false
           }
         },
         "q-11": {
           "type": "item",
           "settings": {
-            "tag": "Returns",
-            "icon": "shield",
+            "tag": "Care",
+            "icon": "drop",
+            "question": "How do I wash them without ruining the weave?",
+            "answer": "<p>Fabric softener and heat can dull the 3D texture and shorten the life of your leggings. A gentle wash and air drying keep it looking its best.</p>",
+            "open": false,
+            "show_steps": false,
+            "dont_title": "Don't",
+            "dont_list": "Fabric softener\nTumble dryer\nIroning the 3D lines",
+            "do_title": "Do",
+            "do_list": "Machine wash at 30°C\nTurn them inside out\nAir dry flat or hanging"
+          }
+        },
+        "q-12": {
+          "type": "item",
+          "settings": {
+            "tag": "Sizing",
+            "icon": "ruler",
             "question": "What happens if I pick the wrong size?",
-            "answer": "<p>Free returns within 30 days.</p>"
+            "answer": "<p>No stress: returns are free within 30 days. Send them back and order the size that suits you better.</p>",
+            "open": false,
+            "show_steps": false,
+            "callout_title": "Between two sizes? Take the larger one.",
+            "callout_text": "A legging that is too tight is uncomfortable and wears out faster. You want snug, never restrictive. Not sure? Use the “View in my size” button next to the price."
           }
         }
       },
@@ -494,7 +535,8 @@
         "q-8",
         "q-9",
         "q-10",
-        "q-11"
+        "q-11",
+        "q-12"
       ],
       "settings": {}
     },

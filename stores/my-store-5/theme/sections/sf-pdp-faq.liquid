@@ -42,6 +42,61 @@
                   {%- endfor -%}
                 </ul>
               {%- endif -%}
+              {%- if b.settings.table_rows != blank -%}
+                {%- assign tcols = b.settings.table_cols | split: ',' -%}
+                {%- assign trows = b.settings.table_rows | newline_to_br | split: '<br />' -%}
+                <div class="sf-faq__tblwrap">
+                  <table class="sf-faq__tbl">
+                    <thead><tr><th></th>{%- for c in tcols -%}<th{% if forloop.first %} class="is-us"{% endif %}>{{ c | strip }}</th>{%- endfor -%}</tr></thead>
+                    <tbody>
+                      {%- for row in trows -%}
+                        {%- assign rw = row | strip -%}
+                        {%- if rw != blank -%}
+                          {%- assign parts = rw | split: '|' -%}
+                          {%- assign vals = parts[1] | split: ',' -%}
+                          <tr>
+                            <th scope="row">{{ parts[0] | strip }}</th>
+                            {%- for v in vals -%}
+                              {%- assign vv = v | strip | downcase -%}
+                              {%- assign mk = 'mk-no' -%}
+                              {%- if vv == 'yes' or vv == 'oui' or vv == 'y' -%}{%- assign mk = 'mk-yes' -%}{%- elsif vv == 'part' or vv == 'partial' or vv == 'partiel' -%}{%- assign mk = 'mk-part' -%}{%- endif -%}
+                              <td{% if forloop.first %} class="is-us"{% endif %}><span class="sf-faq__mk sf-faq__mk--{{ mk }}">{%- render 'sf-icon', name: mk -%}</span></td>
+                            {%- endfor -%}
+                          </tr>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </tbody>
+                  </table>
+                </div>
+              {%- endif -%}
+              {%- if b.settings.dont_list != blank or b.settings.do_list != blank -%}
+                <div class="sf-faq__dd">
+                  {%- if b.settings.dont_list != blank -%}
+                    <div class="sf-faq__box sf-faq__box--dont">
+                      <span class="sf-faq__pill">{{ b.settings.dont_title }}</span>
+                      <ul>
+                        {%- assign dl = b.settings.dont_list | newline_to_br | split: '<br />' -%}
+                        {%- for l in dl -%}{%- assign lt = l | strip -%}{%- if lt != blank -%}<li>{%- render 'sf-icon', name: 'mk-no' -%}<span>{{ lt }}</span></li>{%- endif -%}{%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- endif -%}
+                  {%- if b.settings.do_list != blank -%}
+                    <div class="sf-faq__box sf-faq__box--do">
+                      <span class="sf-faq__pill">{{ b.settings.do_title }}</span>
+                      <ul>
+                        {%- assign ol = b.settings.do_list | newline_to_br | split: '<br />' -%}
+                        {%- for l in ol -%}{%- assign lt = l | strip -%}{%- if lt != blank -%}<li>{%- render 'sf-icon', name: 'mk-yes' -%}<span>{{ lt }}</span></li>{%- endif -%}{%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              {%- if b.settings.callout_title != blank -%}
+                <div class="sf-faq__callout">
+                  <span class="sf-faq__cico">{%- render 'sf-icon', name: 'lift' -%}</span>
+                  <div><b>{{ b.settings.callout_title }}</b>{%- if b.settings.callout_text != blank -%}<p>{{ b.settings.callout_text }}</p>{%- endif -%}</div>
+                </div>
+              {%- endif -%}
             </div>
           </details>
         {%- endif -%}
@@ -56,23 +111,24 @@
   .sf-faq__badges { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
   .sf-faq__badges span { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; background: #fff; font-size: 11.5px; color: #5f5654; }
   .sf-faq__badges i { width: 7px; height: 7px; border-radius: 50%; background: var(--sf-green); }
-  .sf-faq .sf-faq__title { margin-top: 16px; }
+  .sf-faq .sf-faq__title { margin-top: 16px; font-size: clamp(28px, 3.6vw, 52px); }
   .sf-faq__title em { font-style: normal; color: var(--sf-plum); }
-  .sf-faq__sub { margin-top: 10px; font-size: 14px; color: #6f6664; }
+  .sf-faq__sub { margin-top: 10px; font-size: clamp(14px, 1.2vw, 17px); color: #6f6664; }
   .sf-faq__card { margin-top: clamp(22px, 2.6vw, 38px); padding: 8px clamp(16px, 2.1vw, 30px); border-radius: 16px; background: #fff; box-shadow: 0 14px 40px -30px rgba(19, 7, 46, .35); }
   .sf-faq__item { border-bottom: 1px solid #F2EBE7; }
   .sf-faq__item:last-child { border-bottom: 0; }
   .sf-faq__item summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0; cursor: pointer; list-style: none; }
   .sf-faq__item summary::-webkit-details-marker { display: none; }
   .sf-faq__q { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
-  .sf-faq__q b { font-size: 15px; font-weight: 700; line-height: 1.3; color: var(--sf-ink); }
+  .sf-faq__q b { font-size: clamp(16px, 1.5vw, 22px); font-weight: 700; line-height: 1.3; color: var(--sf-ink); }
   .sf-faq__tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: 5px; background: #FBEDEF; color: var(--sf-plum); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
   .sf-faq__tag svg { width: 11px; height: 11px; }
   .sf-faq__item.is-first .sf-faq__tag { background: var(--sf-plum); color: #fff; }
   .sf-faq__chev svg { width: 16px; height: 16px; color: #6f6664; transition: transform .2s; }
   .sf-faq__item[open] .sf-faq__chev svg { transform: rotate(180deg); }
   .sf-faq__a { padding: 0 0 26px; }
-  .sf-faq__txt { max-width: 780px; font-size: 14px; line-height: 1.55; color: #4d4543; }
+  .sf-faq__txt p + p { margin-top: 10px; }
+  .sf-faq__txt { max-width: 900px; font-size: clamp(14.5px, 1.2vw, 17px); line-height: 1.55; color: #4d4543; }
   .sf-faq__steps { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
   .sf-faq__steps li { display: grid; justify-items: center; text-align: center; }
   .sf-faq__pic { width: 100%; aspect-ratio: 222 / 153; border-radius: 10px; background: var(--sf-card); }
@@ -86,6 +142,39 @@
   .sf-faq__steps li:last-child .sf-faq__node::before { right: 50%; }
   .sf-faq__node i { position: absolute; left: 50%; top: 50%; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%; background: #fff; border: 5px solid var(--sf-plum); box-sizing: border-box; }
   .sf-faq__lbl { margin-top: 6px; font-size: 11px; font-weight: 700; color: var(--sf-plum); }
+  .sf-faq__tblwrap { margin-top: 18px; overflow-x: auto; border-radius: 14px; background: #F8EFF1; }
+  .sf-faq__tbl { width: 100%; min-width: 600px; border-collapse: collapse; font-size: clamp(14px, 1.1vw, 16px); color: var(--sf-ink); }
+  .sf-faq__tbl th, .sf-faq__tbl td { padding: 0 12px; height: 56px; text-align: center; border-bottom: 1px solid rgba(107, 36, 65, .1); }
+  .sf-faq__tbl thead th { height: 48px; font-size: 13px; font-weight: 700; }
+  .sf-faq__tbl tbody th { text-align: left; font-weight: 400; padding-left: 22px; width: 34%; }
+  .sf-faq__tbl tr:last-child th, .sf-faq__tbl tr:last-child td { border-bottom: 0; }
+  .sf-faq__tbl .is-us { background: var(--sf-plum); color: #fff; border-bottom-color: rgba(255, 255, 255, .16); }
+  .sf-faq__tbl thead .is-us { border-radius: 10px 10px 0 0; }
+  .sf-faq__mk { display: inline-flex; width: 24px; height: 24px; color: var(--sf-plum); } .sf-faq__mk svg { width: 100%; height: 100%; }
+  .sf-faq__mk--mk-no, .sf-faq__mk--mk-part { color: #CDB7BF; --mk-in: #F8EFF1; }
+  .sf-faq__tbl .is-us .sf-faq__mk { color: #fff; --mk-in: var(--sf-plum); }
+  .sf-faq__dd { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 22px; }
+  .sf-faq__box { position: relative; padding: 26px 22px 18px; border-radius: 14px; }
+  .sf-faq__box--dont { border: 1px dashed #D8CCC7; background: #fff; }
+  .sf-faq__box--do { background: #F8EFF1; }
+  .sf-faq__pill { position: absolute; top: -9px; left: 16px; padding: 3px 10px; border-radius: 999px; font-size: 9.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; background: #E4DAD6; color: #6f6664; }
+  .sf-faq__box--do .sf-faq__pill { background: var(--sf-plum); color: #fff; }
+  .sf-faq__box ul { display: grid; gap: 14px; }
+  .sf-faq__box li { display: flex; align-items: center; gap: 12px; font-size: clamp(14.5px, 1.2vw, 17px); color: var(--sf-ink); }
+  .sf-faq__box li svg { flex: 0 0 auto; width: 20px; height: 20px; }
+  .sf-faq__box--dont li { color: #8b8280; text-decoration: line-through; } .sf-faq__box--dont li svg { color: #CDBFBA; --mk-in: #fff; }
+  .sf-faq__box--do li svg { color: var(--sf-plum); }
+  .sf-faq__callout { display: flex; align-items: center; gap: 16px; margin-top: 18px; padding: 18px 20px; border-radius: 12px; background: #F8EFF1; }
+  .sf-faq__cico { flex: 0 0 auto; display: inline-flex; color: var(--sf-plum); } .sf-faq__cico svg { width: 30px; height: 30px; }
+  .sf-faq__callout b { display: block; font-size: clamp(16px, 1.35vw, 19px); font-weight: 600; color: var(--sf-ink); }
+  .sf-faq__callout p { margin-top: 3px; font-size: clamp(13.5px, 1.05vw, 15px); line-height: 1.45; color: #6f6664; }
+  @media (max-width: 749px) {
+    .sf-faq__dd { grid-template-columns: 1fr; }
+    .sf-faq__tbl { min-width: 500px; font-size: 13px; }
+    .sf-faq__tbl th, .sf-faq__tbl td { padding: 0 8px; }
+    .sf-faq__tbl tbody th { padding-left: 14px; width: 30%; }
+    .sf-faq__box li { font-size: 14px; }
+  }
   @media (max-width: 749px) {
     .sf-faq__steps { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: -4px; padding-inline: 4px; }
     .sf-faq__steps::-webkit-scrollbar { display: none; }
@@ -116,12 +205,24 @@
         { "type": "text", "id": "tag", "label": "Étiquette", "default": "Good to know" },
         { "type": "select", "id": "icon", "label": "Icône de l'étiquette", "default": "sparkle", "options": [
           { "value": "sparkle", "label": "Étincelle" }, { "value": "clock", "label": "Horloge" }, { "value": "check", "label": "Coche" },
-          { "value": "heart", "label": "Cœur" }, { "value": "shield", "label": "Bouclier" }, { "value": "ruler", "label": "Mètre" }, { "value": "truck", "label": "Livraison" }
+          { "value": "heart", "label": "Cœur" }, { "value": "shield", "label": "Bouclier" }, { "value": "ruler", "label": "Mètre" }, { "value": "truck", "label": "Livraison" },
+          { "value": "trend", "label": "Courbe" }, { "value": "search", "label": "Loupe" }, { "value": "drop", "label": "Goutte" }, { "value": "plume", "label": "Plume" }
         ] },
         { "type": "text", "id": "question", "label": "Question", "default": "Question" },
         { "type": "richtext", "id": "answer", "label": "Réponse" },
         { "type": "checkbox", "id": "open", "label": "Ouvert par défaut", "default": false },
-        { "type": "checkbox", "id": "show_steps", "label": "Afficher les étapes avec photos", "default": false }
+        { "type": "checkbox", "id": "show_steps", "label": "Afficher les étapes avec photos", "default": false },
+        { "type": "header", "content": "Tableau comparatif (facultatif)" },
+        { "type": "text", "id": "table_cols", "label": "Colonnes, séparées par des virgules", "info": "La 1re colonne (votre marque) est en prune." },
+        { "type": "textarea", "id": "table_rows", "label": "Lignes", "info": "Une ligne par critère : Critère | yes, no, part, no (yes = coche, no = croix, part = tiret)." },
+        { "type": "header", "content": "À faire / à ne pas faire (facultatif)" },
+        { "type": "text", "id": "dont_title", "label": "Titre « à éviter »", "default": "Don't" },
+        { "type": "textarea", "id": "dont_list", "label": "À éviter (une ligne par point)" },
+        { "type": "text", "id": "do_title", "label": "Titre « à faire »", "default": "Do" },
+        { "type": "textarea", "id": "do_list", "label": "À faire (une ligne par point)" },
+        { "type": "header", "content": "Encadré conseil (facultatif)" },
+        { "type": "text", "id": "callout_title", "label": "Titre de l'encadré" },
+        { "type": "text", "id": "callout_text", "label": "Texte de l'encadré" }
       ]
     },
     {

@@ -6,36 +6,36 @@
         "m-4": {
           "type": "usp",
           "settings": {
-            "icon": "comfort",
-            "text": "Comfortable, flattering fit"
+            "icon": "check",
+            "text": "Seamless Design"
           }
         },
         "m-5": {
           "type": "usp",
           "settings": {
-            "icon": "heart",
-            "text": "Designed to flatter your curves"
+            "icon": "check",
+            "text": "Maximum Comfort & Support"
           }
         },
         "m-6": {
           "type": "usp",
           "settings": {
             "icon": "check",
-            "text": "Ideal for everyday wear"
+            "text": "Push-Up Effect without Underwire"
           }
         },
         "m-7": {
           "type": "usp",
           "settings": {
-            "icon": "truck",
-            "text": "Free shipping, no minimum"
+            "icon": "check",
+            "text": "Breathable"
           }
         },
         "m-8": {
           "type": "usp",
           "settings": {
-            "icon": "shield",
-            "text": "Free returns within 30 days"
+            "icon": "check",
+            "text": "Versatile & Easy Care"
           }
         },
         "m-9": {
@@ -46,35 +46,11 @@
           "type": "look",
           "settings": {}
         },
-        "m-11": {
-          "type": "accordion",
-          "settings": {
-            "icon": "ruler",
-            "title": "Size guide",
-            "content": "<p>Add your size guide here.</p>"
-          }
-        },
-        "m-12": {
-          "type": "accordion",
-          "settings": {
-            "icon": "feather",
-            "title": "Material & care",
-            "content": "<p>Add the fabric composition and care instructions here.</p>"
-          }
-        },
-        "m-13": {
-          "type": "accordion",
-          "settings": {
-            "icon": "sparkle",
-            "title": "Description",
-            "use_description": true
-          }
-        },
         "m-14": {
           "type": "accordion",
           "settings": {
             "icon": "truck",
-            "title": "Delivery & returns",
+            "title": "Delivery & Returns",
             "content": "<p>Free shipping on every order, no minimum. Free returns within 30 days.</p>"
           }
         }
@@ -87,16 +63,14 @@
         "m-8",
         "m-9",
         "m-10",
-        "m-11",
-        "m-12",
-        "m-13",
         "m-14"
       ],
       "settings": {
         "product": "essabar-co-push-up",
         "group1_title": "Classic",
         "group1_values": "Beige, Brown, Ecru, sand, caramel, dark taupe",
-        "group2_title": "Color"
+        "group2_title": "Color",
+        "ship_text": "Free shipping on every order"
       }
     },
     "ugc": {

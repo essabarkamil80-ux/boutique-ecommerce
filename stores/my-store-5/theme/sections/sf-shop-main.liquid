@@ -1,6 +1,7 @@
 {%- comment -%}
-  Fiche produit "boutique" : galerie (miniatures + zoom) et achat (prix, pastilles de couleur, tailles, bouton, "shop the look",
-  avantages, accordeons). Fonctionne sur une page : choisir le produit dans les reglages ; sur un modele produit il prend le produit courant.
+  Fiche produit "boutique" : galerie (miniatures verticales a gauche + zoom) et achat (prix, pastilles de couleur,
+  tailles, selecteur de quantite, bouton, livraison, avantages, accordeons, "shop the look").
+  Fonctionne sur une page : choisir le produit dans les reglages ; sur un modele produit il prend le produit courant.
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -41,19 +42,10 @@
   <div class="sf-shop__wrap">
     <div class="sf-shop__grid">
 
-      {%- comment -%} ---------------- galerie ---------------- {%- endcomment -%}
-      <div class="sf-shop__gal">
-        <div class="sf-shop__stage sf-media">
-          {%- if fm != blank -%}
-            {%- if fm.alt != blank -%}{%- assign main_alt = fm.alt -%}{%- endif -%}
-            {{ fm | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 732px, 100vw', alt: main_alt, loading: 'eager', fetchpriority: 'high' }}
-          {%- else -%}
-            {{ 'product-apparel-1' | placeholder_svg_tag: 'sf-ph' }}
-          {%- endif -%}
-          {%- if fm != blank -%}<button type="button" class="sf-shop__zoom" data-sf-zoom aria-label="Zoom">{%- render 'sf-icon', name: 'search' -%}</button>{%- endif -%}
-        </div>
+      {%- comment -%} ---------------- galerie (miniatures a gauche, image principale a droite) ---------------- {%- endcomment -%}
+      <div class="sf-shop__gal{% if p.media.size > 1 %} has-thumbs{% endif %}">
         {%- if p.media.size > 1 -%}
-          <div class="sf-shop__thumbwrap">
+          <div class="sf-shop__aside">
             <ul class="sf-shop__thumbs" data-sf-thumbs>
               {%- for m in p.media -%}
                 {%- if m.media_type == 'image' -%}
@@ -66,6 +58,15 @@
             </ul>
           </div>
         {%- endif -%}
+        <div class="sf-shop__stage sf-media">
+          {%- if fm != blank -%}
+            {%- if fm.alt != blank -%}{%- assign main_alt = fm.alt -%}{%- endif -%}
+            {{ fm | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 600px, 100vw', alt: main_alt, loading: 'eager', fetchpriority: 'high' }}
+          {%- else -%}
+            {{ 'product-apparel-1' | placeholder_svg_tag: 'sf-ph' }}
+          {%- endif -%}
+          {%- if fm != blank -%}<button type="button" class="sf-shop__zoom" data-sf-zoom aria-label="Zoom">{%- render 'sf-icon', name: 'search' -%}</button>{%- endif -%}
+        </div>
       </div>
 
       {%- comment -%} ---------------- achat ---------------- {%- endcomment -%}
@@ -130,13 +131,50 @@
           {%- if s.size_link_label != blank and s.size_link != blank -%}
             <p class="sf-shop__sizelink">{%- render 'sf-icon', name: 'ruler' -%}<a href="{{ s.size_link }}">{{ s.size_link_label }}</a></p>
           {%- endif -%}
-          <p class="sf-shop__stock" data-stock data-in="{{ s.in_stock_text | escape }}" data-out="{{ s.sold_label | escape }}">{% if cur.available %}{{ s.in_stock_text }}{% else %}{{ s.sold_label }}{% endif %}</p>
+
+          <div class="sf-shop__qty">
+            <button type="button" data-qty-minus aria-label="Decrease quantity">&minus;</button>
+            <input type="number" name="quantity" value="1" min="1" max="99" data-qty-input aria-label="Quantity">
+            <button type="button" data-qty-plus aria-label="Increase quantity">+</button>
+          </div>
+
           <button type="submit" name="add" class="sf-shop__atc" data-sf-atc{% if cur.available == false %} disabled{% endif %}>
             <span data-atc-label>{% if cur.available %}{{ s.atc_label }}{% else %}{{ s.sold_label }}{% endif %}</span>
           </button>
           <p class="sf-shop__err" role="alert" data-sf-err hidden></p>
           {%- if s.atc_note != blank -%}<p class="sf-shop__note">{%- render 'sf-icon', name: 'lock' -%}{{ s.atc_note }}</p>{%- endif -%}
         {%- endform -%}
+
+        {%- if s.ship_text != blank -%}
+          <div class="sf-shop__ship">
+            <span>{%- render 'sf-icon', name: 'truckline' -%}</span>
+            <p>{{ s.ship_text }}</p>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Avantages + accordeons dans une liste unifiee {%- endcomment -%}
+        {%- assign usps = section.blocks | where: 'type', 'usp' -%}
+        {%- assign accs = section.blocks | where: 'type', 'accordion' -%}
+        {%- if usps.size > 0 or accs.size > 0 -%}
+          <div class="sf-shop__features">
+            {%- for u in usps -%}
+              <div class="sf-shop__feat" {{ u.shopify_attributes }}>
+                <span>{%- render 'sf-icon', name: u.settings.icon -%}</span>
+                <b>{{ u.settings.text }}</b>
+              </div>
+            {%- endfor -%}
+            {%- for a in accs -%}
+              <details class="sf-shop__feat sf-shop__feat--exp" {{ a.shopify_attributes }}>
+                <summary>
+                  <span class="sf-shop__featico">{%- render 'sf-icon', name: a.settings.icon -%}</span>
+                  <b>{{ a.settings.title }}</b>
+                  {%- render 'sf-icon', name: 'chevron' -%}
+                </summary>
+                <div class="sf-shop__fbody">{%- if a.settings.use_description and p.description != blank -%}{{ p.description }}{%- else -%}{{ a.settings.content }}{%- endif -%}</div>
+              </details>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
 
         {%- comment -%} Shop the look {%- endcomment -%}
         {%- assign looks = section.blocks | where: 'type', 'look' -%}
@@ -160,25 +198,6 @@
                 {%- endif -%}
               {%- endfor -%}
             </ul>
-          </div>
-        {%- endif -%}
-
-        {%- assign usps = section.blocks | where: 'type', 'usp' -%}
-        {%- if usps.size > 0 -%}
-          <ul class="sf-shop__usp">
-            {%- for u in usps -%}<li {{ u.shopify_attributes }}><span>{%- render 'sf-icon', name: u.settings.icon -%}</span><b>{{ u.settings.text }}</b></li>{%- endfor -%}
-          </ul>
-        {%- endif -%}
-
-        {%- assign accs = section.blocks | where: 'type', 'accordion' -%}
-        {%- if accs.size > 0 -%}
-          <div class="sf-shop__acc">
-            {%- for a in accs -%}
-              <details class="sf-shop__accitem" {{ a.shopify_attributes }}>
-                <summary><span class="sf-shop__accico">{%- render 'sf-icon', name: a.settings.icon -%}</span><span>{{ a.settings.title }}</span>{%- render 'sf-icon', name: 'chevron' -%}</summary>
-                <div class="sf-shop__accbody">{%- if a.settings.use_description and p.description != blank -%}{{ p.description }}{%- else -%}{{ a.settings.content }}{%- endif -%}</div>
-              </details>
-            {%- endfor -%}
           </div>
         {%- endif -%}
       </div>
@@ -227,7 +246,7 @@
       if (!thumbs.length) return; idx = (i + thumbs.length) % thumbs.length; var t = thumbs[idx];
       thumbs.forEach(function (x) { x.classList.toggle('is-active', x === t); });
       if (main) { main.removeAttribute('srcset'); main.removeAttribute('sizes'); main.src = t.dataset.src; main.alt = t.dataset.alt || ''; }
-      var w = t.parentNode.parentNode; if (w && w.scrollTo) w.scrollTo({ left: t.parentNode.offsetLeft - 8, behavior: 'smooth' });
+      if (t.parentNode && t.parentNode.scrollIntoView) t.parentNode.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
     }
     thumbs.forEach(function (t, i) { t.addEventListener('click', function () { showThumb(i); }); });
     var z = $('[data-sf-zoom]');
@@ -237,6 +256,11 @@
       lb.addEventListener('click', closeLb);
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) closeLb(); });
     }
+
+    /* quantite */
+    var qtyInput = $('[data-qty-input]'), qtyMinus = $('[data-qty-minus]'), qtyPlus = $('[data-qty-plus]');
+    if (qtyMinus) qtyMinus.addEventListener('click', function () { var v = parseInt(qtyInput.value, 10) || 1; qtyInput.value = Math.max(1, v - 1); });
+    if (qtyPlus) qtyPlus.addEventListener('click', function () { var v = parseInt(qtyInput.value, 10) || 1; qtyInput.value = Math.min(99, v + 1); });
 
     /* variantes */
     var fieldsets = $$('[data-sf-opt]'), idInput = $('[data-sf-id]'), atc = $('[data-sf-atc]'), err = $('[data-sf-err]');
@@ -253,7 +277,6 @@
       $('[data-price]').textContent = money(cur.price);
       var has = cur.compare > cur.price; $('[data-compare]').textContent = has ? money(cur.compare) : '';
       var bd = $('[data-badge]'); bd.hidden = !has; if (has) bd.textContent = '-' + Math.round((cur.compare - cur.price) * 100 / cur.compare) + '%';
-      var st = $('[data-stock]'); st.textContent = cur.available ? st.dataset.in : st.dataset.out; st.classList.toggle('is-out', !cur.available);
       atc.disabled = !cur.available; $('[data-atc-label]').textContent = cur.available ? D.labels.add : D.labels.sold;
       if (cur.media) { var k = thumbs.findIndex(function (t) { return t.dataset.media == cur.media; }); if (k > -1) showThumb(k); }
     }
@@ -264,13 +287,14 @@
       }); });
     });
 
-    /* ajout au panier (evenement + sections du theme) */
+    /* ajout au panier */
     var busy = false;
     function showErr(m) { err.textContent = m; err.hidden = !m; }
     function add(e) {
       e.preventDefault(); if (busy || atc.disabled) return;
       busy = true; atc.classList.add('is-loading'); atc.setAttribute('aria-busy', 'true'); showErr('');
-      var items = [{ id: cur.id, quantity: 1 }], secIds = $$('cart-items-component', document).map(function (c) { return c.dataset.sectionId; }).filter(Boolean), Evt = null, deferred = null;
+      var qty = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
+      var items = [{ id: cur.id, quantity: qty }], secIds = $$('cart-items-component', document).map(function (c) { return c.dataset.sectionId; }).filter(Boolean), Evt = null, deferred = null;
       $('[data-atc-label]').textContent = D.labels.adding;
       import('@shopify/events').then(function (m) { Evt = m.CartLinesUpdateEvent; }).catch(function () {}).then(function () {
         if (Evt && Evt.createPromise) {
@@ -283,7 +307,7 @@
           if (!res.ok) { var m = res.j.description || res.j.message || 'Could not add to cart.'; showErr(m); if (deferred) deferred.reject(new Error(m)); return; }
           return fetch('/cart.js', { credentials: 'same-origin', headers: { Accept: 'application/json' } }).then(function (r) { return r.json(); }).then(function (cart) {
             document.dispatchEvent(new CustomEvent('sf:cart', { detail: cart }));
-            if (deferred) deferred.resolve({ cart: Evt.createCartFromAjaxResponse(cart), detail: { items: cart.items, source: 'sf-shop', sourceId: root.id, itemCount: 1, productId: '{{ p.id }}', sections: res.j.sections, didError: false } });
+            if (deferred) deferred.resolve({ cart: Evt.createCartFromAjaxResponse(cart), detail: { items: cart.items, source: 'sf-shop', sourceId: root.id, itemCount: qty, productId: '{{ p.id }}', sections: res.j.sections, didError: false } });
             var d = document.getElementById('cart-drawer');
             if (d && typeof d.open === 'function') { if (!d.isOpen) d.open(); } else { location.href = '/cart'; }
           });
@@ -303,18 +327,23 @@
   .sf-shop__wrap { max-width: calc(1328px + 2 * clamp(16px, 3.9vw, 56px)); margin: 0 auto; padding-inline: clamp(16px, 3.9vw, 56px); }
   .sf-shop__grid { display: grid; grid-template-columns: minmax(0, 732fr) minmax(0, 542fr); column-gap: clamp(24px, 3.75vw, 54px); align-items: start; }
   .sf-shop__gal, .sf-shop__buy { min-width: 0; }
+
+  /* galerie : miniatures verticales a gauche, image principale a droite */
   .sf-shop__gal { position: sticky; top: 20px; }
+  .sf-shop__gal.has-thumbs { display: grid; grid-template-columns: clamp(60px, 5.6vw, 80px) 1fr; gap: 10px; }
+  .sf-shop__aside { min-height: 0; overflow-y: auto; scrollbar-width: none; }
+  .sf-shop__aside::-webkit-scrollbar { display: none; }
+  .sf-shop__thumbs { display: flex; flex-direction: column; gap: 8px; padding: 2px; }
+  .sf-shop__thumbs li { flex: 0 0 auto; }
+  .sf-shop__thumb { display: block; width: 100%; aspect-ratio: 1; padding: 0; border: 2px solid transparent; background: #F7F5F3; overflow: hidden; }
+  .sf-shop__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .sf-shop__thumb.is-active { border-color: var(--sf-ink); }
   .sf-shop__stage { aspect-ratio: 1 / 1; background: #F7F5F3; }
   .sf-shop__stage img, .sf-shop__stage > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .sf-shop__zoom { position: absolute; right: 16px; bottom: 16px; z-index: 2; width: 36px; height: 36px; display: grid; place-items: center; color: var(--sf-ink); }
   .sf-shop__zoom svg { width: 20px; height: 20px; }
-  .sf-shop__thumbwrap { margin-top: 8px; }
-  .sf-shop__thumbs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px; }
-  .sf-shop__thumbs::-webkit-scrollbar { display: none; }
-  .sf-shop__thumbs li { flex: 0 0 auto; }
-  .sf-shop__thumb { display: block; width: clamp(56px, 5.6vw, 80px); aspect-ratio: 1; padding: 0; border: 2px solid transparent; background: #F7F5F3; overflow: hidden; }
-  .sf-shop__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .sf-shop__thumb.is-active { border-color: var(--sf-ink); }
+
+  /* infos produit */
   .sf-shop__label { font-size: 12px; color: #8b8280; }
   .sf-shop__title { margin-top: 6px; font-family: var(--sf-serif); font-weight: 400; font-size: clamp(28px, 3.1vw, 44px); line-height: 1.08; letter-spacing: -.015em; color: var(--sf-ink); }
   .sf-shop__rate { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12.5px; color: #8b8280; }
@@ -324,6 +353,8 @@
   .sf-shop__price s { font-size: 14px; color: #8b8280; } .sf-shop__price s:empty { display: none; }
   .sf-shop__badge { padding: 3px 8px; border-radius: 3px; background: var(--sf-ink); color: #fff; font-size: 11px; font-weight: 700; } .sf-shop__badge[hidden] { display: none; }
   .sf-shop__pnote { margin-top: 6px; font-size: 11.5px; color: #8b8280; }
+
+  /* formulaire et options */
   .sf-shop__form { margin: 0; }
   .sf-shop__opt { margin: 20px 0 0; padding: 0; border: 0; min-width: 0; }
   .sf-shop__opt legend { padding: 0; margin-bottom: 10px; font-size: 13px; color: #6f6664; }
@@ -343,7 +374,15 @@
   .sf-size.is-soldout { color: #a89f9b; text-decoration: line-through; }
   .sf-shop__sizelink { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 12px; color: #6f6664; }
   .sf-shop__sizelink svg { width: 16px; height: 16px; } .sf-shop__sizelink a { text-decoration: underline; text-underline-offset: 3px; font-weight: 600; color: var(--sf-ink); }
-  .sf-shop__stock { margin-top: 14px; font-size: 12.5px; font-weight: 600; color: #1f8f5f; } .sf-shop__stock.is-out { color: #9a9290; }
+
+  /* selecteur de quantite */
+  .sf-shop__qty { display: inline-flex; align-items: center; margin-top: 18px; border: 1px solid #DDD3CE; border-radius: 4px; }
+  .sf-shop__qty button { width: 44px; height: 44px; display: grid; place-items: center; font-size: 18px; color: var(--sf-ink); transition: background .12s; }
+  .sf-shop__qty button:hover { background: #F7F5F3; }
+  .sf-shop__qty input { width: 50px; height: 44px; text-align: center; border: 0; border-left: 1px solid #DDD3CE; border-right: 1px solid #DDD3CE; font-size: 14px; font-weight: 600; color: var(--sf-ink); background: transparent; -moz-appearance: textfield; }
+  .sf-shop__qty input::-webkit-outer-spin-button, .sf-shop__qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  /* bouton d'ajout au panier */
   .sf-shop__atc { display: flex; align-items: center; justify-content: center; width: 100%; height: 54px; margin-top: 14px; border-radius: 4px; background: var(--sf-plum); color: #fff;
     font-size: 14px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; transition: filter .15s; }
   .sf-shop__atc:hover:not(:disabled) { filter: brightness(1.12); }
@@ -356,6 +395,29 @@
   .sf-shop__err { margin-top: 8px; font-size: 12.5px; color: #B0173A; }
   .sf-shop__note { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 10px; font-size: 11.5px; color: #6f6664; }
   .sf-shop__note svg { width: 14px; height: 14px; }
+
+  /* livraison gratuite */
+  .sf-shop__ship { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 14px 0; border-top: 1px solid #F0E9E5; border-bottom: 1px solid #F0E9E5; }
+  .sf-shop__ship span { flex: 0 0 auto; width: 24px; height: 24px; display: grid; place-items: center; color: var(--sf-plum); }
+  .sf-shop__ship span svg { width: 22px; height: 22px; }
+  .sf-shop__ship p { font-size: 13.5px; font-weight: 600; color: var(--sf-ink); }
+
+  /* avantages + accordeons (liste unifiee) */
+  .sf-shop__features { margin-top: 4px; }
+  .sf-shop__feat { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid #F0E9E5; }
+  .sf-shop__feat > span, .sf-shop__featico { flex: 0 0 auto; width: 22px; height: 22px; display: grid; place-items: center; color: var(--sf-plum); }
+  .sf-shop__feat svg { width: 20px; height: 20px; }
+  .sf-shop__feat > b { font-size: 13.5px; font-weight: 600; line-height: 1.3; color: var(--sf-ink); flex: 1; }
+  .sf-shop__feat--exp { border-bottom: 1px solid #F0E9E5; }
+  .sf-shop__feat--exp summary { display: flex; align-items: center; gap: 12px; padding: 13px 0; cursor: pointer; list-style: none; }
+  .sf-shop__feat--exp summary::-webkit-details-marker { display: none; }
+  .sf-shop__feat--exp summary > b { flex: 1; font-size: 13.5px; font-weight: 600; color: var(--sf-ink); }
+  .sf-shop__feat--exp summary > svg { width: 15px; height: 15px; color: #6f6664; transition: transform .2s; flex: 0 0 auto; }
+  .sf-shop__feat--exp[open] summary > svg { transform: rotate(180deg); }
+  .sf-shop__fbody { padding: 0 0 14px 34px; font-size: 13.5px; line-height: 1.6; color: #4d4543; }
+  .sf-shop__fbody p + p { margin-top: 8px; } .sf-shop__fbody ul { margin-top: 8px; padding-left: 0; }
+
+  /* shop the look */
   .sf-shop__look { margin-top: 28px; }
   .sf-shop__h { font-family: var(--sf-sans); font-size: 13px; font-weight: 600; letter-spacing: 0; color: #6f6664; }
   .sf-shop__looks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
@@ -365,36 +427,28 @@
   .sf-look__plus svg { width: 14px; height: 14px; }
   .sf-look__t { display: block; margin-top: 8px; font-size: 13px; color: var(--sf-ink); }
   .sf-look__p { margin-top: 2px; font-size: 13px; } .sf-look__p b { color: var(--sf-plum); } .sf-look__p s { color: #9a9290; font-size: 12px; }
-  .sf-shop__usp { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; margin-top: 28px; padding-top: 24px; border-top: 1px solid #F0E9E5; }
-  .sf-shop__usp li { display: flex; align-items: center; gap: 12px; }
-  .sf-shop__usp li span { flex: 0 0 auto; width: 30px; height: 30px; display: grid; place-items: center; color: var(--sf-plum); }
-  .sf-shop__usp li span svg { width: 26px; height: 26px; }
-  .sf-shop__usp b { font-size: 12.5px; font-weight: 700; line-height: 1.3; color: var(--sf-ink); }
-  .sf-shop__acc { margin-top: 20px; }
-  .sf-shop__accitem { border-bottom: 1px solid #F0E9E5; }
-  .sf-shop__accitem summary { display: flex; align-items: center; gap: 12px; padding: 16px 0; font-size: 14px; font-weight: 600; cursor: pointer; list-style: none; }
-  .sf-shop__accitem summary::-webkit-details-marker { display: none; }
-  .sf-shop__accitem summary > span:nth-child(2) { flex: 1; }
-  .sf-shop__accico { width: 22px; height: 22px; display: grid; place-items: center; color: var(--sf-ink); } .sf-shop__accico svg { width: 20px; height: 20px; }
-  .sf-shop__accitem summary > svg { width: 15px; height: 15px; color: #6f6664; transition: transform .2s; }
-  .sf-shop__accitem[open] summary > svg { transform: rotate(180deg); }
-  .sf-shop__accbody { padding: 0 0 18px 34px; font-size: 13.5px; line-height: 1.6; color: #4d4543; }
-  .sf-shop__accbody p + p { margin-top: 8px; } .sf-shop__accbody ul { margin-top: 8px; padding-left: 0; }
+
+  /* lightbox */
   .sf-shop__lb { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; padding: 24px; background: rgba(19, 7, 46, .85); cursor: zoom-out; }
   .sf-shop__lb[hidden] { display: none; }
   .sf-shop__lb img { max-width: min(92vw, 1100px); max-height: 90vh; object-fit: contain; background: #fff; }
   .sf-shop__lbx { position: absolute; top: 16px; right: 16px; width: 40px; height: 40px; border-radius: 50%; background: #fff; display: grid; place-items: center; }
   .sf-shop__lbx svg { width: 16px; height: 16px; }
+
+  /* mobile */
   @media (max-width: 989px) {
     .sf-shop__grid { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
     .sf-shop__gal { position: static; }
+    .sf-shop__gal.has-thumbs { grid-template-columns: 1fr; gap: 0; }
+    .sf-shop__aside { order: 1; margin-top: 8px; overflow-y: hidden; }
+    .sf-shop__thumbs { flex-direction: row; overflow-x: auto; scrollbar-width: none; }
+    .sf-shop__thumbs::-webkit-scrollbar { display: none; }
   }
   @media (max-width: 749px) {
     .sf-shop { padding-top: 0; }
     .sf-shop__wrap { padding-inline: 0; }
     .sf-shop__buy { padding-inline: 16px; }
-    .sf-shop__thumbs { padding-inline: 16px; }
-    .sf-shop__usp { grid-template-columns: 1fr; }
+    .sf-shop__aside { padding-inline: 16px; }
   }
 {% endstylesheet %}
 
@@ -408,23 +462,25 @@
     { "type": "text", "id": "label", "label": "Petite ligne au-dessus du titre" },
     { "type": "header", "content": "Pastilles de couleur en deux rangées" },
     { "type": "text", "id": "group1_title", "label": "Titre de la 1re rangée", "default": "Classic" },
-    { "type": "text", "id": "group1_values", "label": "Couleurs de la 1re rangée (noms séparés par des virgules)", "info": "Les autres couleurs vont dans la 2e rangée. Vide = une seule rangée." },
-    { "type": "text", "id": "group2_title", "label": "Titre de la 2e rangée (suivi du nom de la couleur)", "default": "Color" },
-    { "type": "header", "content": "Textes" },
+    { "type": "text", "id": "group1_values", "label": "Couleurs de la 1re rangée (virgules)", "info": "Les autres couleurs vont dans la 2e rangée. Vide = une seule rangée." },
+    { "type": "text", "id": "group2_title", "label": "Titre de la 2e rangée (suivi du nom)", "default": "Color" },
     { "type": "header", "content": "Avis (affichés seulement si réels)" },
-    { "type": "text", "id": "rating_manual", "label": "Note réelle (ex. 4.8) — sinon metafield reviews.rating" },
+    { "type": "text", "id": "rating_manual", "label": "Note réelle (ex. 4.8) — sinon metafield" },
     { "type": "text", "id": "rating_count", "label": "Nombre d'avis réel (ex. 120)" },
-    { "type": "header", "content": "Prix et stock" },
-    { "type": "text", "id": "price_note", "label": "Ligne sous le prix", "default": "Free shipping on every order, no minimum" },
+    { "type": "header", "content": "Prix" },
+    { "type": "text", "id": "price_note", "label": "Ligne sous le prix" },
     { "type": "text", "id": "in_stock_text", "label": "Texte si disponible", "default": "In stock" },
-    { "type": "text", "id": "size_link_label", "label": "Lien guide des tailles : texte", "default": "Not sure of your size? See the size guide" },
+    { "type": "text", "id": "size_link_label", "label": "Lien guide des tailles : texte", "default": "Size guide" },
     { "type": "url", "id": "size_link", "label": "Lien guide des tailles : URL (vide = masqué)" },
     { "type": "header", "content": "Bouton d'achat" },
     { "type": "text", "id": "atc_label", "label": "Texte", "default": "Add to cart" },
     { "type": "text", "id": "sold_label", "label": "Texte si épuisé", "default": "Sold out" },
     { "type": "text", "id": "adding_label", "label": "Texte pendant l'ajout", "default": "Adding…" },
     { "type": "text", "id": "atc_note", "label": "Ligne sous le bouton", "default": "Secure checkout" },
-    { "type": "text", "id": "look_title", "label": "Titre « Shop the look »", "default": "Shop the look" }
+    { "type": "header", "content": "Livraison" },
+    { "type": "text", "id": "ship_text", "label": "Ligne livraison gratuite", "default": "Free shipping on every order" },
+    { "type": "header", "content": "Shop the look" },
+    { "type": "text", "id": "look_title", "label": "Titre", "default": "Shop the look" }
   ],
   "blocks": [
     {
@@ -437,10 +493,10 @@
       "type": "usp",
       "name": "Avantage",
       "settings": [
-        { "type": "select", "id": "icon", "label": "Icône", "default": "sparkle", "options": [
-          { "value": "sparkle", "label": "Étincelle" }, { "value": "texture", "label": "Texture 3D" }, { "value": "skin", "label": "Peau" },
-          { "value": "waist", "label": "Taille haute" }, { "value": "comfort", "label": "Confort" }, { "value": "truck", "label": "Livraison" },
-          { "value": "shield", "label": "Bouclier" }, { "value": "check", "label": "Coche" }, { "value": "ruler", "label": "Mètre" },
+        { "type": "select", "id": "icon", "label": "Icône", "default": "check", "options": [
+          { "value": "check", "label": "Coche" }, { "value": "sparkle", "label": "Étincelle" }, { "value": "texture", "label": "Texture" },
+          { "value": "comfort", "label": "Confort" }, { "value": "truck", "label": "Livraison" },
+          { "value": "shield", "label": "Bouclier" }, { "value": "ruler", "label": "Mètre" },
           { "value": "heart", "label": "Cœur" }, { "value": "feather", "label": "Plume" }, { "value": "lock", "label": "Cadenas" }
         ] },
         { "type": "text", "id": "text", "label": "Texte", "default": "Benefit" }

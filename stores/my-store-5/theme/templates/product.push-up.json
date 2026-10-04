@@ -104,6 +104,7 @@
     "related": {
       "type": "sf-pdp-related",
       "settings": {
+        "collection": "3d-leggings",
         "columns": "4",
         "wide": true,
         "title": "You might also like"

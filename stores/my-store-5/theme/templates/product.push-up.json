@@ -3,74 +3,164 @@
     "main": {
       "type": "sf-shop-main",
       "blocks": {
-        "m-4": {
+        "u-1": {
           "type": "usp",
           "settings": {
-            "icon": "check",
-            "text": "Seamless Design"
+            "icon": "bra-lift",
+            "text": "Lifts & Shapes the Bust"
           }
         },
-        "m-5": {
+        "u-2": {
           "type": "usp",
           "settings": {
-            "icon": "check",
-            "text": "Maximum Comfort & Support"
+            "icon": "bra-neck",
+            "text": "Creates a Fuller Neckline"
           }
         },
-        "m-6": {
+        "u-3": {
           "type": "usp",
           "settings": {
-            "icon": "check",
-            "text": "Push-Up Effect without Underwire"
+            "icon": "bra-fit",
+            "text": "Perfect Fit"
           }
         },
-        "m-7": {
+        "u-4": {
           "type": "usp",
           "settings": {
-            "icon": "check",
-            "text": "Breathable"
+            "icon": "seamless",
+            "text": "Seamless"
           }
         },
-        "m-8": {
+        "u-5": {
           "type": "usp",
           "settings": {
-            "icon": "check",
-            "text": "Versatile & Easy Care"
+            "icon": "bra-comfort",
+            "text": "Maximum Comfort, No Pressure"
           }
         },
-        "m-9": {
-          "type": "look",
-          "settings": {}
+        "u-6": {
+          "type": "usp",
+          "settings": {
+            "icon": "soft",
+            "text": "Ultra Soft Material"
+          }
         },
-        "m-10": {
-          "type": "look",
-          "settings": {}
+        "u-7": {
+          "type": "usp",
+          "settings": {
+            "icon": "no-marks",
+            "text": "Prevents Pressure Marks & Digging In"
+          }
         },
-        "m-14": {
+        "u-8": {
+          "type": "usp",
+          "settings": {
+            "icon": "pads",
+            "text": "With Removable Pads"
+          }
+        },
+        "u-9": {
+          "type": "usp",
+          "settings": {
+            "icon": "hook",
+            "text": "With Bra Hook Extender for Your Perfect Width"
+          }
+        },
+        "t-1": {
+          "type": "tier",
+          "settings": {
+            "quantity": 1,
+            "ship": false,
+            "gift": false
+          }
+        },
+        "t-2": {
+          "type": "tier",
+          "settings": {
+            "quantity": 2,
+            "badge": "Bundle",
+            "note": "One to wear, one in the wash",
+            "ship": true,
+            "gift": false
+          }
+        },
+        "t-3": {
+          "type": "tier",
+          "settings": {
+            "quantity": 3,
+            "badge": "Best offer",
+            "note": "Your perfect rotation",
+            "ship": true,
+            "gift": false
+          }
+        },
+        "a-1": {
           "type": "accordion",
           "settings": {
-            "icon": "truck",
+            "icon": "tape",
+            "title": "Size guide",
+            "content": "<p>Add your size guide here.</p>"
+          }
+        },
+        "a-2": {
+          "type": "accordion",
+          "settings": {
+            "icon": "layers",
+            "title": "Material & Care",
+            "content": "<p>Add the fabric composition and care instructions here.</p>"
+          }
+        },
+        "a-3": {
+          "type": "accordion",
+          "settings": {
+            "icon": "hanger",
+            "title": "Description",
+            "use_description": true
+          }
+        },
+        "a-4": {
+          "type": "accordion",
+          "settings": {
+            "icon": "truckline",
             "title": "Delivery & Returns",
             "content": "<p>Free shipping on every order, no minimum. Free returns within 30 days.</p>"
           }
         }
       },
       "block_order": [
-        "m-4",
-        "m-5",
-        "m-6",
-        "m-7",
-        "m-8",
-        "m-9",
-        "m-10",
-        "m-14"
+        "u-1",
+        "u-2",
+        "u-3",
+        "u-4",
+        "u-5",
+        "u-6",
+        "u-7",
+        "u-8",
+        "u-9",
+        "t-1",
+        "t-2",
+        "t-3",
+        "a-1",
+        "a-2",
+        "a-3",
+        "a-4"
       ],
       "settings": {
         "product": "",
+        "label": "Push-Up Bra",
+        "thumbs_pos": "below",
         "group1_title": "Classic",
         "group1_values": "Beige, Brown, Ecru, sand, caramel, dark taupe",
         "group2_title": "Color",
-        "ship_text": "Free shipping on every order"
+        "price_note": "Tax included.",
+        "ship_text": "Free shipping on every order",
+        "offer_title_1": "Self-care",
+        "offer_title_2": "MONTH",
+        "offer_sub": "Choose your bundle",
+        "default_tier": 2,
+        "bundle_atc_label": "Add bundle to cart",
+        "offer_ship": "FREE Shipping",
+        "per_piece": true
       }
     },
     "ugc": {

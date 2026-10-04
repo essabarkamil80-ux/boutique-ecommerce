@@ -1,6 +1,6 @@
 {%- comment -%}
-  Fiche produit "boutique" : galerie (miniatures verticales a gauche + zoom) et achat (prix, pastilles de couleur,
-  tailles, selecteur de quantite, bouton, livraison, avantages, accordeons, "shop the look").
+  Fiche produit "boutique" : galerie (miniatures sous l'image ou a gauche + zoom), achat (etiquette, titre, note reelle, prix,
+  pastilles de couleur, tailles, quantite, bouton, livraison), bundle (offre a lots), carte d'avantages a 2 colonnes et accordeons.
   Fonctionne sur une page : choisir le produit dans les reglages ; sur un modele produit il prend le produit courant.
 {%- endcomment -%}
 {%- liquid
@@ -9,23 +9,32 @@
   assign cur = p.selected_or_first_available_variant
   assign color_pos = 0
   assign size_pos = 0
+  assign opt_label = ''
   for opt in p.options_with_values
     assign on = opt.name | downcase
     if on == 'color' or on == 'colour' or on == 'couleur' or on == 'colore' or on == 'farbe'
       assign color_pos = opt.position
     endif
-    if on == 'size' or on == 'taille' or on == 'taglia' or on == 'talla' or on == 'größe'
+    if on == 'size' or on == 'taille' or on == 'taglia' or on == 'talla' or on == 'größe' or on == 'grösse'
       assign size_pos = opt.position
+    endif
+    if forloop.first
+      assign opt_label = opt.name
+    else
+      assign opt_label = opt_label | append: ', ' | append: opt.name
     endif
   endfor
   assign rv = p.metafields.reviews.rating.value
   assign rating_max = 5
   assign rating_num = 0
+  assign rating_cnt = ''
   if rv != blank
     assign rating_num = rv.rating | times: 1.0
     assign rating_max = rv.scale_max | default: 5
+    assign rating_cnt = p.metafields.reviews.rating_count.value
   elsif s.rating_manual != blank
     assign rating_num = s.rating_manual | times: 1.0
+    assign rating_cnt = s.rating_count
   endif
   assign rating_pct = rating_num | times: 100.0 | divided_by: rating_max
   assign fm = p.featured_media
@@ -34,6 +43,13 @@
   if cur.compare_at_price > cur.price
     assign save_pct = cur.compare_at_price | minus: cur.price | times: 100.0 | divided_by: cur.compare_at_price | round
   endif
+  assign gcolors = ''
+  if s.gift_colors != blank
+    assign gcolors = s.gift_colors | split: ','
+  endif
+  assign tiers = section.blocks | where: 'type', 'tier'
+  assign usps = section.blocks | where: 'type', 'usp'
+  assign accs = section.blocks | where: 'type', 'accordion'
 -%}
 {%- if p == blank -%}
   {%- if request.design_mode -%}<section class="sf sf-shop"><div class="sf-wrap"><p class="sf-shop__empty">Choisissez un produit dans les réglages de cette section.</p></div></section>{%- endif -%}
@@ -42,8 +58,8 @@
   <div class="sf-shop__wrap">
     <div class="sf-shop__grid">
 
-      {%- comment -%} ---------------- galerie (miniatures a gauche, image principale a droite) ---------------- {%- endcomment -%}
-      <div class="sf-shop__gal{% if p.media.size > 1 %} has-thumbs{% endif %}">
+      {%- comment -%} ---------------- galerie ---------------- {%- endcomment -%}
+      <div class="sf-shop__gal sf-shop__gal--{{ s.thumbs_pos }}{% if p.media.size > 1 %} has-thumbs{% endif %}">
         {%- if p.media.size > 1 -%}
           <div class="sf-shop__aside">
             <ul class="sf-shop__thumbs" data-sf-thumbs>
@@ -51,7 +67,7 @@
                 {%- if m.media_type == 'image' -%}
                   {%- capture big -%}{{ m | image_url: width: 1400 }}{%- endcapture -%}
                   <li><button type="button" class="sf-shop__thumb{% if m.id == fm.id %} is-active{% endif %}" data-sf-thumb data-media="{{ m.id }}" data-src="{{ big }}" data-alt="{{ m.alt | default: p.title | escape }}" aria-label="Image {{ forloop.index }}">
-                    {{ m | image_url: width: 220 | image_tag: width: 80, height: 80, alt: '', loading: 'lazy' }}
+                    {{ m | image_url: width: 240 | image_tag: width: 110, height: 110, alt: '', loading: 'lazy' }}
                   </button></li>
                 {%- endif -%}
               {%- endfor -%}
@@ -61,10 +77,11 @@
         <div class="sf-shop__stage sf-media">
           {%- if fm != blank -%}
             {%- if fm.alt != blank -%}{%- assign main_alt = fm.alt -%}{%- endif -%}
-            {{ fm | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 600px, 100vw', alt: main_alt, loading: 'eager', fetchpriority: 'high' }}
+            {{ fm | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 700px, 100vw', alt: main_alt, loading: 'eager', fetchpriority: 'high' }}
           {%- else -%}
             {{ 'product-apparel-1' | placeholder_svg_tag: 'sf-ph' }}
           {%- endif -%}
+          <span class="sf-shop__soldbadge" data-soldbadge{% if cur.available %} hidden{% endif %}>{{ s.sold_label }}</span>
           {%- if fm != blank -%}<button type="button" class="sf-shop__zoom" data-sf-zoom aria-label="Zoom">{%- render 'sf-icon', name: 'search' -%}</button>{%- endif -%}
         </div>
       </div>
@@ -76,13 +93,14 @@
         {%- if rating_num > 0 -%}
           <div class="sf-shop__rate">
             <span class="sf-rate" aria-label="{{ rating_num | round: 1 }} / {{ rating_max }}"><span class="sf-rate__bg">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span><span class="sf-rate__fg" style="width: {{ rating_pct }}%">{%- for i in (1..5) -%}{%- render 'sf-icon', name: 'star' -%}{%- endfor -%}</span></span>
-            <span>{{ rating_num | round: 1 }}{% if s.rating_count != blank %} ({{ s.rating_count }}){% endif %}</span>
+            {%- if rating_cnt != blank -%}<span>({{ rating_cnt }})</span>{%- endif -%}
           </div>
         {%- endif -%}
         <div class="sf-shop__price">
           <b data-price>{{ cur.price | money }}</b>
           <s data-compare>{% if cur.compare_at_price > cur.price %}{{ cur.compare_at_price | money }}{% endif %}</s>
           <span class="sf-shop__badge" data-badge{% if save_pct == 0 %} hidden{% endif %}>-{{ save_pct }}%</span>
+          <span class="sf-shop__soldpill" data-soldpill{% if cur.available %} hidden{% endif %}>{{ s.sold_label }}</span>
         </div>
         {%- if s.price_note != blank -%}<p class="sf-shop__pnote">{{ s.price_note }}</p>{%- endif -%}
 
@@ -106,6 +124,7 @@
               {%- endif -%}
               {%- assign grouped = false -%}
               {%- if row1 != blank and row2 != blank -%}{%- assign grouped = true -%}{%- endif -%}
+              {%- if opt.position == size_pos and s.fit_note != blank -%}<p class="sf-shop__fit">{{ s.fit_note }}</p>{%- endif -%}
               <fieldset class="sf-shop__opt" data-sf-opt="{{ opt.position }}">
                 {%- if grouped -%}
                   <legend class="sf-shop__sr">{{ opt.name }}</legend>
@@ -147,57 +166,130 @@
 
         {%- if s.ship_text != blank -%}
           <div class="sf-shop__ship">
-            <span>{%- render 'sf-icon', name: 'truckline' -%}</span>
+            {%- render 'sf-icon', name: 'truckline' -%}
             <p>{{ s.ship_text }}</p>
           </div>
         {%- endif -%}
 
-        {%- comment -%} Avantages + accordeons dans une liste unifiee {%- endcomment -%}
-        {%- assign usps = section.blocks | where: 'type', 'usp' -%}
-        {%- assign accs = section.blocks | where: 'type', 'accordion' -%}
-        {%- if usps.size > 0 or accs.size > 0 -%}
-          <div class="sf-shop__features">
+        {%- comment -%} ---------------- bundle (offre a lots) ---------------- {%- endcomment -%}
+        {%- if tiers.size > 0 -%}
+          <div class="sf-offer" data-sf-offer data-per-piece="{{ s.per_piece }}">
+            <div class="sf-offer__head">
+              <span class="sf-offer__ttl"><em>{{ s.offer_title_1 }}</em> <b>{{ s.offer_title_2 }}</b></span>
+              {%- liquid
+                assign tz = 'now' | date: '%z'
+                assign tz_h = tz | slice: 0, 3
+                assign tz_m = tz | slice: 3, 2
+                assign end_iso = ''
+                if s.timer_end != blank
+                  assign end_iso = s.timer_end | strip | replace: ' ', 'T' | append: ':00' | append: tz_h | append: ':' | append: tz_m
+                endif
+              -%}
+              {%- if end_iso != '' -%}
+                <span class="sf-offer__timer" data-timer data-end="{{ end_iso }}" hidden>{%- render 'sf-icon', name: 'hourglass' -%}<span>{{ s.timer_label }}</span> <b data-t>00:00:00</b></span>
+              {%- endif -%}
+              {%- if s.offer_sub != blank -%}<span class="sf-offer__sub" data-sub>{{ s.offer_sub }}</span>{%- endif -%}
+            </div>
+            {%- for t in tiers -%}
+              {%- assign ts = t.settings -%}
+              {%- assign sel = false -%}
+              {%- if forloop.index == s.default_tier -%}{%- assign sel = true -%}{%- endif -%}
+              {%- if forloop.last and s.default_tier > tiers.size -%}{%- assign sel = true -%}{%- endif -%}
+              {%- assign nrows = 1 -%}
+              {%- if s.per_piece -%}{%- assign nrows = ts.quantity -%}{%- endif -%}
+              <div class="sf-tier{% if sel %} is-selected{% endif %}" data-sf-tier data-q="{{ ts.quantity }}" {{ t.shopify_attributes }}>
+                {%- if ts.badge != blank -%}<span class="sf-tier__badge">{{ ts.badge }}</span>{%- endif -%}
+                <label class="sf-tier__top">
+                  <input type="radio" name="sf-tier-{{ section.id }}" class="sf-tier__radio"{% if sel %} checked{% endif %}>
+                  <span class="sf-tier__mark" aria-hidden="true"></span>
+                  <span class="sf-tier__txt">
+                    <b class="sf-tier__name"><span data-count>{{ ts.quantity }}</span>× {{ p.title }}</b>
+                    <span class="sf-tier__save" data-save></span>
+                    {%- if ts.note != blank -%}<span class="sf-tier__note">{{ ts.note }}</span>{%- endif -%}
+                  </span>
+                  <span class="sf-tier__pill" data-perpiece hidden></span>
+                  <span class="sf-tier__price"><b data-tprice></b><s data-tcompare></s></span>
+                </label>
+                {%- unless p.has_only_default_variant -%}
+                  <div class="sf-tier__opts">
+                    <p class="sf-tier__optlabel">{{ opt_label }}</p>
+                    {%- for i in (1..nrows) -%}
+                      <div class="sf-row" data-row>
+                        <span class="sf-row__img"><img alt="" data-row-img loading="lazy" width="44" height="44"{% if fm != blank %} src="{{ fm | image_url: width: 120 }}"{% endif %}></span>
+                        {%- for opt in p.options_with_values -%}
+                          <label class="sf-sel{% if opt.position == color_pos %} sf-sel--color{% endif %}">
+                            {%- if opt.position == color_pos -%}<i class="sf-dot" data-dot></i>{%- endif -%}
+                            <select data-opt="{{ opt.position }}" aria-label="{{ opt.name | escape }}">
+                              {%- for ov in opt.values -%}<option value="{{ ov | escape }}"{% if ov.selected %} selected{% endif %}>{{ ov }}</option>{%- endfor -%}
+                            </select>
+                          </label>
+                        {%- endfor -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                {%- endunless -%}
+                {%- assign show_gift = false -%}
+                {%- if ts.gift and s.gift_text != blank -%}{%- assign show_gift = true -%}{%- endif -%}
+                {%- assign show_ship = false -%}
+                {%- if ts.ship and s.offer_ship != blank -%}{%- assign show_ship = true -%}{%- endif -%}
+                {%- if show_gift or show_ship -%}
+                  <div class="sf-tier__perks">
+                    {%- if show_gift -%}
+                      <div class="sf-perk sf-perk--gift" data-gift-name="{{ s.gift_text | escape }}">
+                        <span class="sf-perk__img">
+                          {%- if s.gift_image != blank -%}{{ s.gift_image | image_url: width: 160 | image_tag: width: 44, height: 44, alt: '', loading: 'lazy' }}{%- else -%}{%- render 'sf-icon', name: 'gift' -%}{%- endif -%}
+                        </span>
+                        <b class="sf-perk__txt">{{ s.gift_text }}</b>
+                        {%- if gcolors != blank -%}
+                          <label class="sf-sel sf-sel--color sf-sel--gift">
+                            <i class="sf-dot" data-gift-dot></i>
+                            <select data-gift aria-label="{{ s.gift_text | escape }}">
+                              {%- for g in gcolors -%}{%- assign gt = g | strip -%}{%- if gt != blank -%}<option value="{{ gt | escape }}" data-color="{% render 'sf-swatch', value: gt, swatch: '' %}">{{ gt }}</option>{%- endif -%}{%- endfor -%}
+                            </select>
+                          </label>
+                        {%- endif -%}
+                        {%- if s.gift_value != blank -%}<s class="sf-perk__val">{{ s.gift_value }}</s>{%- endif -%}
+                      </div>
+                    {%- endif -%}
+                    {%- if show_ship -%}
+                      <div class="sf-perk sf-perk--ship"><span class="sf-perk__img sf-perk__img--ico">{%- render 'sf-icon', name: 'gift' -%}</span><b class="sf-perk__txt">{{ s.offer_ship }}</b></div>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+            <button type="button" class="sf-shop__atc sf-shop__atc--bundle" data-sf-bundle-atc>
+              <span data-b-label>{{ s.bundle_atc_label }}</span>
+              <span class="sf-shop__sep" aria-hidden="true"></span>
+              <span data-b-price></span>
+            </button>
+            <p class="sf-shop__err" role="alert" data-sf-berr hidden></p>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} ---------------- carte d'avantages (2 colonnes) + accordeons ---------------- {%- endcomment -%}
+        {%- if usps.size > 0 -%}
+          <div class="sf-shop__usps">
             {%- for u in usps -%}
-              <div class="sf-shop__feat" {{ u.shopify_attributes }}>
-                <span>{%- render 'sf-icon', name: u.settings.icon -%}</span>
+              <div class="sf-shop__usp" {{ u.shopify_attributes }}>
+                <span class="sf-shop__uico">{%- render 'sf-icon', name: u.settings.icon -%}</span>
                 <b>{{ u.settings.text }}</b>
               </div>
             {%- endfor -%}
+          </div>
+        {%- endif -%}
+        {%- if accs.size > 0 -%}
+          <div class="sf-shop__accs">
             {%- for a in accs -%}
-              <details class="sf-shop__feat sf-shop__feat--exp" {{ a.shopify_attributes }}>
+              <details class="sf-shop__acc" {{ a.shopify_attributes }}>
                 <summary>
-                  <span class="sf-shop__featico">{%- render 'sf-icon', name: a.settings.icon -%}</span>
+                  <span class="sf-shop__aico">{%- render 'sf-icon', name: a.settings.icon -%}</span>
                   <b>{{ a.settings.title }}</b>
-                  {%- render 'sf-icon', name: 'chevron' -%}
+                  <i class="sf-shop__plus" aria-hidden="true"></i>
                 </summary>
                 <div class="sf-shop__fbody">{%- if a.settings.use_description and p.description != blank -%}{{ p.description }}{%- else -%}{{ a.settings.content }}{%- endif -%}</div>
               </details>
             {%- endfor -%}
-          </div>
-        {%- endif -%}
-
-        {%- comment -%} Shop the look {%- endcomment -%}
-        {%- assign looks = section.blocks | where: 'type', 'look' -%}
-        {%- assign look_items = 0 -%}
-        {%- for l in looks -%}{%- if l.settings.product != blank -%}{%- assign look_items = look_items | plus: 1 -%}{%- endif -%}{%- endfor -%}
-        {%- if look_items > 0 or request.design_mode and looks.size > 0 -%}
-          <div class="sf-shop__look">
-            <h2 class="sf-shop__h">{{ s.look_title }}</h2>
-            <ul class="sf-shop__looks">
-              {%- for l in looks -%}
-                {%- assign lp = l.settings.product -%}
-                {%- if lp != blank -%}
-                  <li {{ l.shopify_attributes }}>
-                    <a class="sf-look__img sf-media" href="{{ lp.url }}">
-                      {%- if lp.featured_media != blank -%}{{ lp.featured_media | image_url: width: 500 | image_tag: widths: '250, 400, 500', sizes: '260px', alt: lp.title, loading: 'lazy' }}{%- else -%}{{ 'product-apparel-2' | placeholder_svg_tag: 'sf-ph' }}{%- endif -%}
-                      <span class="sf-look__plus" aria-hidden="true">{%- render 'sf-icon', name: 'plus' -%}</span>
-                    </a>
-                    <a class="sf-look__t" href="{{ lp.url }}">{{ lp.title }}</a>
-                    <p class="sf-look__p"><b>{{ lp.price | money }}</b>{% if lp.compare_at_price > lp.price %} <s>{{ lp.compare_at_price | money }}</s>{% endif %}</p>
-                  </li>
-                {%- endif -%}
-              {%- endfor -%}
-            </ul>
           </div>
         {%- endif -%}
       </div>
@@ -212,7 +304,7 @@
     "currency": {{ cart.currency.iso_code | json }},
     "locale": {{ request.locale.iso_code | json }},
     "cartAdd": {{ routes.cart_add_url | json }},
-    "labels": { "add": {{ s.atc_label | json }}, "sold": {{ s.sold_label | json }}, "adding": {{ s.adding_label | json }}, "in": {{ s.in_stock_text | json }} },
+    "labels": { "add": {{ s.atc_label | json }}, "sold": {{ s.sold_label | json }}, "adding": {{ s.adding_label | json }}, "save": {{ s.save_label | json }}, "perPiece": {{ s.perpiece_label | json }}, "bundle": {{ s.bundle_atc_label | json }}, "gift": "Free gift" },
     "variants": [
       {%- for v in p.variants -%}
         {%- assign dot = '#cbbfb8' -%}
@@ -222,7 +314,9 @@
         {%- endif -%}
         {
           "id": {{ v.id }}, "options": {{ v.options | json }}, "price": {{ v.price }}, "compare": {{ v.compare_at_price | default: 0 }},
-          "available": {{ v.available }}, "media": {{ v.featured_media.id | default: 0 }}
+          "available": {{ v.available }}, "media": {{ v.featured_media.id | default: 0 }},
+          "thumb": {% if v.featured_media != blank %}{{ v.featured_media | image_url: width: 120 | json }}{% else %}""{% endif %},
+          "dot": {{ dot | strip | json }}
         }{% unless forloop.last %},{% endunless %}
       {%- endfor -%}
     ]
@@ -238,7 +332,8 @@
     var $ = function (s, r) { return (r || root).querySelector(s); }, $$ = function (s, r) { return Array.prototype.slice.call((r || root).querySelectorAll(s)); };
     var fmt; try { fmt = new Intl.NumberFormat(D.locale || undefined, { style: 'currency', currency: D.currency || 'EUR' }); } catch (e) { fmt = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'EUR' }); }
     function money(c) { return fmt.format(c / 100); }
-    var cur = V.filter(function (v) { return v.id === D.current; })[0] || V[0], SEL = cur.options.slice();
+    var byId = {}; V.forEach(function (v) { byId[v.id] = v; });
+    var cur = byId[D.current] || V[0], SEL = cur.options.slice();
 
     /* galerie + zoom */
     var main = $('.sf-shop__stage img'), thumbs = $$('[data-sf-thumb]'), idx = 0, lb = $('[data-sf-lb]'), lbImg = $('[data-sf-lb-img]');
@@ -246,7 +341,11 @@
       if (!thumbs.length) return; idx = (i + thumbs.length) % thumbs.length; var t = thumbs[idx];
       thumbs.forEach(function (x) { x.classList.toggle('is-active', x === t); });
       if (main) { main.removeAttribute('srcset'); main.removeAttribute('sizes'); main.src = t.dataset.src; main.alt = t.dataset.alt || ''; }
-      if (t.parentNode && t.parentNode.scrollIntoView) t.parentNode.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+      var box = t.parentNode.parentNode, li = t.parentNode;
+      if (box && box.scrollTo) {
+        if (box.scrollWidth > box.clientWidth + 2) box.scrollTo({ left: li.offsetLeft - 8, behavior: 'smooth' });
+        else if (box.scrollHeight > box.clientHeight + 2) box.scrollTo({ top: li.offsetTop - 8, behavior: 'smooth' });
+      }
     }
     thumbs.forEach(function (t, i) { t.addEventListener('click', function () { showThumb(i); }); });
     var z = $('[data-sf-zoom]');
@@ -277,6 +376,7 @@
       $('[data-price]').textContent = money(cur.price);
       var has = cur.compare > cur.price; $('[data-compare]').textContent = has ? money(cur.compare) : '';
       var bd = $('[data-badge]'); bd.hidden = !has; if (has) bd.textContent = '-' + Math.round((cur.compare - cur.price) * 100 / cur.compare) + '%';
+      var sp = $('[data-soldpill]'), sb = $('[data-soldbadge]'); if (sp) sp.hidden = cur.available; if (sb) sb.hidden = cur.available;
       atc.disabled = !cur.available; $('[data-atc-label]').textContent = cur.available ? D.labels.add : D.labels.sold;
       if (cur.media) { var k = thumbs.findIndex(function (t) { return t.dataset.media == cur.media; }); if (k > -1) showThumb(k); }
     }
@@ -287,15 +387,93 @@
       }); });
     });
 
-    /* ajout au panier */
+    /* bundle (offre a lots) */
+    var offer = $('[data-sf-offer]'), tiers = $$('[data-sf-tier]'), perPiece = !!offer && offer.dataset.perPiece === 'true', bAtc = $('[data-sf-bundle-atc]'), bErr = $('[data-sf-berr]');
+    function rowOpts(r) { var o = SEL.slice(); $$('select[data-opt]', r).forEach(function (s) { o[parseInt(s.dataset.opt, 10) - 1] = s.value; }); return o; }
+    function rowVariant(r) { return find(rowOpts(r)) || V[0]; }
+    function rowsOf(t) { return $$('[data-row]', t); }
+    function rowQty(t) { return perPiece ? 1 : (parseInt(t.dataset.q, 10) || 1); }
+    function tierTotals(t) {
+      var rs = rowsOf(t), price = 0, compare = 0, count = 0, ok = true;
+      var items = rs.length ? rs.map(function (r) { return { v: rowVariant(r), q: rowQty(t) }; }) : [{ v: cur, q: parseInt(t.dataset.q, 10) || 1 }];
+      items.forEach(function (it) {
+        price += it.v.price * it.q; compare += (it.v.compare > it.v.price ? it.v.compare : it.v.price) * it.q; count += it.q; if (!it.v.available) ok = false;
+      });
+      return { price: price, compare: compare, count: count, ok: ok };
+    }
+    function selTier() { return tiers.filter(function (t) { return t.classList.contains('is-selected'); })[0]; }
+    function recalcOffer() {
+      if (!offer) return;
+      tiers.forEach(function (t) {
+        rowsOf(t).forEach(function (r) {
+          var v = rowVariant(r), img = $('[data-row-img]', r), dot = $('[data-dot]', r), opts = rowOpts(r);
+          if (dot) dot.style.background = v.dot;
+          if (img && v.thumb) img.src = v.thumb;
+          $$('select[data-opt]', r).forEach(function (s) {
+            var pos = parseInt(s.dataset.opt, 10) - 1;
+            $$('option', s).forEach(function (o) { var test = opts.slice(); test[pos] = o.value; var w = find(test); o.disabled = !!(o.value !== s.value && (!w || !w.available)); });
+          });
+        });
+        var T = tierTotals(t);
+        $('[data-count]', t).textContent = T.count;
+        $('[data-tprice]', t).textContent = money(T.price);
+        var cmp = $('[data-tcompare]', t), sv = $('[data-save]', t), pp = $('[data-perpiece]', t);
+        cmp.textContent = T.compare > T.price ? money(T.compare) : '';
+        sv.textContent = T.compare > T.price ? D.labels.save.replace('{amount}', money(T.compare - T.price)) : '';
+        var per = Math.round(T.price / T.count);
+        if (pp) { var show = T.count > 1 && per < cur.price; pp.hidden = !show; pp.textContent = show ? D.labels.perPiece.replace('{amount}', money(per)) : ''; }
+        t.classList.toggle('is-out', !T.ok);
+      });
+      var sel = selTier();
+      if (sel && bAtc) { var S = tierTotals(sel); $('[data-b-price]', bAtc).textContent = money(S.price); bAtc.disabled = !S.ok; $('[data-b-label]', bAtc).textContent = S.ok ? D.labels.bundle : D.labels.sold; }
+    }
+    tiers.forEach(function (t) {
+      $('.sf-tier__radio', t).addEventListener('change', function () { tiers.forEach(function (x) { x.classList.toggle('is-selected', x === t); }); recalcOffer(); });
+      $$('select[data-opt]', t).forEach(function (s) { s.addEventListener('change', recalcOffer); });
+    });
+    function giftDot(sl) { var o = sl.options[sl.selectedIndex], d = sl.parentNode.querySelector('[data-gift-dot]'); if (d && o) d.style.background = o.dataset.color || '#cbbfb8'; }
+    $$('select[data-gift]').forEach(function (sl) { giftDot(sl); sl.addEventListener('change', function () { giftDot(sl); }); });
+    function giftProps(t) {
+      var g = $('.sf-perk--gift', t); if (!g) return {};
+      var sl = $('select[data-gift]', g), o = {}; o[D.labels.gift] = g.dataset.giftName + (sl && sl.value ? ' (' + sl.value + ')' : ''); return o;
+    }
+    function bundleLines() {
+      var sel = selTier(), map = {}, order = [], out; if (!sel) return [];
+      var rs = rowsOf(sel), gp = giftProps(sel), hasGift = Object.keys(gp).length > 0;
+      if (!rs.length) { out = { id: cur.id, quantity: parseInt(sel.dataset.q, 10) || 1 }; if (hasGift) out.properties = gp; return [out]; }
+      rs.forEach(function (r) {
+        var v = rowVariant(r);
+        if (!map[v.id]) { map[v.id] = { id: v.id, quantity: 0 }; order.push(v.id); }
+        map[v.id].quantity += rowQty(sel);
+      });
+      out = order.map(function (k) { return map[k]; });
+      if (hasGift) out[0].properties = gp;
+      return out;
+    }
+
+    /* compte a rebours (date de fin reelle fixee dans l'editeur) */
+    var tm = $('[data-timer]'), subEl = $('[data-sub]');
+    if (tm) {
+      var endAt = Date.parse(tm.dataset.end), tEl = $('[data-t]', tm);
+      function pad(n) { return (n < 10 ? '0' : '') + n; }
+      function tick() {
+        var left = Math.floor((endAt - Date.now()) / 1000);
+        if (isNaN(endAt) || left <= 0) { tm.hidden = true; if (subEl) subEl.hidden = false; return false; }
+        var d = Math.floor(left / 86400), h = Math.floor(left % 86400 / 3600), m = Math.floor(left % 3600 / 60), sec = left % 60;
+        tEl.textContent = (d > 0 ? d + 'd ' : '') + pad(h) + ':' + pad(m) + ':' + pad(sec);
+        tm.hidden = false; if (subEl) subEl.hidden = true; return true;
+      }
+      if (tick()) { var iv = setInterval(function () { if (!tick()) clearInterval(iv); }, 1000); }
+    }
+
+    /* ajout au panier : meme mecanique que le formulaire du theme (evenement + sections) */
     var busy = false;
-    function showErr(m) { err.textContent = m; err.hidden = !m; }
-    function add(e) {
-      e.preventDefault(); if (busy || atc.disabled) return;
-      busy = true; atc.classList.add('is-loading'); atc.setAttribute('aria-busy', 'true'); showErr('');
-      var qty = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
-      var items = [{ id: cur.id, quantity: qty }], secIds = $$('cart-items-component', document).map(function (c) { return c.dataset.sectionId; }).filter(Boolean), Evt = null, deferred = null;
-      $('[data-atc-label]').textContent = D.labels.adding;
+    function send(items, ui) {
+      if (busy || !items.length) return;
+      busy = true; ui.btn.classList.add('is-loading'); ui.btn.setAttribute('aria-busy', 'true'); ui.err.textContent = ''; ui.err.hidden = true;
+      var secIds = $$('cart-items-component', document).map(function (c) { return c.dataset.sectionId; }).filter(Boolean), Evt = null, deferred = null;
+      function fail(m) { ui.err.textContent = m; ui.err.hidden = !m; }
+      ui.label.textContent = D.labels.adding;
       import('@shopify/events').then(function (m) { Evt = m.CartLinesUpdateEvent; }).catch(function () {}).then(function () {
         if (Evt && Evt.createPromise) {
           deferred = Evt.createPromise();
@@ -304,19 +482,27 @@
         return fetch(D.cartAdd, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ items: items, sections: secIds.join(',') }) });
       }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok && !j.status, j: j }; }); })
         .then(function (res) {
-          if (!res.ok) { var m = res.j.description || res.j.message || 'Could not add to cart.'; showErr(m); if (deferred) deferred.reject(new Error(m)); return; }
+          if (!res.ok) { var m = res.j.description || res.j.message || 'Could not add to cart.'; fail(m); if (deferred) deferred.reject(new Error(m)); return; }
           return fetch('/cart.js', { credentials: 'same-origin', headers: { Accept: 'application/json' } }).then(function (r) { return r.json(); }).then(function (cart) {
             document.dispatchEvent(new CustomEvent('sf:cart', { detail: cart }));
-            if (deferred) deferred.resolve({ cart: Evt.createCartFromAjaxResponse(cart), detail: { items: cart.items, source: 'sf-shop', sourceId: root.id, itemCount: qty, productId: '{{ p.id }}', sections: res.j.sections, didError: false } });
+            if (deferred) deferred.resolve({ cart: Evt.createCartFromAjaxResponse(cart), detail: { items: cart.items, source: 'sf-shop', sourceId: root.id, itemCount: items.reduce(function (a, i) { return a + i.quantity; }, 0), productId: '{{ p.id }}', sections: res.j.sections, didError: false } });
             var d = document.getElementById('cart-drawer');
             if (d && typeof d.open === 'function') { if (!d.isOpen) d.open(); } else { location.href = '/cart'; }
           });
         })
-        .catch(function (x) { showErr('Something went wrong. Please try again.'); if (deferred) deferred.reject(x); })
-        .then(function () { busy = false; atc.classList.remove('is-loading'); atc.removeAttribute('aria-busy'); draw(); });
+        .catch(function (x) { fail('Something went wrong. Please try again.'); if (deferred) deferred.reject(x); })
+        .then(function () { busy = false; ui.btn.classList.remove('is-loading'); ui.btn.removeAttribute('aria-busy'); ui.after(); });
     }
-    root.querySelector('form').addEventListener('submit', add);
-    draw();
+    root.querySelector('form').addEventListener('submit', function (e) {
+      e.preventDefault(); if (atc.disabled) return;
+      send([{ id: cur.id, quantity: qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1 }], { btn: atc, label: $('[data-atc-label]'), err: err, after: draw });
+    });
+    if (bAtc) bAtc.addEventListener('click', function () {
+      if (bAtc.disabled) return;
+      send(bundleLines(), { btn: bAtc, label: $('[data-b-label]', bAtc), err: bErr, after: recalcOffer });
+    });
+
+    draw(); recalcOffer();
   })();
 </script>
 {%- endif -%}
@@ -328,39 +514,48 @@
   .sf-shop__grid { display: grid; grid-template-columns: minmax(0, 732fr) minmax(0, 542fr); column-gap: clamp(24px, 3.75vw, 54px); align-items: start; }
   .sf-shop__gal, .sf-shop__buy { min-width: 0; }
 
-  /* galerie : miniatures verticales a gauche, image principale a droite */
+  /* galerie : miniatures sous l'image (comme la reference) ou a gauche */
   .sf-shop__gal { position: sticky; top: 20px; }
-  .sf-shop__gal.has-thumbs { display: grid; grid-template-columns: clamp(60px, 5.6vw, 80px) 1fr; gap: 10px; }
-  .sf-shop__aside { position: relative; min-height: 0; }
-  .sf-shop__thumbs { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 8px; padding: 2px; overflow-y: auto; scrollbar-width: none; }
+  .sf-shop__thumbs { display: flex; gap: 8px; padding: 2px; overflow-x: auto; scrollbar-width: none; position: relative; }
   .sf-shop__thumbs::-webkit-scrollbar { display: none; }
-  .sf-shop__thumbs li { flex: 0 0 auto; }
+  .sf-shop__thumbs li { flex: 0 0 auto; width: clamp(64px, 7.6vw, 110px); }
   .sf-shop__thumb { display: block; width: 100%; aspect-ratio: 1; padding: 0; border: 2px solid transparent; background: #F7F5F3; overflow: hidden; }
   .sf-shop__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .sf-shop__thumb.is-active { border-color: var(--sf-ink); }
+  .sf-shop__gal--below.has-thumbs { display: flex; flex-direction: column; }
+  .sf-shop__gal--below .sf-shop__aside { order: 2; margin-top: 10px; }
+  .sf-shop__gal--left.has-thumbs { display: grid; grid-template-columns: clamp(60px, 5.6vw, 80px) 1fr; gap: 10px; }
+  .sf-shop__gal--left .sf-shop__aside { position: relative; min-height: 0; }
+  .sf-shop__gal--left .sf-shop__thumbs { position: absolute; inset: 0; flex-direction: column; overflow-x: hidden; overflow-y: auto; }
+  .sf-shop__gal--left .sf-shop__thumbs li { width: auto; }
   .sf-shop__stage { aspect-ratio: 1 / 1; background: #F7F5F3; }
   .sf-shop__stage img, .sf-shop__stage > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .sf-shop__zoom { position: absolute; right: 16px; bottom: 16px; z-index: 2; width: 36px; height: 36px; display: grid; place-items: center; color: var(--sf-ink); }
-  .sf-shop__zoom svg { width: 20px; height: 20px; }
+  .sf-shop__zoom { position: absolute; right: 16px; bottom: 16px; z-index: 2; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, .12); color: var(--sf-ink); }
+  .sf-shop__zoom svg { width: 22px; height: 22px; }
+  .sf-shop__soldbadge { position: absolute; left: 16px; bottom: 16px; z-index: 2; padding: 11px 20px; border-radius: 4px; background: var(--sf-ink); color: #fff; font-size: 14px; letter-spacing: .04em; }
+  .sf-shop__soldbadge[hidden], .sf-shop__soldpill[hidden], .sf-shop__badge[hidden] { display: none; }
 
-  /* infos produit */
-  .sf-shop__label { font-size: 12px; color: #8b8280; }
-  .sf-shop__title { margin-top: 6px; font-family: var(--sf-serif); font-weight: 400; font-size: clamp(28px, 3.1vw, 44px); line-height: 1.08; letter-spacing: -.015em; color: var(--sf-ink); }
-  .sf-shop__rate { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12.5px; color: #8b8280; }
-  .sf-shop__rate .sf-rate { font-size: 16px; }
+  /* titre, note, prix */
+  .sf-shop__label { font-size: 15px; letter-spacing: .02em; color: #8b8280; }
+  .sf-shop__title { margin-top: 6px; font-family: var(--sf-serif); font-weight: 400; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.06; letter-spacing: -.015em; color: var(--sf-ink); }
+  .sf-shop__rate { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 13px; color: #8b8280; }
+  .sf-shop__rate .sf-rate { font-size: 20px; }
+  .sf-shop__rate .sf-rate__fg { color: var(--sf-ink); }
   .sf-shop__price { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-  .sf-shop__price b { font-size: 22px; font-weight: 700; color: var(--sf-plum); }
-  .sf-shop__price s { font-size: 14px; color: #8b8280; } .sf-shop__price s:empty { display: none; }
-  .sf-shop__badge { padding: 3px 8px; border-radius: 3px; background: var(--sf-ink); color: #fff; font-size: 11px; font-weight: 700; } .sf-shop__badge[hidden] { display: none; }
-  .sf-shop__pnote { margin-top: 6px; font-size: 11.5px; color: #8b8280; }
+  .sf-shop__price b { font-size: 26px; font-weight: 700; color: var(--sf-plum); }
+  .sf-shop__price s { font-size: 16px; color: #8b8280; } .sf-shop__price s:empty { display: none; }
+  .sf-shop__badge { padding: 4px 9px; border-radius: 3px; background: var(--sf-ink); color: #fff; font-size: 12px; font-weight: 700; }
+  .sf-shop__soldpill { padding: 8px 18px; border-radius: 4px; background: var(--sf-ink); color: #fff; font-size: 14px; letter-spacing: .04em; }
+  .sf-shop__pnote { margin-top: 8px; font-size: 13px; letter-spacing: .01em; color: #8b8280; }
 
   /* formulaire et options */
   .sf-shop__form { margin: 0; }
   .sf-shop__opt { margin: 20px 0 0; padding: 0; border: 0; min-width: 0; }
-  .sf-shop__opt legend { padding: 0; margin-bottom: 10px; font-size: 13px; color: #6f6664; }
+  .sf-shop__opt legend { padding: 0; margin-bottom: 10px; font-size: 15px; color: #6f6664; }
   .sf-shop__opt legend b { color: var(--sf-ink); font-weight: 700; }
   .sf-shop__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  .sf-shop__grp { margin: 18px 0 10px; font-size: 15px; color: var(--sf-ink); } .sf-shop__grp b { font-weight: 400; }
+  .sf-shop__grp { margin: 18px 0 10px; font-size: 17px; color: var(--sf-ink); } .sf-shop__grp b { font-weight: 700; }
+  .sf-shop__fit { margin-top: 20px; font-size: 14px; color: #6f6664; }
   .sf-shop__sw { display: flex; flex-wrap: wrap; gap: 6px 8px; }
   .sf-sw { position: relative; width: 46px; height: 46px; padding: 0; border-radius: 50%; border: 1.5px solid transparent; display: grid; place-items: center; }
   .sf-sw i { width: 38px; height: 38px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15); }
@@ -375,7 +570,7 @@
   .sf-shop__sizelink { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 12px; color: #6f6664; }
   .sf-shop__sizelink svg { width: 16px; height: 16px; } .sf-shop__sizelink a { text-decoration: underline; text-underline-offset: 3px; font-weight: 600; color: var(--sf-ink); }
 
-  /* selecteur de quantite */
+  /* quantite */
   .sf-shop__qty { display: inline-flex; align-items: center; margin-top: 18px; border: 1px solid #DDD3CE; border-radius: 4px; }
   .sf-shop__qty button { width: 44px; height: 44px; display: grid; place-items: center; font-size: 18px; color: var(--sf-ink); transition: background .12s; }
   .sf-shop__qty button:hover { background: #F7F5F3; }
@@ -383,11 +578,12 @@
   .sf-shop__qty input::-webkit-outer-spin-button, .sf-shop__qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
   /* bouton d'ajout au panier */
-  .sf-shop__atc { display: flex; align-items: center; justify-content: center; width: 100%; height: 54px; margin-top: 14px; border-radius: 4px; background: var(--sf-plum); color: #fff;
+  .sf-shop__atc { display: flex; align-items: center; justify-content: center; gap: 14px; width: 100%; height: 56px; margin-top: 14px; border-radius: 4px; background: var(--sf-plum); color: #fff;
     font-size: 14px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; transition: filter .15s; }
   .sf-shop__atc:hover:not(:disabled) { filter: brightness(1.12); }
   .sf-shop__atc:focus-visible { outline: 2px solid var(--sf-indigo); outline-offset: 3px; }
   .sf-shop__atc:disabled { background: #b59aa5; cursor: not-allowed; }
+  .sf-shop__sep { width: 1px; height: 18px; background: rgba(255, 255, 255, .45); }
   .sf-shop__atc.is-loading { position: relative; color: transparent; pointer-events: none; }
   .sf-shop__atc.is-loading > * { visibility: hidden; }
   .sf-shop__atc.is-loading::after { content: ''; position: absolute; width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid rgba(255, 255, 255, .4); border-top-color: #fff; animation: sfSpin .7s linear infinite; }
@@ -396,37 +592,98 @@
   .sf-shop__note { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 10px; font-size: 11.5px; color: #6f6664; }
   .sf-shop__note svg { width: 14px; height: 14px; }
 
-  /* livraison gratuite */
-  .sf-shop__ship { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 14px 0; border-top: 1px solid #F0E9E5; border-bottom: 1px solid #F0E9E5; }
-  .sf-shop__ship span { flex: 0 0 auto; width: 24px; height: 24px; display: grid; place-items: center; color: var(--sf-plum); }
-  .sf-shop__ship span svg { width: 22px; height: 22px; }
-  .sf-shop__ship p { font-size: 13.5px; font-weight: 600; color: var(--sf-ink); }
+  /* livraison (ligne centree) */
+  .sf-shop__ship { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 22px; color: #3f3735; }
+  .sf-shop__ship svg { width: 26px; height: 26px; flex: 0 0 auto; }
+  .sf-shop__ship p { font-size: 15.5px; letter-spacing: .01em; }
 
-  /* avantages + accordeons (liste unifiee) */
-  .sf-shop__features { margin-top: 4px; }
-  .sf-shop__feat { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid #F0E9E5; }
-  .sf-shop__feat > span, .sf-shop__featico { flex: 0 0 auto; width: 22px; height: 22px; display: grid; place-items: center; color: var(--sf-plum); }
-  .sf-shop__feat svg { width: 20px; height: 20px; }
-  .sf-shop__feat > b { font-size: 13.5px; font-weight: 600; line-height: 1.3; color: var(--sf-ink); flex: 1; }
-  .sf-shop__feat--exp { border-bottom: 1px solid #F0E9E5; }
-  .sf-shop__feat--exp summary { display: flex; align-items: center; gap: 12px; padding: 13px 0; cursor: pointer; list-style: none; }
-  .sf-shop__feat--exp summary::-webkit-details-marker { display: none; }
-  .sf-shop__feat--exp summary > b { flex: 1; font-size: 13.5px; font-weight: 600; color: var(--sf-ink); }
-  .sf-shop__feat--exp summary > svg { width: 15px; height: 15px; color: #6f6664; transition: transform .2s; flex: 0 0 auto; }
-  .sf-shop__feat--exp[open] summary > svg { transform: rotate(180deg); }
-  .sf-shop__fbody { padding: 0 0 14px 34px; font-size: 13.5px; line-height: 1.6; color: #4d4543; }
+  /* bundle (offre a lots) */
+  .sf-shop__atc--bundle { margin-top: 14px; height: 54px; }
+  .sf-dot { display: inline-block; width: 15px; height: 15px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .18); flex: 0 0 auto; }
+  .sf-offer { margin-top: 28px; padding: 16px 14px 14px; border: 1px solid #EEE5E0; border-radius: 14px; background: #fff; box-shadow: 0 6px 22px -16px rgba(19, 7, 46, .25); }
+  .sf-offer__head { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 14px; }
+  .sf-offer__ttl { display: flex; align-items: center; gap: 8px; width: 100%; font-family: var(--sf-serif); font-size: 21px; line-height: 1.1; color: var(--sf-plum); white-space: nowrap; }
+  .sf-offer__ttl::before, .sf-offer__ttl::after { content: ''; flex: 1; height: 1px; background: #E8DDD8; }
+  .sf-offer__ttl em { font-style: italic; }
+  .sf-offer__ttl b { font-family: var(--sf-sans); font-weight: 800; letter-spacing: .06em; font-size: 16px; }
+  .sf-offer__timer { display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sf-plum); }
+  .sf-offer__timer[hidden], .sf-offer__sub[hidden] { display: none; }
+  .sf-offer__timer svg { width: 14px; height: 14px; } .sf-offer__timer b { font-variant-numeric: tabular-nums; letter-spacing: .06em; }
+  .sf-offer__sub { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: #8b8280; }
+  .sf-tier { position: relative; margin-top: 12px; padding: 16px 16px 0; border: 1.5px solid #E7DEDA; border-radius: 12px; background: #FAF7F5; overflow: hidden; }
+  .sf-offer__head + .sf-tier { margin-top: 0; }
+  .sf-tier.is-selected { border: 2px solid var(--sf-plum); padding: 15px 15px 0; background: #FBF3EE; }
+  .sf-tier__badge { position: absolute; top: 0; right: 16px; padding: 6px 10px; border-radius: 0 0 6px 6px; background: var(--sf-plum); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; line-height: 1; }
+  .sf-tier__badge + .sf-tier__top { padding-top: 8px; }
+  .sf-tier__top { display: grid; grid-template-columns: 24px 1fr auto auto; gap: 8px 12px; align-items: center; cursor: pointer; padding-bottom: 16px; }
+  .sf-tier__radio { position: absolute; opacity: 0; pointer-events: none; }
+  .sf-tier__mark { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid #C9BDB8; background: #fff; display: grid; place-items: center; }
+  .sf-tier.is-selected .sf-tier__mark { border-color: var(--sf-plum); }
+  .sf-tier.is-selected .sf-tier__mark::after { content: ''; width: 13px; height: 13px; border-radius: 50%; background: var(--sf-plum); }
+  .sf-tier__radio:focus-visible + .sf-tier__mark { outline: 2px solid var(--sf-indigo); outline-offset: 2px; }
+  .sf-tier__txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .sf-tier__name { font-size: 15.5px; font-weight: 700; line-height: 1.25; color: var(--sf-ink); }
+  .sf-tier__save { font-size: 14px; font-weight: 700; font-style: italic; color: var(--sf-plum); }
+  .sf-tier__save:empty { display: none; }
+  .sf-tier__note { font-size: 12.5px; font-style: italic; color: #6f6664; }
+  .sf-tier__pill { padding: 6px 10px; border-radius: 8px; background: #F3DCE3; color: var(--sf-plum); font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .sf-tier__pill[hidden] { display: none; }
+  .sf-tier__price { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; white-space: nowrap; }
+  .sf-tier__price b { font-size: 18px; font-weight: 700; color: var(--sf-ink); }
+  .sf-tier__price s { font-size: 13.5px; font-weight: 600; color: #9a9290; } .sf-tier__price s:empty { display: none; }
+  .sf-tier__opts { display: none; padding: 0 0 16px 36px; }
+  .sf-tier.is-selected .sf-tier__opts { display: block; }
+  .sf-tier__optlabel { margin-bottom: 8px; font-size: 13px; font-weight: 500; color: #6f6664; }
+  .sf-tier__opts .sf-row + .sf-row { margin-top: 8px; }
+  .sf-row { display: flex; align-items: center; gap: 8px; }
+  .sf-row__img { flex: 0 0 auto; width: 46px; height: 58px; border-radius: 6px; overflow: hidden; background: #EEF0F1; }
+  .sf-row__img img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+  .sf-sel { position: relative; display: flex; align-items: center; flex: 1 1 0; min-width: 0; max-width: 220px; height: 44px; border: 1px solid #E2D8D3; border-radius: 8px; background: #fff; }
+  .sf-sel .sf-dot { position: absolute; left: 11px; width: 15px; height: 15px; pointer-events: none; }
+  .sf-sel select { width: 100%; height: 100%; padding: 0 28px 0 14px; border: 0; background: transparent; font: inherit; font-size: 14px; color: var(--sf-ink); appearance: none; -webkit-appearance: none; cursor: pointer;
+    background-image: linear-gradient(45deg, transparent 50%, #6f6664 50%), linear-gradient(135deg, #6f6664 50%, transparent 50%); background-position: calc(100% - 16px) 19px, calc(100% - 11px) 19px; background-size: 5px 5px; background-repeat: no-repeat; }
+  .sf-sel--color select { padding-left: 34px; }
+  .sf-row .sf-sel { flex: 0 1 158px; } .sf-row .sf-sel--size, .sf-row .sf-sel:not(.sf-sel--color) { flex: 0 0 84px; }
+  .sf-sel .sf-dot { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12); }
+  .sf-tier__perks { margin: 0 -16px; background: #E9E4E1; color: #3f3735; }
+  .sf-tier.is-selected .sf-tier__perks { margin: 0 -15px; background: var(--sf-plum); color: #fff; }
+  .sf-perk { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 16px; font-size: 14px; }
+  .sf-perk + .sf-perk { border-top: 1px solid rgba(63, 55, 53, .14); }
+  .sf-tier.is-selected .sf-perk + .sf-perk { border-top-color: rgba(255, 255, 255, .22); }
+  .sf-perk__img { flex: 0 0 auto; width: 44px; height: 44px; border-radius: 6px; overflow: hidden; display: grid; place-items: center; background: rgba(255, 255, 255, .55); color: var(--sf-plum); }
+  .sf-perk__img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .sf-perk__img svg { width: 24px; height: 24px; }
+  .sf-perk__img--ico { background: none; width: 30px; } .sf-perk__img--ico svg { width: 26px; height: 26px; }
+  .sf-tier.is-selected .sf-perk__img { background: rgba(255, 255, 255, .14); color: #F4C9D6; }
+  .sf-perk__txt { flex: 1 1 auto; min-width: 0; font-weight: 700; line-height: 1.25; }
+  .sf-perk__val { flex: 0 0 auto; margin-left: auto; font-size: 13.5px; font-weight: 600; opacity: .75; }
+  .sf-perk .sf-sel { flex: 0 0 auto; width: 132px; height: 38px; margin-left: auto; color: var(--sf-ink); }
+  .sf-perk .sf-sel + .sf-perk__val { margin-left: 0; }
+  .sf-tier:not(.is-selected) .sf-perk .sf-sel { display: none; }
+  .sf-tier.is-out .sf-tier__price b { color: #9a9290; }
+
+  /* carte d'avantages : 2 colonnes, icones au trait */
+  .sf-shop__usps { display: grid; grid-template-columns: 1fr 1fr; gap: 30px 22px; margin-top: 30px; padding: 28px 24px; border: 1px solid #EFEAE7; border-radius: 4px; background: #fff; }
+  .sf-shop__usp { display: flex; align-items: center; gap: 16px; min-width: 0; }
+  .sf-shop__uico { flex: 0 0 auto; width: 44px; height: 44px; display: grid; place-items: center; color: var(--sf-ink); }
+  .sf-shop__uico svg { width: 42px; height: 42px; stroke-width: 1.1; }
+  .sf-shop__usp > b { font-size: 15px; font-weight: 600; letter-spacing: .02em; line-height: 1.4; color: var(--sf-ink); }
+
+  /* accordeons : icone a gauche, "+" a droite */
+  .sf-shop__accs { margin-top: 30px; border-top: 1px solid #ECE6E3; }
+  .sf-shop__acc { border-bottom: 1px solid #ECE6E3; }
+  .sf-shop__acc summary { display: flex; align-items: center; gap: 16px; padding: 22px 0; cursor: pointer; list-style: none; }
+  .sf-shop__acc summary::-webkit-details-marker { display: none; }
+  .sf-shop__aico { flex: 0 0 auto; width: 32px; height: 32px; display: grid; place-items: center; color: var(--sf-ink); }
+  .sf-shop__aico svg { width: 30px; height: 30px; }
+  .sf-shop__acc summary > b { flex: 1; font-size: 18px; font-weight: 400; letter-spacing: .02em; color: var(--sf-ink); }
+  .sf-shop__plus { position: relative; flex: 0 0 auto; width: 14px; height: 14px; }
+  .sf-shop__plus::before, .sf-shop__plus::after { content: ''; position: absolute; background: var(--sf-ink); }
+  .sf-shop__plus::before { left: 0; right: 0; top: 6.5px; height: 1.5px; }
+  .sf-shop__plus::after { top: 0; bottom: 0; left: 6.5px; width: 1.5px; }
+  .sf-shop__acc[open] .sf-shop__plus::after { display: none; }
+  .sf-shop__fbody { padding: 0 0 20px 48px; font-size: 14.5px; line-height: 1.65; color: #4d4543; }
   .sf-shop__fbody p + p { margin-top: 8px; } .sf-shop__fbody ul { margin-top: 8px; padding-left: 0; }
-
-  /* shop the look */
-  .sf-shop__look { margin-top: 28px; }
-  .sf-shop__h { font-family: var(--sf-sans); font-size: 13px; font-weight: 600; letter-spacing: 0; color: #6f6664; }
-  .sf-shop__looks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
-  .sf-look__img { display: block; aspect-ratio: 4 / 5; background: #F1EFED; }
-  .sf-look__img img, .sf-look__img > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .sf-look__plus { position: absolute; right: 10px; bottom: 10px; width: 30px; height: 30px; display: grid; place-items: center; background: var(--sf-ink); color: #fff; }
-  .sf-look__plus svg { width: 14px; height: 14px; }
-  .sf-look__t { display: block; margin-top: 8px; font-size: 13px; color: var(--sf-ink); }
-  .sf-look__p { margin-top: 2px; font-size: 13px; } .sf-look__p b { color: var(--sf-plum); } .sf-look__p s { color: #9a9290; font-size: 12px; }
 
   /* lightbox */
   .sf-shop__lb { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; padding: 24px; background: rgba(19, 7, 46, .85); cursor: zoom-out; }
@@ -439,16 +696,22 @@
   @media (max-width: 989px) {
     .sf-shop__grid { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
     .sf-shop__gal { position: static; }
-    .sf-shop__gal.has-thumbs { grid-template-columns: 1fr; gap: 0; }
-    .sf-shop__aside { order: 1; margin-top: 8px; position: static; }
-    .sf-shop__thumbs { position: static; flex-direction: row; overflow-y: hidden; overflow-x: auto; }
-    .sf-shop__thumbs li { width: 64px; }
+    .sf-shop__gal--left.has-thumbs { display: flex; flex-direction: column; gap: 0; }
+    .sf-shop__gal--left .sf-shop__aside { order: 2; margin-top: 8px; position: static; }
+    .sf-shop__gal--left .sf-shop__thumbs { position: relative; inset: auto; flex-direction: row; overflow-y: hidden; overflow-x: auto; }
+    .sf-shop__gal--left .sf-shop__thumbs li { width: 64px; }
   }
   @media (max-width: 749px) {
     .sf-shop { padding-top: 0; }
     .sf-shop__wrap { padding-inline: 0; }
     .sf-shop__buy { padding-inline: 16px; }
     .sf-shop__aside { padding-inline: 16px; }
+    .sf-shop__zoom { width: 40px; height: 40px; }
+    .sf-shop__usps { padding: 22px 16px; gap: 24px 14px; }
+    .sf-shop__uico { width: 36px; height: 36px; } .sf-shop__uico svg { width: 34px; height: 34px; }
+    .sf-shop__usp { gap: 12px; } .sf-shop__usp > b { font-size: 13.5px; }
+    .sf-shop__acc summary > b { font-size: 16.5px; }
+    .sf-shop__fbody { padding-left: 0; }
   }
 {% endstylesheet %}
 
@@ -460,6 +723,9 @@
   "settings": [
     { "type": "product", "id": "product", "label": "Produit (vide = produit de la page)" },
     { "type": "text", "id": "label", "label": "Petite ligne au-dessus du titre" },
+    { "type": "select", "id": "thumbs_pos", "label": "Miniatures de la galerie", "default": "below", "options": [
+      { "value": "below", "label": "Sous l'image" }, { "value": "left", "label": "À gauche de l'image" }
+    ] },
     { "type": "header", "content": "Pastilles de couleur en deux rangées" },
     { "type": "text", "id": "group1_title", "label": "Titre de la 1re rangée", "default": "Classic" },
     { "type": "text", "id": "group1_values", "label": "Couleurs de la 1re rangée (virgules)", "info": "Les autres couleurs vont dans la 2e rangée. Vide = une seule rangée." },
@@ -467,9 +733,9 @@
     { "type": "header", "content": "Avis (affichés seulement si réels)" },
     { "type": "text", "id": "rating_manual", "label": "Note réelle (ex. 4.8) — sinon metafield" },
     { "type": "text", "id": "rating_count", "label": "Nombre d'avis réel (ex. 120)" },
-    { "type": "header", "content": "Prix" },
+    { "type": "header", "content": "Prix et tailles" },
     { "type": "text", "id": "price_note", "label": "Ligne sous le prix" },
-    { "type": "text", "id": "in_stock_text", "label": "Texte si disponible", "default": "In stock" },
+    { "type": "text", "id": "fit_note", "label": "Ligne au-dessus des tailles (ex. coupe normale)" },
     { "type": "text", "id": "size_link_label", "label": "Lien guide des tailles : texte", "default": "Size guide" },
     { "type": "url", "id": "size_link", "label": "Lien guide des tailles : URL (vide = masqué)" },
     { "type": "header", "content": "Bouton d'achat" },
@@ -478,26 +744,37 @@
     { "type": "text", "id": "adding_label", "label": "Texte pendant l'ajout", "default": "Adding…" },
     { "type": "text", "id": "atc_note", "label": "Ligne sous le bouton", "default": "Secure checkout" },
     { "type": "header", "content": "Livraison" },
-    { "type": "text", "id": "ship_text", "label": "Ligne livraison gratuite", "default": "Free shipping on every order" },
-    { "type": "header", "content": "Shop the look" },
-    { "type": "text", "id": "look_title", "label": "Titre", "default": "Shop the look" }
+    { "type": "text", "id": "ship_text", "label": "Ligne livraison (sous le bouton)", "default": "Free shipping on every order" },
+    { "type": "header", "content": "Bundle (offre à lots)" },
+    { "type": "paragraph", "content": "Chaque lot ajoute au panier le nombre de pièces indiqué, au prix normal du produit. Pour une vraie remise (ex. 2e à -50 %), créez-la dans Shopify (Réductions, automatique) : le prix affiché ici est le prix avant remise." },
+    { "type": "text", "id": "offer_title_1", "label": "Titre (italique)", "default": "Self-care" },
+    { "type": "text", "id": "offer_title_2", "label": "Titre (gras)", "default": "MONTH" },
+    { "type": "text", "id": "offer_sub", "label": "Sous-titre", "default": "Choose your bundle" },
+    { "type": "range", "id": "default_tier", "min": 1, "max": 3, "step": 1, "label": "Lot sélectionné par défaut", "default": 2 },
+    { "type": "text", "id": "bundle_atc_label", "label": "Texte du bouton du bundle", "default": "Add bundle to cart" },
+    { "type": "text", "id": "offer_ship", "label": "Bandeau livraison (lots où c'est coché)", "default": "FREE Shipping" },
+    { "type": "text", "id": "gift_text", "label": "Cadeau offert (lots où c'est coché)" },
+    { "type": "image_picker", "id": "gift_image", "label": "Photo du cadeau" },
+    { "type": "text", "id": "gift_colors", "label": "Couleurs du cadeau, séparées par des virgules" },
+    { "type": "text", "id": "gift_value", "label": "Valeur barrée du cadeau (laisser vide si inconnue)" },
+    { "type": "text", "id": "save_label", "label": "Texte d'économie ({amount} = montant)", "default": "You save {amount}" },
+    { "type": "text", "id": "timer_end", "label": "Fin de l'offre (AAAA-MM-JJ HH:MM, vide = pas de compte à rebours)", "info": "Indiquez uniquement une vraie date de fin d'offre : le compte à rebours disparaît à cette date." },
+    { "type": "text", "id": "timer_label", "label": "Texte du compte à rebours", "default": "Offer ends in" },
+    { "type": "text", "id": "perpiece_label", "label": "Pastille prix par pièce ({amount})", "default": "Only {amount} per piece" },
+    { "type": "checkbox", "id": "per_piece", "label": "Choisir couleur / taille pièce par pièce", "default": true }
   ],
   "blocks": [
-    {
-      "type": "look",
-      "name": "Shop the look",
-      "limit": 4,
-      "settings": [ { "type": "product", "id": "product", "label": "Produit complémentaire" } ]
-    },
     {
       "type": "usp",
       "name": "Avantage",
       "settings": [
         { "type": "select", "id": "icon", "label": "Icône", "default": "check", "options": [
-          { "value": "check", "label": "Coche" }, { "value": "sparkle", "label": "Étincelle" }, { "value": "texture", "label": "Texture" },
-          { "value": "comfort", "label": "Confort" }, { "value": "truck", "label": "Livraison" },
-          { "value": "shield", "label": "Bouclier" }, { "value": "ruler", "label": "Mètre" },
-          { "value": "heart", "label": "Cœur" }, { "value": "feather", "label": "Plume" }, { "value": "lock", "label": "Cadenas" }
+          { "value": "check", "label": "Coche" }, { "value": "bra-lift", "label": "Soutien-gorge qui lifte" }, { "value": "bra-neck", "label": "Décolleté" },
+          { "value": "bra-fit", "label": "Ajustement parfait" }, { "value": "seamless", "label": "Sans couture" }, { "value": "bra-comfort", "label": "Confort" },
+          { "value": "soft", "label": "Matière douce" }, { "value": "no-marks", "label": "Sans marques" }, { "value": "pads", "label": "Coques amovibles" },
+          { "value": "hook", "label": "Rallonge d'agrafes" }, { "value": "sparkle", "label": "Étincelle" }, { "value": "texture", "label": "Texture" },
+          { "value": "comfort", "label": "Cœur" }, { "value": "truck", "label": "Livraison" }, { "value": "shield", "label": "Bouclier" },
+          { "value": "ruler", "label": "Mètre" }, { "value": "heart", "label": "Cœur plein" }, { "value": "feather", "label": "Plume" }, { "value": "lock", "label": "Cadenas" }
         ] },
         { "type": "text", "id": "text", "label": "Texte", "default": "Benefit" }
       ]
@@ -506,13 +783,26 @@
       "type": "accordion",
       "name": "Accordéon",
       "settings": [
-        { "type": "select", "id": "icon", "label": "Icône", "default": "ruler", "options": [
-          { "value": "ruler", "label": "Mètre" }, { "value": "feather", "label": "Plume" }, { "value": "sparkle", "label": "Étincelle" },
-          { "value": "truck", "label": "Livraison" }, { "value": "shield", "label": "Bouclier" }, { "value": "heart", "label": "Cœur" }
+        { "type": "select", "id": "icon", "label": "Icône", "default": "tape", "options": [
+          { "value": "tape", "label": "Mètre ruban" }, { "value": "layers", "label": "Matière" }, { "value": "hanger", "label": "Cintre" },
+          { "value": "truckline", "label": "Livraison" }, { "value": "feather", "label": "Plume" }, { "value": "sparkle", "label": "Étincelle" },
+          { "value": "shield", "label": "Bouclier" }, { "value": "heart", "label": "Cœur" }
         ] },
         { "type": "text", "id": "title", "label": "Titre", "default": "Details" },
         { "type": "checkbox", "id": "use_description", "label": "Afficher la description du produit", "default": false },
         { "type": "richtext", "id": "content", "label": "Contenu" }
+      ]
+    },
+    {
+      "type": "tier",
+      "name": "Lot",
+      "limit": 3,
+      "settings": [
+        { "type": "range", "id": "quantity", "min": 1, "max": 6, "step": 1, "label": "Nombre de pièces", "default": 1 },
+        { "type": "text", "id": "badge", "label": "Étiquette (coin haut droit)" },
+        { "type": "text", "id": "note", "label": "Petit texte sous le titre" },
+        { "type": "checkbox", "id": "ship", "label": "Afficher le bandeau livraison offerte", "default": true },
+        { "type": "checkbox", "id": "gift", "label": "Afficher le cadeau offert", "default": false }
       ]
     }
   ],

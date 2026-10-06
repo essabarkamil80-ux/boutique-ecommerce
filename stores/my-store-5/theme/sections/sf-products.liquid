@@ -14,6 +14,7 @@
   if src != blank and section.settings.by_variant
     assign variant_mode = true
   endif
+  assign card_blocks = section.blocks | where: 'type', 'card'
 -%}
 <section class="sf sf-prod" id="sf-prod-{{ section.id }}" style="--prod-bg: {{ section.settings.bg }};">
   <div class="sf-wrap sf-prod__head">
@@ -29,7 +30,26 @@
     </div>
   </div>
   <ul class="sf-rail sf-prod__rail">
-    {%- if variant_mode -%}
+    {%- if card_blocks.size > 0 -%}
+      {%- for b in card_blocks -%}
+        {%- assign bp = b.settings.product -%}
+        {%- if bp != blank -%}
+          {%- assign bv = nil -%}
+          {%- assign want = b.settings.color | downcase | strip -%}
+          {%- if want != '' -%}
+            {%- for v in bp.variants -%}
+              {%- for ov in v.options -%}
+                {%- assign ovn = ov | downcase | strip -%}
+                {%- if ovn == want and bv == nil -%}{%- assign bv = v -%}{%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+          {%- endif -%}
+          <li class="sf-prod__item" {{ b.shopify_attributes }}>
+            {%- if bv -%}{%- render 'sf-card', card_product: bp, card_variant: bv -%}{%- else -%}{%- render 'sf-card', card_product: bp -%}{%- endif -%}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- elsif variant_mode -%}
       {%- for v in src.variants limit: section.settings.limit -%}
         <li class="sf-prod__item">{%- render 'sf-card', card_product: src, card_variant: v -%}</li>
       {%- endfor -%}
@@ -78,7 +98,18 @@
     { "type": "text", "id": "view_all_label", "label": "Lien « voir tout »", "default": "View all" },
     { "type": "url", "id": "view_all_link", "label": "URL « voir tout » (vide = la collection)" },
     { "type": "color", "id": "bg", "label": "Fond", "default": "#FFFFFF" },
-    { "type": "paragraph", "content": "Pastille : ajoutez le tag « badge:Best seller » ou « badge:New » au produit. Sous-titre : metafield custom.subtitle. Les étoiles apparaissent seules quand une appli d'avis remplit reviews.rating." }
+    { "type": "paragraph", "content": "Pastille : ajoutez le tag « badge:Best seller » ou « badge:New » au produit. Sous-titre : metafield custom.subtitle. Les étoiles apparaissent seules quand une appli d'avis remplit reviews.rating." },
+    { "type": "paragraph", "content": "Cartes manuelles : si vous ajoutez des blocs « Carte produit », ils remplacent la collection et s'affichent dans l'ordre de la liste." }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Carte produit",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Produit" },
+        { "type": "text", "id": "color", "label": "Couleur (vide = le produit)", "info": "Ex. Black : la carte mène directement à cette couleur. Vide : la carte mène à la page du produit." }
+      ]
+    }
   ],
   "presets": [ { "name": "SF · Carrousel produits" } ]
 }

@@ -110,6 +110,7 @@ async function renderSection(id, conf, ctxBase) {
   const blocks = (conf.block_order || []).map((k) => {
     const b = conf.blocks[k]; const def = (schema.blocks || []).find((x) => x.type === b.type);
     const st = Object.assign(defaults(def && def.settings), b.settings || {});
+    for (const d of (def && def.settings) || []) if (d.type === 'product' && st[d.id]) st[d.id] = PRODUCT;
     if (withImg && MODE !== 'index') { for (const k of Object.keys(st)) if (st[k] === '' && /^(image|photo|before|after)$/.test(k)) st[k] = fakeImg((st.name || st.title || b.type) + ' ' + k, 700, 900); }
     if (withImg && MODE === 'index' && (b.type === 'category' || b.type === 'color' || b.type === 'review')) {
       const key = b.type === 'review' ? 'photo' : 'image';

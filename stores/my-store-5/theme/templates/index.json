@@ -78,14 +78,51 @@
     },
     "bestsellers": {
       "type": "sf-products",
+      "blocks": {
+        "bs-1": {
+          "type": "card",
+          "settings": {
+            "product": "essabar-co-sculpt-3d-leggings",
+            "color": "Black"
+          }
+        },
+        "bs-2": {
+          "type": "card",
+          "settings": {
+            "product": "essabar-co-sculpt-3d-leggings",
+            "color": "Blue"
+          }
+        },
+        "bs-3": {
+          "type": "card",
+          "settings": {
+            "product": "essabar-co-push-up",
+            "color": ""
+          }
+        },
+        "bs-4": {
+          "type": "card",
+          "settings": {
+            "product": "essabar-co-sculpt-3d-leggings",
+            "color": ""
+          }
+        }
+      },
+      "block_order": [
+        "bs-1",
+        "bs-2",
+        "bs-3",
+        "bs-4"
+      ],
       "settings": {
         "title": "Best Sellers",
         "collection": "",
+        "product": "",
+        "by_variant": true,
         "limit": 8,
         "view_all_label": "View all",
         "view_all_link": "",
-        "bg": "#ffffff",
-        "by_variant": true
+        "bg": "#ffffff"
       }
     },
     "promo": {
@@ -127,11 +164,11 @@
         "bg": "#6b2441",
         "shade": 20,
         "show_tag": true,
-        "title": "70% Off",
-        "title_2": "On Full Outfits",
-        "text": "One draining 3D knit, 4 pieces, from your arms to your ankles. Wear one, or wear them all.",
-        "btn_label": "Shop now",
-        "btn_link": ""
+        "title": "BUY 1, GET 1 FREE",
+        "title_2": "Mix & Match Your Favorites",
+        "text": "Choose your favorites and get the second one FREE. Your perfect excuse to treat yourself.",
+        "btn_label": "SHOP THE OFFER",
+        "btn_link": "shopify://products/essabar-co-sculpt-3d-leggings"
       }
     },
     "categories": {
@@ -141,6 +178,7 @@
           "type": "category",
           "settings": {
             "collection": "",
+            "image": "shopify://shop_images/leo-teal.webp",
             "label": "3D Leggings",
             "sub": "13 colors",
             "link": ""
@@ -150,7 +188,8 @@
           "type": "category",
           "settings": {
             "collection": "",
-            "label": "3D Shorts",
+            "image": "shopify://shop_images/2010-10-Model-Front-Crop.webp",
+            "label": "Essabar&Co. Push-Up",
             "sub": "11 colors",
             "link": ""
           }
@@ -327,6 +366,46 @@
     },
     "news": {
       "type": "sf-news",
+      "blocks": {
+        "post-1": {
+          "type": "post",
+          "settings": {
+            "article": "",
+            "image": "shopify://shop_images/Screenshot_2026-10-01_18.29.12.png",
+            "title": "",
+            "date": "",
+            "excerpt": "",
+            "link": ""
+          }
+        },
+        "post-2": {
+          "type": "post",
+          "settings": {
+            "article": "",
+            "image": "shopify://shop_images/Screenshot_2026-10-01_18.29.54.png",
+            "title": "",
+            "date": "",
+            "excerpt": "",
+            "link": ""
+          }
+        },
+        "post-3": {
+          "type": "post",
+          "settings": {
+            "article": "",
+            "image": "shopify://shop_images/Screenshot_2026-10-01_18.28.30.png",
+            "title": "",
+            "date": "",
+            "excerpt": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "post-1",
+        "post-2",
+        "post-3"
+      ],
       "settings": {
         "title": "News",
         "blog": "news",
@@ -334,26 +413,7 @@
         "words": 34,
         "view_all_label": "",
         "bg": "#f9f3ee"
-      },
-      "blocks": {
-        "post-1": {
-          "type": "post",
-          "settings": {}
-        },
-        "post-2": {
-          "type": "post",
-          "settings": {}
-        },
-        "post-3": {
-          "type": "post",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "post-1",
-        "post-2",
-        "post-3"
-      ]
+      }
     },
     "trust": {
       "type": "sf-trust",

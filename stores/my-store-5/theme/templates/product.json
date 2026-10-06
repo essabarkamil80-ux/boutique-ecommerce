@@ -64,7 +64,7 @@
           "type": "result",
           "settings": {
             "name": "Customer",
-            "meta": "",
+            "meta": "00 yrs",
             "label": "",
             "rating": 0,
             "title": "Review title",
@@ -95,6 +95,46 @@
             "title": "Shipping & returns",
             "content": "<p>Free shipping on every order, no minimum. Free returns within 30 days.</p>"
           }
+        },
+        "res-2": {
+          "type": "result",
+          "settings": {
+            "name": "Customer name",
+            "meta": "00 yrs",
+            "rating": 0,
+            "title": "Review title",
+            "quote": "Paste a real customer review here."
+          }
+        },
+        "res-3": {
+          "type": "result",
+          "settings": {
+            "name": "Customer name",
+            "meta": "00 yrs",
+            "rating": 0,
+            "title": "Review title",
+            "quote": "Paste a real customer review here."
+          }
+        },
+        "res-4": {
+          "type": "result",
+          "settings": {
+            "name": "Customer name",
+            "meta": "00 yrs",
+            "rating": 0,
+            "title": "Review title",
+            "quote": "Paste a real customer review here."
+          }
+        },
+        "res-5": {
+          "type": "result",
+          "settings": {
+            "name": "Customer name",
+            "meta": "00 yrs",
+            "rating": 0,
+            "title": "Review title",
+            "quote": "Paste a real customer review here."
+          }
         }
       },
       "block_order": [
@@ -106,6 +146,10 @@
         "pdp-6",
         "pdp-7",
         "pdp-8",
+        "res-2",
+        "res-3",
+        "res-4",
+        "res-5",
         "pdp-12",
         "pdp-13",
         "pdp-14"

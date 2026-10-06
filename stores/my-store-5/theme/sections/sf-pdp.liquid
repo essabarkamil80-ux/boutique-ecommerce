@@ -288,8 +288,12 @@
           <div class="sf-res__tabs" role="tablist"{% if results.size < 2 %} hidden{% endif %}>
             {%- for r in results -%}
               <button type="button" role="tab" class="sf-res__tab{% if forloop.first %} is-active{% endif %}" data-tab="{{ forloop.index0 }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
-                <i class="sf-res__av">{{ r.settings.name | slice: 0 }}</i>
-                <span><b>{{ r.settings.name }}</b>{%- if r.settings.meta != blank -%}<small>{{ r.settings.meta }}</small>{%- endif -%}</span>
+                {%- if r.settings.avatar != blank -%}
+                  <i class="sf-res__av">{{ r.settings.avatar | image_url: width: 80 | image_tag: width: 28, height: 28, alt: '', loading: 'lazy' }}</i>
+                {%- else -%}
+                  <i class="sf-res__av">{{ r.settings.name | slice: 0 }}</i>
+                {%- endif -%}
+                <span><b>{{ r.settings.name }}</b>{%- if r.settings.meta != blank -%}<small> ({{ r.settings.meta }})</small>{%- endif -%}</span>
               </button>
             {%- endfor -%}
           </div>
@@ -559,6 +563,7 @@
       b.addEventListener('click', function () {
         $$('.sf-res__tab', res).forEach(function (x) { var on = x === b; x.classList.toggle('is-active', on); x.setAttribute('aria-selected', on); });
         $$('.sf-res__panel', res).forEach(function (p) { p.hidden = p.dataset.panel !== b.dataset.tab; });
+        var tb = b.parentNode; if (tb && tb.scrollTo) tb.scrollTo({ left: b.offsetLeft - 4, behavior: 'smooth' });
       });
     });
 
@@ -808,13 +813,16 @@
   .sf-res { margin-top: 24px; padding: 12px; border: 1px solid #F0E6E1; border-radius: 14px; background: #FBF6F2; }
   .sf-res__head { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 10px; }
   .sf-res__head svg { width: 14px; height: 14px; transform: rotate(180deg); color: #6f6664; }
-  .sf-res__tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; }
-  .sf-res__tab { display: flex; align-items: center; gap: 6px; padding: 6px 4px 8px; border-bottom: 2px solid #E9DEDA; text-align: left; min-width: 0; color: #8b8280; }
+  .sf-res__tabs { position: relative; display: flex; gap: 4px; margin-bottom: 10px; overflow-x: auto; scrollbar-width: none; }
+  .sf-res__tabs::-webkit-scrollbar { display: none; }
+  .sf-res__tab { flex: 0 0 calc((100% - 12px) / 4); display: flex; align-items: center; gap: 7px; padding: 6px 4px 8px; border-bottom: 2px solid #E9DEDA; text-align: left; min-width: 0; color: #8b8280; }
   .sf-res__tab.is-active { border-bottom-color: var(--sf-plum); color: var(--sf-ink); }
-  .sf-res__av { flex: 0 0 auto; width: 20px; height: 20px; border-radius: 50%; background: #EADFDB; font-style: normal; font-size: 10px; font-weight: 700; display: grid; place-items: center; text-transform: uppercase; }
-  .sf-res__tab span { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
-  .sf-res__tab b { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .sf-res__tab small { font-size: 9.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sf-res__tab:focus:not(:focus-visible) { outline: none; }
+  .sf-res__av { flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; overflow: hidden; background: #EADFDB; font-style: normal; font-size: 11px; font-weight: 700; display: grid; place-items: center; text-transform: uppercase; }
+  .sf-res__av img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .sf-res__tab span { display: block; min-width: 0; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11.5px; }
+  .sf-res__tab b { font-weight: 600; }
+  .sf-res__tab small { font-size: inherit; font-weight: 400; }
   .sf-res__panel[hidden] { display: none; }
   .sf-res__pics { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border-radius: 10px 10px 0 0; overflow: hidden; }
   .sf-res__tabs[hidden] { display: none; }
@@ -915,7 +923,7 @@
     .sf-size__body { grid-template-columns: 1fr; gap: 18px; padding: 16px 16px 22px; }
     .sf-size__pic { aspect-ratio: 4 / 3.4; }
     .sf-size__head { padding: 16px 16px 14px; }
-    .sf-res__tab small { display: none; }
+    .sf-res__tab { flex-basis: 42%; }
     .sf-pdp__help { flex-wrap: wrap; }
   }
 {% endstylesheet %}
@@ -1400,7 +1408,7 @@
     {
       "type": "result",
       "name": "Avant / après",
-      "limit": 4,
+      "limit": 8,
       "settings": [
         {
           "type": "text",
@@ -1411,8 +1419,13 @@
         {
           "type": "text",
           "id": "meta",
-          "label": "Info (taille · âge)",
-          "default": "Size M · 46"
+          "label": "Info entre parenthèses (ex. 38 yrs)",
+          "default": "00 yrs"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Petite photo ronde de la cliente (onglet)"
         },
         {
           "type": "image_picker",

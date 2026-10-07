@@ -366,13 +366,6 @@
         <button type="button" class="sf-size__x" data-sf-size-close aria-label="Close">{%- render 'sf-icon', name: 'close' -%}</button>
       </div>
       <div class="sf-size__body">
-        <div class="sf-size__pic sf-media" data-size-pic>
-          {%- if s.size_image != blank -%}
-            {{ s.size_image | image_url: width: 900 | image_tag: widths: '450, 700, 900', sizes: '(min-width: 750px) 380px, 90vw', alt: s.size_title, loading: 'lazy' }}
-          {%- else -%}
-            {{ 'lifestyle-1' | placeholder_svg_tag: 'sf-ph' }}
-          {%- endif -%}
-        </div>
         <div class="sf-size__side">
           <p class="sf-size__cap" data-size-cap>{{ s.size_text }}</p>
           <div class="sf-size__circles" data-size-circles role="radiogroup" aria-label="{{ s.size_label | escape }}"></div>
@@ -413,7 +406,7 @@
               {%- assign m = blank -%}
               {%- for sb in size_blocks -%}{%- if sb.settings.label == ovs -%}{%- assign m = sb.settings -%}{%- endif -%}{%- endfor -%}
               {%- unless forloop.first -%},{%- endunless -%}
-              { "label": {{ ovs | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "cap": {{ m.caption | default: '' | json }}, "img": {% if m.model_image != blank %}{{ m.model_image | image_url: width: 900 | json }}{% else %}""{% endif %} }
+              { "label": {{ ovs | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "cap": {{ m.caption | default: '' | json }} }
             {%- endfor -%}
           {%- endif -%}
         {%- endfor -%}
@@ -421,7 +414,7 @@
         {%- for sb in size_blocks -%}
           {%- assign m = sb.settings -%}
           {%- unless forloop.first -%},{%- endunless -%}
-          { "label": {{ m.label | json }}, "value": {{ m.value | default: m.label | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "cap": {{ m.caption | default: '' | json }}, "img": {% if m.model_image != blank %}{{ m.model_image | image_url: width: 900 | json }}{% else %}""{% endif %} }
+          { "label": {{ m.label | json }}, "value": {{ m.value | default: m.label | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "cap": {{ m.caption | default: '' | json }} }
         {%- endfor -%}
       {%- endif -%}
     ],
@@ -572,14 +565,13 @@
     var box = $('[data-sf-size]'), opener = $('[data-sf-size-open]');
     if (box && opener) {
       var modal = $('.sf-size__modal', box), circ = $('[data-size-circles]', box), list = $('[data-size-list]', box), cta = $('[data-size-cta]', box),
-          pic = $('[data-size-pic]', box), cap = $('[data-size-cap]', box), emptyMsg = $('[data-size-empty]', box), measBox = $('[data-size-meas]', box), measTg = $('[data-meas-toggle]', box), measBody = $('[data-meas-body]', box), measSz = $('[data-meas-size]', box), unit = 'cm', chosen = 0, lastFocus = null, defaultPic = pic.innerHTML;
+          cap = $('[data-size-cap]', box), emptyMsg = $('[data-size-empty]', box), measBox = $('[data-size-meas]', box), measTg = $('[data-meas-toggle]', box), measBody = $('[data-meas-body]', box), measSz = $('[data-meas-size]', box), unit = 'cm', chosen = 0, lastFocus = null;
       var Z = D.sizes || [];
       function fmtVal(v) { if (v === null || v === undefined || String(v).trim() === '') return '—'; var n = parseFloat(String(v).replace(',', '.')); if (isNaN(n)) return v; return unit === 'in' ? (Math.round(n / 2.54 * 10) / 10) + ' in' : n + ' cm'; }
       function drawSize() {
         var z = Z[chosen]; if (!z) return;
         $$('button', circ).forEach(function (b, i) { b.classList.toggle('is-on', i === chosen); b.setAttribute('aria-checked', i === chosen ? 'true' : 'false'); });
         list.innerHTML = ''; D.meas.forEach(function (name, i) { if (!name) return; var li = document.createElement('li'); var a = document.createElement('span'); a.textContent = name; var b = document.createElement('b'); b.textContent = fmtVal(z.v[i]); li.appendChild(a); li.appendChild(b); list.appendChild(li); });
-        if (z.img) { pic.innerHTML = '<img alt="" src="' + z.img + '">'; } else { pic.innerHTML = defaultPic; }
         cta.textContent = D.labels.cta.replace('{size}', z.value || z.label);
         cap.textContent = z.cap || D.labels.sizeText || ''; measSz.textContent = ' · ' + (z.value || z.label);
       }
@@ -870,10 +862,8 @@
   .sf-size__x { position: absolute; right: 18px; top: 20px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: transparent; color: var(--sf-ink); }
   .sf-size__x svg { width: 16px; height: 16px; }
   .sf-size__body { display: block; padding: 16px 28px 28px; }
-  .sf-size__pic { aspect-ratio: 3 / 2; border-radius: 12px; background: var(--sf-card); overflow: hidden; }
-  .sf-size__pic img, .sf-size__pic > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .sf-size__side { display: flex; flex-direction: column; min-width: 0; }
-  .sf-size__cap { margin-top: 16px; text-align: center; font-size: 15.5px; line-height: 1.55; color: var(--sf-ink); }
+  .sf-size__cap { margin-top: 4px; text-align: center; font-size: 15.5px; line-height: 1.55; color: var(--sf-ink); }
   .sf-size__cap:empty { display: none; }
   .sf-size__circles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 14px; margin-top: 22px; }
   .sf-size__circles[hidden] { display: none; }
@@ -1061,18 +1051,13 @@
     {
       "type": "text",
       "id": "size_text",
-      "label": "Texte sous la photo (si la taille n'a pas de texte)"
+      "label": "Texte par défaut (si la taille n'a pas de texte)"
     },
     {
       "type": "text",
       "id": "size_label",
       "label": "Libellé des tailles",
       "default": "Select your size"
-    },
-    {
-      "type": "image_picker",
-      "id": "size_image",
-      "label": "Image par défaut (mannequin / guide)"
     },
     {
       "type": "text",
@@ -1575,7 +1560,7 @@
         {
           "type": "textarea",
           "id": "caption",
-          "label": "Texte sous la photo pour cette taille"
+          "label": "Texte affiché pour cette taille"
         },
         {
           "type": "text",
@@ -1591,11 +1576,6 @@
           "type": "text",
           "id": "v3",
           "label": "Mesure 3 (cm)"
-        },
-        {
-          "type": "image_picker",
-          "id": "model_image",
-          "label": "Photo pour cette taille (optionnelle)"
         }
       ]
     }

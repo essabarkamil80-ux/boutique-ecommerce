@@ -189,56 +189,56 @@
           "settings": {
             "label": "XS/S",
             "value": "S",
-            "caption": "The girls usually wear US 4–6, have 24–27″ waists and 34–37″ hips, and are shown here in size XS/S."
+            "caption": "Women who usually wear US 4–6, with 24–27″ waists and 34–37″ hips, wear size XS/S."
           }
         },
         "sz-2": {
           "type": "size",
           "settings": {
             "label": "M",
-            "caption": "The girls usually wear US 8–10, have 28–32″ waists and 38–42″ hips, and are shown here in size M."
+            "caption": "Women who usually wear US 8–10, with 28–32″ waists and 38–42″ hips, wear size M."
           }
         },
         "sz-3": {
           "type": "size",
           "settings": {
             "label": "L",
-            "caption": "The girls usually wear US 12–14, have 33–35″ waists and 43–45″ hips, and are shown here in size L."
+            "caption": "Women who usually wear US 12–14, with 33–35″ waists and 43–45″ hips, wear size L."
           }
         },
         "sz-4": {
           "type": "size",
           "settings": {
             "label": "XL",
-            "caption": "The girls usually wear US 16, have 36–40″ waists and 46–48″ hips, and are shown here in size XL."
+            "caption": "Women who usually wear US 16, with 36–40″ waists and 46–48″ hips, wear size XL."
           }
         },
         "sz-5": {
           "type": "size",
           "settings": {
             "label": "2XL",
-            "caption": "The girls usually wear US 18–20, have 41–43″ waists and 49–51″ hips, and are shown here in size 2XL."
+            "caption": "Women who usually wear US 18–20, with 41–43″ waists and 49–51″ hips, wear size 2XL."
           }
         },
         "sz-6": {
           "type": "size",
           "settings": {
             "label": "3XL",
-            "caption": "The girls usually wear US 22–24, have 45–47″ waists and 54–56″ hips, and are shown here in size 3XL."
+            "caption": "Women who usually wear US 22–24, with 45–47″ waists and 54–56″ hips, wear size 3XL."
           }
         },
         "sz-7": {
           "type": "size",
           "settings": {
             "label": "4XL",
-            "caption": "The girls usually wear US 26–28, have 47–50″ waists and 56–58″ hips, and are shown here in size 4XL."
+            "caption": "Women who usually wear US 26–28, with 47–50″ waists and 56–58″ hips, wear size 4XL."
           }
         },
         "sz-8": {
           "type": "size",
           "settings": {
             "label": "5XL",
-            "caption": "The girls usually wear US 30–32, have 50–52″ waists and 58–61″ hips, and are shown here in size 5XL."
+            "caption": "Women who usually wear US 30–32, with 50–52″ waists and 58–61″ hips, wear size 5XL."
           }
         }
       },

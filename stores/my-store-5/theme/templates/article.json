@@ -32,31 +32,6 @@
       ],
       "settings": {}
     },
-    "news": {
-      "type": "sf-news",
-      "blocks": {
-        "post-1": {
-          "type": "post",
-          "settings": {}
-        },
-        "post-2": {
-          "type": "post",
-          "settings": {}
-        },
-        "post-3": {
-          "type": "post",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "post-1",
-        "post-2",
-        "post-3"
-      ],
-      "settings": {
-        "blog": "news"
-      }
-    },
     "trust": {
       "type": "sf-trust",
       "blocks": {
@@ -106,7 +81,6 @@
   },
   "order": [
     "main",
-    "news",
     "trust"
   ]
 }

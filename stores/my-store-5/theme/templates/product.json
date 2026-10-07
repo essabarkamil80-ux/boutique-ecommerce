@@ -35,9 +35,10 @@
           "type": "tier",
           "settings": {
             "quantity": 1,
+            "badge": "",
+            "note": "",
             "ship": false,
-            "gift": false,
-            "note": ""
+            "gift": false
           }
         },
         "pdp-6": {
@@ -63,29 +64,115 @@
         "pdp-8": {
           "type": "result",
           "settings": {
-            "name": "Customer",
-            "meta": "00 yrs",
+            "name": "Emma",
+            "meta": "",
+            "avatar": "shopify://shop_images/leonie-avatar-v5-stretch-marks-02.webp",
+            "image": "shopify://shop_images/watermark_removed.png",
             "label": "",
-            "rating": 0,
-            "title": "Review title",
-            "quote": "Paste a real customer review here.",
+            "rating": 5,
+            "badge": "",
+            "title": "✨ Visible results in just a few weeks",
+            "quote": "« I was sceptical before ordering, but after 2 months of wearing the 3D leggings from Leonie and Co for just 2 hours a day, my skin is much smoother and I’ve finally regained my confidence! »",
             "b1_label": "Comfort",
-            "b2_label": "Fit",
-            "b3_label": "Quality",
-            "image": "shopify://shop_images/watermark_removed.png"
+            "b1_value": 4.8,
+            "b2_label": "compression",
+            "b2_value": 4.3,
+            "b3_label": "results speed",
+            "b3_value": 4.3
+          }
+        },
+        "res-2": {
+          "type": "result",
+          "settings": {
+            "name": "Claire",
+            "meta": "40 yrs",
+            "avatar": "shopify://shop_images/leonie-avatar-v5-postpartum-04.webp",
+            "image": "shopify://shop_images/watermark_removed_1.png",
+            "label": "",
+            "rating": 5,
+            "badge": "",
+            "title": "The only legging that truly worked",
+            "quote": "« I tried so many creams with no real results. These leggings, however, really surprised me. By wearing them every day, my cellulite has reduced and my thighs feel much firmer. I never thought I’d see such a change. »",
+            "b1_label": "Comfort",
+            "b1_value": 4.7,
+            "b2_label": "compression",
+            "b2_value": 4.3,
+            "b3_label": "results speed",
+            "b3_value": 4.4
+          }
+        },
+        "res-3": {
+          "type": "result",
+          "settings": {
+            "name": "Charlotte",
+            "meta": "00 yrs",
+            "avatar": "shopify://shop_images/leonie-avatar-v5-postpartum-03.webp",
+            "image": "shopify://shop_images/watermark_removed_2.png",
+            "label": "",
+            "rating": 4,
+            "badge": "",
+            "title": "My ally after pregnancy",
+            "quote": "« After giving birth, I was looking for a simple solution to regain confidence. With these leggings, my legs look visibly firmer and I even lost a bit around my waist. I wear them almost every day, they’ve become my go-to for feeling good. »",
+            "b1_label": "Comfort",
+            "b1_value": 4.4,
+            "b2_label": "compression",
+            "b2_value": 4.6,
+            "b3_label": "results speed",
+            "b3_value": 4.5
+          }
+        },
+        "res-4": {
+          "type": "result",
+          "settings": {
+            "name": "Sophie",
+            "meta": "00 yrs",
+            "avatar": "shopify://shop_images/leonie-avatar-v5-heavy-legs-02.webp",
+            "image": "shopify://shop_images/watermark_removed_3.png",
+            "label": "",
+            "rating": 4,
+            "badge": "",
+            "title": "Lighter, firmer legs",
+            "quote": "« I often suffered from heavy legs at the end of the day. Since wearing these leggings, I feel a real difference: my circulation has improved, my skin is smoother and my thighs much firmer. It’s real everyday comfort. »",
+            "b1_label": "Comfort",
+            "b1_value": 4.5,
+            "b2_label": "compression",
+            "b2_value": 4.1,
+            "b3_label": "results speed",
+            "b3_value": 4.2
+          }
+        },
+        "res-5": {
+          "type": "result",
+          "settings": {
+            "name": "Sarah",
+            "meta": "00 yrs",
+            "image": "shopify://shop_images/watermark_removed_5.png",
+            "label": "",
+            "rating": 4,
+            "badge": "",
+            "title": "So happy with the results",
+            "quote": "« I had been insecure about my cellulite for years, especially in summer. Wearing these 3D leggings regularly, I’ve seen my skin become smoother and more refined. Now I finally feel comfortable wearing dresses again without hiding. »",
+            "b1_label": "Comfort",
+            "b1_value": 5,
+            "b2_label": "compression",
+            "b2_value": 4.3,
+            "b3_label": "results speed",
+            "b3_value": 4.5
           }
         },
         "pdp-12": {
           "type": "accordion",
           "settings": {
             "title": "Fabric & fit",
-            "use_description": true
+            "use_description": true,
+            "content": ""
           }
         },
         "pdp-13": {
           "type": "accordion",
           "settings": {
             "title": "How to wear it",
+            "use_description": false,
             "content": "<p>Add your styling and care advice here.</p>"
           }
         },
@@ -93,47 +180,8 @@
           "type": "accordion",
           "settings": {
             "title": "Shipping & returns",
+            "use_description": false,
             "content": "<p>Free shipping on every order, no minimum. Free returns within 30 days.</p>"
-          }
-        },
-        "res-2": {
-          "type": "result",
-          "settings": {
-            "name": "Customer name",
-            "meta": "00 yrs",
-            "rating": 0,
-            "title": "Review title",
-            "quote": "Paste a real customer review here."
-          }
-        },
-        "res-3": {
-          "type": "result",
-          "settings": {
-            "name": "Customer name",
-            "meta": "00 yrs",
-            "rating": 0,
-            "title": "Review title",
-            "quote": "Paste a real customer review here."
-          }
-        },
-        "res-4": {
-          "type": "result",
-          "settings": {
-            "name": "Customer name",
-            "meta": "00 yrs",
-            "rating": 0,
-            "title": "Review title",
-            "quote": "Paste a real customer review here."
-          }
-        },
-        "res-5": {
-          "type": "result",
-          "settings": {
-            "name": "Customer name",
-            "meta": "00 yrs",
-            "rating": 0,
-            "title": "Review title",
-            "quote": "Paste a real customer review here."
           }
         }
       },
@@ -161,13 +209,48 @@
         "highlight": "",
         "badge_text": "award-winning 2026 Innovation.Anti cellulite",
         "proof_text": "50,000+ happy women",
-        "per_piece": true,
+        "rating_manual": "",
+        "rating_count": "",
+        "help_title": "Not sure of your size?",
+        "help_text": "See the measurements of each size.",
+        "help_chips": "",
+        "help_btn_label": "View in my size",
+        "helper_left": "",
+        "helper_link_label": "Size guide",
+        "helper_link": "",
+        "size_title": "See in your size",
+        "size_text": "Choose a size to see its measurements.",
+        "size_label": "Select your size",
+        "meas_title": "My measurements",
+        "m1_label": "Height",
+        "m2_label": "Waist",
+        "m3_label": "Hips",
+        "size_cta": "Select size {size}",
+        "size_note": "",
+        "size_empty": "The size chart will be available soon.",
+        "offer_title_1": "Self-care",
+        "offer_title_2": "MONTH",
+        "offer_sub": "Choose your bundle",
+        "default_tier": 1,
         "offer_ship": "FREE Shipping",
         "gift_text": "FREE Pair of Arm Sleeves",
         "gift_colors": "Black, Beige, Gray",
         "gift_value": "",
         "fallback_sizes": "S, M, L, XL, 2XL, 3XL, 4XL, 5XL",
-        "fallback_size_name": "Size"
+        "fallback_size_name": "Size",
+        "save_label": "You save {amount}",
+        "timer_end": "2026-10-10 23:59",
+        "timer_label": "Offer ends in",
+        "perpiece_label": "Only {amount} per piece",
+        "per_piece": true,
+        "atc_label": "Add to cart",
+        "sold_label": "Sold out",
+        "adding_label": "Adding…",
+        "r1_title": "Free shipping",
+        "r1_text": "No minimum",
+        "r2_title": "Secure payment",
+        "r2_text": "Encrypted checkout",
+        "results_title": "Before & after: from our customers"
       }
     },
     "press": {
@@ -218,20 +301,14 @@
         "logo-5",
         "logo-6"
       ],
-      "settings": {}
+      "settings": {
+        "label": "As seen in",
+        "bg": "#6b2441",
+        "speed": 40
+      }
     },
     "proof": {
       "type": "sf-pdp-proof",
-      "settings": {
-        "bg": "#f9f3ee",
-        "avatar_1": "shopify://shop_images/lp-advertorial-41-911b4ffc.webp",
-        "avatar_2": "shopify://shop_images/lp-advertorial-40-e468ec98.webp",
-        "avatar_3": "shopify://shop_images/lp-advertorial-39-73acc112.webp",
-        "number": "100,000+",
-        "product_media": 1,
-        "btn_label": "Shop the 3D leggings",
-        "image": "shopify://shop_images/leonie_cellu.webp"
-      },
       "blocks": {
         "card-1": {
           "type": "card",
@@ -271,7 +348,22 @@
         "card-2",
         "card-3",
         "card-4"
-      ]
+      ],
+      "settings": {
+        "image": "shopify://shop_images/leonie_cellu.webp",
+        "product_media": 1,
+        "bg": "#f9f3ee",
+        "avatar_1": "shopify://shop_images/lp-advertorial-41-911b4ffc.webp",
+        "avatar_2": "shopify://shop_images/lp-advertorial-40-e468ec98.webp",
+        "avatar_3": "shopify://shop_images/lp-advertorial-39-73acc112.webp",
+        "number": "100,000+",
+        "head_1": "women wearing their",
+        "head_hi": "3D leggings all day",
+        "head_2": "without thinking about it",
+        "btn_label": "Shop the 3D leggings",
+        "btn_link": "",
+        "note": "Free returns within 30 days"
+      }
     },
     "features": {
       "type": "sf-pdp-features",
@@ -300,28 +392,28 @@
         "f-4": {
           "type": "row",
           "settings": {
+            "image": "shopify://shop_images/feature-3.avif",
             "title": "3D sculpting texture",
             "tag": "Texture",
-            "text": "An innovative 3D texture designed to sculpt your silhouette.",
-            "image": "shopify://shop_images/feature-3.avif"
+            "text": "An innovative 3D texture designed to sculpt your silhouette."
           }
         },
         "f-5": {
           "type": "row",
           "settings": {
+            "image": "shopify://shop_images/feature-1bis.avif",
             "title": "High-waist design",
             "tag": "Fit",
-            "text": "Gently wraps your waist and highlights your curves.",
-            "image": "shopify://shop_images/feature-1bis.avif"
+            "text": "Gently wraps your waist and highlights your curves."
           }
         },
         "f-6": {
           "type": "row",
           "settings": {
+            "image": "shopify://shop_images/feature-3bis.avif",
             "title": "A smoother, more even look",
             "tag": "Look",
-            "text": "The 3D texture helps create a smoother-looking skin.",
-            "image": "shopify://shop_images/feature-3bis.avif"
+            "text": "The 3D texture helps create a smoother-looking skin."
           }
         }
       },
@@ -338,7 +430,11 @@
         "video_url": "",
         "autoplay": true,
         "controls": false,
-        "loop": true
+        "loop": true,
+        "bg": "#ffffff",
+        "title_1": "A 3D texture designed",
+        "title_2": "to sculpt your silhouette",
+        "sub": "Comfort, support and a flattering fit, every day."
       }
     },
     "reviews": {
@@ -501,12 +597,21 @@
             "question": "When will I actually notice something?",
             "answer": "<p>The first thing you notice is the fit: the 3D texture and the high waist smooth and support your shape the moment you put them on. Anything beyond that depends on your body, your size and how you wear them, so we don't promise a timeline. Here is a simple way to get to know your leggings:</p>",
             "open": true,
-            "show_steps": true
+            "show_steps": true,
+            "table_cols": "",
+            "table_rows": "",
+            "dont_title": "Don't",
+            "dont_list": "",
+            "do_title": "Do",
+            "do_list": "",
+            "callout_title": "",
+            "callout_text": ""
           }
         },
         "q-2": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/lc-timeline-day-01.avif",
             "caption": "You put it on. Not convinced yet.",
             "label": "Day 1",
             "icon": "smile"
@@ -515,6 +620,7 @@
         "q-3": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/lc-timeline-day-07.avif",
             "caption": "Your husband notices. You don't believe him.",
             "label": "Day 7",
             "icon": "chat"
@@ -523,6 +629,7 @@
         "q-4": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/lc-timeline-day-14.avif",
             "caption": "Your girlfriends notice too.",
             "label": "Day 14",
             "icon": "people"
@@ -531,6 +638,7 @@
         "q-5": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/lc-timeline-day-30.avif",
             "caption": "Your kids can tell something changed.",
             "label": "Day 30",
             "icon": "hands"
@@ -539,6 +647,7 @@
         "q-6": {
           "type": "step",
           "settings": {
+            "image": "shopify://shop_images/lc-timeline-day-60.avif",
             "caption": "You look in the mirror, and you smile.",
             "label": "Day 60",
             "icon": "smile"
@@ -553,6 +662,14 @@
             "answer": "<p>A legging cannot remove cellulite, and we would never say it can. What it does is change how your silhouette looks while you wear it: the 3D texture and the high-waist fit gently smooth and support the area, so your skin looks more even under your clothes.</p>",
             "open": false,
             "show_steps": false,
+            "table_cols": "",
+            "table_rows": "",
+            "dont_title": "Don't",
+            "dont_list": "",
+            "do_title": "Do",
+            "do_list": "",
+            "callout_title": "",
+            "callout_text": "",
             "card_1_icon": "calendar",
             "card_1_title": "Nothing to book",
             "card_1_text": "No appointment, no clinic, no waiting room.",
@@ -572,7 +689,15 @@
             "question": "Can I wear them all day, every day?",
             "answer": "<p>Yes. They are designed for everyday comfort, from errands to the office to a lazy weekend. Choose the size that feels snug but never restrictive, and wash them between wears like any other leggings.</p>",
             "open": false,
-            "show_steps": false
+            "show_steps": false,
+            "table_cols": "",
+            "table_rows": "",
+            "dont_title": "Don't",
+            "dont_list": "",
+            "do_title": "Do",
+            "do_list": "",
+            "callout_title": "",
+            "callout_text": ""
           }
         },
         "q-9": {
@@ -585,7 +710,13 @@
             "open": false,
             "show_steps": false,
             "table_cols": "Essabar&Co., Anti-cellulite cream, Salon massage, Standard leggings",
-            "table_rows": "Works without an appointment | yes, yes, no, yes\nNo extra time in your day | yes, no, no, yes\nWear it anywhere, all day | yes, no, no, yes\n3D texture knit | yes, no, no, no\nOne-off cost | yes, no, no, yes"
+            "table_rows": "Works without an appointment | yes, yes, no, yes\nNo extra time in your day | yes, no, no, yes\nWear it anywhere, all day | yes, no, no, yes\n3D texture knit | yes, no, no, no\nOne-off cost | yes, no, no, yes",
+            "dont_title": "Don't",
+            "dont_list": "",
+            "do_title": "Do",
+            "do_list": "",
+            "callout_title": "",
+            "callout_text": ""
           }
         },
         "q-10": {
@@ -596,7 +727,15 @@
             "question": "Pregnancy, menopause, weight changes: still relevant?",
             "answer": "<p>Our sizes run from S to 5XL, so you can pick the size that fits you today and change it later if your body changes. Free returns within 30 days make it easy to find the right one.</p><p>These are everyday leggings, not maternity or medical garments. If you are pregnant or have a medical condition (circulation, skin), ask your doctor before wearing any shaping garment.</p>",
             "open": false,
-            "show_steps": false
+            "show_steps": false,
+            "table_cols": "",
+            "table_rows": "",
+            "dont_title": "Don't",
+            "dont_list": "",
+            "do_title": "Do",
+            "do_list": "",
+            "callout_title": "",
+            "callout_text": ""
           }
         },
         "q-11": {
@@ -608,10 +747,14 @@
             "answer": "<p>Fabric softener and heat can dull the 3D texture and shorten the life of your leggings. A gentle wash and air drying keep it looking its best.</p>",
             "open": false,
             "show_steps": false,
+            "table_cols": "",
+            "table_rows": "",
             "dont_title": "Don't",
             "dont_list": "Fabric softener\nTumble dryer\nIroning the 3D lines",
             "do_title": "Do",
-            "do_list": "Machine wash at 30°C\nTurn them inside out\nAir dry flat or hanging"
+            "do_list": "Machine wash at 30°C\nTurn them inside out\nAir dry flat or hanging",
+            "callout_title": "",
+            "callout_text": ""
           }
         },
         "q-12": {
@@ -623,6 +766,12 @@
             "answer": "<p>No stress: returns are free within 30 days. Send them back and order the size that suits you better.</p>",
             "open": false,
             "show_steps": false,
+            "table_cols": "",
+            "table_rows": "",
+            "dont_title": "Don't",
+            "dont_list": "",
+            "do_title": "Do",
+            "do_list": "",
             "callout_title": "Between two sizes? Take the larger one.",
             "callout_text": "A legging that is too tight is uncomfortable and wears out faster. You want snug, never restrictive. Not sure? Use the “View in my size” button next to the price."
           }
@@ -642,7 +791,14 @@
         "q-11",
         "q-12"
       ],
-      "settings": {}
+      "settings": {
+        "bg": "#f9f3ee",
+        "badge_1": "Free returns",
+        "badge_2": "Free shipping",
+        "title_1": "How our 3D leggings",
+        "title_2": "fit into your day",
+        "sub": "Everything you need to know before you order."
+      }
     },
     "prev": {
       "type": "sf-pdp-reviews",
@@ -650,31 +806,51 @@
         "r-1": {
           "type": "review",
           "settings": {
-            "rating": 5
+            "rating": 5,
+            "name": "Customer name",
+            "verified": false,
+            "title": "Review title",
+            "text": "Paste a real customer review here."
           }
         },
         "r-2": {
           "type": "review",
           "settings": {
-            "rating": 5
+            "rating": 5,
+            "name": "Customer name",
+            "verified": false,
+            "title": "Review title",
+            "text": "Paste a real customer review here."
           }
         },
         "r-3": {
           "type": "review",
           "settings": {
-            "rating": 5
+            "rating": 5,
+            "name": "Customer name",
+            "verified": false,
+            "title": "Review title",
+            "text": "Paste a real customer review here."
           }
         },
         "r-4": {
           "type": "review",
           "settings": {
-            "rating": 5
+            "rating": 5,
+            "name": "Customer name",
+            "verified": false,
+            "title": "Review title",
+            "text": "Paste a real customer review here."
           }
         },
         "r-5": {
           "type": "review",
           "settings": {
-            "rating": 5
+            "rating": 5,
+            "name": "Customer name",
+            "verified": false,
+            "title": "Review title",
+            "text": "Paste a real customer review here."
           }
         }
       },
@@ -686,26 +862,35 @@
         "r-5"
       ],
       "settings": {
+        "badge": "",
+        "title_1": "They love Essabar&Co., because we made",
+        "title_2": "cellulite care effortless",
+        "g1_label": "Fit",
+        "g1_value": 4.6,
+        "g2_label": "Comfort",
+        "g2_value": 4.7,
+        "g3_label": "Quality",
+        "g3_value": 4.5,
+        "g4_label": "Value",
+        "g4_value": 4.3,
+        "gauge_note": "",
+        "per_page": 5,
         "trust_before": "Trusted by",
         "trust_mid": "and",
         "trust_number": "00,000+",
         "trust_after": "women",
-        "title_1": "They love Essabar&Co., because we made",
-        "title_2": "cellulite care effortless",
-        "g1_label": "Fit",
-        "g1_value": 0,
-        "g2_label": "Compression",
-        "g2_value": 0,
-        "g3_label": "Comfort",
-        "g3_value": 0,
-        "g4_label": "Results speed",
-        "g4_value": 0,
         "gauge_count_label": "women scored it"
       }
     },
     "related": {
       "type": "sf-pdp-related",
-      "settings": {}
+      "settings": {
+        "title": "You may also like",
+        "collection": "",
+        "limit": 6,
+        "columns": "3",
+        "wide": false
+      }
     },
     "trust": {
       "type": "sf-trust",
@@ -749,7 +934,9 @@
         "item-3",
         "item-4"
       ],
-      "settings": {}
+      "settings": {
+        "bg": "#6b2441"
+      }
     }
   },
   "order": [

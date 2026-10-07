@@ -183,6 +183,58 @@
             "use_description": false,
             "content": "<p>Free shipping on every order, no minimum. Free returns within 30 days.</p>"
           }
+        },
+        "sz-1": {
+          "type": "size",
+          "settings": {
+            "label": "XS/S"
+          }
+        },
+        "sz-2": {
+          "type": "size",
+          "settings": {
+            "label": "M"
+          }
+        },
+        "sz-3": {
+          "type": "size",
+          "settings": {
+            "label": "L"
+          }
+        },
+        "sz-4": {
+          "type": "size",
+          "settings": {
+            "label": "XL"
+          }
+        },
+        "sz-5": {
+          "type": "size",
+          "settings": {
+            "label": "2XL",
+            "caption": "The girls usually wear US 18–20, have 41–43″ waists and 49–51″ hips, and are shown here in size 2XL."
+          }
+        },
+        "sz-6": {
+          "type": "size",
+          "settings": {
+            "label": "3XL",
+            "caption": "The girls usually wear US 22–24, have 45–47″ waists and 54–56″ hips, and are shown here in size 3XL."
+          }
+        },
+        "sz-7": {
+          "type": "size",
+          "settings": {
+            "label": "4XL",
+            "caption": "The girls usually wear US 26–28, have 47–50″ waists and 56–58″ hips, and are shown here in size 4XL."
+          }
+        },
+        "sz-8": {
+          "type": "size",
+          "settings": {
+            "label": "5XL",
+            "caption": "The girls usually wear US 30–32, have 50–52″ waists and 58–61″ hips, and are shown here in size 5XL."
+          }
         }
       },
       "block_order": [
@@ -200,7 +252,15 @@
         "res-5",
         "pdp-12",
         "pdp-13",
-        "pdp-14"
+        "pdp-14",
+        "sz-1",
+        "sz-2",
+        "sz-3",
+        "sz-4",
+        "sz-5",
+        "sz-6",
+        "sz-7",
+        "sz-8"
       ],
       "settings": {
         "chip_1": "Self-care Month Offer",
@@ -219,14 +279,14 @@
         "helper_link_label": "Size guide",
         "helper_link": "",
         "size_title": "See in your size",
-        "size_text": "Choose a size to see its measurements.",
+        "size_text": "",
         "size_label": "Select your size",
         "meas_title": "My measurements",
         "m1_label": "Height",
         "m2_label": "Waist",
         "m3_label": "Hips",
         "size_cta": "Select size {size}",
-        "size_note": "",
+        "size_note": "Between sizes? Size up for comfort.",
         "size_empty": "The size chart will be available soon.",
         "offer_title_1": "Self-care",
         "offer_title_2": "MONTH",
@@ -236,7 +296,7 @@
         "gift_text": "FREE Pair of Arm Sleeves",
         "gift_colors": "Black, Beige, Gray",
         "gift_value": "",
-        "fallback_sizes": "S, M, L, XL, 2XL, 3XL, 4XL, 5XL",
+        "fallback_sizes": "XS/S, M, L, XL, 2XL, 3XL, 4XL, 5XL",
         "fallback_size_name": "Size",
         "save_label": "You save {amount}",
         "timer_end": "2026-10-10 23:59",
@@ -862,50 +922,53 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "Customer name",
+            "name": "Audrey H",
             "verified": false,
-            "title": "Review title",
-            "text": "Paste a real customer review here."
+            "title": "Insane savings",
+            "text": "The 3D texture replaces my regular drainage massages. Paying once for the leggings vs $90 a session at the spa, it's a no-brainer.",
+            "photo": "shopify://shop_images/1781803527__0__vwvuJNl8__01_noir_caucasienne30_miroir__original.webp"
           }
         },
         "r-7": {
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "Customer name",
+            "name": "Léa",
             "verified": false,
-            "title": "Review title",
-            "text": "Paste a real customer review here."
+            "title": "Proven effective on me",
+            "text": "I had my doubts, but the smoothing effect is very real. My skin is much, much softer and clearer."
           }
         },
         "r-8": {
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "Customer name",
+            "name": "Sarah T.",
             "verified": false,
-            "title": "Review title",
-            "text": "Paste a real customer review here."
+            "title": "I feel alive again!",
+            "text": "And I'm far from the only one getting these results. A friend recommended it and I don't regret it at all.",
+            "photo": "shopify://shop_images/1781803527__0__b0L0zoow__06_noir_caucasienne45_detail__original.webp"
           }
         },
         "r-9": {
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "Customer name",
+            "name": "Clara V",
             "verified": false,
-            "title": "Review title",
-            "text": "Paste a real customer review here."
+            "title": "Thought it was just marketing",
+            "text": "Thought it was just marketing... but it's just logocal when you understand how circulation works!",
+            "photo": "shopify://shop_images/1781803527__0__te8siD3a__03_gris_latina35_miroir__original.webp"
           }
         },
         "r-10": {
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "Customer name",
+            "name": "camille L",
             "verified": false,
-            "title": "Review title",
-            "text": "Paste a real customer review here."
+            "title": "Amazing drainage",
+            "text": "You can feel the lymphatic action as soon as you walk in them. My thighs are deflated and reshaped."
           }
         }
       },

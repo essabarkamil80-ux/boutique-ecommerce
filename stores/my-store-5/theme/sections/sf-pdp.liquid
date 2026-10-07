@@ -374,16 +374,17 @@
           {%- endif -%}
         </div>
         <div class="sf-size__side">
-          {%- if s.size_text != blank -%}<p class="sf-size__txt">{{ s.size_text }}</p>{%- endif -%}
-          <p class="sf-size__lbl">{{ s.size_label }}</p>
+          <p class="sf-size__cap" data-size-cap>{{ s.size_text }}</p>
           <div class="sf-size__circles" data-size-circles role="radiogroup" aria-label="{{ s.size_label | escape }}"></div>
           <p class="sf-size__empty" data-size-empty hidden>{{ s.size_empty }}</p>
           <div class="sf-size__meas" data-size-meas>
-            <div class="sf-size__mhead">
-              <b>{{ s.meas_title }}</b>
-              <span class="sf-size__unit" role="group" aria-label="Unit"><button type="button" data-unit="cm" class="is-on">CM</button><button type="button" data-unit="in">IN</button></span>
+            <button type="button" class="sf-size__mtoggle" data-meas-toggle aria-expanded="false">
+              <span><b>{{ s.meas_title }}</b><em data-meas-size></em></span>{%- render 'sf-icon', name: 'chevron' -%}
+            </button>
+            <div class="sf-size__mbody" data-meas-body hidden>
+              <div class="sf-size__mhead"><span class="sf-size__unit" role="group" aria-label="Unit"><button type="button" data-unit="cm" class="is-on">CM</button><button type="button" data-unit="in">IN</button></span></div>
+              <ul class="sf-size__list" data-size-list></ul>
             </div>
-            <ul class="sf-size__list" data-size-list></ul>
           </div>
           <button type="button" class="sf-size__cta" data-size-cta>{{ s.size_cta }}</button>
           {%- if s.size_note != blank -%}<p class="sf-size__note">{{ s.size_note }}</p>{%- endif -%}
@@ -400,7 +401,7 @@
     "cartAdd": {{ routes.cart_add_url | json }},
     "colorPos": {{ color_pos }},
     "sizePos": {{ size_pos }},
-    "labels": { "add": {{ s.atc_label | json }}, "sold": {{ s.sold_label | json }}, "adding": {{ s.adding_label | json }}, "save": {{ s.save_label | json }}, "perPiece": {{ s.perpiece_label | json }}, "cta": {{ s.size_cta | json }}, "gift": "Free gift" },
+    "labels": { "add": {{ s.atc_label | json }}, "sold": {{ s.sold_label | json }}, "adding": {{ s.adding_label | json }}, "save": {{ s.save_label | json }}, "perPiece": {{ s.perpiece_label | json }}, "cta": {{ s.size_cta | json }}, "sizeText": {{ s.size_text | json }}, "gift": "Free gift" },
     "meas": [ {{ s.m1_label | json }}, {{ s.m2_label | json }}, {{ s.m3_label | json }} ],
     "sizes": [
       {%- if size_pos > 0 -%}
@@ -412,7 +413,7 @@
               {%- assign m = blank -%}
               {%- for sb in size_blocks -%}{%- if sb.settings.label == ovs -%}{%- assign m = sb.settings -%}{%- endif -%}{%- endfor -%}
               {%- unless forloop.first -%},{%- endunless -%}
-              { "label": {{ ovs | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "img": {% if m.model_image != blank %}{{ m.model_image | image_url: width: 900 | json }}{% else %}""{% endif %} }
+              { "label": {{ ovs | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "cap": {{ m.caption | default: '' | json }}, "img": {% if m.model_image != blank %}{{ m.model_image | image_url: width: 900 | json }}{% else %}""{% endif %} }
             {%- endfor -%}
           {%- endif -%}
         {%- endfor -%}
@@ -420,7 +421,7 @@
         {%- for sb in size_blocks -%}
           {%- assign m = sb.settings -%}
           {%- unless forloop.first -%},{%- endunless -%}
-          { "label": {{ m.label | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "img": {% if m.model_image != blank %}{{ m.model_image | image_url: width: 900 | json }}{% else %}""{% endif %} }
+          { "label": {{ m.label | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "cap": {{ m.caption | default: '' | json }}, "img": {% if m.model_image != blank %}{{ m.model_image | image_url: width: 900 | json }}{% else %}""{% endif %} }
         {%- endfor -%}
       {%- endif -%}
     ],
@@ -571,7 +572,7 @@
     var box = $('[data-sf-size]'), opener = $('[data-sf-size-open]');
     if (box && opener) {
       var modal = $('.sf-size__modal', box), circ = $('[data-size-circles]', box), list = $('[data-size-list]', box), cta = $('[data-size-cta]', box),
-          pic = $('[data-size-pic]', box), emptyMsg = $('[data-size-empty]', box), measBox = $('[data-size-meas]', box), unit = 'cm', chosen = 0, lastFocus = null, defaultPic = pic.innerHTML;
+          pic = $('[data-size-pic]', box), cap = $('[data-size-cap]', box), emptyMsg = $('[data-size-empty]', box), measBox = $('[data-size-meas]', box), measTg = $('[data-meas-toggle]', box), measBody = $('[data-meas-body]', box), measSz = $('[data-meas-size]', box), unit = 'cm', chosen = 0, lastFocus = null, defaultPic = pic.innerHTML;
       var Z = D.sizes || [];
       function fmtVal(v) { if (v === null || v === undefined || String(v).trim() === '') return '—'; var n = parseFloat(String(v).replace(',', '.')); if (isNaN(n)) return v; return unit === 'in' ? (Math.round(n / 2.54 * 10) / 10) + ' in' : n + ' cm'; }
       function drawSize() {
@@ -580,7 +581,9 @@
         list.innerHTML = ''; D.meas.forEach(function (name, i) { if (!name) return; var li = document.createElement('li'); var a = document.createElement('span'); a.textContent = name; var b = document.createElement('b'); b.textContent = fmtVal(z.v[i]); li.appendChild(a); li.appendChild(b); list.appendChild(li); });
         if (z.img) { pic.innerHTML = '<img alt="" src="' + z.img + '">'; } else { pic.innerHTML = defaultPic; }
         cta.textContent = D.labels.cta.replace('{size}', z.label);
+        cap.textContent = z.cap || D.labels.sizeText || ''; measSz.textContent = ' · ' + z.label;
       }
+      measTg.addEventListener('click', function () { var open = measBody.hidden; measBody.hidden = !open; measTg.setAttribute('aria-expanded', open ? 'true' : 'false'); measBox.classList.toggle('is-open', open); });
       function drawCircles() {
         circ.innerHTML = '';
         Z.forEach(function (z, i) { var b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'radio'); b.textContent = z.label; b.addEventListener('click', function () { chosen = i; drawSize(); }); circ.appendChild(b); });
@@ -600,6 +603,12 @@
       cta.addEventListener('click', function () {
         var z = Z[chosen];
         if (z && D.sizePos) { SEL[D.sizePos - 1] = z.label; applySel(true); }
+        else if (z) {
+          $$('select[data-prop]').forEach(function (sl) {
+            var o = [].slice.call(sl.options).filter(function (x) { return x.value.toLowerCase() === String(z.label).toLowerCase(); })[0];
+            if (o) { sl.value = o.value; sl.dispatchEvent(new Event('change', { bubbles: true })); }
+          });
+        }
         closeBox();
         var b = $('.sf-atc'); if (b && b.scrollIntoView) setTimeout(function () { b.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 220);
       });
@@ -853,37 +862,43 @@
   .sf-size[hidden] { display: none; }
   .sf-size__overlay { position: absolute; inset: 0; background: rgba(19, 7, 46, .38); -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px); opacity: 0; transition: opacity .2s; }
   .sf-size.is-open .sf-size__overlay { opacity: 1; }
-  .sf-size__modal { position: relative; width: min(880px, 100%); max-height: min(92vh, 760px); overflow: auto; border-radius: 20px; background: #fff; box-shadow: 0 30px 80px -20px rgba(19, 7, 46, .5); outline: 0;
+  .sf-size__modal { position: relative; width: min(560px, 100%); max-height: min(92vh, 760px); overflow: auto; border-radius: 20px; background: #fff; box-shadow: 0 30px 80px -20px rgba(19, 7, 46, .5); outline: 0;
     opacity: 0; transform: translateY(12px) scale(.985); transition: opacity .2s, transform .2s; }
   .sf-size.is-open .sf-size__modal { opacity: 1; transform: none; }
-  .sf-size__head { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 16px; border-bottom: 1px solid #F0E9E5; }
-  .sf-size__title { font-family: var(--sf-sans); font-size: 16px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--sf-ink); }
-  .sf-size__x { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: #F6EFEB; color: var(--sf-ink); }
+  .sf-size__head { position: relative; display: flex; align-items: center; justify-content: center; padding: 26px 56px 6px; }
+  .sf-size__title { font-family: var(--sf-sans); font-size: 18px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--sf-ink); text-align: center; }
+  .sf-size__x { position: absolute; right: 18px; top: 20px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: transparent; color: var(--sf-ink); }
   .sf-size__x svg { width: 16px; height: 16px; }
-  .sf-size__body { display: grid; grid-template-columns: minmax(0, 380fr) minmax(0, 440fr); gap: 28px; padding: 22px 24px 26px; }
-  .sf-size__pic { aspect-ratio: 3 / 4; border-radius: 14px; background: var(--sf-card); overflow: hidden; }
+  .sf-size__body { display: block; padding: 16px 28px 28px; }
+  .sf-size__pic { aspect-ratio: 3 / 2; border-radius: 12px; background: var(--sf-card); overflow: hidden; }
   .sf-size__pic img, .sf-size__pic > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .sf-size__side { display: flex; flex-direction: column; min-width: 0; }
-  .sf-size__txt { font-size: 14px; line-height: 1.5; color: #5f5654; }
-  .sf-size__lbl { margin-top: 16px; font-size: 13px; font-weight: 700; color: var(--sf-ink); }
-  .sf-size__circles { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+  .sf-size__cap { margin-top: 16px; text-align: center; font-size: 15.5px; line-height: 1.55; color: var(--sf-ink); }
+  .sf-size__cap:empty { display: none; }
+  .sf-size__circles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 14px; margin-top: 22px; }
   .sf-size__circles[hidden] { display: none; }
-  .sf-size__circles button { min-width: 48px; height: 48px; padding: 0 6px; border-radius: 50%; border: 1.5px solid #DCD1CC; background: #fff; font-size: 14px; font-weight: 700; color: var(--sf-ink); transition: background .15s, border-color .15s, color .15s; }
+  .sf-size__circles button { height: 60px; padding: 0 6px; border-radius: 50%; border: 1.5px solid #D9D0CB; background: #fff; font-size: 15px; font-weight: 500; color: var(--sf-ink); transition: background .15s, border-color .15s, color .15s; }
   .sf-size__circles button:hover { border-color: var(--sf-plum); }
   .sf-size__circles button.is-on { background: var(--sf-plum); border-color: var(--sf-plum); color: #fff; }
   .sf-size__empty { margin-top: 12px; padding: 14px; border-radius: 10px; background: #FBF3EE; font-size: 13.5px; color: #5f5654; }
   .sf-size__empty[hidden], .sf-size__meas[hidden], .sf-size__cta[hidden] { display: none; }
-  .sf-size__meas { margin-top: 20px; padding: 16px; border-radius: 12px; background: #FBF6F2; border: 1px solid #F0E6E1; }
-  .sf-size__mhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: var(--sf-ink); }
+  .sf-size__meas { margin-top: 28px; border-radius: 8px; border: 1px solid #E6DFDB; }
+  .sf-size__mtoggle { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 58px; padding: 0 18px; font-size: 15.5px; color: var(--sf-ink); text-align: left; }
+  .sf-size__mtoggle:focus:not(:focus-visible) { outline: none; }
+  .sf-size__mtoggle b { font-weight: 600; } .sf-size__mtoggle em { font-style: normal; color: #8b8280; }
+  .sf-size__mtoggle svg { width: 20px; height: 20px; transition: transform .2s; }
+  .sf-size__meas.is-open .sf-size__mtoggle svg { transform: rotate(180deg); }
+  .sf-size__mbody { padding: 0 18px 14px; } .sf-size__mbody[hidden] { display: none; }
+  .sf-size__mhead { display: flex; justify-content: flex-end; margin-bottom: 4px; }
   .sf-size__unit { display: inline-flex; padding: 3px; border-radius: 999px; background: #EFE4DF; }
   .sf-size__unit button { padding: 5px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: .06em; color: #6f6664; }
   .sf-size__unit button.is-on { background: #fff; color: var(--sf-plum); box-shadow: 0 1px 3px rgba(0, 0, 0, .1); }
   .sf-size__list li { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #F0E6E1; font-size: 14px; color: #5f5654; }
   .sf-size__list li:first-child { border-top: 0; }
   .sf-size__list b { color: var(--sf-ink); font-weight: 700; }
-  .sf-size__cta { margin-top: 20px; height: 54px; border-radius: 10px; background: var(--sf-plum); color: #fff; font-size: 14px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; transition: filter .15s; }
+  .sf-size__cta { display: block; width: 100%; margin-top: 28px; height: 58px; border-radius: 8px; background: var(--sf-plum); color: #fff; font-size: 14px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; transition: filter .15s; }
   .sf-size__cta:hover { filter: brightness(1.12); }
-  .sf-size__note { margin-top: 10px; text-align: center; font-size: 12px; color: #8b8280; }
+  .sf-size__note { margin-top: 14px; text-align: center; font-size: 14px; color: #6f6664; }
   /* accordeons */
   .sf-acc { margin-top: 10px; }
   .sf-acc__item { border-bottom: 1px solid #EFE7E3; }
@@ -920,9 +935,9 @@
     .sf-sel { max-width: none; }
     .sf-size { padding: 0; align-items: end; }
     .sf-size__modal { width: 100%; max-height: 94vh; border-radius: 20px 20px 0 0; }
-    .sf-size__body { grid-template-columns: 1fr; gap: 18px; padding: 16px 16px 22px; }
-    .sf-size__pic { aspect-ratio: 4 / 3.4; }
-    .sf-size__head { padding: 16px 16px 14px; }
+    .sf-size__body { padding: 12px 16px 22px; }
+    .sf-size__circles { gap: 10px; } .sf-size__circles button { height: 52px; font-size: 14px; }
+    .sf-size__head { padding: 20px 48px 4px; }
     .sf-res__tab { flex-basis: 42%; }
     .sf-pdp__help { flex-wrap: wrap; }
   }
@@ -1046,8 +1061,7 @@
     {
       "type": "text",
       "id": "size_text",
-      "label": "Texte d'introduction",
-      "default": "Choose a size to see its measurements."
+      "label": "Texte sous la photo (si la taille n'a pas de texte)"
     },
     {
       "type": "text",
@@ -1552,6 +1566,11 @@
           "id": "label",
           "label": "Taille (ex. S, M, L)",
           "default": "M"
+        },
+        {
+          "type": "textarea",
+          "id": "caption",
+          "label": "Texte sous la photo pour cette taille"
         },
         {
           "type": "text",

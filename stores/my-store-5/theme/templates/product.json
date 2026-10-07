@@ -187,25 +187,30 @@
         "sz-1": {
           "type": "size",
           "settings": {
-            "label": "XS/S"
+            "label": "XS/S",
+            "value": "S",
+            "caption": "The girls usually wear US 4–6, have 24–27″ waists and 34–37″ hips, and are shown here in size XS/S."
           }
         },
         "sz-2": {
           "type": "size",
           "settings": {
-            "label": "M"
+            "label": "M",
+            "caption": "The girls usually wear US 8–10, have 28–32″ waists and 38–42″ hips, and are shown here in size M."
           }
         },
         "sz-3": {
           "type": "size",
           "settings": {
-            "label": "L"
+            "label": "L",
+            "caption": "The girls usually wear US 12–14, have 33–35″ waists and 43–45″ hips, and are shown here in size L."
           }
         },
         "sz-4": {
           "type": "size",
           "settings": {
-            "label": "XL"
+            "label": "XL",
+            "caption": "The girls usually wear US 16, have 36–40″ waists and 46–48″ hips, and are shown here in size XL."
           }
         },
         "sz-5": {
@@ -296,7 +301,7 @@
         "gift_text": "FREE Pair of Arm Sleeves",
         "gift_colors": "Black, Beige, Gray",
         "gift_value": "",
-        "fallback_sizes": "XS/S, M, L, XL, 2XL, 3XL, 4XL, 5XL",
+        "fallback_sizes": "S, M, L, XL, 2XL, 3XL, 4XL, 5XL",
         "fallback_size_name": "Size",
         "save_label": "You save {amount}",
         "timer_end": "2026-10-10 23:59",

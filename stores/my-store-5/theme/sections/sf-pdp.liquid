@@ -421,7 +421,7 @@
         {%- for sb in size_blocks -%}
           {%- assign m = sb.settings -%}
           {%- unless forloop.first -%},{%- endunless -%}
-          { "label": {{ m.label | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "cap": {{ m.caption | default: '' | json }}, "img": {% if m.model_image != blank %}{{ m.model_image | image_url: width: 900 | json }}{% else %}""{% endif %} }
+          { "label": {{ m.label | json }}, "value": {{ m.value | default: m.label | json }}, "v": [ {{ m.v1 | default: '' | json }}, {{ m.v2 | default: '' | json }}, {{ m.v3 | default: '' | json }} ], "cap": {{ m.caption | default: '' | json }}, "img": {% if m.model_image != blank %}{{ m.model_image | image_url: width: 900 | json }}{% else %}""{% endif %} }
         {%- endfor -%}
       {%- endif -%}
     ],
@@ -580,8 +580,8 @@
         $$('button', circ).forEach(function (b, i) { b.classList.toggle('is-on', i === chosen); b.setAttribute('aria-checked', i === chosen ? 'true' : 'false'); });
         list.innerHTML = ''; D.meas.forEach(function (name, i) { if (!name) return; var li = document.createElement('li'); var a = document.createElement('span'); a.textContent = name; var b = document.createElement('b'); b.textContent = fmtVal(z.v[i]); li.appendChild(a); li.appendChild(b); list.appendChild(li); });
         if (z.img) { pic.innerHTML = '<img alt="" src="' + z.img + '">'; } else { pic.innerHTML = defaultPic; }
-        cta.textContent = D.labels.cta.replace('{size}', z.label);
-        cap.textContent = z.cap || D.labels.sizeText || ''; measSz.textContent = ' · ' + z.label;
+        cta.textContent = D.labels.cta.replace('{size}', z.value || z.label);
+        cap.textContent = z.cap || D.labels.sizeText || ''; measSz.textContent = ' · ' + (z.value || z.label);
       }
       measTg.addEventListener('click', function () { var open = measBody.hidden; measBody.hidden = !open; measTg.setAttribute('aria-expanded', open ? 'true' : 'false'); measBox.classList.toggle('is-open', open); });
       function drawCircles() {
@@ -605,7 +605,7 @@
         if (z && D.sizePos) { SEL[D.sizePos - 1] = z.label; applySel(true); }
         else if (z) {
           $$('select[data-prop]').forEach(function (sl) {
-            var o = [].slice.call(sl.options).filter(function (x) { return x.value.toLowerCase() === String(z.label).toLowerCase(); })[0];
+            var o = [].slice.call(sl.options).filter(function (x) { return x.value.toLowerCase() === String(z.value || z.label).toLowerCase(); })[0];
             if (o) { sl.value = o.value; sl.dispatchEvent(new Event('change', { bubbles: true })); }
           });
         }
@@ -1566,6 +1566,11 @@
           "id": "label",
           "label": "Taille (ex. S, M, L)",
           "default": "M"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Valeur du choix si différente (ex. S pour XS/S)"
         },
         {
           "type": "textarea",

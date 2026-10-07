@@ -28,6 +28,18 @@
             </summary>
             <div class="sf-faq__a">
               {%- if b.settings.answer != blank -%}<div class="sf-faq__txt">{{ b.settings.answer }}</div>{%- endif -%}
+              {%- if b.settings.card_1_title != blank or b.settings.card_2_title != blank or b.settings.card_3_title != blank -%}
+                <ul class="sf-faq__cards">
+                  {%- for n in (1..3) -%}
+                    {%- assign ct = 'card_' | append: n | append: '_title' -%}
+                    {%- assign ci = 'card_' | append: n | append: '_icon' -%}
+                    {%- assign cx = 'card_' | append: n | append: '_text' -%}
+                    {%- if b.settings[ct] != blank -%}
+                      <li><span class="sf-faq__cardico">{%- render 'sf-icon', name: b.settings[ci] -%}</span><b>{{ b.settings[ct] }}</b><p>{{ b.settings[cx] }}</p></li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
               {%- if b.settings.show_steps and steps.size > 0 -%}
                 <ul class="sf-faq__steps" style="--n: {{ steps.size }}">
                   {%- for st in steps -%}
@@ -36,7 +48,7 @@
                         {%- if st.settings.image != blank -%}{{ st.settings.image | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '(min-width: 990px) 220px, 60vw', alt: st.settings.caption, loading: 'lazy' }}{%- else -%}<span class="sf-faq__empty">{%- render 'sf-icon', name: 'camera' -%}</span>{%- endif -%}
                       </span>
                       <span class="sf-faq__cap">{{ st.settings.caption }}</span>
-                      <span class="sf-faq__node"><i></i></span>
+                      <span class="sf-faq__node"><i>{%- render 'sf-icon', name: st.settings.icon -%}</i></span>
                       <span class="sf-faq__lbl">{{ st.settings.label }}</span>
                     </li>
                   {%- endfor -%}
@@ -135,13 +147,19 @@
   .sf-faq__pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .sf-faq__empty { position: absolute; inset: 8px; border: 1.5px dashed #D2C4BE; border-radius: 8px; display: grid; place-items: center; color: #a89b95; }
   .sf-faq__empty svg { width: 22px; height: 22px; }
-  .sf-faq__cap { display: block; margin-top: 8px; min-height: 30px; font-size: 11.5px; line-height: 1.3; color: #6f6664; }
-  .sf-faq__node { position: relative; display: block; width: 100%; height: 26px; margin-top: 8px; }
-  .sf-faq__node::before { content: ''; position: absolute; left: -6px; right: -6px; top: 50%; height: 2px; margin-top: -1px; background: #C9A9B6; }
+  .sf-faq__cap { display: block; margin-top: 10px; min-height: 36px; font-size: clamp(12.5px, 1.1vw, 15px); line-height: 1.3; color: var(--sf-ink); }
+  .sf-faq__node { position: relative; display: block; width: 100%; height: 36px; margin-top: 10px; }
+  .sf-faq__node::before { content: ''; position: absolute; left: -6px; right: -6px; top: 50%; height: 2px; margin-top: -1px; background: var(--sf-plum); }
   .sf-faq__steps li:first-child .sf-faq__node::before { left: 50%; }
   .sf-faq__steps li:last-child .sf-faq__node::before { right: 50%; }
-  .sf-faq__node i { position: absolute; left: 50%; top: 50%; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%; background: #fff; border: 5px solid var(--sf-plum); box-sizing: border-box; }
-  .sf-faq__lbl { margin-top: 6px; font-size: 11px; font-weight: 700; color: var(--sf-plum); }
+  .sf-faq__node i { position: absolute; left: 50%; top: 50%; width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; background: var(--sf-plum); color: #fff; display: grid; place-items: center; }
+  .sf-faq__node i svg { width: 18px; height: 18px; }
+  .sf-faq__lbl { margin-top: 4px; font-size: clamp(12.5px, 1.05vw, 14.5px); font-weight: 700; color: var(--sf-ink); }
+  .sf-faq__cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
+  .sf-faq__cards li { padding: 24px 24px 26px; border-radius: 14px; background: #F8EFF1; }
+  .sf-faq__cardico { display: inline-flex; color: var(--sf-plum); } .sf-faq__cardico svg { width: 26px; height: 26px; }
+  .sf-faq__cards b { display: block; margin-top: 16px; font-size: clamp(16px, 1.45vw, 20px); font-weight: 700; line-height: 1.25; color: var(--sf-ink); }
+  .sf-faq__cards p { margin-top: 10px; font-size: clamp(14px, 1.2vw, 17px); line-height: 1.4; color: #4d4543; }
   .sf-faq__tblwrap { margin-top: 18px; overflow-x: auto; border-radius: 14px; background: #F8EFF1; }
   .sf-faq__tbl { width: 100%; min-width: 600px; border-collapse: collapse; font-size: clamp(14px, 1.1vw, 16px); color: var(--sf-ink); }
   .sf-faq__tbl th, .sf-faq__tbl td { padding: 0 12px; height: 56px; text-align: center; border-bottom: 1px solid rgba(107, 36, 65, .1); }
@@ -169,6 +187,7 @@
   .sf-faq__callout b { display: block; font-size: clamp(16px, 1.35vw, 19px); font-weight: 600; color: var(--sf-ink); }
   .sf-faq__callout p { margin-top: 3px; font-size: clamp(13.5px, 1.05vw, 15px); line-height: 1.45; color: #6f6664; }
   @media (max-width: 749px) {
+    .sf-faq__cards { grid-template-columns: 1fr; }
     .sf-faq__dd { grid-template-columns: 1fr; }
     .sf-faq__tbl { min-width: 500px; font-size: 13px; }
     .sf-faq__tbl th, .sf-faq__tbl td { padding: 0 8px; }
@@ -212,6 +231,25 @@
         { "type": "richtext", "id": "answer", "label": "Réponse" },
         { "type": "checkbox", "id": "open", "label": "Ouvert par défaut", "default": false },
         { "type": "checkbox", "id": "show_steps", "label": "Afficher les étapes avec photos", "default": false },
+        { "type": "header", "content": "Trois cartes (facultatif)" },
+        { "type": "select", "id": "card_1_icon", "label": "Carte 1 : icône", "default": "calendar", "options": [
+          { "value": "calendar", "label": "Calendrier" }, { "value": "clock", "label": "Horloge" }, { "value": "shield", "label": "Bouclier" },
+          { "value": "heart", "label": "Cœur" }, { "value": "check", "label": "Coche" }, { "value": "sparkle", "label": "Étincelle" }, { "value": "truckline", "label": "Livraison" }
+        ] },
+        { "type": "text", "id": "card_1_title", "label": "Carte 1 : titre" },
+        { "type": "text", "id": "card_1_text", "label": "Carte 1 : texte" },
+        { "type": "select", "id": "card_2_icon", "label": "Carte 2 : icône", "default": "clock", "options": [
+          { "value": "calendar", "label": "Calendrier" }, { "value": "clock", "label": "Horloge" }, { "value": "shield", "label": "Bouclier" },
+          { "value": "heart", "label": "Cœur" }, { "value": "check", "label": "Coche" }, { "value": "sparkle", "label": "Étincelle" }, { "value": "truckline", "label": "Livraison" }
+        ] },
+        { "type": "text", "id": "card_2_title", "label": "Carte 2 : titre" },
+        { "type": "text", "id": "card_2_text", "label": "Carte 2 : texte" },
+        { "type": "select", "id": "card_3_icon", "label": "Carte 3 : icône", "default": "shield", "options": [
+          { "value": "calendar", "label": "Calendrier" }, { "value": "clock", "label": "Horloge" }, { "value": "shield", "label": "Bouclier" },
+          { "value": "heart", "label": "Cœur" }, { "value": "check", "label": "Coche" }, { "value": "sparkle", "label": "Étincelle" }, { "value": "truckline", "label": "Livraison" }
+        ] },
+        { "type": "text", "id": "card_3_title", "label": "Carte 3 : titre" },
+        { "type": "text", "id": "card_3_text", "label": "Carte 3 : texte" },
         { "type": "header", "content": "Tableau comparatif (facultatif)" },
         { "type": "text", "id": "table_cols", "label": "Colonnes, séparées par des virgules", "info": "La 1re colonne (votre marque) est en prune." },
         { "type": "textarea", "id": "table_rows", "label": "Lignes", "info": "Une ligne par critère : Critère | yes, no, part, no (yes = coche, no = croix, part = tiret)." },
@@ -231,7 +269,11 @@
       "limit": 6,
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Photo" },
-        { "type": "text", "id": "caption", "label": "Légende" },
+        { "type": "text", "id": "caption", "label": "Légende (sous la photo)" },
+        { "type": "select", "id": "icon", "label": "Icône du repère", "default": "smile", "options": [
+          { "value": "smile", "label": "Sourire" }, { "value": "chat", "label": "Bulle" }, { "value": "people", "label": "Personnes" },
+          { "value": "hands", "label": "Groupe" }, { "value": "heart", "label": "Cœur" }, { "value": "check", "label": "Coche" }, { "value": "sparkle", "label": "Étincelle" }
+        ] },
         { "type": "text", "id": "label", "label": "Repère", "default": "Step" }
       ]
     }

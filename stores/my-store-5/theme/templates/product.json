@@ -507,36 +507,41 @@
         "q-2": {
           "type": "step",
           "settings": {
-            "caption": "You put them on and check your size.",
-            "label": "Day 1"
+            "caption": "You put it on. Not convinced yet.",
+            "label": "Day 1",
+            "icon": "smile"
           }
         },
         "q-3": {
           "type": "step",
           "settings": {
-            "caption": "You wear them out for the first time.",
-            "label": "Day 3"
+            "caption": "Your husband notices. You don't believe him.",
+            "label": "Day 7",
+            "icon": "chat"
           }
         },
         "q-4": {
           "type": "step",
           "settings": {
-            "caption": "You start building outfits around them.",
-            "label": "Day 7"
+            "caption": "Your girlfriends notice too.",
+            "label": "Day 14",
+            "icon": "people"
           }
         },
         "q-5": {
           "type": "step",
           "settings": {
-            "caption": "They become your go-to leggings.",
-            "label": "Day 14"
+            "caption": "Your kids can tell something changed.",
+            "label": "Day 30",
+            "icon": "hands"
           }
         },
         "q-6": {
           "type": "step",
           "settings": {
-            "caption": "Not for you? Returns are free within 30 days.",
-            "label": "Day 30"
+            "caption": "You look in the mirror, and you smile.",
+            "label": "Day 60",
+            "icon": "smile"
           }
         },
         "q-7": {
@@ -547,7 +552,16 @@
             "question": "Why would a legging change anything about cellulite?",
             "answer": "<p>A legging cannot remove cellulite, and we would never say it can. What it does is change how your silhouette looks while you wear it: the 3D texture and the high-waist fit gently smooth and support the area, so your skin looks more even under your clothes.</p>",
             "open": false,
-            "show_steps": false
+            "show_steps": false,
+            "card_1_icon": "calendar",
+            "card_1_title": "Nothing to book",
+            "card_1_text": "No appointment, no clinic, no waiting room.",
+            "card_2_icon": "clock",
+            "card_2_title": "Nothing to add to your day",
+            "card_2_text": "You put them on. Walking does the rest.",
+            "card_3_icon": "shield",
+            "card_3_title": "Nothing to lose",
+            "card_3_text": "30 days to try them and decide for yourself."
           }
         },
         "q-8": {
@@ -635,23 +649,33 @@
       "blocks": {
         "r-1": {
           "type": "review",
-          "settings": {}
+          "settings": {
+            "rating": 5
+          }
         },
         "r-2": {
           "type": "review",
-          "settings": {}
+          "settings": {
+            "rating": 5
+          }
         },
         "r-3": {
           "type": "review",
-          "settings": {}
+          "settings": {
+            "rating": 5
+          }
         },
         "r-4": {
           "type": "review",
-          "settings": {}
+          "settings": {
+            "rating": 5
+          }
         },
         "r-5": {
           "type": "review",
-          "settings": {}
+          "settings": {
+            "rating": 5
+          }
         }
       },
       "block_order": [
@@ -661,7 +685,23 @@
         "r-4",
         "r-5"
       ],
-      "settings": {}
+      "settings": {
+        "trust_before": "Trusted by",
+        "trust_mid": "and",
+        "trust_number": "00,000+",
+        "trust_after": "women",
+        "title_1": "They love Essabar&Co., because we made",
+        "title_2": "cellulite care effortless",
+        "g1_label": "Fit",
+        "g1_value": 0,
+        "g2_label": "Compression",
+        "g2_value": 0,
+        "g3_label": "Comfort",
+        "g3_value": 0,
+        "g4_label": "Results speed",
+        "g4_value": 0,
+        "gauge_count_label": "women scored it"
+      }
     },
     "related": {
       "type": "sf-pdp-related",

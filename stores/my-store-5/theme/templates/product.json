@@ -807,50 +807,55 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "Customer name",
+            "name": "Pauline L",
             "verified": false,
-            "title": "Review title",
-            "text": "Paste a real customer review here."
+            "title": "Blown away by the results",
+            "text": "After 3 weekks of wearing it every day, my cellulite has visibly faded. My skin is so much smoother!",
+            "photo": "shopify://shop_images/1781803510__0__3KEkYpeA__2_noir_noire45_unboxing_6874dab3-ab0f-44ff-a11f-7e9039cb67db__original.webp"
           }
         },
         "r-2": {
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "Customer name",
+            "name": "Léa s",
             "verified": false,
-            "title": "Review title",
-            "text": "Paste a real customer review here."
+            "title": "No more $90 sessions",
+            "text": ".Honestly, the effect of these leggings is totally equal to my $90 lymphatic drainage session at the spa. The texture does the exact same job.",
+            "photo": "shopify://shop_images/1781803526__0__QhUTI5i8__05_bordeaux_metisse25_miroir__original.webp"
           }
         },
         "r-3": {
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "Customer name",
+            "name": "Myriam Z",
             "verified": false,
-            "title": "Review title",
-            "text": "Paste a real customer review here."
+            "title": "Light and drained legs",
+            "text": "I feel a real boost in circoolation. My legs are less swollen in the evening, the drainage effect is awesome.",
+            "photo": "shopify://shop_images/1781803510__0__FsUPXo_E__10_gris_moyenor30_miroir__original.webp"
           }
         },
         "r-4": {
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "Customer name",
+            "name": "Aurélie S",
             "verified": false,
-            "title": "Review title",
-            "text": "Paste a real customer review here."
+            "title": "Magic tightening effect",
+            "text": "Firm skin in less than a month. You can feel the micro-massage stimulating the tissues deep down.",
+            "photo": "shopify://shop_images/1781803510__0__xa7G1DL___08_noir_caucasienne29_workout__original.webp"
           }
         },
         "r-5": {
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "Customer name",
+            "name": "Olivia Q.",
             "verified": false,
-            "title": "Review title",
-            "text": "Paste a real customer review here."
+            "title": "Skeptical but totally won over",
+            "text": "Scam or reality? I tested it and it's real! The science behind it makes total sense.",
+            "photo": "shopify://shop_images/1781803527__0__LaYkAjSA__07_vertpaon_noire35_lifestyle__original.webp"
           }
         }
       },
@@ -874,22 +879,12 @@
         "g4_label": "Value",
         "g4_value": 4.3,
         "gauge_note": "",
-        "per_page": 5,
+        "per_page": 3,
         "trust_before": "Trusted by",
         "trust_mid": "and",
         "trust_number": "00,000+",
         "trust_after": "women",
         "gauge_count_label": "women scored it"
-      }
-    },
-    "related": {
-      "type": "sf-pdp-related",
-      "settings": {
-        "title": "You may also like",
-        "collection": "",
-        "limit": 6,
-        "columns": "3",
-        "wide": false
       }
     },
     "trust": {
@@ -947,7 +942,6 @@
     "reviews",
     "faq",
     "prev",
-    "related",
     "trust"
   ]
 }

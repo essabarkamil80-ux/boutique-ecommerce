@@ -857,6 +857,56 @@
             "text": "Scam or reality? I tested it and it's real! The science behind it makes total sense.",
             "photo": "shopify://shop_images/1781803527__0__LaYkAjSA__07_vertpaon_noire35_lifestyle__original.webp"
           }
+        },
+        "r-6": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "name": "Customer name",
+            "verified": false,
+            "title": "Review title",
+            "text": "Paste a real customer review here."
+          }
+        },
+        "r-7": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "name": "Customer name",
+            "verified": false,
+            "title": "Review title",
+            "text": "Paste a real customer review here."
+          }
+        },
+        "r-8": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "name": "Customer name",
+            "verified": false,
+            "title": "Review title",
+            "text": "Paste a real customer review here."
+          }
+        },
+        "r-9": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "name": "Customer name",
+            "verified": false,
+            "title": "Review title",
+            "text": "Paste a real customer review here."
+          }
+        },
+        "r-10": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "name": "Customer name",
+            "verified": false,
+            "title": "Review title",
+            "text": "Paste a real customer review here."
+          }
         }
       },
       "block_order": [
@@ -864,7 +914,12 @@
         "r-2",
         "r-3",
         "r-4",
-        "r-5"
+        "r-5",
+        "r-6",
+        "r-7",
+        "r-8",
+        "r-9",
+        "r-10"
       ],
       "settings": {
         "badge": "",
@@ -879,7 +934,7 @@
         "g4_label": "Value",
         "g4_value": 4.3,
         "gauge_note": "",
-        "per_page": 3,
+        "per_page": 5,
         "trust_before": "Trusted by",
         "trust_mid": "and",
         "trust_number": "00,000+",

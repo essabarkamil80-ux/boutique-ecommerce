@@ -64,7 +64,7 @@
     <div class="sf-pdp__gal">
       {%- assign fm = cur.featured_media | default: p.featured_media -%}
       {%- assign cur_col = '' -%}
-      {%- if color_pos > 0 -%}{%- assign cur_col = cur.options[color_pos | minus: 1] | downcase -%}{%- endif -%}
+      {%- if color_pos > 0 -%}{%- assign cpi = color_pos | minus: 1 -%}{%- assign cur_col = cur.options[cpi] | downcase -%}{%- endif -%}
       <div class="sf-pdp__stage sf-media">
         {%- if fm != blank -%}
           {%- if fm.alt != blank -%}{%- assign main_alt = fm.alt | split: ' | ' | last -%}{%- endif -%}

@@ -168,19 +168,27 @@
       "blocks": {
         "v-1": {
           "type": "video",
-          "settings": {}
+          "settings": {
+            "caption": ""
+          }
         },
         "v-2": {
           "type": "video",
-          "settings": {}
+          "settings": {
+            "caption": ""
+          }
         },
         "v-3": {
           "type": "video",
-          "settings": {}
+          "settings": {
+            "caption": ""
+          }
         },
         "v-4": {
           "type": "video",
-          "settings": {}
+          "settings": {
+            "caption": ""
+          }
         }
       },
       "block_order": [
@@ -189,7 +197,11 @@
         "v-3",
         "v-4"
       ],
-      "settings": {}
+      "settings": {
+        "bg": "#ffffff",
+        "eyebrow": "From the community",
+        "title": "See it for real"
+      }
     },
     "related": {
       "type": "sf-pdp-related",
@@ -197,7 +209,8 @@
         "collection": "3d-leggings",
         "columns": "4",
         "wide": true,
-        "title": "You might also like"
+        "title": "You might also like",
+        "limit": 6
       }
     },
     "reviews": {
@@ -205,59 +218,197 @@
       "blocks": {
         "x-1": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "is_video": false
+          }
         },
         "x-2": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "is_video": false
+          }
         },
         "x-3": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "is_video": false
+          }
         },
         "x-4": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "is_video": false
+          }
         },
         "x-5": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "is_video": false
+          }
         },
         "x-6": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "is_video": false
+          }
         },
         "x-7": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "is_video": false
+          }
         },
         "x-8": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "is_video": false
+          }
         },
         "x-9": {
           "type": "photo",
-          "settings": {}
+          "settings": {
+            "is_video": false
+          }
         },
         "x-10": {
           "type": "review",
-          "settings": {}
+          "settings": {
+            "rating": 5,
+            "name": "Petra Hintermann",
+            "verified": true,
+            "recommends": true,
+            "title": "Soutien-gorge push-up confortable Ecru/S",
+            "text": "",
+            "c1_value": 2.4,
+            "c2_value": 5,
+            "date": ""
+          }
         },
         "x-11": {
           "type": "review",
-          "settings": {}
+          "settings": {
+            "rating": 5,
+            "name": "",
+            "verified": true,
+            "recommends": true,
+            "title": "",
+            "text": "Paste a real customer review here.",
+            "c1_value": 2.5,
+            "c2_value": 5,
+            "date": ""
+          }
         },
         "x-12": {
           "type": "review",
-          "settings": {}
+          "settings": {
+            "rating": 5,
+            "name": "Simone Huber",
+            "verified": true,
+            "recommends": true,
+            "title": "Soutien-gorge push-up Comfort noir/L",
+            "text": ".",
+            "c1_value": 3.2,
+            "c2_value": 5,
+            "date": ""
+          }
         },
         "x-13": {
           "type": "review",
-          "settings": {}
+          "settings": {
+            "rating": 4,
+            "name": "Susanna Trott",
+            "verified": true,
+            "recommends": true,
+            "title": "Soutien-gorge push-up Comfort Beige/XS",
+            "text": "",
+            "c1_value": 2.7,
+            "c2_value": 2.5,
+            "date": ""
+          }
         },
         "x-14": {
           "type": "review",
-          "settings": {}
+          "settings": {
+            "rating": 4,
+            "name": "Anonym",
+            "verified": true,
+            "recommends": true,
+            "title": "Soutien-gorge push-up Comfort noir/M",
+            "text": "",
+            "c1_value": 2.2,
+            "c2_value": 3.9,
+            "date": ""
+          }
+        },
+        "x-15": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "name": "",
+            "verified": false,
+            "recommends": false,
+            "title": "",
+            "text": "Paste a real customer review here.",
+            "c1_value": 0,
+            "c2_value": 0,
+            "date": ""
+          }
+        },
+        "x-16": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "name": "",
+            "verified": false,
+            "recommends": false,
+            "title": "",
+            "text": "Paste a real customer review here.",
+            "c1_value": 0,
+            "c2_value": 0,
+            "date": ""
+          }
+        },
+        "x-17": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "name": "",
+            "verified": false,
+            "recommends": false,
+            "title": "",
+            "text": "Paste a real customer review here.",
+            "c1_value": 0,
+            "c2_value": 0,
+            "date": ""
+          }
+        },
+        "x-18": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "name": "",
+            "verified": false,
+            "recommends": false,
+            "title": "",
+            "text": "Paste a real customer review here.",
+            "c1_value": 0,
+            "c2_value": 0,
+            "date": ""
+          }
+        },
+        "x-19": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "name": "",
+            "verified": false,
+            "recommends": false,
+            "title": "",
+            "text": "Paste a real customer review here.",
+            "c1_value": 0,
+            "c2_value": 0,
+            "date": ""
+          }
         }
       },
       "block_order": [
@@ -274,10 +425,16 @@
         "x-11",
         "x-12",
         "x-13",
-        "x-14"
+        "x-14",
+        "x-15",
+        "x-16",
+        "x-17",
+        "x-18",
+        "x-19"
       ],
       "settings": {
-        "product": "essabar-co-push-up"
+        "product": "essabar-co-push-up",
+        "per_page": 5
       }
     }
   },

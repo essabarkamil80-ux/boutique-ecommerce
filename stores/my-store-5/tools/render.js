@@ -89,10 +89,12 @@ function injectImages(type, settings, label) {
 // --- faux produit (7 couleurs, une image) ------------------------------------------
 const COLORS = ['Gray', 'Black', 'Beige', 'Blue', 'Purple', 'Pink', 'Brown'];
 const mkMedia = (id, n) => Object.assign(fakeImg('product ' + n, 1254, 1254), { id, alt: n === 1 ? 'Sculpt leggings' : '' });
-const MEDIA = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => mkMedia(100 + n, n));
+const COLMEDIA = process.env.COLMEDIA === '1';
+const MEDIA = COLMEDIA ? COLORS.flatMap((c, ci) => [1, 2, 3].map((k) => Object.assign(fakeImg(c + ' ' + k, 1254, 1254), { id: 200 + ci * 10 + k, alt: c + ' | Legging ' + c + ' photo ' + k })))
+  : [1, 2, 3, 4, 5, 6, 7, 8].map((n) => mkMedia(100 + n, n));
 const SZ = process.env.SIZES === '1' ? ['S', 'M', 'L'] : null;
 const VARIANTS = []; COLORS.forEach((c, i) => (SZ || [null]).forEach((z, k) => VARIANTS.push({ id: 5000 + i * 10 + k, title: z ? c + ' / ' + z : c, url: '/products/x?variant=' + (5000 + i * 10 + k), options: z ? [c, z] : [c], price: 4999, compare_at_price: 5999,
-  available: !(c === 'Brown' || (c === 'Gray' && z === 'L')), featured_media: c === 'Black' ? MEDIA[1] : (c === 'Beige' ? MEDIA[2] : null) })));
+  available: !(c === 'Brown' || (c === 'Gray' && z === 'L')), featured_media: COLMEDIA ? MEDIA[i * 3] : (c === 'Black' ? MEDIA[1] : (c === 'Beige' ? MEDIA[2] : null)) })));
 class OV { constructor(n, sel) { this.n = n; this.selected = sel; this.swatch = { color: null }; } toString() { return this.n; } }
 const PRODUCT = { id: 11190618194257, title: 'Essabar&Co Sculpt 3D Leggings', url: '/products/x', handle: 'x', tags: [], media: MEDIA, featured_media: MEDIA[0],
   variants: VARIANTS, selected_or_first_available_variant: VARIANTS[0], has_only_default_variant: false,

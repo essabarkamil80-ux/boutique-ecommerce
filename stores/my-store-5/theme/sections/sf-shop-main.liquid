@@ -37,7 +37,12 @@
     assign rating_cnt = s.rating_count
   endif
   assign rating_pct = rating_num | times: 100.0 | divided_by: rating_max
-  assign fm = p.featured_media
+  assign fm = cur.featured_media | default: p.featured_media
+  assign cur_col = ''
+  if color_pos > 0
+    assign cpi = color_pos | minus: 1
+    assign cur_col = cur.options[cpi] | downcase
+  endif
   assign main_alt = p.title
   assign save_pct = 0
   if cur.compare_at_price > cur.price
@@ -66,7 +71,14 @@
               {%- for m in p.media -%}
                 {%- if m.media_type == 'image' -%}
                   {%- capture big -%}{{ m | image_url: width: 1400 }}{%- endcapture -%}
-                  <li><button type="button" class="sf-shop__thumb{% if m.id == fm.id %} is-active{% endif %}" data-sf-thumb data-media="{{ m.id }}" data-src="{{ big }}" data-alt="{{ m.alt | default: p.title | escape }}" aria-label="Image {{ forloop.index }}">
+                  {%- assign m_col = '' -%}
+                  {%- assign m_alt = m.alt | default: p.title -%}
+                  {%- if m.alt contains ' | ' -%}
+                    {%- assign m_parts = m.alt | split: ' | ' -%}
+                    {%- assign m_col = m_parts[0] | downcase -%}
+                    {%- assign m_alt = m_parts | last -%}
+                  {%- endif -%}
+                  <li{% if cur_col != '' and m_col != cur_col %} hidden{% endif %}><button type="button" class="sf-shop__thumb{% if m.id == fm.id %} is-active{% endif %}" data-sf-thumb data-media="{{ m.id }}" data-src="{{ big }}" data-color="{{ m_col | escape }}" data-alt="{{ m_alt | escape }}" aria-label="Image {{ forloop.index }}">
                     {{ m | image_url: width: 240 | image_tag: width: 110, height: 110, alt: '', loading: 'lazy' }}
                   </button></li>
                 {%- endif -%}
@@ -76,7 +88,7 @@
         {%- endif -%}
         <div class="sf-shop__stage sf-media">
           {%- if fm != blank -%}
-            {%- if fm.alt != blank -%}{%- assign main_alt = fm.alt -%}{%- endif -%}
+            {%- if fm.alt != blank -%}{%- assign main_alt = fm.alt | split: ' | ' | last -%}{%- endif -%}
             {{ fm | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 700px, 100vw', alt: main_alt, loading: 'eager', fetchpriority: 'high' }}
           {%- else -%}
             {{ 'product-apparel-1' | placeholder_svg_tag: 'sf-ph' }}
@@ -304,6 +316,7 @@
     "currency": {{ cart.currency.iso_code | json }},
     "locale": {{ request.locale.iso_code | json }},
     "cartAdd": {{ routes.cart_add_url | json }},
+    "colorPos": {{ color_pos }},
     "labels": { "add": {{ s.atc_label | json }}, "sold": {{ s.sold_label | json }}, "adding": {{ s.adding_label | json }}, "save": {{ s.save_label | json }}, "perPiece": {{ s.perpiece_label | json }}, "bundle": {{ s.bundle_atc_label | json }}, "gift": "Free gift" },
     "variants": [
       {%- for v in p.variants -%}
@@ -336,10 +349,20 @@
     var cur = byId[D.current] || V[0], SEL = cur.options.slice();
 
     /* galerie + zoom */
-    var main = $('.sf-shop__stage img'), thumbs = $$('[data-sf-thumb]'), idx = 0, lb = $('[data-sf-lb]'), lbImg = $('[data-sf-lb-img]');
+    var main = $('.sf-shop__stage img'), allThumbs = $$('[data-sf-thumb]'), thumbs = allThumbs.slice(), idx = 0, galColor = null, lb = $('[data-sf-lb]'), lbImg = $('[data-sf-lb-img]');
+    /* ne garde dans la galerie que les photos de la couleur choisie (alt "Couleur | description") */
+    function filterColor(col) {
+      col = (col || '').toLowerCase();
+      if (col === galColor) return;
+      galColor = col;
+      var match = allThumbs.filter(function (t) { return t.dataset.color === col; });
+      var list = match.length ? match : allThumbs;
+      allThumbs.forEach(function (t) { t.parentNode.hidden = list.indexOf(t) < 0; });
+      thumbs = list;
+    }
     function showThumb(i) {
       if (!thumbs.length) return; idx = (i + thumbs.length) % thumbs.length; var t = thumbs[idx];
-      thumbs.forEach(function (x) { x.classList.toggle('is-active', x === t); });
+      allThumbs.forEach(function (x) { x.classList.toggle('is-active', x === t); });
       if (main) { main.removeAttribute('srcset'); main.removeAttribute('sizes'); main.src = t.dataset.src; main.alt = t.dataset.alt || ''; }
       var box = t.parentNode.parentNode, li = t.parentNode;
       if (box && box.scrollTo) {
@@ -347,7 +370,7 @@
         else if (box.scrollHeight > box.clientHeight + 2) box.scrollTo({ top: li.offsetTop - 8, behavior: 'smooth' });
       }
     }
-    thumbs.forEach(function (t, i) { t.addEventListener('click', function () { showThumb(i); }); });
+    allThumbs.forEach(function (t) { t.addEventListener('click', function () { showThumb(thumbs.indexOf(t)); }); });
     var z = $('[data-sf-zoom]');
     if (z && lb) {
       z.addEventListener('click', function () { lbImg.src = main.currentSrc || main.src; lb.hidden = false; document.documentElement.style.overflow = 'hidden'; });
@@ -378,7 +401,8 @@
       var bd = $('[data-badge]'); bd.hidden = !has; if (has) bd.textContent = '-' + Math.round((cur.compare - cur.price) * 100 / cur.compare) + '%';
       var sp = $('[data-soldpill]'), sb = $('[data-soldbadge]'); if (sp) sp.hidden = cur.available; if (sb) sb.hidden = cur.available;
       atc.disabled = !cur.available; $('[data-atc-label]').textContent = cur.available ? D.labels.add : D.labels.sold;
-      if (cur.media) { var k = thumbs.findIndex(function (t) { return t.dataset.media == cur.media; }); if (k > -1) showThumb(k); }
+      if (D.colorPos) filterColor(cur.options[D.colorPos - 1]);
+      if (cur.media) { var k = thumbs.findIndex(function (t) { return t.dataset.media == cur.media; }); showThumb(k > -1 ? k : 0); } else showThumb(0);
     }
     fieldsets.forEach(function (f, fi) {
       $$('[data-val]', f).forEach(function (b) { b.addEventListener('click', function () {
@@ -429,7 +453,13 @@
     }
     tiers.forEach(function (t) {
       $('.sf-tier__radio', t).addEventListener('change', function () { tiers.forEach(function (x) { x.classList.toggle('is-selected', x === t); }); recalcOffer(); });
-      $$('select[data-opt]', t).forEach(function (s) { s.addEventListener('change', recalcOffer); });
+      $$('select[data-opt]', t).forEach(function (s) {
+        s.addEventListener('change', function () {
+          recalcOffer();
+          /* piece du lot : la galerie saute sur les photos de la couleur choisie */
+          if (perPiece && D.colorPos && parseInt(s.dataset.opt, 10) === D.colorPos) { filterColor(s.value); showThumb(0); }
+        });
+      });
     });
     function giftDot(sl) { var o = sl.options[sl.selectedIndex], d = sl.parentNode.querySelector('[data-gift-dot]'); if (d && o) d.style.background = o.dataset.color || '#cbbfb8'; }
     $$('select[data-gift]').forEach(function (sl) { giftDot(sl); sl.addEventListener('change', function () { giftDot(sl); }); });
@@ -519,6 +549,7 @@
   .sf-shop__thumbs { display: flex; gap: 8px; padding: 2px; overflow-x: auto; scrollbar-width: none; position: relative; }
   .sf-shop__thumbs::-webkit-scrollbar { display: none; }
   .sf-shop__thumbs li { flex: 0 0 auto; width: clamp(64px, 7.6vw, 110px); }
+  .sf-shop__thumbs li[hidden] { display: none; }
   .sf-shop__thumb { display: block; width: 100%; aspect-ratio: 1; padding: 0; border: 2px solid transparent; background: #F7F5F3; overflow: hidden; }
   .sf-shop__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .sf-shop__thumb.is-active { border-color: var(--sf-ink); }

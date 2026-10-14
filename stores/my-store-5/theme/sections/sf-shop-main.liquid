@@ -293,7 +293,7 @@
         {%- if accs.size > 0 -%}
           <div class="sf-shop__accs">
             {%- for a in accs -%}
-              <details class="sf-shop__acc" {{ a.shopify_attributes }}>
+              <details class="sf-shop__acc"{% if a.settings.open %} open{% endif %} {{ a.shopify_attributes }}>
                 <summary>
                   <span class="sf-shop__aico">{%- render 'sf-icon', name: a.settings.icon -%}</span>
                   <b>{{ a.settings.title }}</b>
@@ -694,11 +694,11 @@
   .sf-tier.is-out .sf-tier__price b { color: #9a9290; }
 
   /* carte d'avantages : 2 colonnes, icones au trait */
-  .sf-shop__usps { display: grid; grid-template-columns: 1fr 1fr; gap: 30px 22px; margin-top: 30px; padding: 28px 24px; border: 1px solid #EFEAE7; border-radius: 4px; background: #fff; }
-  .sf-shop__usp { display: flex; align-items: center; gap: 16px; min-width: 0; }
-  .sf-shop__uico { flex: 0 0 auto; width: 44px; height: 44px; display: grid; place-items: center; color: var(--sf-ink); }
-  .sf-shop__uico svg { width: 42px; height: 42px; stroke-width: 1.1; }
-  .sf-shop__usp > b { font-size: 15px; font-weight: 600; letter-spacing: .02em; line-height: 1.4; color: var(--sf-ink); }
+  .sf-shop__usps { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 26px; margin-top: 30px; padding: 28px 26px; border: 1px solid #EFEAE7; border-radius: 6px; background: #fff; color: #171331; }
+  .sf-shop__usp { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .sf-shop__uico { flex: 0 0 auto; width: 44px; height: 44px; display: grid; place-items: center; color: #171331; }
+  .sf-shop__uico svg { display: block; width: 44px; height: 44px; }
+  .sf-shop__usp > b { font-size: 15px; font-weight: 600; letter-spacing: .01em; line-height: 1.45; color: #171331; overflow-wrap: break-word; }
 
   /* accordeons : icone a gauche, "+" a droite */
   .sf-shop__accs { margin-top: 30px; border-top: 1px solid #ECE6E3; }
@@ -713,8 +713,12 @@
   .sf-shop__plus::before { left: 0; right: 0; top: 6.5px; height: 1.5px; }
   .sf-shop__plus::after { top: 0; bottom: 0; left: 6.5px; width: 1.5px; }
   .sf-shop__acc[open] .sf-shop__plus::after { display: none; }
-  .sf-shop__fbody { padding: 0 0 20px 48px; font-size: 14.5px; line-height: 1.65; color: #4d4543; }
-  .sf-shop__fbody p + p { margin-top: 8px; } .sf-shop__fbody ul { margin-top: 8px; padding-left: 0; }
+  .sf-shop__fbody { padding: 0 0 22px; font-size: 14.5px; line-height: 1.65; color: #4d4543; }
+  .sf-shop__fbody p + p { margin-top: 8px; }
+  .sf-shop__fbody h2, .sf-shop__fbody h3, .sf-shop__fbody h4, .sf-shop__fbody h5 { margin: 14px 0 4px; font-family: inherit; font-size: 15px; font-weight: 600; letter-spacing: .01em; line-height: 1.4; color: var(--sf-ink); }
+  .sf-shop__fbody > :first-child { margin-top: 0; }
+  .sf-shop__fbody ul, .sf-shop__fbody ol { margin: 6px 0 0; padding-left: 20px; list-style: disc; } .sf-shop__fbody ol { list-style: decimal; }
+  .sf-shop__fbody li { margin: 4px 0; padding-left: 2px; }
 
   /* lightbox */
   .sf-shop__lb { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; padding: 24px; background: rgba(19, 7, 46, .85); cursor: zoom-out; }
@@ -739,10 +743,10 @@
     .sf-shop__aside { padding-inline: 16px; }
     .sf-shop__zoom { width: 40px; height: 40px; }
     .sf-shop__usps { padding: 22px 16px; gap: 24px 14px; }
-    .sf-shop__uico { width: 36px; height: 36px; } .sf-shop__uico svg { width: 34px; height: 34px; }
-    .sf-shop__usp { gap: 12px; } .sf-shop__usp > b { font-size: 13.5px; }
+    .sf-shop__usps { gap: 22px 12px; }
+    .sf-shop__uico { width: 34px; height: 34px; } .sf-shop__uico svg { width: 34px; height: 34px; }
+    .sf-shop__usp { gap: 10px; } .sf-shop__usp > b { font-size: 13.5px; line-height: 1.4; }
     .sf-shop__acc summary > b { font-size: 16.5px; }
-    .sf-shop__fbody { padding-left: 0; }
   }
 {% endstylesheet %}
 
@@ -820,6 +824,7 @@
           { "value": "shield", "label": "Bouclier" }, { "value": "heart", "label": "Cœur" }
         ] },
         { "type": "text", "id": "title", "label": "Titre", "default": "Details" },
+        { "type": "checkbox", "id": "open", "label": "Ouvert par défaut", "default": false },
         { "type": "checkbox", "id": "use_description", "label": "Afficher la description du produit", "default": false },
         { "type": "richtext", "id": "content", "label": "Contenu" }
       ]

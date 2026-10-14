@@ -99,7 +99,9 @@
           "settings": {
             "icon": "tape",
             "title": "Size guide",
-            "content": "<p>Add your size guide here.</p>"
+            "content": "<p>Add your size guide here.</p>",
+            "open": true,
+            "use_description": false
           }
         },
         "a-2": {
@@ -107,7 +109,9 @@
           "settings": {
             "icon": "layers",
             "title": "Material & Care",
-            "content": "<p>Add the fabric composition and care instructions here.</p>"
+            "content": "<h4>Material</h4><p>Add the fabric composition here.</p><h4>Care</h4><p>Add the care instructions here.</p>",
+            "open": true,
+            "use_description": false
           }
         },
         "a-3": {
@@ -115,7 +119,8 @@
           "settings": {
             "icon": "hanger",
             "title": "Description",
-            "use_description": true
+            "use_description": true,
+            "open": true
           }
         },
         "a-4": {
@@ -123,7 +128,9 @@
           "settings": {
             "icon": "truckline",
             "title": "Delivery & Returns",
-            "content": "<p>Free shipping on every order, no minimum. Free returns within 30 days.</p>"
+            "content": "<h4>Returns / Exchanges</h4><ul><li>Free returns within 30 days.</li></ul><h4>Shipping</h4><ul><li>Free shipping on every order, no minimum.</li></ul>",
+            "open": true,
+            "use_description": false
           }
         }
       },

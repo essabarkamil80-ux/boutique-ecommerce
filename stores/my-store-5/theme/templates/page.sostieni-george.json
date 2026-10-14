@@ -99,7 +99,9 @@
           "settings": {
             "icon": "tape",
             "title": "Size guide",
-            "content": "<p>Add your size guide here.</p>"
+            "content": "<p>Add your size guide here.</p>",
+            "open": true,
+            "use_description": false
           }
         },
         "a-2": {
@@ -107,7 +109,9 @@
           "settings": {
             "icon": "layers",
             "title": "Material & Care",
-            "content": "<p>Add the fabric composition and care instructions here.</p>"
+            "content": "<h4>Material</h4><p>Add the fabric composition here.</p><h4>Care</h4><p>Add the care instructions here.</p>",
+            "open": true,
+            "use_description": false
           }
         },
         "a-3": {
@@ -115,7 +119,8 @@
           "settings": {
             "icon": "hanger",
             "title": "Description",
-            "use_description": true
+            "use_description": true,
+            "open": true
           }
         },
         "a-4": {
@@ -123,7 +128,9 @@
           "settings": {
             "icon": "truckline",
             "title": "Delivery & Returns",
-            "content": "<p>Free shipping on every order, no minimum. Free returns within 30 days.</p>"
+            "content": "<h4>Returns / Exchanges</h4><ul><li>Free returns within 30 days.</li></ul><h4>Shipping</h4><ul><li>Free shipping on every order, no minimum.</li></ul>",
+            "open": true,
+            "use_description": false
           }
         }
       },
@@ -219,54 +226,56 @@
         "x-1": {
           "type": "photo",
           "settings": {
+            "image": "shopify://shop_images/create.webp",
             "is_video": false
           }
         },
         "x-2": {
           "type": "photo",
           "settings": {
+            "image": "shopify://shop_images/create_4.webp",
             "is_video": false
           }
         },
         "x-3": {
           "type": "photo",
           "settings": {
+            "image": "shopify://shop_images/create_5.webp",
             "is_video": false
           }
         },
         "x-4": {
           "type": "photo",
           "settings": {
+            "image": "shopify://shop_images/create_7.webp",
             "is_video": false
           }
         },
         "x-5": {
           "type": "photo",
           "settings": {
+            "image": "shopify://shop_images/create_6.webp",
             "is_video": false
           }
         },
         "x-6": {
           "type": "photo",
           "settings": {
-            "is_video": false
-          }
-        },
-        "x-7": {
-          "type": "photo",
-          "settings": {
+            "image": "shopify://shop_images/create.jpg",
             "is_video": false
           }
         },
         "x-8": {
           "type": "photo",
           "settings": {
+            "image": "shopify://shop_images/create_3.webp",
             "is_video": false
           }
         },
         "x-9": {
           "type": "photo",
           "settings": {
+            "image": "shopify://shop_images/create_8.webp",
             "is_video": false
           }
         },
@@ -281,6 +290,7 @@
             "text": "",
             "c1_value": 2.4,
             "c2_value": 5,
+            "photo": "shopify://shop_images/create.webp",
             "date": ""
           }
         },
@@ -291,10 +301,11 @@
             "name": "",
             "verified": true,
             "recommends": true,
-            "title": "",
-            "text": "Paste a real customer review here.",
+            "title": "anonym",
+            "text": "sous tiens george blanc",
             "c1_value": 2.5,
             "c2_value": 5,
+            "photo": "shopify://shop_images/create_8.webp",
             "date": ""
           }
         },
@@ -309,6 +320,7 @@
             "text": ".",
             "c1_value": 3.2,
             "c2_value": 5,
+            "photo": "shopify://shop_images/create_2.webp",
             "date": ""
           }
         },
@@ -323,6 +335,7 @@
             "text": "",
             "c1_value": 2.7,
             "c2_value": 2.5,
+            "photo": "shopify://shop_images/create_6.webp",
             "date": ""
           }
         },
@@ -337,6 +350,7 @@
             "text": "",
             "c1_value": 2.2,
             "c2_value": 3.9,
+            "photo": "shopify://shop_images/create_7.webp",
             "date": ""
           }
         },
@@ -344,27 +358,29 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "",
-            "verified": false,
-            "recommends": false,
-            "title": "",
-            "text": "Paste a real customer review here.",
-            "c1_value": 0,
-            "c2_value": 0,
+            "name": "Bente Schütt",
+            "verified": true,
+            "recommends": true,
+            "title": "Soutien-gorge push-up Comfort Beige/S",
+            "text": "",
+            "c1_value": 3.7,
+            "c2_value": 5,
+            "photo": "shopify://shop_images/create.jpg",
             "date": ""
           }
         },
         "x-16": {
           "type": "review",
           "settings": {
-            "rating": 5,
-            "name": "",
-            "verified": false,
-            "recommends": false,
-            "title": "",
-            "text": "Paste a real customer review here.",
-            "c1_value": 0,
-            "c2_value": 0,
+            "rating": 3,
+            "name": "Esma Aktas",
+            "verified": true,
+            "recommends": true,
+            "title": "Soutien-gorge push-up Comfort à pois noir/S",
+            "text": "",
+            "c1_value": 2.4,
+            "c2_value": 4.3,
+            "photo": "shopify://shop_images/create_3.webp",
             "date": ""
           }
         },
@@ -372,13 +388,14 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "",
-            "verified": false,
-            "recommends": false,
-            "title": "",
-            "text": "Paste a real customer review here.",
-            "c1_value": 0,
-            "c2_value": 0,
+            "name": "Isabel Linzmaier",
+            "verified": true,
+            "recommends": true,
+            "title": "Soutien-gorge push-up Comfort noir/M",
+            "text": "",
+            "c1_value": 2.9,
+            "c2_value": 2.7,
+            "photo": "shopify://shop_images/create_5.webp",
             "date": ""
           }
         },
@@ -386,13 +403,13 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "",
-            "verified": false,
-            "recommends": false,
-            "title": "",
-            "text": "Paste a real customer review here.",
-            "c1_value": 0,
-            "c2_value": 0,
+            "name": "Anonym",
+            "verified": true,
+            "recommends": true,
+            "title": "Soutien-gorge push-up Comfort marron/S",
+            "text": "",
+            "c1_value": 2.8,
+            "c2_value": 5,
             "date": ""
           }
         },
@@ -400,13 +417,13 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "name": "",
-            "verified": false,
-            "recommends": false,
-            "title": "",
-            "text": "Paste a real customer review here.",
-            "c1_value": 0,
-            "c2_value": 0,
+            "name": "Marina Schulze",
+            "verified": true,
+            "recommends": true,
+            "title": "Soutien-gorge push-up Comfort noir/M",
+            "text": "",
+            "c1_value": 3.6,
+            "c2_value": 2.8,
             "date": ""
           }
         }
@@ -418,7 +435,6 @@
         "x-4",
         "x-5",
         "x-6",
-        "x-7",
         "x-8",
         "x-9",
         "x-10",
@@ -434,7 +450,21 @@
       ],
       "settings": {
         "product": "essabar-co-push-up",
-        "per_page": 5
+        "per_page": 5,
+        "rating": "4,5",
+        "count": "+500",
+        "based_label": "Based on [count] reviews",
+        "no_reviews_label": "+500 avis",
+        "c1_label": "plateau comfort",
+        "c1_value": 4.2,
+        "c1_a": "incomfartble",
+        "c1_b": "agréable",
+        "c1_c": "trés comfortable",
+        "c2_label": "ajustement",
+        "c2_value": 2.6,
+        "c2_a": "s'avére plus petit",
+        "c2_b": "juste ce qu'il faut",
+        "c2_c": "s'avére plus gros"
       }
     }
   },

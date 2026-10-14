@@ -89,7 +89,7 @@
                 {%- assign m_col = m_parts[0] | downcase -%}
                 {%- assign m_alt = m_parts | last -%}
               {%- endif -%}
-              <li{% if cur_col != '' and m_col != cur_col %} hidden{% endif %}>
+              <li{% if cur_col != '' and m_col != cur_col and m_col != 'all' %} hidden{% endif %}>
                 <button type="button" class="sf-pdp__thumb{% if m.id == fm.id %} is-active{% endif %}" data-sf-thumb data-media="{{ m.id }}" data-src="{{ big }}" data-color="{{ m_col | escape }}" data-alt="{{ m_alt | escape }}" aria-label="Image {{ forloop.index }}">
                   {{ m | image_url: width: 200 | image_tag: width: 76, height: 76, alt: '', loading: 'lazy' }}
                 </button>
@@ -467,7 +467,7 @@
       if (col === galColor) return;
       galColor = col;
       var match = allThumbs.filter(function (t) { return t.dataset.color === col; });
-      var list = match.length ? match : allThumbs;
+      var list = match.length ? allThumbs.filter(function (t) { return t.dataset.color === col || t.dataset.color === 'all'; }) : allThumbs;
       allThumbs.forEach(function (t) { t.parentNode.hidden = list.indexOf(t) < 0; });
       thumbs = list;
       var nav = [$('[data-sf-prev-img]'), $('[data-sf-next-img]')]; nav.forEach(function (b) { if (b) b.hidden = thumbs.length < 2; });
